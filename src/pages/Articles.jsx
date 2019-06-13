@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
 import Container from '@material-ui/core/Container'
 import Loading from '@material-ui/core/CircularProgress'
-import {Link} from 'react-router-dom'
 import axios from 'axios'
 
-import Header from '../components/Header'
-import ArticleBlock from '../components/ArticleBlock'
+import Header from '../components/Header.jsx'
+import ArticleBlock from '../components/ArticleBlock.jsx'
 
 
 export default class Articles extends Component {

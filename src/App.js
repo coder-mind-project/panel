@@ -4,12 +4,12 @@ import {makeStyles} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 
 //Components imports
-import Menu from './components/Menu'
-import Users from './pages/Users'
-import User from './pages/User'
-import Articles from './pages/Articles'
-import Article from './pages/Article'
-import Stats from './pages/Stats'
+import Menu from './components/Menu.jsx'
+import Users from './pages/Users.jsx'
+import User from './pages/User.jsx'
+import Articles from './pages/Articles.jsx'
+import Article from './pages/Article.jsx'
+import Stats from './pages/Stats.jsx'
 
 const useStyles = makeStyles(theme => ({
   page: {
