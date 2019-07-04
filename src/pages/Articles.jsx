@@ -1,48 +1,149 @@
 import React, {Component} from 'react'
-import Container from '@material-ui/core/Container'
-import Loading from '@material-ui/core/CircularProgress'
+import {Link, Redirect} from 'react-router-dom'
+import './defaultPage.css'
 import axios from 'axios'
+import {Container, Grid, CircularProgress, Select,
+    Input, FormControl, InputLabel, MenuItem, Icon, Fab,
+    useScrollTrigger, Slide, Box} from '@material-ui/core'
 
+import SearchBar from 'material-ui-search-bar'
+import CustomButton from '../components/Button.jsx'
 import Header from '../components/Header.jsx'
 import ArticleBlock from '../components/ArticleBlock.jsx'
 
+import {backendUrl} from '../config/backend'
+
+import {ToastContainer} from 'react-toastify'
+
+const FloatingButton = (props) => {
+
+    const {window, go} = props
+
+    const trigger = useScrollTrigger({target: window ? window() : undefined, disableHysteresis: true})
+    
+    return trigger ? (
+        <Slide direction="up" in={true} mountOnEnter unmountOnExit>
+            <Fab className="floatingButton defaultButtonColor" onClick={go}>
+                <Icon>add</Icon>
+            </Fab>
+        </Slide>
+    ) : null
+}
 
 export default class Articles extends Component {
-
-    constructor(props){
-        super(props)
-        this.state = {
-            loading: true,
-            error: false,
-            articles: []
-        }
+    
+    state = {
+        loading: true,
+        error: false,
+        articles: [],
+        query: '',
+        page: 1,
+        limit: 10,
+        count: 0, 
+        redirectTo: ''
     }
 
-    async componentWillMount(){
-        const url = 'http://localhost:3001/articles'
-        await axios(url).then(res => {
+    
+    async changeQueryValue(query){
+        await this.setState({
+            query,
+            page: 1
+        })
+        this.searchArticles()
+    }
+    
+    async searchArticles(){
+        const url = `${backendUrl}/articles?query=${this.state.query}&page=${this.state.page}&limit=${this.state.limit}`
+        if(this.state.articles.length > 0) this.setState({articles: []})
+        if(!this.state.loading) this.setState({loading: true})
+        await axios(url).then(async res => {
             this.setState({
-                articles: res.data,
+                articles: res.data.articles,
                 loading: false,
-                error: false
+                error: false,
+                count: res.data.count,
+                limit: res.data.limit
             })
         }).catch(error => {
             this.setState({
-                error: true
+                error: true,
+                loading: false
             })
         })
     }
 
+    handleChange = attr => async event => {
+        const value = event.target.value
 
+        await this.setState({[attr]: value})
+        if(attr === 'limit') this.searchArticles()
+    }
+
+
+    componentDidMount(){
+        this.searchArticles()
+    }
+
+    goTo = path => event => {
+        this.setState({redirectTo: path})
+    }
+
+    changePage = action => async event => {
+        
+        if(action !== 'next' && action !== 'back') return
+        
+        let currentPage = this.state.page
+        await this.setState({
+            page: action === 'next' ? ++currentPage : --currentPage
+        })
+
+        this.searchArticles()
+    }
+    
     render (){
         return (
             <Container>
-                <Header title="Artigos" description="Artigos do sistema"/>
-                <Container>
-                    {this.state.loading && <Loading />}
-                    {!this.state.loading && this.state.articles.length > 0 && this.state.articles.map((article, key) => <ArticleBlock title={article.title} description={article.description} author={article.author} _id={article._id} key={article._id} />)}
-                    {this.state.error && <p>Ocorreu um erro ao realizar a requisição</p>}
+                <Header title="Artigos" description="Consulte, altere e crie novos artigos" icon="description"/>
+                <ToastContainer/>
+                {this.state.redirectTo && <Redirect to={`/${this.state.redirectTo}`} />}
+                <Container className="hudBar">
+                    <Grid item className="hudBarChild">
+                        <Link to="/article" className="linkRouter linkButton"><CustomButton text="Novo artigo" icon="add_circle_outline" color="default" /></Link>
+                    </Grid>
+                    <Grid item className="hudBarChild">
+                        <FormControl className="limitInput">
+                            <InputLabel htmlFor="limit">Limite</InputLabel>
+                            <Select input={<Input name="limit" id="limit"></Input>} value={this.state.limit} onChange={this.handleChange('limit')}>
+                                <MenuItem value={10}>10</MenuItem>
+                                <MenuItem value={25}>25</MenuItem>
+                                <MenuItem value={50}>50</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <SearchBar id="search_field" className="searchTextField" placeholder="Pesquisar" value={this.state.query} onChange={(query) => this.changeQueryValue(query)} onCancelSearch={() => this.changeQueryValue('')} />
+                    </Grid>
                 </Container>
+                <Container>
+                    <FloatingButton go={this.goTo('article')}/>
+                    {this.state.loading && <Container className="center spinnerContainer"><CircularProgress /><p>Procurando artigos...</p></Container>}
+                    {!this.state.loading && this.state.articles.length > 0 && this.state.articles.map((article, key) => <ArticleBlock article={article} key={article._id} />)}
+                    {!this.state.loading && this.state.articles.length === 0 && <Container className='center'><p>Nenhum artigo encontrado</p></Container>}
+                    {this.state.error && <Container className="center"><p className="defaultFontColor">Ocorreu um erro ao obter a informação com a base de dados</p></Container>}
+                </Container>
+                {!this.state.loading && <Container className="footList">
+                    <Box mt={1}>
+                        <span className="defaultFontColor marginRight">Artigos: {this.state.count}</span>
+                        <span className="defaultFontColor marginRight">|</span>
+                        <span className="defaultFontColor marginRight">Página: {this.state.page}</span>
+                    </Box>
+                    <Box display="flex" flexWrap="wrap" mt={1}>
+                        {this.state.page > 1 && <Box mr={1} mb={1}>
+                            <CustomButton color="defaultOutlined" icon="arrow_back" text="Anterior" className="buttonFootList" onClick={this.changePage('back')}/>
+                        </Box>}
+                        {this.state.articles.length > 0 && <Box mr={1} mb={1}>
+                            <CustomButton color="defaultOutlined" icon="arrow_forward" text="Próxima" className="buttonFootList" onClick={this.changePage('next')} />
+                        </Box>}
+                    </Box>
+                </Container>}
             </Container>        
         )
     }

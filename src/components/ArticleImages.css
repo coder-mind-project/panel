@@ -1,0 +1,26 @@
+.content{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+}
+
+.formGroupWithSmallImg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.smallImgSection{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.inputImg{
+    margin-right: 20px !important;
+}
+
+.img{
+    cursor: pointer;
+}

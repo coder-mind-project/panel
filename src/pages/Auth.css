@@ -1,0 +1,42 @@
+.container{
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100%;
+}
+
+.modal{
+    width: 350px;
+    padding: 25px;
+}
+
+.modalTitle{
+    display: flex;
+    justify-content: center;
+    border-bottom: linear-gradient(to right, #403b4a, #e7e9bb); 
+}
+
+.titleText{
+    font-size: 1.3rem;
+
+}
+
+.modalForm{
+    margin: 15px 0px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.modalFormInput{
+    margin: 20px 0px !important;
+}
+
+.fakeLink{
+    padding: 10px;
+    color: #1469B9;
+    text-decoration: underline;
+    cursor: pointer;
+    text-align: center;
+}

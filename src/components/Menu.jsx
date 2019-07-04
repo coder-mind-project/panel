@@ -1,23 +1,21 @@
 import React from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {Link} from 'react-router-dom'
-import logo from '../assets/dev.png'
+import Logo from '../assets/estudante_ti1.png'
+import LogoHorizontal from '../assets/estudante_ti4.png'
+
+import {connect} from 'react-redux'
+
+import Avatar from 'react-avatar'
 
 
 //Material UI imports for config Menu 
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import useScrollTrigger from '@material-ui/core/useScrollTrigger'
-import Slide from '@material-ui/core/Slide'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import IconButton from '@material-ui/core/IconButton'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import MenuIcon from '@material-ui/icons/Menu'
-import Drawer from '@material-ui/core/Drawer'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+
+import {AppBar, Toolbar, useScrollTrigger, Slide,
+    IconButton, Menu, MenuItem, Drawer, List, ListItem,
+    useMediaQuery, Icon} from '@material-ui/core'
+
+import {Menu as MenuIcon} from '@material-ui/icons'
 
 
 const HideOnScroll = props => {
@@ -32,6 +30,11 @@ const HideOnScroll = props => {
     )
 }
 
+const logout = () => {
+    localStorage.removeItem('user')
+    window.location.href = "/auth"
+}
+
 const useStyles = makeStyles(theme => ({
     menu: {
         display: 'flex',
@@ -40,12 +43,27 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         paddingLeft: 10,
         paddingRight: 10,
-        backgroundColor: 'rgb(50,50,50)',
+        backgroundColor: 'rgb(17,125,187)',
+    },
+    menuLogo: {
+        marginRight: '25px',
+        color: 'white'
     },
     menuButton: {
         marginRight: theme.spacing(2)
     },
+    menuButtonContent: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    iconButtonMenu: {
+        marginRight: '10px',
+    },
     link: {
+        color: 'inherit',
+        textDecoration: 'none'
+    },
+    menuLink: {
         color: 'inherit',
         textDecoration: 'none',
         padding: 23,
@@ -75,17 +93,18 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         paddingTop: 15,
         paddingBottom: 15,
+    },
+    hide: {
+        display: 'none'
     }
 }))
 
-export default (props) => {
+const MenuApp = props => {
     const classes = useStyles()
-
-    const matches = useMediaQuery('(min-width: 565px)')
+    const matches = useMediaQuery('(min-width: 690px)')
 
     const [anchorEl, setAnchorEl] = React.useState(null)
     const open = Boolean(anchorEl)
-
     const openMyAccountIcon = e => {
         setAnchorEl(e.currentTarget)
     }
@@ -98,27 +117,26 @@ export default (props) => {
         drawerMenu: false
     })
 
+
     return (
-        <div>
+        <div className={props.user._id ? "" : classes.hide}>
             <HideOnScroll {...props}>
                 <AppBar className={classes.menu}>
                     <Toolbar>
-                        <IconButton onClick={() => setState({drawerMenu: true})} edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
+                        { !matches && <IconButton onClick={() => setState({drawerMenu: true})} edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
                             <MenuIcon />
-                        </IconButton>
-                        {matches && <Link to="/stats" className={classes.link}>Estatísticas</Link>}
-                        {matches && <Link to="/articles" className={classes.link}>Artigos</Link>}
-                        {matches && <Link to="/users" className={classes.link}>Usuários</Link>}
+                        </IconButton>}
+                        <Link className={classes.link} to="/stats">
+                            <img src={LogoHorizontal} width="180" className={classes.menuLogo} alt="Estudante TI"/>
+                        </Link>
+                        {matches && <Link to="/articles" className={classes.menuLink}><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>library_books</Icon>Artigos</span></Link>}
+                        {matches && <Link to="/users" className={classes.menuLink}><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>person_outline</Icon>Usuários</span></Link>}
+                        {matches && <Link to="/management" className={classes.menuLink}><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>settings</Icon>Configurações</span></Link>}
                     </Toolbar>
                     <div>
-                        <IconButton
-                            aria-label="My account"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={openMyAccountIcon}
-                            color="inherit">
-                            <AccountCircle/>
-                        </IconButton>
+                        { props.user && props.user.name ? <div className={classes.menuButton}>
+                            <Avatar onClick={openMyAccountIcon} style={{cursor: 'pointer'}} color="#888" size="50" round="30px" name={props.user.name}/>
+                        </div> : '' }
                         <Menu
                             id="my-account-menu"
                             anchorEl={anchorEl}
@@ -134,30 +152,34 @@ export default (props) => {
                             open={open}
                             onClose={closeMyAccountIcon}>
                             
-                            <MenuItem>Meus dados</MenuItem>
-                            <MenuItem>Meus artigos</MenuItem>
-                            <MenuItem>Sair</MenuItem>
+                            <MenuItem><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>person_outline</Icon>Meus dados</span></MenuItem>
+                            <MenuItem><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>library_books</Icon>Meus artigos</span></MenuItem>
+                            <MenuItem onClick={logout}><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>exit_to_app</Icon>Sair</span></MenuItem>
                         </Menu>
                     </div>
                 </AppBar>
             </HideOnScroll>
             <Drawer open={state.drawerMenu} onClose={() => setState({drawerMenu: false  })}>
-                <Link to="/" onClick={() => setState({drawerMenu: false})}>
+                <Link to="/stats" onClick={() => setState({drawerMenu: false})}>
                     <div className={classes.logo}>
-                        <img src={logo} width="125" alt="Estudante TI Logo"/>
+                        <img src={Logo} width="180" alt="Estudante TI"/>
                     </div>
                 </Link>
                 <div className={classes.drawer}>
                     <List className={classes.list}>
-                        <Link to="/articles" className={classes.buttonLink} onClick={() => setState({drawerMenu: false})}><ListItem button key={'Artigos'} className={classes.drawerButton}>Artigos</ListItem></Link>
-                        <Link to="/users" className={classes.buttonLink} onClick={() => setState({drawerMenu: false})}><ListItem button key={'Usuários'} className={classes.drawerButton}>Usuários</ListItem></Link>
-                        <Link to="/stats" className={classes.buttonLink} onClick={() => setState({drawerMenu: false})}><ListItem button key={'Estatísticas'} className={classes.drawerButton}>Estatísticas</ListItem></Link>
+                        <Link to="/articles" className={classes.buttonLink} onClick={() => setState({drawerMenu: false})}><ListItem button key={'articles'} className={classes.drawerButton}><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>library_books</Icon>Artigos</span></ListItem></Link>
+                        <Link to="/users" className={classes.buttonLink} onClick={() => setState({drawerMenu: false})}><ListItem button key={'users'} className={classes.drawerButton}><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>person_outline</Icon>Usuários</span></ListItem></Link>
+                        <Link to="/management" className={classes.buttonLink} onClick={() => setState({drawerMenu: false})}><ListItem button key={'stats'} className={classes.drawerButton}><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>settings</Icon>Configurações</span></ListItem></Link>
                     </List>
                     <List className={classes.list}>
-                        <ListItem button onClick={() => setState({drawerMenu: false})} className={classes.drawerButton}>Sair</ListItem>
+                        <ListItem button onClick={logout} className={classes.drawerButton}><span className={classes.menuButtonContent}><Icon  className={classes.iconButtonMenu}>exit_to_app</Icon>Sair</span></ListItem>
                     </List>
                 </div>  
             </Drawer>
         </div>
-    )
+        )
 }
+
+const mapStateToProps = state => ({user: state.user})
+
+export default connect(mapStateToProps)(MenuApp)
