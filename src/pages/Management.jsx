@@ -1,32 +1,42 @@
 import React, { Component } from 'react'
-import {Container, Grid, Paper, Box, Typography, Divider} from '@material-ui/core'
-import {Bookmark, Category} from '@material-ui/icons'
-import './defaultPage.css'
-import './Management.css'
-import {Redirect} from 'react-router-dom'
+import { Container, Grid, Paper, Box,
+        Typography, Divider, Icon } from '@material-ui/core'
+import { Redirect } from 'react-router-dom'
+
 import Button from '../components/Button.jsx'
 
+import './defaultPage.css'
+import './css/Management.css'
 
 class Management extends Component {
+
     state = {
         redirectTo: ''
     }
 
-    goTo = path => event => this.setState({redirectTo: `/${path}`})
+    goTo = path => this.setState({redirectTo: `/${path}`})
 
     render() {
         return (
             <Container>
-                {this.state.redirectTo && <Redirect to={this.state.redirectTo}/> }
+                {this.state.redirectTo && 
+                    <Redirect to={this.state.redirectTo}/>
+                }
                 <Grid container>
                     <Grid item xs={12} md={6}>
                         <Box ml={2} mr={2} mt={5} mb={3}>
                             <Paper className="blockOption">
                                 <Grid item xs={12} className="centerInline">
-                                    <Bookmark className="superIcon"/>
-                                    <Typography component="h4" variant="h4">Temas</Typography>
+                                    <Icon className="superIcon">
+                                        bookmark
+                                    </Icon>
+                                    <h2>
+                                        Temas
+                                    </h2>
                                 </Grid>
-                                <Grid item xs={12}><Divider/></Grid>
+                                <Grid item xs={12}>
+                                    <Divider/>
+                                </Grid>
                                 <Grid item xs={12} className="description">
                                     <Typography component="p" variant="body2">
                                         Crie, altere e remova temas.
@@ -38,7 +48,10 @@ class Management extends Component {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12} className="accessButton">
-                                    <Button color="default" fullWidth={true} text="Acessar" onClick={this.goTo('themes')}>Acessar</Button>
+                                    <Button color="default" fullWidth={true}
+                                        text="Acessar" 
+                                        onClick={() => this.goTo('themes')}
+                                    />
                                 </Grid>
                             </Paper>
                         </Box>
@@ -47,10 +60,16 @@ class Management extends Component {
                         <Box ml={2} mr={2} mt={5} mb={3}>
                             <Paper className="blockOption">
                             <Grid item xs={12} className="centerInline">
-                                    <Category className="superIcon"/>
-                                    <Typography component="h4" variant="h4">Categorias</Typography>
+                                    <Icon className="superIcon">
+                                        category
+                                    </Icon>
+                                    <h2>
+                                        Categorias
+                                    </h2>
                                 </Grid>
-                                <Grid item xs={12}><Divider/></Grid>
+                                <Grid item xs={12}>
+                                    <Divider/>
+                                </Grid>
                                 <Grid item xs={12} className="description">
                                     <Typography component="p" variant="body2">
                                         Crie, altere e remova categorias.
@@ -62,7 +81,10 @@ class Management extends Component {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12} className="accessButton">
-                                <Button color="default" fullWidth={true} text="Acessar" onClick={this.goTo('categories')}>Acessar</Button>
+                                    <Button color="default" fullWidth={true}
+                                        text="Acessar"
+                                        onClick={() => this.goTo('categories')}
+                                    />
                                 </Grid>
                             </Paper>
                         </Box>

@@ -1,25 +1,24 @@
 import React, { Component } from 'react'
-import {Container, Paper, Grid, TextField,
-        CircularProgress, FormControl, InputLabel} from '@material-ui/core'
-import {Clear} from '@material-ui/icons'
+import { Container, Paper, Grid, TextField,
+        CircularProgress, FormControl, InputLabel , Icon} from '@material-ui/core'
+import { Redirect } from 'react-router-dom'
 import PasswordField from 'material-ui-password-field'
-import {ToastContainer, toast} from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 
-import Logo from '../assets/estudante_ti1.png'
-import CustomButton from '../components/Button.jsx'
-import './Auth.css'
-import './defaultPage.css'
+import ButtonBase from '../components/ButtonBase.jsx'
 
-//Redux
-import {setUser} from '../redux/userActions'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
+import { setUser } from '../redux/userActions'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 import axios from 'axios'
-import {backendUrl} from '../config/backend'
+import { backendUrl, defineErrorMsg } from '../config/backend'
 
-import {Redirect} from 'react-router-dom'
 
+import Logo from '../assets/estudante_ti1.png'
+
+import './css/Auth.css'
+import './defaultPage.css'
 
 class Auth extends Component {
     props = this.props
@@ -29,10 +28,17 @@ class Auth extends Component {
         password: '',
         rescuePassword: false,
         loading: false,
-        accessGranted: false
+        redirect: false,
     }
 
-    signIn = () => async event => {
+    signIn = async (event) => {
+        /* Resposável por realizar a autenticação */
+
+        event.preventDefault()
+
+        // Caso ja esteja carregando não será possível mandar nova autenticação 
+        if(this.state.loading) return
+
         const user = {
             email: this.state.email,
             password: this.state.password
@@ -48,57 +54,74 @@ class Auth extends Component {
             localStorage.setItem('user', JSON.stringify(res.data))
             
             await this.setState({
-                accessGranted: true
+                redirect: true,
+                loading: false
             })
-        }).catch(error => {
-            toast.error((<div className="centerVertical"><Clear className="marginRight"></Clear>{error.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'}</div>), {autoClose: 3000, closeOnClick: true})
+            
+        }).catch(async error => {
+            const msg = await defineErrorMsg(error)
+            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+            this.setState({loading: false})
         })
-
-        this.setState({loading: false})
+        
     }
 
-    handleChange = attr => async event => {
+    handleChange = attr => event => {
         const value = event.target.value
-        await this.setState({
+        this.setState({
             [attr]: value
         })
+    }
+    
+    verifyUser = async () => {
+        /*  Verifica se existe um usuário logado, e assim redireciona a pagina
+        em caso de detecção de autenticação ativa 
+        */
+        const user = await localStorage.getItem('user')
+        if(user) this.setState({redirect: true}) 
+    }
+    
+    componentDidMount(){
+        this.verifyUser()
     }
 
     render() { 
         return (
             <Container className="container">
                 <ToastContainer/>
-                {this.state.accessGranted && <Redirect to="/stats"/>}
                 <Paper className="modal">
                     <Grid item xs={12} className="modalTitle">
                         <img src={Logo} alt="Logo" width="180"/>
                     </Grid>
-                    <Grid item xs={12} className="modalForm">
-                        <form>
-                        <TextField label="E-mail" className="modalFormInput" fullWidth onChange={this.handleChange('email')} inputProps={{
-                                autoComplete: 'username'
-                            }}/>
-                        <FormControl fullWidth>
-                            <InputLabel htmlFor="password">Senha</InputLabel>
-                            <PasswordField id="password" inputProps={{
-                                autoComplete: 'current-password'
-                            }} fullWidth onChange={this.handleChange('password')}/>
-                        </FormControl>
-                        </form>
-                        <small className="fakeLink">Esqueceu seu e-mail/senha?</small>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <CustomButton color="default" fullWidth={true} disableIcon={true} text={this.state.loading ? <span className="centerInline"><CircularProgress size={20} color="inherit" /><span className="marginLeft">Entrando...</span></span> : 'Entrar'} onClick={this.signIn()}/>
-                    </Grid>
+                    <form onSubmit={this.signIn}>
+                        <Grid item xs={12} className="modalForm">
+                                <TextField label="E-mail" className="modalFormInput"
+                                    fullWidth onChange={this.handleChange('email')} 
+                                    inputProps={{ autoComplete: 'username' }}
+                                />
+                                <FormControl fullWidth>
+                                    <InputLabel htmlFor="password">Senha</InputLabel>
+                                    <PasswordField id="password" 
+                                        inputProps={{ autoComplete: 'current-password' }} 
+                                        fullWidth onChange={this.handleChange('password')}
+                                    />
+                                </FormControl>
+                            <small className="fakeLink">Esqueceu seu e-mail/senha?</small>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ButtonBase class="defaultMaxWidth" type="submit" disableIcon={true} text={this.state.loading ? <span className="centerInline"><CircularProgress size={20} color="inherit" /><span className="marginLeft">Entrando...</span></span> : 'Entrar'}/>
+                        </Grid>
+                    </form>
                 </Paper>
+                {this.state.redirect &&
+                    <Redirect to="/stats"/>
+                }
             </Container>
         )
     }
 }
 
-const mapStateToProps = state => {
-    return ({user: state.user})
-}
+const mapStateToProps = state => ({user: state.user})
 const mapDispatchToProps = dispatch => bindActionCreators({setUser}, dispatch)
 
 

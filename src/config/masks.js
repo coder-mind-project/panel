@@ -20,5 +20,20 @@ export const celphoneMask = (elem) => {
     return elem
 }
 
+export const formatCustomURL = (url) => {
+    url = url.split(' ').join('-')
+    url = url.toLowerCase()
+    return url
+}
+
+export const displayDate = (date) => {
+    if(typeof date === 'string'){
+        const aux = date.split('T')
+        const aux2 = aux[0].split('-')
+        return `${aux2[2]}/${aux2[1]}/${aux2[0]}`
+    }else{
+        return date
+    }
+}
 
 export default {cpfMask, telphoneMask, celphoneMask}
