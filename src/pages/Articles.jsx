@@ -1,34 +1,22 @@
-import React, {Component} from 'react'
-import {Link, Redirect} from 'react-router-dom'
-import './defaultPage.css'
-import axios from 'axios'
-import {Container, Grid, CircularProgress, Select,
-    Input, FormControl, InputLabel, MenuItem, Icon, Fab,
-    useScrollTrigger, Slide, Box} from '@material-ui/core'
+import React, { Component } from 'react'
+import { Link, Redirect } from 'react-router-dom'
 
-import SearchBar from 'material-ui-search-bar'
+import { Container, Grid, CircularProgress, Select,
+    Input, FormControl, InputLabel, MenuItem, Box } from '@material-ui/core'
+    import SearchBar from 'material-ui-search-bar'
+
 import CustomButton from '../components/Button.jsx'
 import Header from '../components/Header.jsx'
 import ArticleBlock from '../components/ArticleBlock.jsx'
+import FloatingButton from '../components/FloatingButton'
 
-import {backendUrl} from '../config/backend'
+import axios from 'axios'
+import { backendUrl } from '../config/backend'
+import { OPTIONS_LIMIT , DEFAULT_LIMIT } from '../config/dataProperties'
 
-import {ToastContainer} from 'react-toastify'
-
-const FloatingButton = (props) => {
-
-    const {window, go} = props
-
-    const trigger = useScrollTrigger({target: window ? window() : undefined, disableHysteresis: true})
+import { ToastContainer } from 'react-toastify'
     
-    return trigger ? (
-        <Slide direction="up" in={true} mountOnEnter unmountOnExit>
-            <Fab className="floatingButton defaultButtonColor" onClick={go}>
-                <Icon>add</Icon>
-            </Fab>
-        </Slide>
-    ) : null
-}
+import './css/defaultPage.css'
 
 export default class Articles extends Component {
     
@@ -38,13 +26,14 @@ export default class Articles extends Component {
         articles: [],
         query: '',
         page: 1,
-        limit: 10,
+        limit: DEFAULT_LIMIT,
         count: 0, 
         redirectTo: ''
     }
 
     
     async changeQueryValue(query){
+        /* Realiza a busca de artigo por palavra chave */
         await this.setState({
             query,
             page: 1
@@ -53,6 +42,8 @@ export default class Articles extends Component {
     }
     
     async searchArticles(){
+        /* Responsável por realizar a busca de artigos */
+        
         const url = `${backendUrl}/articles?query=${this.state.query}&page=${this.state.page}&limit=${this.state.limit}`
         if(this.state.articles.length > 0) this.setState({articles: []})
         if(!this.state.loading) this.setState({loading: true})
@@ -80,15 +71,12 @@ export default class Articles extends Component {
     }
 
 
-    componentDidMount(){
-        this.searchArticles()
-    }
-
     goTo = path => event => {
         this.setState({redirectTo: path})
     }
 
     changePage = action => async event => {
+        /* Responsável por alterar a página de visualização de artigos */
         
         if(action !== 'next' && action !== 'back') return
         
@@ -99,13 +87,22 @@ export default class Articles extends Component {
 
         this.searchArticles()
     }
+
+    componentDidMount(){
+        this.searchArticles()
+    }
     
     render (){
         return (
             <Container>
-                <Header title="Artigos" description="Consulte, altere e crie novos artigos" icon="description"/>
+                <Header title="Artigos" 
+                    description="Consulte, altere e crie novos artigos" 
+                    icon="description"
+                />
                 <ToastContainer/>
-                {this.state.redirectTo && <Redirect to={`/${this.state.redirectTo}`} />}
+                {this.state.redirectTo && 
+                    <Redirect to={`/${this.state.redirectTo}`} />
+                }
                 <Container className="hudBar">
                     <Grid item className="hudBarChild">
                         <Link to="/article" className="linkRouter linkButton"><CustomButton text="Novo artigo" icon="add_circle_outline" color="default" /></Link>
@@ -113,37 +110,86 @@ export default class Articles extends Component {
                     <Grid item className="hudBarChild">
                         <FormControl className="limitInput">
                             <InputLabel htmlFor="limit">Limite</InputLabel>
-                            <Select input={<Input name="limit" id="limit"></Input>} value={this.state.limit} onChange={this.handleChange('limit')}>
-                                <MenuItem value={10}>10</MenuItem>
-                                <MenuItem value={25}>25</MenuItem>
-                                <MenuItem value={50}>50</MenuItem>
+                            <Select input={<Input name="limit" id="limit"></Input>} 
+                                value={this.state.limit}
+                                onChange={this.handleChange('limit')}
+                            >
+                            {OPTIONS_LIMIT.map(option => {
+                                return <MenuItem value={option} key={option}>{option}</MenuItem>
+                            })}
                             </Select>
                         </FormControl>
-                        <SearchBar id="search_field" className="searchTextField" placeholder="Pesquisar" value={this.state.query} onChange={(query) => this.changeQueryValue(query)} onCancelSearch={() => this.changeQueryValue('')} />
+                        <SearchBar id="search_field" className="searchTextField"
+                            placeholder="Pesquisar" value={this.state.query}
+                            onChange={(query) => this.changeQueryValue(query)}
+                            onCancelSearch={() => this.changeQueryValue('')}
+                        />
                     </Grid>
                 </Container>
                 <Container>
-                    <FloatingButton go={this.goTo('article')}/>
-                    {this.state.loading && <Container className="center spinnerContainer"><CircularProgress /><p>Procurando artigos...</p></Container>}
-                    {!this.state.loading && this.state.articles.length > 0 && this.state.articles.map((article, key) => <ArticleBlock article={article} key={article._id} />)}
-                    {!this.state.loading && this.state.articles.length === 0 && <Container className='center'><p>Nenhum artigo encontrado</p></Container>}
-                    {this.state.error && <Container className="center"><p className="defaultFontColor">Ocorreu um erro ao obter a informação com a base de dados</p></Container>}
+                    <FloatingButton icon="add" action={this.goTo('article')} />
+                    {this.state.loading && 
+                        <Container className="center spinnerContainer">
+                            <CircularProgress />
+                            <p>
+                                Procurando artigos...
+                            </p>
+                        </Container>
+                    }
+                    {!this.state.loading && this.state.articles.length > 0 && 
+                        this.state.articles.map((article, key) => 
+                            <ArticleBlock article={article} key={article._id} />)
+                    }
+                    {!this.state.loading && this.state.articles.length === 0 &&
+                        <Container className='center'>
+                            <p>
+                                Nenhum artigo encontrado
+                            </p>
+                        </Container>
+                    }
+                    {this.state.error &&
+                        <Container className="center">
+                            <p className="defaultFontColor">
+                                Ocorreu um erro ao obter a informação com a base de dados
+                            </p>
+                        </Container>
+                    }
                 </Container>
-                {!this.state.loading && <Container className="footList">
-                    <Box mt={1}>
-                        <span className="defaultFontColor marginRight">Artigos: {this.state.count}</span>
-                        <span className="defaultFontColor marginRight">|</span>
-                        <span className="defaultFontColor marginRight">Página: {this.state.page}</span>
-                    </Box>
-                    <Box display="flex" flexWrap="wrap" mt={1}>
-                        {this.state.page > 1 && <Box mr={1} mb={1}>
-                            <CustomButton color="defaultOutlined" icon="arrow_back" text="Anterior" className="buttonFootList" onClick={this.changePage('back')}/>
-                        </Box>}
-                        {this.state.articles.length > 0 && <Box mr={1} mb={1}>
-                            <CustomButton color="defaultOutlined" icon="arrow_forward" text="Próxima" className="buttonFootList" onClick={this.changePage('next')} />
-                        </Box>}
-                    </Box>
-                </Container>}
+                {!this.state.loading &&
+                    <Container className="footList">
+                        <Box mt={1}>
+                            <span className="defaultFontColor marginRight">
+                                Artigos: {this.state.count}
+                            </span>
+                            <span className="defaultFontColor marginRight">
+                                |
+                            </span>
+                            <span className="defaultFontColor marginRight">
+                                Página: {this.state.page}
+                            </span>
+                        </Box>
+                        <Box display="flex" flexWrap="wrap" mt={1}>
+                            {this.state.page > 1 &&
+                                <Box mr={1} mb={1}>
+                                    <CustomButton color="defaultOutlined" 
+                                        icon="arrow_back" text="Anterior"
+                                        className="buttonFootList"
+                                        onClick={this.changePage('back')}
+                                    />
+                                </Box>
+                            }
+                            {this.state.articles.length > 0 && 
+                                <Box mr={1} mb={1}>
+                                    <CustomButton color="defaultOutlined"
+                                        icon="arrow_forward" text="Próxima"
+                                        className="buttonFootList"
+                                        onClick={this.changePage('next')}
+                                    />
+                                </Box>
+                            }
+                        </Box>
+                    </Container>
+                }
             </Container>        
         )
     }

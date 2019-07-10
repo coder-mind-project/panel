@@ -1,43 +1,62 @@
-import React, {Component} from 'react'
-import {Redirect, Link} from 'react-router-dom'
-import {Container, Grid, TextField, Divider,
-        Paper, FormGroup, InputLabel, Icon, Breadcrumbs, Box} from '@material-ui/core'
-import {Done, Clear} from '@material-ui/icons'
-import CustomButton from '../components/Button.jsx'
-import Header from '../components/Header'
-import './defaultPage.css'
-import './forms.css'
-import {ToastContainer, toast} from 'react-toastify'
+import React, { Component } from 'react'
+import { Redirect, Link } from 'react-router-dom'
 
-import axios from 'axios'
-import {backendUrl} from '../config/backend'
+import { Container, Grid, TextField, Divider,
+        Paper, FormGroup, InputLabel, Icon, Breadcrumbs,
+        Box } from '@material-ui/core'
 
+import { ToastContainer, toast } from 'react-toastify'
 import AsyncSelect from 'react-select/async'
 
+import axios from 'axios'
+import { backendUrl, defineErrorMsg } from '../config/backend'
+
+import CustomButton from '../components/Button.jsx'
+import Header from '../components/Header'
+
+import './css/defaultPage.css'
+import './css/forms.css'
 
 
 export default class User extends Component{
 
     state = {
-        _id: null,
-        name: '',
-        alias: '',
-        description: '',
-        state: true,
+        category: {
+            _id: null,
+            name: '',
+            alias: '',
+            description: '',
+        },
         redirectTo: '',
         themeSelected: null,
     }
 
     handleChange = attr => event => {
         const value = event.target.value
-        this.setState({[attr]: value})
+        this.setState({category: {
+            ...this.state.category,
+            [attr]: value
+        }})
     }
 
     handleChangeSelect = value => {
+        /* 
+            Usado para definir o valor do tema
+        */
+
         this.setState({themeSelected: value || null})
     }
 
     getThemes = value => {
+        /*  Responsável por realizar a busca dos temas conforme a palavra
+            chave digitada pelo usuário.
+            A busca será somente realizada após o terceiro digito
+            
+            A propriedade loadOptions do AsyncSelect recebe uma promise.
+            Assim foi adotado este tipo de retorno para verificar a quantidade
+            caracteres digitados
+        */
+    
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve(value.length >= 3 ? this.loadThemes(value) : [])
@@ -46,6 +65,10 @@ export default class User extends Component{
     }
     
     loadThemes = async (query) => {
+        /* 
+            Responsável por buscar o tema pela palavra chave
+        */
+
         const url = `${backendUrl}/themes?query=${query}`
         const response = await axios(url)
         let themes = response.data.themes.map((theme, index) => {
@@ -61,13 +84,19 @@ export default class User extends Component{
 
     formatData = () => {
         
+        /* Formata a categoria de acordo com o registro na base de dados */
+
         const category = {
-            _id: this.state._id, 
-            name: this.state.name,
-            alias: this.state.alias,
-            description: this.state.description,
+            _id: this.state.category._id, 
+            name: this.state.category.name,
+            alias: this.state.category.alias,
+            description: this.state.category.description,
             theme: this.state.themeSelected
         }
+
+        /*  Remoção dos campos label e value que são usados
+            por causa do AsyncSelect/Select
+        */
 
         if(category.theme){
             delete category.theme.label
@@ -79,15 +108,18 @@ export default class User extends Component{
     }
 
     save = async() =>{
+    /* Responsável por persistir a categoria */
+
         const theme = await this.formatData()
         const url = `${backendUrl}/categories`
         axios.post(url, theme).then(() => {
-            toast.success((<div className="centerInline"><Done className="marginRight"></Done>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
+            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
             setTimeout(() => {
                 this.goTo('categories')
             }, 2000)
-        }).catch(error => {
-            toast.error((<div className="centerInline"><Clear className="marginRight"></Clear>{error.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'}</div>), {autoClose: 2000, closeOnClick: true})
+        }).catch(async error => {
+            const msg = await defineErrorMsg(error)
+            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 2000, closeOnClick: true})
         })
     }
 
@@ -95,60 +127,120 @@ export default class User extends Component{
         this.setState({redirectTo: path})
     }
 
-    async componentDidMount(){
-        if(!this.props.match.params.id) return
-        const id = this.props.match.params.id
+    async getCategory(id){
+        /* Realiza a busca da categoria para permitir a edição / visualização */
+        
         const url = `${backendUrl}/category/${id}`
         axios(url).then(res => {
             this.setState({
-                _id: res.data._id,
-                name: res.data.name,
-                alias: res.data.alias || '',
+                category: {
+                    _id: res.data._id,
+                    name: res.data.name,
+                    alias: res.data.alias || '',
+                    description: res.data.description || '',
+                },
                 themeSelected: res.data.theme ? {
                     ...res.data.theme,
                     value: res.data.theme._id,
                     label: res.data.theme.name
                 } : null,
-                description: res.data.description || '',
             })
         })
+    }
+
+    async componentDidMount(){
+        if(!this.props.match.params.id) return
+        const id = this.props.match.params.id
+        this.getCategory(id)
     }
 
     render(){
         return(
             <Container>
-                <Header title="Categoria" description="Consulte, altere, crie e remova categorias do sistema" icon="category"/>
+                <Header title="Categoria" 
+                    description="Consulte, altere, crie e remova categorias do sistema"
+                    icon="category"
+                />
                 <Box mb={1}>
                     <Breadcrumbs separator={<Icon>navigate_next_icon</Icon>}>
-                        <Link to="/management" className="defaultFontColor">Configurações</Link>
-                        <Link to="/categories" className="defaultFontColor">Categorias</Link>
-                        <span>{this.state._id ? 'Editar categoria' : 'Criar categoria'}</span>
+                        <Link to="/management" className="defaultFontColor">
+                            Configurações
+                        </Link>
+                        <Link to="/categories" className="defaultFontColor">
+                            Categorias
+                        </Link>
+                        <span>
+                            {this.state.category._id ? 'Editar categoria' : 'Criar categoria'}
+                        </span>
                     </Breadcrumbs>
                 </Box>
                 <Paper className="form">
-                    {this.state.redirectTo && <Redirect to={`/${this.state.redirectTo}`} />}
+                    {this.state.redirectTo && 
+                        <Redirect to={`/${this.state.redirectTo}`} />
+                    }
                     <ToastContainer />
                     <Grid container>
                         <Grid item xs={12} md={6} className="formGroup">
-                            <TextField label="Categoria *" error={Boolean(this.state.name.length >= 30)} helperText={this.state.name.length >= 30 ? "Máximo permitido 30 caracteres" : ''} fullWidth className="formInput" value={this.state.name} onChange={this.handleChange('name')}></TextField>
+                            <TextField label="Categoria *" 
+                                error={Boolean(this.state.category.name.length >= 30)}
+                                helperText={this.state.category.name.length >= 30 ? "Máximo permitido 30 caracteres" : ''} 
+                                fullWidth className="formInput"
+                                value={this.state.category.name} 
+                                onChange={this.handleChange('name')} 
+                            />
                         </Grid>
                         <Grid item xs={12} md={6} className="formGroup">
-                            <TextField label="Apelido" error={Boolean(this.state.alias && this.state.alias.length >= 30)} helperText={this.state.alias && this.state.alias.length >= 30 ? "Máximo permitido 30 caracteres" : 'Informe um possível apelido para o tema, isto ajuda o sistema a encontrar este tema em pesquisas'} className="formInput" value={this.state.alias} fullWidth onChange={this.handleChange('alias')}></TextField>
+                            <TextField label="Apelido" 
+                                error={Boolean(this.state.category.alias && this.state.category.alias.length >= 30)} 
+                                helperText={this.state.category.alias && this.state.category.alias.length >= 30 ? 
+                                    "Máximo permitido 30 caracteres" :
+                                    'Informe um possível apelido para o tema, isto ajuda o sistema a encontrar este tema em pesquisas'}
+                                className="formInput" value={this.state.category.alias} 
+                                fullWidth 
+                                onChange={this.handleChange('alias')} 
+                            />
                         </Grid>
                         <Grid item xs={12} className="formGroup">
                             <FormGroup>
-                                <InputLabel className="margin_bottom_x1">Tema *</InputLabel>
-                                <AsyncSelect cacheOptions value={this.state.themeSelected} isClearable loadOptions={this.getThemes} onChange={(value) => this.handleChangeSelect(value)} noOptionsMessage={(event) => event.inputValue.length >= 3 ? 'Nenhum resultado encontrado' : 'Faça uma busca com pelo menos 3 caracteres'} loadingMessage={() => "Carregando..."} placeholder="Informe o tema desta categoria" />
+                                <InputLabel className="margin_bottom_x1">
+                                        Tema *
+                                </InputLabel>
+                                <AsyncSelect cacheOptions 
+                                    value={this.state.themeSelected} 
+                                    isClearable loadOptions={this.getThemes}
+                                    onChange={(value) => this.handleChangeSelect(value)}
+                                    noOptionsMessage={(event) => event.inputValue.length >= 3 ?
+                                        'Nenhum resultado encontrado' :
+                                        'Faça uma busca com pelo menos 3 caracteres'}
+                                    loadingMessage={() => "Carregando..."}
+                                    placeholder="Informe o tema desta categoria" 
+                                />
                             </FormGroup>
                         </Grid>
                         <Grid item xs={12} className="formGroup">
-                            <TextField label="Descrição" error={Boolean(this.state.description && this.state.description.length >= 100)} helperText={this.state.description && this.state.description.length >= 100 ? "Máximo permitido 100 caracteres" : 'Descreva do que se trata este tema. (Campo opcional)'} className="formInput" fullWidth value={this.state.description} onChange={this.handleChange('description')}></TextField>
+                            <TextField label="Descrição" 
+                                error={Boolean(this.state.category.description && this.state.category.description.length >= 100)}
+                                helperText={this.state.category.description && this.state.category.description.length >= 100 ?
+                                "Máximo permitido 100 caracteres" :
+                                'Descreva do que se trata este tema. (Campo opcional)'}
+                                className="formInput"
+                                fullWidth value={this.state.category.description} 
+                                onChange={this.handleChange('description')}
+                            />
                         </Grid>
                     </Grid>
-                    <Grid item xs={12}><Divider className="separator"/></Grid>
+                    <Grid item xs={12}>
+                        <Divider className="separator"/>
+                    </Grid>
                     <Grid item xs={12} className="footList">
-                        <CustomButton className="buttonFootList" text="Voltar" color="gray" icon="logout" onClick={() => this.goTo('categories')} />
-                        <CustomButton className="buttonFootList" text="Salvar" color="success" icon="done" onClick={this.save} />
+                        <CustomButton className="buttonFootList"
+                            text="Voltar" color="gray" icon="logout"
+                            onClick={() => this.goTo('categories')} 
+                        />
+                        <CustomButton className="buttonFootList"
+                            text="Salvar" color="success" icon="done"
+                            onClick={this.save}
+                        />
                     </Grid>
                 </Paper>
             </Container>

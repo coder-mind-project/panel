@@ -1,0 +1,38 @@
+.previewArticle{
+    margin-top: 15px !important;
+}
+
+.headerinfos{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+}
+
+.ql-editor .ql-syntax{
+    background-color: #23241f;
+    color: #f8f8f2;
+    overflow-x: visible;
+    overflow-y: visible;
+}
+
+.article_content, .ql-editor{
+    padding: 15px;
+    font-family: 'Ubuntu', sans-serif !important;
+
+}
+
+.article_big_image{
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+@media(max-width: 850px){
+    .ql-editor img{
+        width: 100%;
+    }
+}
+
+
+

@@ -1,0 +1,35 @@
+.modal_error{
+    min-height: 100vh !important;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+
+.modal_error_content{
+    width: 350px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.modal_error_logo{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.modal_error_img{
+    height: 175px;    
+}
+
+.modal_error_msg{
+    text-align: justify;
+    width: 70%;
+    
+}

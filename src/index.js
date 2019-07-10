@@ -1,16 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-//Redux
+import App from './App'
+
+//Redux imports
 import {createStore, combineReducers} from 'redux'
 import {Provider} from 'react-redux'
 import userReducer from './redux/userReducer'
+import errorReducer from './redux/errorReducer'
 
+import './index.css'
 
 const reducers = combineReducers({
-    user: userReducer
+    user: userReducer,
+    error: errorReducer,
 })
 
 
