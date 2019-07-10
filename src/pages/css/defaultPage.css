@@ -1,0 +1,189 @@
+.center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.centerInline{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.betweenInline{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.centerVertical{
+    display: flex !important;
+    align-items: center !important;
+}
+
+.flex{
+    display: flex !important;
+}
+
+.spinnerContainer{
+    min-height: 150px;
+}
+
+.hudBar{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.hudBarChild{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+.linkRouter, .linkRouter:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+.footList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 25px;
+}
+
+.buttonFootList{
+    margin-top: 8px !important;
+    margin-right: 4px !important;
+    margin-left: 4px !important;
+}
+
+.buttonIcon {
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.marginRight {
+    margin-right: 8px !important;
+}
+
+.marginLeft {
+    margin-left: 10px !important;
+}
+
+.marginNone {
+    margin: 0 !important;
+}
+
+.margin_bottom_x1{
+    margin-bottom: 5px;
+}
+
+.defaultFontColor {
+    color: rgba(0, 0, 0, .54)
+}
+
+.defaultButtonColor {
+    background-color: rgb(17,125,187) !important;
+    color: #fff !important;
+}
+
+.defaultButtonColor:hover{
+    background-color: rgb(10,115,160) !important;
+}
+
+.textColor {
+    color: rgba(65, 65, 65, 1)
+}
+
+.wrapper {
+    overflow-x: auto;
+}
+
+.defaultTable {
+    min-width: 500px;
+}
+
+.fullWidth{
+    width: 100%;
+}
+
+.blockOption {
+    min-height: 225px;
+    padding: 15px;
+}
+
+.blockOption > .description{
+    min-height: 125px;
+    margin-top: 15px;
+}
+
+.floatingButton{
+    position: fixed !important;
+    z-index: 1;
+    left: 90%;
+    top: 80%;
+    overflow: hidden;
+}
+
+.limitInput{
+    margin-right: 20px !important;
+}
+
+
+@media(max-width: 690px){
+    .hudBar{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hudBar > button, .buttonFootList{
+        width: 100% !important;
+    }
+    
+    .hudBarChild{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 100% !important;
+        margin-bottom: 25px !important;
+    }
+
+    .searchTextField{
+        width: 100% !important;
+    }
+
+    .footList {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 25px;
+    }
+
+    .linkButton {
+        width: 100%;
+    }
+
+    .limitInput{
+        margin-bottom: 20px !important;
+        width: 100%;
+        margin-right: 0 !important;
+    }
+
+    .floatingButton{
+        top: 80%;
+        left: 80%;
+    }
+}
+

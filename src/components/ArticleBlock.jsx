@@ -17,7 +17,9 @@ import CustomButton from './Button.jsx'
 import CustomChip from './Chip.jsx'
 
 import LogoDefault from '../assets/HPArticleThumb.png'
+
 import '../pages/css/defaultPage.css'
+
 
 const useStyles = makeStyles(styles)
 

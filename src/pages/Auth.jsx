@@ -14,11 +14,11 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../config/backend'
 
-
 import Logo from '../assets/estudante_ti1.png'
 
 import './css/Auth.css'
 import './css/defaultPage.css'
+
 
 class Auth extends Component {
     props = this.props
