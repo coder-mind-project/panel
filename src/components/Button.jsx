@@ -20,7 +20,7 @@ export default (props) => {
         fullWidth: Boolean - Define se terá tamanho máximo. Referente ao componente pai
             <[true, false]> : false
         variant: String - Modelo de variant para ser usado, assim como no material UI
-            <['small', 'medium', 'large']> : false
+            <['text', 'outlined', 'contained']> : 'contained'
         onClick: Function - Ação realizada ao clicar no botão
             <[]> : undefined
         disabledIcon: Boolean - Flag para habilitar ou desabilitar o ícone

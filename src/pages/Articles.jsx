@@ -7,7 +7,7 @@ import { Container, Grid, CircularProgress, Select,
 
 import CustomButton from '../components/Button.jsx'
 import Header from '../components/Header.jsx'
-import ArticleBlock from '../components/ArticleBlock.jsx'
+import ArticleBlock from '../components/Articles/ArticleBlock.jsx'
 import FloatingButton from '../components/FloatingButton'
 
 import axios from 'axios'
@@ -43,8 +43,8 @@ export default class Articles extends Component {
     
     async searchArticles(){
         /* Responsável por realizar a busca de artigos */
-        
-        const url = `${backendUrl}/articles?query=${this.state.query}&page=${this.state.page}&limit=${this.state.limit}`
+
+        const url = `${backendUrl}/articles?query=${this.state.query}&page=${this.state.page}&limit=${this.state.limit}&op=all`
         if(this.state.articles.length > 0) this.setState({articles: []})
         if(!this.state.loading) this.setState({loading: true})
         await axios(url).then(async res => {

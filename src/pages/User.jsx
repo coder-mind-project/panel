@@ -100,8 +100,10 @@ export default class User extends Component{
         /* Responsável por persistir o usuario */
 
         const user = await this.formatData()
-        const url = `${backendUrl}/users`
-        axios.post(url, user).then(() => {
+        const method = user._id ? 'put' : 'post'
+        const url =  method === 'post' ? `${backendUrl}/users` : `${backendUrl}/users/${user._id}`
+
+        axios[method](url, user).then(() => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Informações salvas com sucesso</div>), {autoClose: 3000, closeOnClick: true})
             setTimeout(() => {
                 this.goTo("users")
@@ -130,7 +132,7 @@ export default class User extends Component{
             password: this.state.user.password
         }
 
-        await axios.put(url, payload).then( () => {
+        await axios.patch(url, payload).then( () => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Senha alterada com sucesso!</div>), {autoClose: 3000, closeOnClick: true})
             this.setState({openDialog: false})
         }).catch(async error => {
@@ -152,7 +154,7 @@ export default class User extends Component{
     getUser = (id) => {
         /* Realiza a busca do usuário para permitir a edição / visualização */
         
-        const url = `${backendUrl}/user/${id}`
+        const url = `${backendUrl}/users/${id}`
         axios(url).then(res => {
             this.setState({ user: {
                 ...res.data,

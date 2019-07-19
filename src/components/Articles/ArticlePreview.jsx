@@ -6,13 +6,13 @@ import axios from 'axios'
 import Avatar from 'react-avatar'
 import ReactQuill from 'react-quill'
 
-import { backendUrl, defineErrorMsg } from '../config/backend'
-import { displayDate } from '../config/masks'
+import { backendUrl, defineErrorMsg } from '../../config/backend'
+import { displayDate } from '../../config/masks'
 
 import { Grid, Icon, Box, Typography, Container,
     CircularProgress, Divider } from '@material-ui/core'
     
-import DefaultBigImg from '../assets/img_not_found_1080.png'
+import DefaultBigImg from '../../assets/img_not_found_1080.png'
 
 import './css/ArticlePreview.css'
 
@@ -39,7 +39,7 @@ class ArticlePreview extends Component {
             loading: false
         })
         
-        const url = `${backendUrl}/article/${id}`
+        const url = `${backendUrl}/articles/management/${id}`
 
         axios(url).then(res => {
             this.setState({article: res.data})
@@ -73,7 +73,7 @@ class ArticlePreview extends Component {
                         </Grid>
                         <Grid item xs={12} className="headerinfos">
                             <Box display="flex" alignItems="center" mb={1}>
-                                <Avatar githubHandle="allanalves23" size={40} round="20px" />
+                                <Avatar src={`${backendUrl}/${this.props.user.profilePhoto}`} size={40} round="20px" />
                                 <Box ml={1}>
                                     <small>
                                         {this.state.article.author ? this.state.article.author.name : this.props.user.name }
@@ -83,7 +83,7 @@ class ArticlePreview extends Component {
                             <Box display="flex" alignItems="center" mb={1}>
                                 <Box mr={1}>
                                     <small>
-                                        Criado em: { this.state.article.createdAt ? displayDate(this.state.article.createdAt) : `Em produção...`}
+                                        Publicado em: { this.state.article.publishAt ? displayDate(this.state.article.createdAt) : `Não publicado`}
                                     </small>
                                 </Box>
                             </Box>

@@ -110,9 +110,12 @@ export default class User extends Component{
     save = async() =>{
     /* Responsável por persistir a categoria */
 
-        const theme = await this.formatData()
-        const url = `${backendUrl}/categories`
-        axios.post(url, theme).then(() => {
+        const category = await this.formatData()
+        const method = category._id ? 'put' : 'post'
+        const url = method === 'post' ? `${backendUrl}/categories` : `${backendUrl}/categories/${category._id}`
+
+
+        axios[method](url, category).then(() => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
             setTimeout(() => {
                 this.goTo('categories')
@@ -130,7 +133,7 @@ export default class User extends Component{
     async getCategory(id){
         /* Realiza a busca da categoria para permitir a edição / visualização */
         
-        const url = `${backendUrl}/category/${id}`
+        const url = `${backendUrl}/categories/${id}`
         axios(url).then(res => {
             this.setState({
                 category: {
@@ -161,17 +164,17 @@ export default class User extends Component{
                     description="Consulte, altere, crie e remova categorias do sistema"
                     icon="category"
                 />
-                <Box mb={1}>
+                <Box mb={3}>
                     <Breadcrumbs separator={<Icon>navigate_next_icon</Icon>}>
                         <Link to="/management" className="defaultFontColor">
-                            Configurações
+                            <strong>Configurações</strong>
                         </Link>
                         <Link to="/categories" className="defaultFontColor">
-                            Categorias
+                            <strong>Categorias</strong>
                         </Link>
-                        <span>
+                        <strong>
                             {this.state.category._id ? 'Editar categoria' : 'Criar categoria'}
-                        </span>
+                        </strong>
                     </Breadcrumbs>
                 </Box>
                 <Paper className="form">

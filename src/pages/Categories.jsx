@@ -68,13 +68,13 @@ class Categories extends Component {
 
         this.setState({loadingOp: true})
         const id = this.state.categorySelected._id
-        const url = `${backendUrl}/category/${id}`
+        const url = `${backendUrl}/categories/${id}`
 
         await axios.delete(url).then(() => {
-            toast.success((<div className="centerVertical"><Icon>done</Icon><span>Operação realizada com sucesso</span></div>), {autoClose: 3000, closeOnClick: true})
+            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon><span>Operação realizada com sucesso</span></div>), {autoClose: 3000, closeOnClick: true})
         }).catch( async error => {
             const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon>clear</Icon><span>{msg}</span></div>), {autoClose: 3000, closeOnClick: true})
+            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon><span>{msg}</span></div>), {autoClose: 3000, closeOnClick: true})
         })
         this.setState({loadingOp: false, dialog: false})
         this.searchCategories()
@@ -185,7 +185,7 @@ class Categories extends Component {
                                     <TableRow>
                                         <TableCell>
                                             <span className="centerVertical">
-                                                <Icon fontSize="small">
+                                                <Icon fontSize="small" className="marginRight">
                                                     category
                                                 </Icon>
                                                 Categoria
@@ -193,7 +193,7 @@ class Categories extends Component {
                                         </TableCell>
                                         <TableCell>
                                             <span className="centerVertical">
-                                                <Icon fontSize="small">
+                                                <Icon fontSize="small" className="marginRight">
                                                     bookmark_border
                                                 </Icon>
                                                 Alias
@@ -201,7 +201,7 @@ class Categories extends Component {
                                         </TableCell>
                                         <TableCell>
                                             <span className="centerVertical">
-                                                <Icon fontSize="small">
+                                                <Icon fontSize="small" className="marginRight">
                                                     bookmark
                                                 </Icon>
                                                 Tema
@@ -209,7 +209,7 @@ class Categories extends Component {
                                         </TableCell>
                                         <TableCell>
                                             <span className="centerVertical">
-                                                <Icon fontSize="small">
+                                                <Icon fontSize="small" className="marginRight">
                                                     build
                                                 </Icon>
                                                 Ações

@@ -5,10 +5,10 @@ import { Grid, Container, Button, TableHead, TableRow,
     TableCell, Table, TableBody, TableFooter, TablePagination,
     Dialog, DialogTitle, DialogContent, DialogContentText,
     DialogActions, CircularProgress, Paper, Icon } from '@material-ui/core'
-import { Done, Clear } from '@material-ui/icons'
 import SearchBar from 'material-ui-search-bar'
 
 import { ToastContainer, toast } from 'react-toastify'
+import { connect } from 'react-redux'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../config/backend'
@@ -22,7 +22,7 @@ import Header from '../components/Header'
 import './css/defaultPage.css'
 import './css/Users.css'
 
-export default class Users extends Component {
+class Users extends Component {
     
     state = {
         users: [],
@@ -79,7 +79,7 @@ export default class Users extends Component {
     async remove(user){
         /* Responsável por realizar a exclusão de usuarios */
 
-        const url = `${backendUrl}/user/${user._id}`
+        const url = `${backendUrl}/users/${user._id}`
         this.setState({loadingOp: true})
         await axios.delete(url).then(() => {
             this.setState({
@@ -89,7 +89,7 @@ export default class Users extends Component {
             })
             
             this.searchUsers()
-            toast.success((<div className="centerInline"><Done className="marginRight"></Done>Usuário removido com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+            toast.success((<div className="centerInline"><Icon className="marginRight">done</Icon>Usuário removido com sucesso</div>), {autoClose: 3000, closeOnClick: true})
         }).catch(async error => {
             this.setState({
                 loadingOp: false,
@@ -97,7 +97,7 @@ export default class Users extends Component {
                 dialog: false
             })
             const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerInline"><Clear className="marginRight"></Clear>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+            toast.error((<div className="centerInline"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
         })
         
     }
@@ -112,6 +112,10 @@ export default class Users extends Component {
         /*  Usado para selecionar o usuario desejado para remover e também
             habilitando o modal de confirmação de exclusão 
         */
+        
+        if(this.props.user._id === user._id){
+            return toast.info((<div className="centerInline"><Icon className="marginRight">warning</Icon>Para remover sua conta acesse a opção 'Meus dados'</div>), {autoClose: 3000, closeOnClick: true})
+        }
 
         this.setState({
             dialog: true,
@@ -207,7 +211,7 @@ export default class Users extends Component {
                                     <TableRow>
                                         <TableCell>
                                             <span className="centerVertical">
-                                                <Icon fontSize="small">
+                                                <Icon fontSize="small" className="marginRight">
                                                     person
                                                 </Icon>
                                                 Nome
@@ -215,7 +219,7 @@ export default class Users extends Component {
                                         </TableCell>
                                         <TableCell>
                                             <span className="centerVertical">
-                                                <Icon fontSize="small">
+                                                <Icon fontSize="small" className="marginRight">
                                                     alternate_email
                                                 </Icon>
                                                 E-mail
@@ -223,7 +227,7 @@ export default class Users extends Component {
                                         </TableCell>
                                         <TableCell>
                                             <span className="centerVertical">
-                                                <Icon fontSize="small">
+                                                <Icon fontSize="small" className="marginRight">
                                                     bookmarks
                                                 </Icon>
                                                 Tipo
@@ -231,7 +235,7 @@ export default class Users extends Component {
                                         </TableCell>
                                         <TableCell>
                                             <span className="centerVertical">
-                                                <Icon fontSize="small">
+                                                <Icon fontSize="small" className="marginRight">
                                                     build
                                                 </Icon>
                                                 Ações
@@ -346,3 +350,6 @@ export default class Users extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({user: state.user})
+export default connect(mapStateToProps)(Users)

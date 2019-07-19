@@ -4,8 +4,8 @@ import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
 import Avatar from 'react-avatar'
 
-import { backendUrl, defineErrorMsg } from '../config/backend'
-import { displayDate } from '../config/masks'
+import { backendUrl, defineErrorMsg } from '../../config/backend'
+import { displayDate } from '../../config/masks'
 import { styles } from './styles/ArticleBlock'
 
 import { Container, Grid, Grow, ClickAwayListener, 
@@ -13,13 +13,12 @@ import { Container, Grid, Grow, ClickAwayListener,
     Popper, Paper, Box, Icon, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import CustomButton from './Button.jsx'
-import CustomChip from './Chip.jsx'
+import CustomButton from '../Button.jsx'
+import CustomChip from '../Chip.jsx'
 
-import LogoDefault from '../assets/HPArticleThumb.png'
+import LogoDefault from '../../assets/HPArticleThumb.png'
 
-import '../pages/css/defaultPage.css'
-
+import '../../pages/css/defaultPage.css'
 
 const useStyles = makeStyles(styles)
 
@@ -51,7 +50,7 @@ export default (props) => {
         
         if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
     
-        const url = `${backendUrl}/article/${id}`
+        const url = `${backendUrl}/articles/management/${id}`
         axios.delete(url).then(async () => {
             await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>removido</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
             reloadPage()
@@ -66,8 +65,8 @@ export default (props) => {
 
         if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
     
-        const url = `${backendUrl}/article/${id}`
-        axios.post(url).then(async (res) => {
+        const url = `${backendUrl}/articles/management/${id}?op=publish`
+        axios.patch(url).then(async (res) => {
             await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>publicado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
             setArticle(res.data)
         }).catch(async error => {
@@ -81,8 +80,8 @@ export default (props) => {
 
         if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
     
-        const url = `${backendUrl}/article/management/${id}`
-        axios(url).then(async (res) => {
+        const url = `${backendUrl}/articles/management/${id}?op=inactive`
+        axios.patch(url).then(async (res) => {
             await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>inativado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
             setArticle(res.data)
         }).catch(async error => {
@@ -96,8 +95,8 @@ export default (props) => {
 
         if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
         
-        const url = `${backendUrl}/article/management/${id}`
-        axios.post(url).then(async (res) => {
+        const url = `${backendUrl}/articles/management/${id}?op=boost`
+        axios.patch(url).then(async (res) => {
             await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>impulsionado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
             setArticle(res.data)
         }).catch(async error => {
@@ -111,8 +110,8 @@ export default (props) => {
 
         if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
     
-        const url = `${backendUrl}/article/management/${id}`
-        axios.put(url).then(async (res) => {
+        const url = `${backendUrl}/articles/management/${id}?op=active`
+        axios.patch(url).then(async (res) => {
             await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>reativado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
             setArticle(res.data)
         }).catch(async error => {
@@ -178,9 +177,9 @@ export default (props) => {
                             </Popper>
                         </Box>
                     <Box className={classes.descriptionArea}>
-                        <p className={classes.descriptionText}>
+                        <Box className={classes.descriptionText}>
                             {article.shortDescription}
-                        </p>
+                        </Box>
                     </Box>
                 </Container>
             }
@@ -196,10 +195,10 @@ export default (props) => {
                             {article.author && article.author.name ?
                                 (<span className={classes.author}>
                                     <Avatar className="marginRight"
-                                        githubHandle="allanalves23"
+                                        name={article.author.name}
                                         size={40} round="20px" 
                                     />
-                                    <span>{article.author.name}</span>
+                                    <strong>{article.author.name}</strong>
                                 </span>)  : 'Autor desconhecido'
                             }
                         </Box>
@@ -224,7 +223,7 @@ export default (props) => {
             </Grid>
             {!matches && 
                 <Container className={classes.buttonXsScreen}>
-                    <CustomButton fullWidth={true} text="Ver/Editar" icon="edit" color="a" onClick={() => setRedirectTo(`/edit-article/${article._id}`)} />
+                    <CustomButton fullWidth={true} text="Ver/Editar" icon="edit" color="a" onClick={() => setRedirectTo(`/edit-article/${article.customURL}`)} />
                 </Container>
             }
             {matches && 
@@ -232,10 +231,19 @@ export default (props) => {
                     <Grid item xs={8} className={classes.info}>
                         <h3>{article.title}</h3>
                         <Box className={classes.descriptionArea}>
-                            <p className={classes.descriptionText}>
+                            <Box className={classes.descriptionText}>
                                 {article.shortDescription}
-                            </p>
+                            </Box>
                         </Box>
+                        {article.author && article.author.name ?
+                                (<Box mb={1} className={classes.author}>
+                                    <Avatar className="marginRight"
+                                        name={article.author.name}
+                                        size={40} round="20px" 
+                                    />
+                                    <strong>{article.author.name}</strong>
+                                </Box>)  : 'Autor desconhecido'
+                            }
                         {article.inactivated && 
                             <CustomChip color="warning"
                                 sizeIcon="small" icon="warning"

@@ -1,3 +1,4 @@
+
 export const styles = (theme) => ({
     container: {
         display: 'flex',
@@ -8,7 +9,7 @@ export const styles = (theme) => ({
         borderRadius: 10,
         marginBottom: 10,
         padding: 15,
-        height: 255,
+        height: 275,
         backgroundColor: '#fff'
     },
     containerXs: {
@@ -19,7 +20,7 @@ export const styles = (theme) => ({
         width: '100%',
         borderRadius: 10,
         marginBottom: 10,
-        minHeight: 300,
+        minHeight: 280,
         paddingLeft: 15,
         paddingRight: 15,
         paddingTop: 8,
@@ -63,11 +64,15 @@ export const styles = (theme) => ({
     descriptionArea: {
         display: 'flex',
         flexWrap: 'wrap',
-        minHeight: 100,
+        minHeight: 75,
+        width: '100%',
     },
     descriptionText: {
         color: 'rgba(0,0,0,.54)',
         fontSize: '0.8rem',
+        width: '100%',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
     },
     info:{
         display: 'flex',
@@ -75,7 +80,8 @@ export const styles = (theme) => ({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         maxHeight: '130',
-        padding: 10
+        padding: 10,
+        width: '100%'
     },
     buttonsOptions: {
         display: 'flex',

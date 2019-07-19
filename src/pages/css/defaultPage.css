@@ -44,6 +44,11 @@
     align-items: center;
 }
 
+.linkRouterBlack{
+    text-decoration: none;
+    color: rgba(0, 0, 0, .87);
+}
+
 
 .linkRouter, .linkRouter:hover {
     text-decoration: none;
@@ -134,6 +139,38 @@
 
 .limitInput{
     margin-right: 20px !important;
+}
+
+.profile_photo{
+    border-radius: 50%;
+    width: 125px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.profile_photo_not_found{
+    border-radius: 50%;
+    width: 125px;
+    margin: 0;
+}
+
+.profile_photo_input{
+    display: none;
+}
+
+.fakeButton{
+    padding: 5px 10px;
+    background-color: rgb(17,125,187);
+    color: #fff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.fakeButton:hover{
+    background-color: rgb(10,115,160);
 }
 
 

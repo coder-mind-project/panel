@@ -1,18 +1,19 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Avatar from 'react-avatar'
 
-import {AppBar, Toolbar, useScrollTrigger, Slide,
+import { AppBar, Toolbar, useScrollTrigger, Slide,
     IconButton, Menu, MenuItem, Drawer, List, ListItem,
-    useMediaQuery, Icon} from '@material-ui/core'
+    useMediaQuery, Icon } from '@material-ui/core'
     
 import Logo from '../assets/estudante_ti1.png'
 import LogoHorizontal from '../assets/estudante_ti4.png'
 
 import { styles } from './styles/Menu'
+import { backendUrl } from '../config/backend';
 
 const HideOnScroll = props => {
     const {children, window} = props
@@ -34,6 +35,7 @@ const MenuApp = props => {
 
     const [anchorEl, setAnchorEl] = React.useState(null)
     const open = Boolean(anchorEl)
+
     const openMyAccountIcon = e => {
         setAnchorEl(e.currentTarget)
     }
@@ -48,11 +50,16 @@ const MenuApp = props => {
     }
 
     const [state, setState] = React.useState({
-        drawerMenu: false
+        drawerMenu: false,
+        redirectTo: ''
     })
 
     return (
-        <div className={props.user._id ? "" : classes.hide}>
+        
+        <div className={props.menu ? "" : classes.hide}>
+            {state.redirectTo && 
+                <Redirect to={`/${state.redirectTo}`}/>
+            }
             <HideOnScroll {...props}>
                 <AppBar className={classes.menu}>
                     <Toolbar>
@@ -72,32 +79,32 @@ const MenuApp = props => {
                         </Link>
                         { matches && 
                             <Link to="/articles" className={classes.menuLink}>
-                                <span className={classes.menuButtonContent}>
+                                <strong className={classes.menuButtonContent}>
                                     <Icon  className={classes.iconButtonMenu}>
                                         library_books
                                     </Icon>
                                     Artigos
-                                </span>
+                                </strong>
                             </Link>
                         }
                         { matches && 
                             <Link to="/users" className={classes.menuLink}>
-                                <span className={classes.menuButtonContent}>
+                                <strong className={classes.menuButtonContent}>
                                     <Icon  className={classes.iconButtonMenu}>
                                         person_outline
                                     </Icon>
                                     Usuários
-                                </span>
+                                </strong>
                             </Link>
                         }
                         { matches && 
                             <Link to="/management" className={classes.menuLink}>
-                                <span className={classes.menuButtonContent}>
+                                <strong className={classes.menuButtonContent}>
                                     <Icon className={classes.iconButtonMenu}>
                                         settings
                                     </Icon>
                                     Configurações
-                                </span>
+                                </strong>
                             </Link>
                         }
                     </Toolbar>
@@ -106,7 +113,7 @@ const MenuApp = props => {
                             <div className={classes.menuButton}>
                                 <Avatar onClick={openMyAccountIcon} 
                                     style={{cursor: 'pointer'}} color="#888"
-                                    size="50" round="30px" name={props.user.name}
+                                    size="50" round="30px" src={`${backendUrl}/${props.user.profilePhoto}`}
                                 />
                             </div> : '' 
                         }
@@ -124,23 +131,25 @@ const MenuApp = props => {
                             }}
                             open={open}
                             onClose={closeMyAccountIcon}>
-                            
-                            <MenuItem>
-                                <span className={classes.menuButtonContent}>
-                                    <Icon className={classes.iconButtonMenu}>
-                                        person_outline
-                                    </Icon>
-                                    Meus dados
-                                </span>
-                            </MenuItem>
-                            <MenuItem>
+                            {/*  */}
+                            <Link to="/my-account" onClick={() => closeMyAccountIcon()} className="linkRouterBlack">
+                                <MenuItem>
+                                    <span className={classes.menuButtonContent}>
+                                        <Icon className={classes.iconButtonMenu}>
+                                            person_outline
+                                        </Icon>
+                                        Meus dados
+                                    </span>
+                                </MenuItem>
+                            </Link>
+                            { /* <MenuItem>
                                 <span className={classes.menuButtonContent}>
                                     <Icon className={classes.iconButtonMenu}>
                                         library_books
                                     </Icon>
                                     Meus artigos
                                 </span>
-                            </MenuItem>
+                            </MenuItem> */}
                             <MenuItem onClick={logout}>
                                 <span className={classes.menuButtonContent}>
                                     <Icon className={classes.iconButtonMenu}>
@@ -169,12 +178,12 @@ const MenuApp = props => {
                             <ListItem button key={'articles'} 
                                 className={classes.drawerButton}
                             >
-                                <span className={classes.menuButtonContent}>
+                                <strong className={classes.menuButtonContent}>
                                     <Icon  className={classes.iconButtonMenu}>
                                         library_books
                                     </Icon>
                                     Artigos
-                                </span>
+                                </strong>
                             </ListItem>
                         </Link>
                         <Link to="/users" className={classes.buttonLink}
@@ -183,12 +192,12 @@ const MenuApp = props => {
                             <ListItem button key={'users'} 
                                 className={classes.drawerButton}
                             >
-                                <span className={classes.menuButtonContent}>
+                                <strong className={classes.menuButtonContent}>
                                     <Icon  className={classes.iconButtonMenu}>
                                         person_outline
                                     </Icon>
                                     Usuários
-                                </span>
+                                </strong>
                             </ListItem>
                         </Link>
                         <Link to="/management" className={classes.buttonLink}
@@ -197,12 +206,12 @@ const MenuApp = props => {
                             <ListItem button key={'stats'}
                                 className={classes.drawerButton}
                             >
-                                <span className={classes.menuButtonContent}>
+                                <strong className={classes.menuButtonContent}>
                                     <Icon  className={classes.iconButtonMenu}>
                                         settings
                                     </Icon>
                                     Configurações
-                                </span>
+                                </strong>
                             </ListItem>
                         </Link>
                     </List>
@@ -210,12 +219,12 @@ const MenuApp = props => {
                         <ListItem button onClick={logout} 
                             className={classes.drawerButton}
                         >
-                            <span className={classes.menuButtonContent}>
+                            <strong className={classes.menuButtonContent}>
                                 <Icon  className={classes.iconButtonMenu}>
                                     exit_to_app
                                 </Icon>
                                 Sair
-                            </span>
+                            </strong>
                         </ListItem>
                     </List>
                 </div>  
@@ -224,6 +233,6 @@ const MenuApp = props => {
         )
 }
 
-const mapStateToProps = state => ({user: state.user})
+const mapStateToProps = state => ({user: state.user, menu: state.menu})
 
 export default connect(mapStateToProps)(MenuApp)

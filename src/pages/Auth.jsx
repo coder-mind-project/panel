@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import ButtonBase from '../components/ButtonBase.jsx'
 
 import { setUser } from '../redux/userActions'
+import { setMenu } from '../redux/menuActions'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -50,8 +51,9 @@ class Auth extends Component {
         await axios.post(url, user).then( async res => {
 
             await this.props.setUser(res.data)
-            
-            localStorage.setItem('user', JSON.stringify(res.data))
+            await this.props.setMenu(true)
+
+            localStorage.setItem('user', JSON.stringify({token: res.data.token}))
             
             await this.setState({
                 redirect: true,
@@ -121,8 +123,8 @@ class Auth extends Component {
     }
 }
 
-const mapStateToProps = state => ({user: state.user})
-const mapDispatchToProps = dispatch => bindActionCreators({setUser}, dispatch)
+const mapStateToProps = state => ({user: state.user, menu: state.menu})
+const mapDispatchToProps = dispatch => bindActionCreators({setUser, setMenu}, dispatch)
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth)

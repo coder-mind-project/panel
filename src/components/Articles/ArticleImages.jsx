@@ -6,13 +6,13 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 
-import { backendUrl, defineErrorMsg } from '../config/backend'
+import { backendUrl, defineErrorMsg } from '../../config/backend'
 
-import SmallImgDefault from '../assets/img_not_found_512x512.png'
-import BigImgDefault from '../assets/img_not_found_1080.png'
+import SmallImgDefault from '../../assets/img_not_found_512x512.png'
+import BigImgDefault from '../../assets/img_not_found_1080.png'
 
-import CustomBaseButton from './ButtonBase.jsx'
-import CustomButton from './Button.jsx'
+import CustomBaseButton from '../ButtonBase.jsx'
+import CustomButton from '../Button.jsx'
 
 import './css/ArticleImages.css'
 
@@ -83,7 +83,7 @@ class ArticleImages extends Component {
             }
         }
         
-        const url = `${backendUrl}/article/img/${id}?path=${path}&size=${size}`
+        const url = `${backendUrl}/articles/img/${id}?path=${path}&size=${size}`
         
         await axios[method](url, formData, config).then( res => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
@@ -115,7 +115,7 @@ class ArticleImages extends Component {
 
         if(option){
             const id = this.props.article._id
-            const url = `${backendUrl}/article/img/${id}?path=${path}`
+            const url = `${backendUrl}/articles/img/${id}?path=${path}`
             axios.delete(url).then(() => {
                 toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
                 /*  Definição do campo de diretorio 

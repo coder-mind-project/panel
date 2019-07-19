@@ -7,8 +7,8 @@ import AsyncSelect from 'react-select/async'
 
 import Header from '../components/Header'
 import CustomButton from '../components/Button.jsx'
-import ArticleImages from '../components/ArticleImages.jsx'
-import ArticlePreview from '../components/ArticlePreview'
+import ArticleImages from '../components/Articles/ArticleImages.jsx'
+import ArticlePreview from '../components/Articles/ArticlePreview'
 import FloatingButton from '../components/FloatingButton.jsx'
 
 import axios from 'axios'
@@ -51,6 +51,7 @@ class Article extends Component {
     getArticle = (customURL) => {
         const url = `${backendUrl}/articles/${customURL}`
         axios(url).then(async res => {
+
             await this.storageArticle(res.data)
             this.setState({
                 loading: false
@@ -86,7 +87,7 @@ class Article extends Component {
             com base no tema selecionado
         */
         if(attr === 'theme' && value){
-            const url = `${backendUrl}/categories/${value._id}` 
+            const url = `${backendUrl}/categories/theme/${value._id}` 
             axios(url).then(res => this.setState({categories: res.data}))
         }
 
@@ -115,10 +116,16 @@ class Article extends Component {
         const article = await this.formatData(author)
         await this.changeSavingState()
         const url = `${backendUrl}/articles`
-        await axios.post(url, article).then((res) => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
-            this.changeSavingState()
-            this.storageArticle(res.data)
+        const method = article._id ? 'put' : 'post'
+
+        await axios[method](url, article).then(async (res) => {
+            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>{method === 'post' ? 'Artigo cadastrado, por favor aguarde...' : 'Artigo atualizado com sucesso'}</div>), {autoClose: 2000, closeOnClick: true})
+            await this.changeSavingState()
+            if(method === 'post'){
+                await setTimeout(() => window.location.href = `edit-article/${res.data.customURL}`, 3000)
+            }else{
+                this.storageArticle(res.data)
+            }
         }).catch(async error => {
             const msg = await defineErrorMsg(error)
             toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 2000, closeOnClick: true})
@@ -160,10 +167,17 @@ class Article extends Component {
 
     formatData = (author) => {
         //Usado para formatar o registro para salvar no banco
+        
         return {
             _id: this.state.article._id,
             title: this.state.article.title,
-            theme: this.state.article.theme,
+            theme: {
+                _id: this.state.article.theme._id,
+                name: this.state.article.theme.name,
+                alias: this.state.article.theme.alias,
+                description: this.state.article.theme.description,
+                state: this.state.article.theme.state,
+            },
             category: this.state.article.category,
             shortDescription: this.state.article.shortDescription,
             customURL: this.state.article.customURL ? formatCustomURL(this.state.article.customURL) : formatCustomURL(this.state.article.title),
@@ -228,7 +242,7 @@ class Article extends Component {
         return filteredCategories
     }
 
-    goTo = path => event => {
+    goTo = path => {
         //Responsável por redirecionar a página
         this.setState({redirectTo: path})
     }

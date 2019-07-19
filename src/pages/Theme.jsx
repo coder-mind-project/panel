@@ -50,8 +50,10 @@ export default class User extends Component{
         /* Responsável por persistir o tema */
 
         const theme = await this.formatData()
-        const url = `${backendUrl}/themes`
-        axios.post(url, theme).then(() => {
+        const method = theme._id ? 'put' : 'post' 
+        const url = method === 'post' ? `${backendUrl}/themes` : `${backendUrl}/themes/${theme._id}`
+
+        axios[method](url, theme).then(() => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
             setTimeout(() => {
                 this.goTo('themes')
@@ -69,7 +71,7 @@ export default class User extends Component{
     getTheme = (id) =>{
         /* Realiza a busca do tema para permitir a edição / visualização */
 
-        const url = `${backendUrl}/theme/${id}`
+        const url = `${backendUrl}/themes/${id}`
         axios(url).then(res => {
             this.setState({theme: {
                 _id: res.data._id,
@@ -93,17 +95,17 @@ export default class User extends Component{
                     description="Consulte, altere, crie e remova temas do sistema"
                     icon="bookmark"
                 />
-                <Box mb={1}>
+                <Box mb={3}>
                     <Breadcrumbs separator={<Icon>navigate_next_icon</Icon>}>
                         <Link to="/management" className="defaultFontColor">
-                            Configurações
+                            <strong>Configurações</strong>
                         </Link>
                         <Link to="/themes" className="defaultFontColor">
-                            Temas
+                            <strong>Temas</strong>
                         </Link>
-                        <span>
+                        <strong>
                             {this.state.theme._id ? 'Editar tema' : 'Criar tema'}
-                        </span>
+                        </strong>
                     </Breadcrumbs>
                 </Box>
                 <Paper className="form">

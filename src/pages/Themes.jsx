@@ -67,7 +67,7 @@ class Themes extends Component {
 
         this.setState({loadingOp: true})
         const id = this.state.themeSelected._id
-        const url = `${backendUrl}/theme/${id}`
+        const url = `${backendUrl}/themes/${id}`
 
         await axios.delete(url).then(() => {
             toast.success((<div className="centerInline"><Icon>done</Icon><span>Operação realizada com sucesso</span></div>), {autoClose: 3000, closeOnClick: true})
@@ -187,9 +187,30 @@ class Themes extends Component {
                                 {/* Header da tabela */}
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell><span className="centerVertical"><Icon fontSize="small">bookmark</Icon>Tema</span></TableCell>
-                                        <TableCell><span className="centerVertical"><Icon fontSize="small">bookmark_border</Icon>Alias</span></TableCell>
-                                        <TableCell><span className="centerVertical"><Icon fontSize="small">build</Icon>Ações</span></TableCell>
+                                        <TableCell>
+                                            <span className="centerVertical">
+                                                <Icon fontSize="small" className="marginRight">
+                                                    bookmark
+                                                </Icon>
+                                                Tema
+                                            </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="centerVertical">
+                                                <Icon fontSize="small" className="marginRight">
+                                                    bookmark_border
+                                                </Icon>
+                                                Alias
+                                            </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="centerVertical">
+                                                <Icon fontSize="small" className="marginRight">
+                                                    build
+                                                </Icon>
+                                                Ações
+                                            </span>
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>

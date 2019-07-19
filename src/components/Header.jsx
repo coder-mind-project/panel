@@ -8,6 +8,23 @@ import { styles } from './styles/Header'
 const useStyles = makeStyles(styles)
 
 export default (props) => {
+
+    /*
+        Propriedades disponíveis
+
+        prop: type - Description
+            options : default
+
+        icon: String - Define o ícone do cabeçalho
+            <[Opções disponíveis no site https://material.io/tools/icons/]> : '' (String vazia)
+        title: String - Define o titulo do cabeçalho
+            <[]> : '' (String vazia)
+        description: String - Define a descrição do cabeçalho
+            <[]> : '' (String vazia)
+
+        
+    */
+
     const classes = useStyles()
     return(
         <Grid container className={classes.container}>
