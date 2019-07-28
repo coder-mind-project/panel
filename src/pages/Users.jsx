@@ -274,7 +274,7 @@ class Users extends Component {
                                             <CustomIconButton icon="edit"
                                                 aria-label="Edit" color="default"
                                                 tooltip="Editar"
-                                                onClick={this.goTo(`edit-user/${user._id}`)}
+                                                onClick={this.goTo(`user/${user._id}`)}
                                             />
                                             <CustomIconButton icon="delete_forever"
                                                 aria-label="Delete" color="danger"

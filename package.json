@@ -1,7 +1,9 @@
 {
-  "name": "frontend",
+  "name": "coder-mind-react-app",
   "version": "0.1.0",
+  "description": "Aplicação para gerenciar a plataforma coder mind",
   "private": true,
+  "license": "self-funding",
   "dependencies": {
     "@date-io/moment": "^1.3.7",
     "@material-ui/core": "^4.1.0",
@@ -15,6 +17,7 @@
     "react": "^16.8.6",
     "react-avatar": "^3.6.0",
     "react-dom": "^16.8.6",
+    "react-google-recaptcha": "^1.1.0",
     "react-icons": "^3.7.0",
     "react-quill": "^1.3.3",
     "react-redux": "^7.1.0",

@@ -95,12 +95,14 @@
 }
 
 .defaultButtonColor {
-    background-color: rgb(17,125,187) !important;
+    /* rgb(17,125,187) */
+    background-color: rgb(34, 225, 199) !important;
     color: #fff !important;
 }
 
 .defaultButtonColor:hover{
-    background-color: rgb(10,115,160) !important;
+    /* rgb(10,115,160) */
+    background-color: rgb(55, 195, 170) !important;
 }
 
 .textColor {

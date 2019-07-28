@@ -1,0 +1,38 @@
+.notification{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notification-aside{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 15px !important;
+}
+
+.notification-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px solid gray;
+    padding: 5px;
+    width: 100%;
+}
+
+.notification .title{
+    margin: 0px !important;
+    font-weight: 500;
+}
+
+.notification .description{
+    font-size: 0.7rem !important;
+    margin-bottom: 10px;
+}
+
+.notification .message{
+    font-size: 0.85rem;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -223,7 +223,7 @@ export default (props) => {
             </Grid>
             {!matches && 
                 <Container className={classes.buttonXsScreen}>
-                    <CustomButton fullWidth={true} text="Ver/Editar" icon="edit" color="a" onClick={() => setRedirectTo(`/edit-article/${article.customURL}`)} />
+                    <CustomButton fullWidth={true} text="Ver/Editar" icon="edit" color="a" onClick={() => setRedirectTo(`/article/${article.customURL}`)} />
                 </Container>
             }
             {matches && 
@@ -262,11 +262,11 @@ export default (props) => {
                         }
                     </Grid>
                     <Grid item xs={4} className={classes.buttonsOptions}>
-                        <Link to={`/edit-article/${article.customURL ? article.customURL : article._id}`}
+                        <Link to={`/article/${article.customURL ? article.customURL : article._id}`}
                             className="linkRouter"
                         >
                             <CustomButton className={classes.button}
-                                fullWidth={true} color="default"
+                                fullWidth={true}
                                 icon="create" text="Ver/Editar"
                             />
                         </Link>

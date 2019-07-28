@@ -226,7 +226,7 @@ class Themes extends Component {
                                         <TableCell scope="_id">
                                             <CustomIconButton icon="edit" color="default"
                                                 aria-label="Editar" tooltip="Editar"
-                                                onClick={this.goTo(`edit-theme/${theme._id}`)}
+                                                onClick={this.goTo(`theme/${theme._id}`)}
                                             />
                                             <CustomIconButton icon="delete_forever" color="danger"
                                                 aria-label="Delete" tooltip="Remover"

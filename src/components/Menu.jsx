@@ -7,10 +7,12 @@ import Avatar from 'react-avatar'
 
 import { AppBar, Toolbar, useScrollTrigger, Slide,
     IconButton, Menu, MenuItem, Drawer, List, ListItem,
-    useMediaQuery, Icon } from '@material-ui/core'
+    useMediaQuery, Icon, Box } from '@material-ui/core'
     
 import Logo from '../assets/estudante_ti1.png'
 import LogoHorizontal from '../assets/estudante_ti4.png'
+
+import Notifications from './Notifications.jsx'
 
 import { styles } from './styles/Menu'
 import { backendUrl } from '../config/backend';
@@ -34,6 +36,7 @@ const MenuApp = props => {
     const matches = useMediaQuery('(min-width: 820px)')
 
     const [anchorEl, setAnchorEl] = React.useState(null)
+
     const open = Boolean(anchorEl)
 
     const openMyAccountIcon = e => {
@@ -43,6 +46,7 @@ const MenuApp = props => {
     const closeMyAccountIcon = () => {
         setAnchorEl(null)
     }
+
 
     const logout = () => {
         localStorage.removeItem('user')
@@ -71,18 +75,17 @@ const MenuApp = props => {
                                 <Icon>menu</Icon>
                             </IconButton>
                         }
-                        <Link className={classes.link} to="/stats">
-                            <img src={LogoHorizontal} width="180"
+                        <Link className={classes.link} to="/">
+                            {/* <img src={LogoHorizontal} width="180"
                                 className={classes.menuLogo}
                                 alt="Estudante TI"
-                            />
+                            /> */}
+
+                            <h2>Coder Mind</h2>
                         </Link>
                         { matches && 
                             <Link to="/articles" className={classes.menuLink}>
                                 <strong className={classes.menuButtonContent}>
-                                    <Icon  className={classes.iconButtonMenu}>
-                                        library_books
-                                    </Icon>
                                     Artigos
                                 </strong>
                             </Link>
@@ -90,9 +93,6 @@ const MenuApp = props => {
                         { matches && 
                             <Link to="/users" className={classes.menuLink}>
                                 <strong className={classes.menuButtonContent}>
-                                    <Icon  className={classes.iconButtonMenu}>
-                                        person_outline
-                                    </Icon>
                                     Usuários
                                 </strong>
                             </Link>
@@ -100,9 +100,6 @@ const MenuApp = props => {
                         { matches && 
                             <Link to="/management" className={classes.menuLink}>
                                 <strong className={classes.menuButtonContent}>
-                                    <Icon className={classes.iconButtonMenu}>
-                                        settings
-                                    </Icon>
                                     Configurações
                                 </strong>
                             </Link>
@@ -110,12 +107,16 @@ const MenuApp = props => {
                     </Toolbar>
                     <div>
                         { props.user && props.user.name ?
-                            <div className={classes.menuButton}>
-                                <Avatar onClick={openMyAccountIcon} 
-                                    style={{cursor: 'pointer'}} color="#888"
-                                    size="50" round="30px" src={`${backendUrl}/${props.user.profilePhoto}`}
-                                />
-                            </div> : '' 
+                            <Box display="flex" alignItems="center">
+                                <Notifications />
+                                <div className={classes.menuButton}>
+                                    <Avatar onClick={openMyAccountIcon} 
+                                        style={{cursor: 'pointer'}} color="#888"
+                                        size="50" round="30px" src={`${backendUrl}/${props.user.profilePhoto}`}
+                                        />
+                                </div>
+                            </Box> : '' 
+                            
                         }
                         <Menu
                             id="my-account-menu"
@@ -165,7 +166,7 @@ const MenuApp = props => {
             <Drawer open={state.drawerMenu} 
                 onClose={() => setState({drawerMenu: false  })}
             >
-                <Link to="/stats" onClick={() => setState({drawerMenu: false})}>
+                <Link to="/" onClick={() => setState({drawerMenu: false})}>
                     <div className={classes.logo}>
                         <img src={Logo} width="180" alt="Estudante TI"/>
                     </div>

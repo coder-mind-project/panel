@@ -100,6 +100,17 @@ export const styles = (theme) => ({
             backgroundColor: 'rgba(0,0,0,.15)',
         },
         marginBottom: '10px',
+    },
+    pink: {
+        ...fontFamily,
+        backgroundColor: 'rgb(245, 0, 87);',
+        color: '#fff',
+        '&:hover':{
+            backgroundColor: 'rgb(220, 0, 60);',
+        },
+        marginBottom: '10px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
     }
 })
 

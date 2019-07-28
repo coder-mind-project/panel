@@ -6,7 +6,7 @@ export const styles = theme => ({
         alignItems: 'center',
         paddingLeft: 10,
         paddingRight: 10,
-        backgroundColor: 'rgb(17,125,187)',
+        backgroundColor: 'rgb(50,50,50)',
     },
     menuLogo: {
         marginRight: '25px',
@@ -31,7 +31,7 @@ export const styles = theme => ({
         textDecoration: 'none',
         padding: 23,
         '&:hover': {
-            backgroundColor: 'rgba(0,0,0,.1)'
+            backgroundColor: 'rgba(200,200,200,.1)'
         }
     },
     buttonLink:{

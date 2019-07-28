@@ -148,6 +148,18 @@ export default class User extends Component{
                     label: res.data.theme.name
                 } : null,
             })
+        }).catch(error => {
+            const msg = error.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'
+
+            if(error.response.status === 404){
+                toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+                
+                setTimeout(() => {
+                    this.setState({redirectTo: 'categories'})
+                }, 3000)
+            }else{
+                toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+            }
         })
     }
 

@@ -28,6 +28,7 @@ import Categories from './pages/Categories.jsx'
 import Category from './pages/Category.jsx'
 import Error from './pages/Error.jsx'
 import MyAccount from './pages/MyAccount.jsx'
+import Comments from './pages/Comments.jsx'
 
 
 //Css imports
@@ -69,9 +70,6 @@ class App extends Component {
   
     async componentWillMount(){
       
-      if(window.location.pathname === '/' && user)
-        this.setState({redirectTo: 'stats'})
-
       await this.validateToken()
     }
 
@@ -94,23 +92,24 @@ class App extends Component {
                 {this.state.redirectTo && 
                   <Redirect to={`/${this.state.redirectTo}`}/>
                 }
-                <Route path="/auth" component={Auth}/>
-                <Route path="/users" component={Users}/>
-                <Route path="/user" component={User}/>
-                <Route path="/edit-user/:id" component={User}/>
-                <Route path="/articles" component={Articles}/>
-                <Route path="/article" component={Article}/>
-                <Route path="/edit-article/:id" component={Article}/>
-                <Route path="/stats" component={Stats}/>
-                <Route path="/management" component={Management}/>
-                <Route path="/theme" component={Theme}/>
-                <Route path="/edit-theme/:id" component={Theme}/>
-                <Route path="/themes" component={Themes}/>
-                <Route path="/categories" component={Categories}/>
-                <Route path="/category" component={Category}/>
-                <Route path="/edit-category/:id" component={Category}/>
-                <Route path="/my-account" component={MyAccount}/>
-                <Route path="/error" component={Error}/>
+                <Route path="/" exact component={Stats}/>
+                <Route path="/auth" exact component={Auth}/>
+                <Route path="/user" exact component={User}/>
+                <Route path="/user/:id" exact component={User}/>
+                <Route path="/users" exact component={Users}/>
+                <Route path="/article" exact component={Article}/>
+                <Route path="/article/:id" exact component={Article}/>
+                <Route path="/articles" exact component={Articles}/>
+                <Route path="/management" exact component={Management}/>
+                <Route path="/theme" exact component={Theme}/>
+                <Route path="/theme/:id" exact component={Theme}/>
+                <Route path="/themes" exact component={Themes}/>
+                <Route path="/category" exact component={Category}/>
+                <Route path="/category/:id" exact component={Category}/>
+                <Route path="/categories" exact component={Categories}/>
+                <Route path="/my-account" exact component={MyAccount}/>
+                <Route path="/comments" exact component={Comments}/>
+                <Route path="/error" exact component={Error}/>
               </Container>
             </Router>
           }
