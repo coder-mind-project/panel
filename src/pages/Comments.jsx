@@ -4,6 +4,8 @@ import Header from '../components/Header.jsx'
 import axios from 'axios'
 import { backendUrl } from '../config/backend'
 
+import { Link } from 'react-router-dom'
+
 import { toast, ToastContainer } from 'react-toastify'
 
 
@@ -204,6 +206,7 @@ class Comments extends Component {
                                     </Box>
                                     <Box width="100%" mt={1} mb={1}>
                                         <TextField 
+                                            className="form-input"
                                             label="Usuário"
                                             value={this.state.comment.userName}
                                             onChange={(event) => this.handleChange(event, 'userName')} 
@@ -212,7 +215,8 @@ class Comments extends Component {
                                         />
                                     </Box>
                                     <Box width="100%" mt={1} mb={1}>
-                                        <TextField 
+                                        <TextField
+                                            className="form-input"
                                             label="E-mail de contato"
                                             value={this.state.comment.userEmail}
                                             onChange={(event) => this.handleChange(event, 'userEmail')} 
@@ -222,6 +226,7 @@ class Comments extends Component {
                                     </Box>
                                     <Box width="100%" mt={1} mb={1}>
                                         <TextField 
+                                            className="form-input"
                                             label="Comentário"
                                             multiline
                                             value={this.state.comment.comment}
@@ -230,7 +235,15 @@ class Comments extends Component {
                                             disabled
                                         />
                                     </Box>
-                                    <Box width="100%" display="flex" justifyContent="flex-end" alignItems="center" mt={1}>
+                                    <Box width="100%" display="flex" justifyContent="flex-end" alignItems="center" flexWrap="wrap" mt={1}>
+                                            <Link to={`/comments/${this.state.comment._id}`} className="linkRouterBlack">
+                                                <CustomButton 
+                                                    color="none"
+                                                    variant="text"
+                                                    text="Histórico"
+                                                    icon="history"
+                                                />
+                                            </Link>
                                             <CustomButton 
                                                 color="none"
                                                 variant="text"
@@ -389,13 +402,13 @@ class Comments extends Component {
                                                 className="chipTypeUser"
                                                 color="success"
                                                 sizeIcon="small"
-                                                icon="supervisor_account"
+                                                icon="done"
                                                 text="Aprovado"/> : 
                                             <CustomChip size="small"
                                                 className="chipTypeUser"
                                                 color="gray"
                                                 sizeIcon="small"
-                                                icon="person"
+                                                icon="warning"
                                                 text="Não aprovado"
                                             />
                                         }

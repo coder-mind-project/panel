@@ -29,6 +29,7 @@ import Category from './pages/Category.jsx'
 import Error from './pages/Error.jsx'
 import MyAccount from './pages/MyAccount.jsx'
 import Comments from './pages/Comments.jsx'
+import Comment from './pages/Comment.jsx'
 
 
 //Css imports
@@ -109,6 +110,7 @@ class App extends Component {
                 <Route path="/categories" exact component={Categories}/>
                 <Route path="/my-account" exact component={MyAccount}/>
                 <Route path="/comments" exact component={Comments}/>
+                <Route path="/comments/:id" exact component={Comment}/>
                 <Route path="/error" exact component={Error}/>
               </Container>
             </Router>

@@ -168,7 +168,7 @@ const MenuApp = props => {
             >
                 <Link to="/" onClick={() => setState({drawerMenu: false})}>
                     <div className={classes.logo}>
-                        <img src={Logo} width="180" alt="Estudante TI"/>
+                        <h2>Coder Mind</h2>
                     </div>
                 </Link>
                 <div className={classes.drawer}>

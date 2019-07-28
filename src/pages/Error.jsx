@@ -23,10 +23,7 @@ class Error extends Component {
                 <Box display="flex" justifyContent="center" alignItems="center">
                     <Paper className="modal_error_content">
                         <Box className="modal_error_logo">
-                            <img src={Logo} 
-                                alt="Logo Estudante TI" 
-                                className="modal_error_img" 
-                            />
+                            <h2>Coder Mind</h2>
                         </Box>
                         <Box className="modal_error_msg">
                             <p>Ops, Ocorreu um problema em nosso servidor.</p>

@@ -1,6 +1,13 @@
 .form-comment{
     margin-bottom: 15px;
 }
+.form-input input, .form-input textarea{
+    color: #000 !important;
+}
+
+.form-input label {
+    font-weight: 700;
+}
 
 .form-footer-left{
     display: flex;
