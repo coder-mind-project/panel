@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import { backendUrl, defineErrorMsg } from '../../config/backend'
 
 import SmallImgDefault from '../../assets/img_not_found_512x512.png'
+import MediumImgDefault from '../../assets/img_not_found_768.png'
 import BigImgDefault from '../../assets/img_not_found_1080.png'
 
 import CustomBaseButton from '../ButtonBase.jsx'
@@ -21,6 +22,8 @@ class ArticleImages extends Component {
     state = {
         smallImg: null,
         smallImgDirectory: '',
+        mediumImg: null,
+        mediumImgDirectory: '',
         bigImg: null,
         bigImgDirectory: ''
     }
@@ -40,7 +43,7 @@ class ArticleImages extends Component {
         event.preventDefault()
         
         //Verifica o tipo de imagem, aceitando apenas bigImg ou smallImg
-        if(path !== 'bigImg' && path !== 'smallImg') 
+        if(path !== 'bigImg' && path !== 'smallImg' && path !== 'mediumImg') 
         return toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Ocorreu um erro desconhecido, se persistir reporte [Code: 10]</div>), {autoClose: 2000, closeOnClick: true}) 
         
         //Verifica se há imagem
@@ -65,9 +68,31 @@ class ArticleImages extends Component {
             imagem do backend para visualização) a ser persistido a imagem
             e o método de requisição. [post para smallImg e put para bigImg]
         */
-        const directory = path === 'smallImg' ? 'smallImgDirectory' : 'bigImgDirectory'
-        const method = path === 'smallImg' ? 'post' : 'put'
-        
+
+        let directory = ''
+        let method = ''
+
+        switch(path){
+            case 'smallImg':{
+                directory = 'smallImgDirectory'
+                method = 'post'
+                break
+            }
+            case 'mediumImg':{
+                directory = 'mediumImgDirectory'
+                method = 'patch'
+                break
+            }
+            case 'bigImg':{
+                directory = 'bigImgDirectory'
+                method = 'put'
+                break
+            }
+            default: {
+                directory = null
+            }
+        }
+
         /*  Define a altura da imagem em pixels pelo tipo do path
             [1080p para bigImg e 512p para smallImg]
         */
@@ -138,7 +163,7 @@ class ArticleImages extends Component {
         /*  Altera a imagem a cada confirmação de escolha dentro 
             do input tipo file 
         */
-        if(path !== 'smallImg' && path !== 'bigImg') 
+        if(path !== 'smallImg' && path !== 'bigImg' && path !== 'mediumImg') 
         return toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Ocorreu um erro ao selecionar a imagem, se persistir reporte</div>), {autoClose: 2000, closeOnClick: true})
         
         this.setState({[path]: img.target.files[0]})
@@ -191,6 +216,25 @@ class ArticleImages extends Component {
                                     <CustomBaseButton type="submit" class="success" icon="save" />
                                 </Box>
                             </Grid>
+                        </Grid>
+                    </form>
+                    <Divider />
+                    <form onSubmit={this.sendFile(this.state, 'mediumImg')}>
+                        <Grid item xs={12} className="bigImgSection">
+                        <Grid item xs={12}>
+                            <Tooltip title={this.state.mediumImgDirectory ? "Remover Imagem" : ""} placement="right-start">
+                                <figure className={this.state.mediumImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'mediumImg')}>
+                                    <img src={this.state.mediumImgDirectory ? this.state.mediumImgDirectory : MediumImgDefault} alt="Imagem de bloco do artigo" width="100%"></img>
+                                    <figcaption className="figCaption">Imagem de bloco do artigo</figcaption>
+                                </figure>
+                            </Tooltip>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Box className="formGroupWithBigImg">
+                                <TextField type="file" className="inputImg" name="mediumImg" id="medium_img_article" helperText="Prefencialmente imagens com resolução 1920x1080p (FULL HD)" onChange={(file) => this.changeFile(file, 'mediumImg')}/>
+                                <CustomBaseButton type="submit" class="success" icon="save" />
+                            </Box>
+                        </Grid>
                         </Grid>
                     </form>
                     <Divider />

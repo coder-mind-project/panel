@@ -12,6 +12,7 @@ import PasswordField from 'material-ui-password-field'
 
 import Header from '../components/Header'
 import CustomButton from '../components/Button.jsx'
+import Searching from '../assets/searching.gif'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../config/backend'
@@ -37,10 +38,14 @@ export default class User extends Component{
             password: '',
             type: 'author',
         },
-        
+        loading: false,
         openDialog: false,
         loadingOp: false,
         redirectTo: ''
+    }
+
+    toogleLoading(){
+        this.setState({loading: !this.state.loading})
     }
 
 
@@ -151,11 +156,12 @@ export default class User extends Component{
         })
     }
 
-    getUser = (id) => {
+    getUser = async (id) => {
         /* Realiza a busca do usuário para permitir a edição / visualização */
         
         const url = `${backendUrl}/users/${id}`
-        axios(url).then(res => {
+        await this.toogleLoading()
+        await axios(url).then(res => {
             this.setState({ user: {
                 ...res.data,
                 address: res.data.address || '', 
@@ -175,6 +181,8 @@ export default class User extends Component{
                 toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
             }
         })
+
+        this.toogleLoading()
     }
 
     async componentDidMount(){
@@ -194,230 +202,240 @@ export default class User extends Component{
                 {this.state.redirectTo && 
                     <Redirect to={`/${this.state.redirectTo}`}/>
                 }
-                <Paper className="form">
-                    <Grid container>
+                { this.state.user._id && !this.state.loading && 
+                    <Paper className="form">
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Box display="flex" className="textColor">
+                                    <Icon>
+                                        person
+                                    </Icon>
+                                    <h3 className="marginNone">
+                                        Informações principais
+                                    </h3>
+                                </Box>
+                            </Grid>
+                            <Grid item xs={12} className="formGroup">
+                                <TextField label="Nome *"
+                                    className="formInput"
+                                    value={this.state.user.name}
+                                    onChange={this.handleChange('name')}
+                                />
+                                <TextField label="E-mail *"
+                                    className="formInput"
+                                    value={this.state.user.email}
+                                    helperText="Esta informação será usada para a autenticação deste usuário no sistema"
+                                    onChange={this.handleChange('email')}
+                                />
+                                <TextField label="Genero *"
+                                    className="formInput"
+                                    value={this.state.user.gender} select
+                                    onChange={this.handleChange('gender')}
+                                >
+                                    <MenuItem key={'male'} value={'male'}>
+                                        Masculino
+                                    </MenuItem>
+                                    <MenuItem key={'female'} value={'female'}>
+                                        Feminino
+                                    </MenuItem>
+                                    <MenuItem key={'undefined'} value={'undefined'}>
+                                        Prefere não informar
+                                    </MenuItem>
+                                </TextField>
+                                <TextField label="Tipo *" className="formInput"
+                                    value={this.state.user.type}
+                                    helperText="Defina o tipo de conta do usuário"
+                                    select onChange={this.handleChange('type')}
+                                >
+                                    <MenuItem key={'admin'} value={'admin'}>
+                                        Administrador
+                                    </MenuItem>
+                                    <MenuItem key={'author'} value={'author'}>
+                                        Autor
+                                    </MenuItem>
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={12} className="formGroup">
+                                <TextField label="CPF *" className="formInput"
+                                    value={this.state.user.cpf}
+                                    onChange={this.handleChangeMaskData('cpf')} 
+                                    inputProps={{ maxLength: 14 }} 
+                                />
+                                <TextField label="Número de telefone *"
+                                    className="formInput"
+                                    placeholder="Ex: (xx)xxxx-xxxx"
+                                    value={this.state.user.telphone}
+                                    helperText="Informe o telefone fixo"
+                                    onChange={this.handleChangeMaskData('telphone')}
+                                    inputProps={{ maxLength: 14 }}
+                                />
+                                <TextField label="Número de celular *"
+                                    className="formInput"
+                                    placeholder="Ex: (xx)xxxxx-xxxx"
+                                    value={this.state.user.celphone}
+                                    helperText="Informe o telefone móvel"
+                                    onChange={this.handleChangeMaskData('celphone')}
+                                    inputProps={{ maxLength: 15 }}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Divider className="separator"/>
+                        </Grid>
                         <Grid item xs={12}>
                             <Box display="flex" className="textColor">
                                 <Icon>
-                                    person
+                                    location_city
                                 </Icon>
                                 <h3 className="marginNone">
-                                    Informações principais
+                                    Informações complementares
                                 </h3>
                             </Box>
                         </Grid>
                         <Grid item xs={12} className="formGroup">
-                            <TextField label="Nome *"
+                            <MuiPickersUtilsProvider utils={MomentUtils}>
+                                <KeyboardDatePicker label="Data de nascimento"
+                                    clearable cancelLabel="Cancelar"
+                                    clearLabel="Limpar"
+                                    className="formInput"
+                                    value={this.state.user.birthDate}
+                                    onChange={this.handleDate}
+                                    mask="__/__/____"
+                                    maxDate={new Date()}
+                                    maxDateMessage="Data acima do permitido"
+                                    minDateMessage="Data abaixo do permitido" />
+                            </MuiPickersUtilsProvider>
+                            <TextField label="Endereço"
                                 className="formInput"
-                                value={this.state.user.name}
-                                onChange={this.handleChange('name')}
+                                value={this.state.user.address}
+                                onChange={this.handleChange('address')}
                             />
-                            <TextField label="E-mail *"
+                            <TextField label="Número"
+                                type="number"
                                 className="formInput"
-                                value={this.state.user.email}
-                                helperText="Esta informação será usada para a autenticação deste usuário no sistema"
-                                onChange={this.handleChange('email')}
-                            />
-                            <TextField label="Genero *"
-                                className="formInput"
-                                value={this.state.user.gender} select
-                                onChange={this.handleChange('gender')}
-                            >
-                                <MenuItem key={'male'} value={'male'}>
-                                    Masculino
-                                </MenuItem>
-                                <MenuItem key={'female'} value={'female'}>
-                                    Feminino
-                                </MenuItem>
-                                <MenuItem key={'undefined'} value={'undefined'}>
-                                    Prefere não informar
-                                </MenuItem>
-                            </TextField>
-                            <TextField label="Tipo *" className="formInput"
-                                value={this.state.user.type}
-                                helperText="Defina o tipo de conta do usuário"
-                                select onChange={this.handleChange('type')}
-                            >
-                                <MenuItem key={'admin'} value={'admin'}>
-                                    Administrador
-                                </MenuItem>
-                                <MenuItem key={'author'} value={'author'}>
-                                    Autor
-                                </MenuItem>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12} className="formGroup">
-                            <TextField label="CPF *" className="formInput"
-                                value={this.state.user.cpf}
-                                onChange={this.handleChangeMaskData('cpf')} 
-                                inputProps={{ maxLength: 14 }} 
-                            />
-                            <TextField label="Número de telefone *"
-                                className="formInput"
-                                placeholder="Ex: (xx)xxxx-xxxx"
-                                value={this.state.user.telphone}
-                                helperText="Informe o telefone fixo"
-                                onChange={this.handleChangeMaskData('telphone')}
-                                inputProps={{ maxLength: 14 }}
-                            />
-                            <TextField label="Número de celular *"
-                                className="formInput"
-                                placeholder="Ex: (xx)xxxxx-xxxx"
-                                value={this.state.user.celphone}
-                                helperText="Informe o telefone móvel"
-                                onChange={this.handleChangeMaskData('celphone')}
-                                inputProps={{ maxLength: 15 }}
+                                value={this.state.user.number}
+                                onChange={this.handleChange('number')}
                             />
                         </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Divider className="separator"/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Box display="flex" className="textColor">
-                            <Icon>
-                                location_city
-                            </Icon>
-                            <h3 className="marginNone">
-                                Informações complementares
-                            </h3>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={12} className="formGroup">
-                        <MuiPickersUtilsProvider utils={MomentUtils}>
-                            <KeyboardDatePicker label="Data de nascimento"
-                                clearable cancelLabel="Cancelar"
-                                clearLabel="Limpar"
-                                className="formInput"
-                                value={this.state.user.birthDate}
-                                onChange={this.handleDate}
-                                mask="__/__/____"
-                                maxDate={new Date()}
-                                maxDateMessage="Data acima do permitido"
-                                minDateMessage="Data abaixo do permitido" />
-                        </MuiPickersUtilsProvider>
-                        <TextField label="Endereço"
-                            className="formInput"
-                            value={this.state.user.address}
-                            onChange={this.handleChange('address')}
-                        />
-                        <TextField label="Número"
-                            type="number"
-                            className="formInput"
-                            value={this.state.user.number}
-                            onChange={this.handleChange('number')}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Divider className="separator"/>
-                    </Grid>
-                    { !this.state.user._id &&
                         <Grid item xs={12}>
-                            <Box display="flex" className="textColor">
-                                <Icon>
-                                    lock
-                                </Icon>
-                                <h3 className="marginNone">
-                                    Informações sigilosas
-                                </h3>
-                            </Box>
+                            <Divider className="separator"/>
                         </Grid>
-                    }
-                    { !this.state.user._id &&
-                        <Grid item xs={12} className="formGroup">
-                            <form>
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="password">
-                                        Senha *
-                                    </InputLabel>
-                                    <PasswordField onChange={this.handleChange('password')}
-                                        id="password" 
-                                        inputProps={{ autoComplete: "new-password" }}
-                                    />
-                                </FormControl>
-                            </form>
-                        </Grid>
-                    }
-                    <Grid item xs={12} className="betweenInline">
-                        <small className="defaultFontColor">
-                            * Dados obrigatórios
-                        </small>
-                        { this.state.user._id &&
-                            <CustomButton color="default"
-                                text="Alterar senha" iconSize="small"
-                                icon="lock" 
-                                onClick={this.toogleDialog(true)}
-                            />
+                        { !this.state.user._id &&
+                            <Grid item xs={12}>
+                                <Box display="flex" className="textColor">
+                                    <Icon>
+                                        lock
+                                    </Icon>
+                                    <h3 className="marginNone">
+                                        Informações sigilosas
+                                    </h3>
+                                </Box>
+                            </Grid>
                         }
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Divider className="separator"/>
-                    </Grid>
-                    <Dialog
-                        open={this.state.openDialog}
-                        onClose={this.toogleDialog(false)}
-                        aria-labelledby="title"
-                        aria-describedby="change_password"
-                    >
-                        <DialogTitle id="title">{this.state.loadingOp ? "Alterando..." : "Alterar senha"}</DialogTitle>
-                        <DialogContent>
-                            <Container>
-                                { !this.state.loadingOp &&
-                                    <DialogContentText id="change_password">
-                                        Informe a nova senha
-                                    </DialogContentText>
-                                }
-                                { this.state.loadingOp &&
-                                    <DialogContentText id="description">
-                                        Alterando senha, por favor aguarde...
-                                    </DialogContentText>
-                                }
-                                { !this.state.loadingOp && 
-                                    <form>
-                                        <FormControl fullWidth>
-                                            <InputLabel htmlFor="changePassword">
-                                                Senha
-                                            </InputLabel>
-                                            <PasswordField onChange={this.handleChange('password')}
-                                                id="changePassword"
-                                                inputProps={{ autoComplete: "new-password" }}
-                                            />
-                                        </FormControl>
-                                    </form>
-                                }
-                            </Container>
-                        </DialogContent>
-                        <DialogActions>
-                            { !this.state.loadingOp &&
-                                <Button color="primary"
-                                    onClick={this.toogleDialog(false)}>
-                                        Fechar
-                                </Button>}
-                            { !this.state.loadingOp &&
-                                <Button color="primary"
-                                    onClick={this.changePassword}>
-                                        Confirmar
-                                </Button>
+                        { !this.state.user._id &&
+                            <Grid item xs={12} className="formGroup">
+                                <form>
+                                    <FormControl fullWidth>
+                                        <InputLabel htmlFor="password">
+                                            Senha *
+                                        </InputLabel>
+                                        <PasswordField onChange={this.handleChange('password')}
+                                            id="password" 
+                                            inputProps={{ autoComplete: "new-password" }}
+                                        />
+                                    </FormControl>
+                                </form>
+                            </Grid>
+                        }
+                        <Grid item xs={12} className="betweenInline">
+                            <small className="defaultFontColor">
+                                * Dados obrigatórios
+                            </small>
+                            { this.state.user._id &&
+                                <CustomButton color="default"
+                                    text="Alterar senha" iconSize="small"
+                                    icon="lock" 
+                                    onClick={this.toogleDialog(true)}
+                                />
                             }
-                        </DialogActions>
-                    </Dialog>
-                    <Grid item xs={12} className="footList">
-                        <CustomButton className="buttonFootList"
-                            iconSize="small"
-                            icon="logout"
-                            color="gray"
-                            text="Voltar"
-                            onClick={() => this.goTo("users")}
-                        />
-                        <CustomButton className="buttonFootList"
-                            iconSize="small"
-                            color="success"
-                            icon="done"
-                            text="Salvar"
-                            onClick={this.save}
-                        />
-                    </Grid>
-                </Paper>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Divider className="separator"/>
+                        </Grid>
+                        <Dialog
+                            open={this.state.openDialog}
+                            onClose={this.toogleDialog(false)}
+                            aria-labelledby="title"
+                            aria-describedby="change_password"
+                        >
+                            <DialogTitle id="title">{this.state.loadingOp ? "Alterando..." : "Alterar senha"}</DialogTitle>
+                            <DialogContent>
+                                <Container>
+                                    { !this.state.loadingOp &&
+                                        <DialogContentText id="change_password">
+                                            Informe a nova senha
+                                        </DialogContentText>
+                                    }
+                                    { this.state.loadingOp &&
+                                        <DialogContentText id="description">
+                                            Alterando senha, por favor aguarde...
+                                        </DialogContentText>
+                                    }
+                                    { !this.state.loadingOp && 
+                                        <form>
+                                            <FormControl fullWidth>
+                                                <InputLabel htmlFor="changePassword">
+                                                    Senha
+                                                </InputLabel>
+                                                <PasswordField onChange={this.handleChange('password')}
+                                                    id="changePassword"
+                                                    inputProps={{ autoComplete: "new-password" }}
+                                                />
+                                            </FormControl>
+                                        </form>
+                                    }
+                                </Container>
+                            </DialogContent>
+                            <DialogActions>
+                                { !this.state.loadingOp &&
+                                    <Button color="primary"
+                                        onClick={this.toogleDialog(false)}>
+                                            Fechar
+                                    </Button>}
+                                { !this.state.loadingOp &&
+                                    <Button color="primary"
+                                        onClick={this.changePassword}>
+                                            Confirmar
+                                    </Button>
+                                }
+                            </DialogActions>
+                        </Dialog>
+                        <Grid item xs={12} className="footList">
+                            <CustomButton className="buttonFootList"
+                                iconSize="small"
+                                icon="logout"
+                                color="gray"
+                                text="Voltar"
+                                onClick={() => this.goTo("users")}
+                            />
+                            <CustomButton className="buttonFootList"
+                                iconSize="small"
+                                color="success"
+                                icon="done"
+                                text="Salvar"
+                                onClick={this.save}
+                            />
+                        </Grid>
+                    </Paper>
+                }
+                {this.state.loading &&
+                    <Container className="center spinnerContainer">
+                        <img src={Searching} alt="Procurando Usuários"/>
+                        <h4>
+                            Carregando, por favor aguarde...
+                        </h4>
+                    </Container>
+                }
             </Container>
         )
     }

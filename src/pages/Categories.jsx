@@ -5,13 +5,14 @@ import { Redirect, Link } from 'react-router-dom'
 import { Container, Grid, Button, Table,
     TableRow, TableHead, TableBody, TableCell,
     TableFooter, TablePagination, Dialog, DialogActions, DialogContent,
-    DialogContentText, DialogTitle, CircularProgress, Paper, Icon,
+    DialogContentText, DialogTitle, Paper, Icon,
     Box } from '@material-ui/core'
 import SearchBar from 'material-ui-search-bar'
 
 import CustomButton from '../components/Button.jsx'
 import CustomIconButton from '../components/IconButton.jsx'
 import Header from '../components/Header.jsx'
+import Searching from '../assets/searching.gif'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../config/backend'
@@ -22,7 +23,7 @@ class Categories extends Component {
     
     state = { 
         categories: [],
-        loading: true,
+        loading: false,
         query: '',
         page: 1,
         count: 0,
@@ -31,6 +32,10 @@ class Categories extends Component {
         dialog: false,
         loadingOp: false,
         categorySelected: null
+    }
+
+    toogleLoading(){
+        this.setState({loading: !this.state.loading})
     }
 
     async changeQueryValue(query){
@@ -49,18 +54,21 @@ class Categories extends Component {
 
         const url = `${backendUrl}/categories?page=${this.state.page}&query=${this.state.query}&limit=${this.state.limit}`
         if(this.state.categories.length > 0) this.setState({categories: []})
-        if(!this.state.loading) this.setState({loading: true})
+        
+        await this.toogleLoading()
         await axios(url).then(res => {
             this.setState({
                 categories: res.data.categories,
                 count: res.data.count,
                 limit: res.data.limit,
                 error: false,
-                loading: false,
+                // loading: false,
             })
         }).catch(error => {
             this.setState({error: true})
         })
+
+        this.toogleLoading()
     }
 
     async remove(){
@@ -163,10 +171,10 @@ class Categories extends Component {
                 </Container>
                 {this.state.loading && 
                     <Container className="center spinnerContainer">
-                        <CircularProgress/>
-                        <p>
+                        <img src={Searching} alt="Procurando categorias..."/>
+                        <h4>
                             Carregando, por favor aguarde...
-                        </p>
+                        </h4>
                     </Container>
                 }
                 {!this.state.loading && this.state.categories.length === 0 &&

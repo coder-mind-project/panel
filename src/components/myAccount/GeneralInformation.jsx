@@ -134,6 +134,7 @@ class GeneralInformation extends Component {
         if(!img) 
         return toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon>Selecione uma imagem</div>), {autoClose: 2000, closeOnClick: true}) 
 
+        await this.setState({sendingPhoto: true})
         //Obtém se o ID do artigo e a imagem selecionada
         const id = this.state.user._id
 
@@ -254,7 +255,7 @@ class GeneralInformation extends Component {
                                             photo
                                         </Icon>
                                         {this.state.sendingPhoto ?
-                                            'Enviando foto...' : 'Alterar foto'
+                                            'Enviando...' : 'Alterar foto'
                                         }
                                         <input type="file" name="profilePhoto"
                                             onChange={(photo) => this.addPhoto(photo)}

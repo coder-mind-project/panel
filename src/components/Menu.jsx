@@ -8,9 +8,9 @@ import Avatar from 'react-avatar'
 import { AppBar, Toolbar, useScrollTrigger, Slide,
     IconButton, Menu, MenuItem, Drawer, List, ListItem,
     useMediaQuery, Icon, Box } from '@material-ui/core'
-    
-import Logo from '../assets/estudante_ti1.png'
-import LogoHorizontal from '../assets/estudante_ti4.png'
+
+import Logo from '../assets/logo-gestao1.png'
+import LogoBlack from '../assets/logo-gestao-preto1.png'
 
 import Notifications from './Notifications.jsx'
 
@@ -76,12 +76,12 @@ const MenuApp = props => {
                             </IconButton>
                         }
                         <Link className={classes.link} to="/">
-                            {/* <img src={LogoHorizontal} width="180"
+                            <img src={Logo} width="110"
                                 className={classes.menuLogo}
-                                alt="Estudante TI"
-                            /> */}
+                                alt="Coder Mind | Gestão"
+                            />
 
-                            <h2>Coder Mind</h2>
+                            {/* <h2>Coder Mind</h2> */}
                         </Link>
                         { matches && 
                             <Link to="/articles" className={classes.menuLink}>
@@ -164,11 +164,14 @@ const MenuApp = props => {
                 </AppBar>
             </HideOnScroll>
             <Drawer open={state.drawerMenu} 
-                onClose={() => setState({drawerMenu: false  })}
+                onClose={() => setState({drawerMenu: false})}
             >
                 <Link to="/" onClick={() => setState({drawerMenu: false})}>
                     <div className={classes.logo}>
-                        <h2>Coder Mind</h2>
+                            <img src={LogoBlack} width="180"
+                                alt="Coder Mind | Gestão"
+                            />
+                        {/* <h2>Coder Mind</h2> */}
                     </div>
                 </Link>
                 <div className={classes.drawer}>
@@ -198,6 +201,20 @@ const MenuApp = props => {
                                         person_outline
                                     </Icon>
                                     Usuários
+                                </strong>
+                            </ListItem>
+                        </Link>
+                        <Link to="/comments" className={classes.buttonLink}
+                            onClick={() => setState({drawerMenu: false})}
+                        >
+                            <ListItem button key={'comments'}
+                                className={classes.drawerButton}
+                            >
+                                <strong className={classes.menuButtonContent}>
+                                    <Icon  className={classes.iconButtonMenu}>
+                                        question_answer
+                                    </Icon>
+                                    Comentários
                                 </strong>
                             </ListItem>
                         </Link>

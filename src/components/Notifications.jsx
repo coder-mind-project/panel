@@ -120,7 +120,7 @@ class Notifications extends Component {
                                     showLabels
                                     value={0}
                                 >
-                                    <BottomNavigationAction label="Ver mais" onClick={() => window.location.href = '/comments'} icon={<Icon>more_horiz</Icon>} />
+                                    <BottomNavigationAction label="Ver todos" className="notification-footer-button" onClick={() => window.location.href = '/comments'} icon={<Icon color="secondary">more_horiz</Icon>} />
                                     <BottomNavigationAction label="Fechar" onClick={() => this.closeMenuNotifications()} icon={<Icon>clear</Icon>} />
                                 </BottomNavigation>
                             </Box>

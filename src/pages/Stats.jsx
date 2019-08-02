@@ -7,7 +7,10 @@ class Stats extends Component{
     render(){
         return(
             <Container>
-                <h1>Home component</h1>
+                Test
+                {/* <Box width="125px" height="100px">
+                    <Image src={BrokenRobot} aspectRatio={(16/9)} />
+                </Box> */}
             </Container>
         )
     }

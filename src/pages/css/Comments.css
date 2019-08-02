@@ -15,6 +15,14 @@
     margin-top: 10px;
 }
 
+.form-hud-options{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 .form-footer-right{
     display: flex;
     align-items: center;
@@ -30,10 +38,19 @@
         margin-top: 10px;
     }
     
+    .form-hud-options{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
     .form-footer-right{
         display: flex;
         align-items: center;
         justify-content: center;
         margin-top: 10px;
     }
+
 }

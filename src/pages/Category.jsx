@@ -13,6 +13,7 @@ import { backendUrl, defineErrorMsg } from '../config/backend'
 
 import CustomButton from '../components/Button.jsx'
 import Header from '../components/Header'
+import Searching from '../assets/searching.gif'
 
 import './css/defaultPage.css'
 import './css/forms.css'
@@ -27,8 +28,13 @@ export default class User extends Component{
             alias: '',
             description: '',
         },
+        loading: false,
         redirectTo: '',
         themeSelected: null,
+    }
+
+    toogleLoading(){
+        this.setState({loading: !this.state.loading})
     }
 
     handleChange = attr => event => {
@@ -133,8 +139,9 @@ export default class User extends Component{
     async getCategory(id){
         /* Realiza a busca da categoria para permitir a edição / visualização */
         
+        await this.toogleLoading()
         const url = `${backendUrl}/categories/${id}`
-        axios(url).then(res => {
+        await axios(url).then(res => {
             this.setState({
                 category: {
                     _id: res.data._id,
@@ -161,6 +168,8 @@ export default class User extends Component{
                 toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
             }
         })
+        
+        this.toogleLoading()
     }
 
     async componentDidMount(){
@@ -189,75 +198,85 @@ export default class User extends Component{
                         </strong>
                     </Breadcrumbs>
                 </Box>
-                <Paper className="form">
-                    {this.state.redirectTo && 
-                        <Redirect to={`/${this.state.redirectTo}`} />
-                    }
-                    <ToastContainer />
-                    <Grid container>
-                        <Grid item xs={12} md={6} className="formGroup">
-                            <TextField label="Categoria *" 
-                                error={Boolean(this.state.category.name.length >= 30)}
-                                helperText={this.state.category.name.length >= 30 ? "Máximo permitido 30 caracteres" : ''} 
-                                fullWidth className="formInput"
-                                value={this.state.category.name} 
-                                onChange={this.handleChange('name')} 
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={6} className="formGroup">
-                            <TextField label="Apelido" 
-                                error={Boolean(this.state.category.alias && this.state.category.alias.length >= 30)} 
-                                helperText={this.state.category.alias && this.state.category.alias.length >= 30 ? 
-                                    "Máximo permitido 30 caracteres" :
-                                    'Informe um possível apelido para o tema, isto ajuda o sistema a encontrar este tema em pesquisas'}
-                                className="formInput" value={this.state.category.alias} 
-                                fullWidth 
-                                onChange={this.handleChange('alias')} 
-                            />
-                        </Grid>
-                        <Grid item xs={12} className="formGroup">
-                            <FormGroup>
-                                <InputLabel className="margin_bottom_x1">
-                                        Tema *
-                                </InputLabel>
-                                <AsyncSelect cacheOptions 
-                                    value={this.state.themeSelected} 
-                                    isClearable loadOptions={this.getThemes}
-                                    onChange={(value) => this.handleChangeSelect(value)}
-                                    noOptionsMessage={(event) => event.inputValue.length >= 3 ?
-                                        'Nenhum resultado encontrado' :
-                                        'Faça uma busca com pelo menos 3 caracteres'}
-                                    loadingMessage={() => "Carregando..."}
-                                    placeholder="Informe o tema desta categoria" 
+                { this.state.category._id && !this.state.loading && 
+                    <Paper className="form">
+                        {this.state.redirectTo && 
+                            <Redirect to={`/${this.state.redirectTo}`} />
+                        }
+                        <ToastContainer />
+                        <Grid container>
+                            <Grid item xs={12} md={6} className="formGroup">
+                                <TextField label="Categoria *" 
+                                    error={Boolean(this.state.category.name.length >= 30)}
+                                    helperText={this.state.category.name.length >= 30 ? "Máximo permitido 30 caracteres" : ''} 
+                                    fullWidth className="formInput"
+                                    value={this.state.category.name} 
+                                    onChange={this.handleChange('name')} 
                                 />
-                            </FormGroup>
+                            </Grid>
+                            <Grid item xs={12} md={6} className="formGroup">
+                                <TextField label="Apelido" 
+                                    error={Boolean(this.state.category.alias && this.state.category.alias.length >= 30)} 
+                                    helperText={this.state.category.alias && this.state.category.alias.length >= 30 ? 
+                                        "Máximo permitido 30 caracteres" :
+                                        'Informe um possível apelido para o tema, isto ajuda o sistema a encontrar este tema em pesquisas'}
+                                    className="formInput" value={this.state.category.alias} 
+                                    fullWidth 
+                                    onChange={this.handleChange('alias')} 
+                                />
+                            </Grid>
+                            <Grid item xs={12} className="formGroup">
+                                <FormGroup>
+                                    <InputLabel className="margin_bottom_x1">
+                                            Tema *
+                                    </InputLabel>
+                                    <AsyncSelect cacheOptions 
+                                        value={this.state.themeSelected} 
+                                        isClearable loadOptions={this.getThemes}
+                                        onChange={(value) => this.handleChangeSelect(value)}
+                                        noOptionsMessage={(event) => event.inputValue.length >= 3 ?
+                                            'Nenhum resultado encontrado' :
+                                            'Faça uma busca com pelo menos 3 caracteres'}
+                                        loadingMessage={() => "Carregando..."}
+                                        placeholder="Informe o tema desta categoria" 
+                                    />
+                                </FormGroup>
+                            </Grid>
+                            <Grid item xs={12} className="formGroup">
+                                <TextField label="Descrição" 
+                                    error={Boolean(this.state.category.description && this.state.category.description.length >= 100)}
+                                    helperText={this.state.category.description && this.state.category.description.length >= 100 ?
+                                    "Máximo permitido 100 caracteres" :
+                                    'Descreva do que se trata este tema. (Campo opcional)'}
+                                    className="formInput"
+                                    fullWidth value={this.state.category.description} 
+                                    onChange={this.handleChange('description')}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} className="formGroup">
-                            <TextField label="Descrição" 
-                                error={Boolean(this.state.category.description && this.state.category.description.length >= 100)}
-                                helperText={this.state.category.description && this.state.category.description.length >= 100 ?
-                                "Máximo permitido 100 caracteres" :
-                                'Descreva do que se trata este tema. (Campo opcional)'}
-                                className="formInput"
-                                fullWidth value={this.state.category.description} 
-                                onChange={this.handleChange('description')}
+                        <Grid item xs={12}>
+                            <Divider className="separator"/>
+                        </Grid>
+                        <Grid item xs={12} className="footList">
+                            <CustomButton className="buttonFootList"
+                                text="Voltar" color="gray" icon="logout"
+                                onClick={() => this.goTo('categories')} 
+                            />
+                            <CustomButton className="buttonFootList"
+                                text="Salvar" color="success" icon="done"
+                                onClick={this.save}
                             />
                         </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Divider className="separator"/>
-                    </Grid>
-                    <Grid item xs={12} className="footList">
-                        <CustomButton className="buttonFootList"
-                            text="Voltar" color="gray" icon="logout"
-                            onClick={() => this.goTo('categories')} 
-                        />
-                        <CustomButton className="buttonFootList"
-                            text="Salvar" color="success" icon="done"
-                            onClick={this.save}
-                        />
-                    </Grid>
-                </Paper>
+                    </Paper>
+                }
+                {this.state.loading && 
+                    <Container className="center spinnerContainer">
+                        <img src={Searching} alt="Procurando categorias..."/>
+                        <h4>
+                            Carregando, por favor aguarde...
+                        </h4>
+                    </Container>
+                }
             </Container>
         )
     }

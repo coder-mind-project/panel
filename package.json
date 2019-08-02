@@ -1,6 +1,6 @@
 {
   "name": "coder-mind-react-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Aplicação para gerenciar a plataforma coder mind",
   "private": true,
   "license": "self-funding",
@@ -10,6 +10,7 @@
     "@material-ui/icons": "^4.1.0",
     "@material-ui/pickers": "^3.1.1",
     "axios": "^0.19.0",
+    "material-ui-image": "^3.2.0",
     "material-ui-password-field": "^2.1.0",
     "material-ui-search-bar": "^1.0.0-beta.13",
     "moment": "^2.24.0",

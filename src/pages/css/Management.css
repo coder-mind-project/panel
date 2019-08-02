@@ -1,7 +1,11 @@
+.managements{
+    margin-top: 10vh;
+}
+
 .superIcon{
     font-size: 2rem !important;
 }
 
 .accessButton{
-    margin-top: 15px;
+    margin-top: 25px !important;
 }

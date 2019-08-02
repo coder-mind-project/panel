@@ -55,10 +55,10 @@ class ArticlePreview extends Component {
 
     render() { 
         return (
-            <Container>
+            <Container className="preview-container">
                 { !this.state.loading && this.state.article && !this.state.error &&
                     <Grid container className="article_content">
-                        <Grid item xs={12}>
+                        <Grid item xs={12} className="article-header-img">
                             <img src={ this.state.article.bigImg ?
                             `${backendUrl}/${this.state.article.bigImg}` : DefaultBigImg}
                             alt={this.state.article.longDescription ? this.state.article.longDescription : 'Imagem de titulo do artigo'} 

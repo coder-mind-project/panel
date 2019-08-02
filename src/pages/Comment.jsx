@@ -1,23 +1,28 @@
 import React, { Component } from 'react'
 
 import Header from '../components/Header.jsx'
-import { Grid, CircularProgress, Box, TextField,
+import { Grid, Box, TextField,
         Icon, Breadcrumbs, Divider, Paper, Container,
         Table, TableBody, TableCell, TableFooter,
         TableHead, TableRow, Dialog, DialogActions,
-        DialogContent, DialogContentText, DialogTitle} from '@material-ui/core'
+        DialogContent, DialogTitle} from '@material-ui/core'
 
+import {toast, ToastContainer} from 'react-toastify'
 
-import CustomChip from '../components/Chip.jsx'
 import CustomIconButton from '../components/IconButton.jsx'
 import CustomButton from '../components/Button.jsx'
+
+import Searching from '../assets/searching.gif'
+
+import ErrorBlock from '../components/ErrorBlock.jsx'
 
 import { Link } from 'react-router-dom'
 
 import axios from 'axios'
 import { backendUrl } from '../config/backend'
+import { displayFullDate } from '../config/masks'
 
-import { OPTIONS_LIMIT, DEFAULT_LIMIT, LIMIT_LABEL, DISPLAYED_ROWS } from '../config/dataProperties'
+import { DEFAULT_LIMIT } from '../config/dataProperties'
 
 import './css/Comment.css'
 
@@ -35,13 +40,16 @@ const INITIAL_COMMENT = {
 class Comment extends Component {
     state = { 
         loading: false,
+        loadingMore: false,
+        existMore: true,
         answers: [],
         comment: INITIAL_COMMENT,
         count: 0,
         page: 1,
         limit: DEFAULT_LIMIT,
+        
         error: false,
-        existMore: true,
+
         dialogAnswer: false,
         answer: '',
         authorAnswer: '',
@@ -52,19 +60,23 @@ class Comment extends Component {
         this.setState({loading: !this.state.loading})
     }
 
+    toogleLoadingMore(){
+        this.setState({loadingMore: !this.state.loadingMore})
+    }
+
     async getHistory(){
         await this.toogleLoading()
         const _id = this.props.match.params.id
 
         const url = `${backendUrl}/comments/history/${_id}?page=${this.state.page}&limit=${this.state.limit}`
 
-        axios(url).then(res => {
+        await axios(url).then(res => {
             this.setState({
                 comment: res.data.comment,
                 answers: res.data.answers,
                 count: res.data.count
             })
-        }).catch(error => console.log(error))
+        }).catch(error => this.setState({error: true}))
 
         this.toogleLoading()
     }
@@ -72,15 +84,16 @@ class Comment extends Component {
     async includeMoreComments(){
         const page = this.state.page + 1
         await this.setState({page})
+        await this.toogleLoadingMore()
         
         const _id = this.state.comment._id
         const url = `${backendUrl}/comments/history/${_id}?page=${this.state.page}&limit=${this.state.limit}`
 
-        axios(url).then(async res => {
-            console.log(res.data, url)
+        await axios(url).then(async res => {
             let answers = this.state.answers
             if(res.data.answers.length === 0){
                 this.setState({existMore: false})
+                toast.info((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Não existem mais respostas a este comentário</div>), {autoClose: 5000, closeOnClick: true})
             }else{
                 const count = this.state.count + res.data.count
                 answers.push(...res.data.answers)
@@ -90,8 +103,10 @@ class Comment extends Component {
                 })
             }
         }).catch(error => {
-            console.log(error)
+            this.setState({error: true})
         })
+
+        this.toogleLoadingMore()
         
     }
 
@@ -112,11 +127,19 @@ class Comment extends Component {
                         <Link to="/comments" className="defaultFontColor">
                             <strong>Comentarios</strong>
                         </Link>
-                        <strong>
-                            {`Comentário de ${this.state.comment.userName}`}
-                        </strong>
+                        { this.state.comment._id && 
+                            <strong>
+                            Comentário de <u>{this.state.comment.userName}</u>
+                            </strong>
+                        }
+                        { !this.state.comment._id && this.state.loading &&
+                            <strong>
+                            Carregando commentario...
+                            </strong>
+                        }
                     </Breadcrumbs>
                 </Box>
+                <ToastContainer />
                 { !this.state.loading && this.state.comment._id &&
                     <Paper className="paper">
                         <Grid item xs={12}>
@@ -185,7 +208,7 @@ class Comment extends Component {
                                                             <Icon fontSize="small" className="marginRight">
                                                                 person
                                                             </Icon>
-                                                            Leitor
+                                                            Pessoa
                                                         </span>
                                                     </TableCell>
                                                     <TableCell>
@@ -217,7 +240,7 @@ class Comment extends Component {
                                                         {comment.userEmail}
                                                     </TableCell>
                                                     <TableCell scope="createdAt">
-                                                        {comment.createdAt}
+                                                        {displayFullDate(comment.createdAt)}
                                                     </TableCell>
                                                     <TableCell scope="_id">
                                                         <CustomIconButton icon="speaker_notes"
@@ -295,10 +318,13 @@ class Comment extends Component {
                 { this.state.loading && 
                     <Grid item xs={12} className="comment-content">
                         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
-                            <CircularProgress color="secondary" />
-                            <p>Obtendo as informações...</p>
+                            <img src={Searching} alt="Carregando comentário" />
+                            <h4>Carregando, por favor aguarde...</h4>
                         </Box>
                     </Grid>
+                }
+                { this.state.error && 
+                    <ErrorBlock />
                 }
             </Grid> 
         )

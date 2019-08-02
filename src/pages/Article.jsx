@@ -2,14 +2,16 @@ import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Container, Divider, Grid, TextField,
     FormGroup, InputLabel, Paper, Box, Icon, 
-    Tabs, Tab, CircularProgress, Typography } from '@material-ui/core'
+    Tabs, Tab, Breadcrumbs } from '@material-ui/core'
 import AsyncSelect from 'react-select/async'
 
 import Header from '../components/Header'
 import CustomButton from '../components/Button.jsx'
 import ArticleImages from '../components/Articles/ArticleImages.jsx'
 import ArticlePreview from '../components/Articles/ArticlePreview'
+import ArticleConfig from '../components/Articles/ArticleConfig'
 import FloatingButton from '../components/FloatingButton.jsx'
+import Searching from '../assets/searching.gif'
 
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
@@ -30,6 +32,7 @@ class Article extends Component {
         article: {
             _id: null,
             title: '',
+            author: null,
             theme: null,
             category: null,
             shortDescription: '',
@@ -40,6 +43,13 @@ class Article extends Component {
             bigImg: null,
             customURL: '',
             createdAt: '',
+            publishAt: '',
+            updatedAt: '',
+            published : true, 
+            boosted : false, 
+            deleted : false, 
+            inactivated : false, 
+
         },
         categories: [],
         redirectTo: '',
@@ -48,21 +58,27 @@ class Article extends Component {
         saving: false,
     }
 
-    getArticle = (customURL) => {
+    toogleLoadingState(){
+        this.setState({loading: !this.state.loading})
+    }
+
+    getArticle = async (customURL) => {
         const url = `${backendUrl}/articles/${customURL}`
-        axios(url).then(async res => {
+        await this.toogleLoadingState()
+        await axios(url).then(async res => {
+
+            if(this.props.user._id !== res.data._id && !this.props.user.tagAdmin){
+                toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon>Você não tem permissão para acessar este artigo!</div>), {autoClose: 2000, closeOnClick: true})
+                return setTimeout(() => this.setState({redirectTo: 'articles'}), 3000)
+            }
 
             await this.storageArticle(res.data)
-            this.setState({
-                loading: false
-            })
+            this.toogleLoadingState()
         }).catch(async error => {
             const msg = await defineErrorMsg(error)
             toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 2000, closeOnClick: true})
             
-            await this.setState({
-                loading: false
-            })
+            this.toogleLoadingState()
 
             setTimeout(this.goTo('articles'), 3000)
         })
@@ -110,7 +126,7 @@ class Article extends Component {
     }
 
     save = (author) => async event => {
-        //Função para salvar no banco 
+        //Função para salvar o artigo 
         event.preventDefault()
 
         const article = await this.formatData(author)
@@ -122,7 +138,7 @@ class Article extends Component {
             await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>{method === 'post' ? 'Artigo cadastrado, por favor aguarde...' : 'Artigo atualizado com sucesso'}</div>), {autoClose: 2000, closeOnClick: true})
             await this.changeSavingState()
             if(method === 'post'){
-                await setTimeout(() => window.location.href = `edit-article/${res.data.customURL}`, 3000)
+                await setTimeout(() => window.location.href = `article/${res.data.customURL}`, 3000)
             }else{
                 this.storageArticle(res.data)
             }
@@ -139,6 +155,7 @@ class Article extends Component {
             article: {
                 _id: article._id,
                 title: article.title,
+                author: article.author,
                 /*
                     Os campos 'label' e 'value' são necessários para o componente 
                     Select mostrar as informações do registro
@@ -161,6 +178,13 @@ class Article extends Component {
                 longDescription: article.longDescription || '',
                 textArticle: article.textArticle || '',
                 createdAt: article.createdAt,
+                publishAt: article.publishAt,
+                updatedAt: article.updatedAt,
+                published : article.published, 
+                boosted : article.boosted, 
+                deleted : article.deleted, 
+                inactivated : article.inactivated, 
+
             },
         })
     }
@@ -171,13 +195,13 @@ class Article extends Component {
         return {
             _id: this.state.article._id,
             title: this.state.article.title,
-            theme: {
+            theme: this.state.article.theme ? {
                 _id: this.state.article.theme._id,
                 name: this.state.article.theme.name,
                 alias: this.state.article.theme.alias,
                 description: this.state.article.theme.description,
                 state: this.state.article.theme.state,
-            },
+            } : null,
             category: this.state.article.category,
             shortDescription: this.state.article.shortDescription,
             customURL: this.state.article.customURL ? formatCustomURL(this.state.article.customURL) : formatCustomURL(this.state.article.title),
@@ -188,6 +212,11 @@ class Article extends Component {
                 name: author.name,
                 email: author.email,
                 gender: author.gender,
+                profilePhoto: author.profilePhoto,
+                github: author.github,
+                twitter: author.twitter,
+                instagram: author.instagram,
+                youtube: author.youtube,
             }
         }
     }
@@ -253,7 +282,6 @@ class Article extends Component {
 
     componentWillMount(){
         if(!this.props.match.params.id) return
-        this.setState({loading: true})
     }
 
     componentDidMount(){
@@ -272,13 +300,23 @@ class Article extends Component {
                     <Redirect to={`/${this.state.redirectTo}`} />
                 }
                 <Header title="Artigo" description="Crie um novo artigo" icon="note_add"/>
+                <Box mb={3}>
+                    <Breadcrumbs separator={<Icon>navigate_next_icon</Icon>}>
+                        <Link to="/articles" className="defaultFontColor">
+                            <strong>Artigos</strong>
+                        </Link>
+                        <strong>
+                            {this.state.article._id ? 'Editar artigo' : 'Criar novo artigo'}
+                        </strong>
+                    </Breadcrumbs>
+                </Box>
                 { !this.state.loading && 
                     <Paper>
                         <Tabs value={this.state.currentTab} indicatorColor="primary" onChange={(evt, value) => this.changeCurrentTab(value)} variant="scrollable" scrollButtons="on">
                             <Tab label={(<span className="centerInline"><Icon>description</Icon>Informações principais</span>)} />
                             <Tab label={(<span className="centerInline"><Icon>visibility</Icon>Visualizar</span>)}/>
                             <Tab label={(<span className="centerInline"><Icon>images</Icon>Imagens</span>)}/>
-                            <Tab label={(<span className="centerInline"><Icon>settings</Icon>Configurações</span>)} disabled/>
+                            <Tab label={(<span className="centerInline"><Icon>settings</Icon>Configurações</span>)} disabled={!this.state.article._id}/>
                         </Tabs>
                         { this.state.currentTab === 0 && 
                             <Box p={2}>
@@ -308,7 +346,7 @@ class Article extends Component {
                                         <TextField fullWidth error={this.state.article.longDescription.trim().length > 300} id="long_description" helperText={this.state.article.longDescription.trim().length > 300 ? "Máximo permitido são 300 caracteres" : "Usado para descrever a futura imagem de titulo do artigo"} label="Longa descrição" value={this.state.article.longDescription || ''} margin="normal" onChange={this.handleChange('longDescription')}/>
                                     </Grid>
                                     <Grid item xs={12} className="formGroup">
-                                        <TextField fullWidth id="author" label="Autor" disabled value={this.props.user.name || 'Autor não definido'} margin="normal"/>
+                                        <TextField fullWidth id="author" label="Autor" disabled value={this.state.article && this.state.article.author && this.state.article.author.name ? this.state.article.author.name : this.props.user.name} margin="normal"/>
                                     </Grid>
                                     <Grid item xs={12} className="divider">
                                         <Divider />
@@ -334,18 +372,17 @@ class Article extends Component {
                         {this.state.currentTab === 2 && 
                             <ArticleImages article={this.state.article}/>
                         }
-                        {this.state.currentTab === 3 && 
-                            <Box>Tab3</Box>
-                            // ... //
+                        {this.state.currentTab === 3 && this.state.article._id && 
+                            <ArticleConfig article={this.state.article}/>
                         }
                     </Paper>
                 }
                 {this.state.loading && 
                     <Box display="flex" alignItems="center" flexDirection="column" m={5} p={5}>
                         <Box display="flex" justifyContent="center" alignItems="center" mb={1}>
-                            <CircularProgress />
+                            <img src={Searching} alt="Carregando artigo"/>
                         </Box>
-                        <Typography variant="body1" component="p">Carregando o artigo, por favor aguarde...</Typography>
+                        <h4>Carregando artigo, por favor aguarde...</h4>
                     </Box>
                 }
             </Container>

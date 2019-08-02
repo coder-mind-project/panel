@@ -28,7 +28,7 @@ export const SIMPLE_LOADING_MSG = "Carregando..."
 export const SAUDATION_LOADING_MSG = "Carregando, por favor aguarde..."
 
 export const SIMPLE_ERROR_MSG = "Ocorreu um erro desconhecido, se persistir reporte"
-export const ERROR_MSG_CUSTOM = "Ops, parece que ocorreu um erro. Tente recarregar a página, se persistir tente novamente mais"
+export const ERROR_MSG_CUSTOM = "Ops, parece que ocorreu um erro. Tente recarregar a página, se persistir tente novamente mais tarde"
 
 
 /*  

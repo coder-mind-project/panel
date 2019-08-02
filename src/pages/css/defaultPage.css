@@ -15,6 +15,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .centerVertical{
@@ -95,14 +96,12 @@
 }
 
 .defaultButtonColor {
-    /* rgb(17,125,187) */
-    background-color: rgb(34, 225, 199) !important;
+    background-color: rgb(17,125,187) !important;
     color: #fff !important;
 }
 
 .defaultButtonColor:hover{
-    /* rgb(10,115,160) */
-    background-color: rgb(55, 195, 170) !important;
+    background-color: rgb(10,115,160) !important;
 }
 
 .textColor {

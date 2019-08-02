@@ -89,13 +89,13 @@ class ExtraInformation extends Component {
 
     render() { 
         return ( 
-            <Box display="flex" flexWrap="wrap">
+            <Grid item xs={12} className="extra_information_content">
                 <Grid item xs={12} sm={6} md={3} className="formGroup">
                     <TextField label="Instragram"
                         className="formInput"
                         fullWidth
                         error={false}
-                        helperText={(<small>https://www.instagram.com/<strong>seuUsername</strong></small>)}
+                        helperText={(<small>/<strong>seuUsername</strong></small>)}
                         value={this.state.user.instagram}
                         onChange={this.handleChange('instagram')}
                         InputProps={{
@@ -112,7 +112,7 @@ class ExtraInformation extends Component {
                         className="formInput"
                         fullWidth
                         error={false}
-                        helperText={(<small>https://www.youtube.com/channel/<strong>seuCanal</strong></small>)}
+                        helperText={(<small>/channel/<strong>seuCanal</strong></small>)}
                         value={this.state.user.youtube}
                         onChange={this.handleChange('youtube')}
                         InputProps={{
@@ -129,7 +129,7 @@ class ExtraInformation extends Component {
                         className="formInput"
                         fullWidth
                         error={false}
-                        helperText={(<small>https://github.com/<strong>seuUsername</strong></small>)}
+                        helperText={(<small>/<strong>seuUsername</strong></small>)}
                         value={this.state.user.github}
                         onChange={this.handleChange('github')}
                         InputProps={{
@@ -146,7 +146,7 @@ class ExtraInformation extends Component {
                         className="formInput"
                         fullWidth
                         error={false}
-                        helperText={(<small>https://twitter.com/<strong>seuUsername</strong></small>)}
+                        helperText={(<small>/<strong>seuUsername</strong></small>)}
                         value={this.state.user.twitter}
                         onChange={this.handleChange('twitter')}
                         InputProps={{
@@ -185,7 +185,7 @@ class ExtraInformation extends Component {
                         />
                     </Box>
                 </Grid>
-            </Box>
+            </Grid>
         );
     }
 }

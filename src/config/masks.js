@@ -36,4 +36,15 @@ export const displayDate = (date) => {
     }
 }
 
-export default {cpfMask, telphoneMask, celphoneMask}
+export const displayFullDate = (date) => {
+    const aux = date.split('T')
+    let dayMonthYear = aux[0].split('-')
+    dayMonthYear = `${dayMonthYear[2]}/${dayMonthYear[1]}/${dayMonthYear[0]}`
+    
+    let hours = aux[1].split('.')[0]
+
+    return `${dayMonthYear} - ${hours}`
+} 
+
+
+export default {cpfMask, telphoneMask, celphoneMask, displayFullDate}

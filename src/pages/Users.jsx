@@ -4,7 +4,7 @@ import { Redirect, Link } from 'react-router-dom'
 import { Grid, Container, Button, TableHead, TableRow,
     TableCell, Table, TableBody, TableFooter, TablePagination,
     Dialog, DialogTitle, DialogContent, DialogContentText,
-    DialogActions, CircularProgress, Paper, Icon } from '@material-ui/core'
+    DialogActions, Paper, Icon } from '@material-ui/core'
 import SearchBar from 'material-ui-search-bar'
 
 import { ToastContainer, toast } from 'react-toastify'
@@ -18,6 +18,7 @@ import CustomButton from '../components/Button.jsx'
 import CustomIconButton from '../components/IconButton.jsx'
 import CustomChip from '../components/Chip.jsx'
 import Header from '../components/Header'
+import Searching from '../assets/searching.gif'
 
 import './css/defaultPage.css'
 import './css/Users.css'
@@ -31,7 +32,7 @@ class Users extends Component {
         limit: DEFAULT_LIMIT,
         query: '',
         error: false,
-        loading: true,
+        loading: false,
 
         loadingOp: false,
         successOp: false,
@@ -39,6 +40,10 @@ class Users extends Component {
         dialog: false,
         userSelected: null,
         redirectTo: ''
+    }
+
+    toogleLoading(){
+        this.setState({loading: !this.state.loading})
     }
 
     async changeQueryValue(query){
@@ -56,24 +61,24 @@ class Users extends Component {
          /* Responsável por realizar a busca de usuarios */
 
         const url = `${backendUrl}/users?page=${this.state.page}&query=${this.state.query}&limit=${this.state.limit}`
-        this.setState({loading: true})
         if(this.state.users.length > 0) this.setState({users: []})
+        await this.toogleLoading()
         await axios(url).then(res => {
             this.setState({
                 users: res.data.users,
                 count: res.data.count,
                 limit: res.data.limit,
                 error: false,
-                loading: false,
                 errorOp: false,
                 userSelected: null
             })
         }).catch(error => {
             this.setState({
-                loading: false,
                 errorOp: true
             })
         })
+
+        this.toogleLoading()
     }
 
     async remove(user){
@@ -189,10 +194,10 @@ class Users extends Component {
                 </Container>
                 {this.state.loading &&
                     <Container className="center spinnerContainer">
-                        <CircularProgress/>
-                        <p>
+                        <img src={Searching} alt="Procurando Usuários"/>
+                        <h4>
                             Carregando, por favor aguarde...
-                        </p>
+                        </h4>
                     </Container>
                 }
                 {!this.state.loading && this.state.users.length === 0 &&

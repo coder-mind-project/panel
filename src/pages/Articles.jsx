@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 
-import { Container, Grid, CircularProgress, Select,
+import { Container, Grid, Select,
     Input, FormControl, InputLabel, MenuItem, Box } from '@material-ui/core'
-    import SearchBar from 'material-ui-search-bar'
+import SearchBar from 'material-ui-search-bar'
 
 import CustomButton from '../components/Button.jsx'
 import Header from '../components/Header.jsx'
 import ArticleBlock from '../components/Articles/ArticleBlock.jsx'
 import FloatingButton from '../components/FloatingButton'
+import Searching from '../assets/searching.gif'
+import NotFound from '../components/NotFound.jsx'
 
 import axios from 'axios'
 import { backendUrl } from '../config/backend'
-import { OPTIONS_LIMIT , DEFAULT_LIMIT } from '../config/dataProperties'
+import { OPTIONS_LIMIT , DEFAULT_LIMIT, ERROR_MSG_CUSTOM, SAUDATION_LOADING_MSG } from '../config/dataProperties'
 
 import { ToastContainer } from 'react-toastify'
     
@@ -130,32 +132,24 @@ export default class Articles extends Component {
                     <FloatingButton icon="add" action={this.goTo('article')} />
                     {this.state.loading && 
                         <Container className="center spinnerContainer">
-                            <CircularProgress />
-                            <p>
-                                Procurando artigos...
-                            </p>
+                            <img src={Searching} alt={SAUDATION_LOADING_MSG} />
+                            <h4>
+                                Procurando artigos, por favor aguarde...
+                            </h4>
                         </Container>
                     }
                     {!this.state.loading && this.state.articles.length > 0 && 
                         this.state.articles.map((article, key) => 
                             <ArticleBlock article={article} key={article._id} />)
                     }
-                    {!this.state.loading && this.state.articles.length === 0 &&
-                        <Container className='center'>
-                            <p>
-                                Nenhum artigo encontrado
-                            </p>
-                        </Container>
+                    {!this.state.loading && this.state.articles.length === 0 && !this.state.error &&
+                        <NotFound msg="Ops! Nenhum artigo encontrado" />
                     }
                     {this.state.error &&
-                        <Container className="center">
-                            <p className="defaultFontColor">
-                                Ocorreu um erro ao obter a informação com a base de dados
-                            </p>
-                        </Container>
+                        <NotFound msg={ERROR_MSG_CUSTOM} />
                     }
                 </Container>
-                {!this.state.loading &&
+                {!this.state.loading && !this.state.error &&
                     <Container className="footList">
                         <Box mt={1}>
                             <span className="defaultFontColor marginRight">

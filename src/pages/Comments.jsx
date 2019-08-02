@@ -12,6 +12,8 @@ import { toast, ToastContainer } from 'react-toastify'
 import CustomChip from '../components/Chip.jsx'
 import CustomIconButton from '../components/IconButton.jsx'
 import CustomButton from '../components/Button.jsx'
+import Searching from '../assets/searching.gif'
+import NotFound from '../components/NotFound.jsx'
 
 import { Grid, Table, TableHead, TableRow, 
         TableCell, Icon, TableBody, TableFooter,
@@ -21,6 +23,7 @@ import { Grid, Table, TableHead, TableRow,
 
 
 import { OPTIONS_LIMIT, DEFAULT_LIMIT, LIMIT_LABEL, DISPLAYED_ROWS } from '../config/dataProperties'
+import { displayFullDate } from '../config/masks'
 
 import './css/defaultPage.css'
 import './css/Comments.css'
@@ -43,7 +46,7 @@ class Comments extends Component {
         limit: DEFAULT_LIMIT,
         query: '',
         error: false,
-        loading: true,
+        loading: false,
         saving: false,
 
         dialogAnswer: false,
@@ -235,7 +238,17 @@ class Comments extends Component {
                                             disabled
                                         />
                                     </Box>
-                                    <Box width="100%" display="flex" justifyContent="flex-end" alignItems="center" flexWrap="wrap" mt={1}>
+                                    <Box width="100%" mt={1} mb={1}>
+                                        <TextField 
+                                            className="form-input"
+                                            label="Comentado em"
+                                            multiline
+                                            value={displayFullDate(this.state.comment.createdAt)}
+                                            fullWidth
+                                            disabled
+                                        />
+                                    </Box>
+                                    <Box className="form-hud-options" mt={1}>
                                             <Link to={`/comments/${this.state.comment._id}`} className="linkRouterBlack">
                                                 <CustomButton 
                                                     color="none"
@@ -245,6 +258,7 @@ class Comments extends Component {
                                                 />
                                             </Link>
                                             <CustomButton 
+                                                className="link-button"
                                                 color="none"
                                                 variant="text"
                                                 text="Responder"
@@ -343,112 +357,125 @@ class Comments extends Component {
                         />
                     </DialogActions>
                 </Dialog>
-                <Paper>
-                    <Container className="wrapper">
-                        <Table className="defaultTable">
-                            {/* Header da tabela */}
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>
-                                        <span className="centerVertical">
-                                            <Icon fontSize="small" className="marginRight">
-                                                file_copy
-                                            </Icon>
-                                            Artigo
-                                        </span>
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className="centerVertical">
-                                            <Icon fontSize="small" className="marginRight">
-                                                person
-                                            </Icon>
-                                            Leitor
-                                        </span>
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className="centerVertical">
-                                            <Icon fontSize="small" className="marginRight">
-                                            alternate_email
-                                            </Icon>
-                                            E-mail
-                                        </span>
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className="centerVertical">
-                                            <Icon fontSize="small" className="marginRight">
-                                                category
-                                            </Icon>
-                                            Status
-                                        </span>
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            {/* Geração dos registros na tabela  */}
-                            {this.state.comments.map(comment => (
-                                <TableRow key={comment._id} id={comment._id} tabIndex="-1">
-                                    <TableCell scope="article.title">
-                                        <a href={`/article/${comment.article.customURL}`} target="_blank" rel="noopener noreferrer">{comment.article.title}</a>
-                                    </TableCell>
-                                    <TableCell scope="userName">
-                                        {comment.userName}
-                                    </TableCell>
-                                    <TableCell scope="userEmail">
-                                        {comment.userEmail}
-                                    </TableCell>
-                                    <TableCell scope="tagAdmin">
-                                        {comment.confirmed ? 
-                                            <CustomChip size="small"
-                                                className="chipTypeUser"
-                                                color="success"
-                                                sizeIcon="small"
-                                                icon="done"
-                                                text="Aprovado"/> : 
-                                            <CustomChip size="small"
-                                                className="chipTypeUser"
-                                                color="gray"
-                                                sizeIcon="small"
-                                                icon="warning"
-                                                text="Não aprovado"
+                { this.state.comments.length > 0 && !this.state.loading &&
+                    <Paper>
+                        <Container className="wrapper">
+                            <Table className="defaultTable">
+                                {/* Header da tabela */}
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                            <span className="centerVertical">
+                                                <Icon fontSize="small" className="marginRight">
+                                                    file_copy
+                                                </Icon>
+                                                Artigo
+                                            </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="centerVertical">
+                                                <Icon fontSize="small" className="marginRight">
+                                                    person
+                                                </Icon>
+                                                Leitor
+                                            </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="centerVertical">
+                                                <Icon fontSize="small" className="marginRight">
+                                                alternate_email
+                                                </Icon>
+                                                E-mail
+                                            </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="centerVertical">
+                                                <Icon fontSize="small" className="marginRight">
+                                                    category
+                                                </Icon>
+                                                Status
+                                            </span>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {/* Geração dos registros na tabela  */}
+                                {this.state.comments.map(comment => (
+                                    <TableRow key={comment._id} id={comment._id} tabIndex="-1">
+                                        <TableCell scope="article.title">
+                                            <a href={`/article/${comment.article.customURL}`} target="_blank" rel="noopener noreferrer">{comment.article.title}</a>
+                                        </TableCell>
+                                        <TableCell scope="userName">
+                                            {comment.userName}
+                                        </TableCell>
+                                        <TableCell scope="userEmail">
+                                            {comment.userEmail}
+                                        </TableCell>
+                                        <TableCell scope="tagAdmin">
+                                            {comment.confirmed ? 
+                                                <CustomChip size="small"
+                                                    className="chipTypeUser"
+                                                    color="success"
+                                                    sizeIcon="small"
+                                                    icon="done"
+                                                    text="Aprovado"/> : 
+                                                <CustomChip size="small"
+                                                    className="chipTypeUser"
+                                                    color="gray"
+                                                    sizeIcon="small"
+                                                    icon="warning"
+                                                    text="Não aprovado"
+                                                />
+                                            }
+                                        </TableCell>
+                                        <TableCell scope="_id">
+                                            <CustomIconButton icon="done"
+                                                aria-label="Aproves" color="default"
+                                                tooltip="Aprovar comentário"
+                                                onClick={() => this.aproveComment(comment)}
                                             />
-                                        }
-                                    </TableCell>
-                                    <TableCell scope="_id">
-                                        <CustomIconButton icon="done"
-                                            aria-label="Aproves" color="default"
-                                            tooltip="Aprovar comentário"
-                                            onClick={() => this.aproveComment(comment)}
+                                            <CustomIconButton icon="more_horiz"
+                                                aria-label="More" color="default"
+                                                tooltip="Visualizar comentário"
+                                                onClick={() => this.readComment(comment)}
+                                            />
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                                </TableBody>
+                                {/* Footer da tabela */}
+                                <TableFooter>
+                                    <TableRow>
+                                        <TablePagination 
+                                            rowsPerPageOptions={OPTIONS_LIMIT}
+                                            colSpan={4}
+                                            count={this.state.count}
+                                            rowsPerPage={this.state.limit}
+                                            labelRowsPerPage={LIMIT_LABEL}
+                                            labelDisplayedRows={DISPLAYED_ROWS}
+                                            page={this.state.page - 1}
+                                            SelectProps={{ inputProps: {'aria-label': 'Limite'} }}
+                                            onChangePage={this.changePage}
+                                            
+                                            onChangeRowsPerPage={this.defineLimit}
                                         />
-                                        <CustomIconButton icon="more_horiz"
-                                            aria-label="More" color="default"
-                                            tooltip="Visualizar comentário"
-                                            onClick={() => this.readComment(comment)}
-                                        />
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                            </TableBody>
-                            {/* Footer da tabela */}
-                            <TableFooter>
-                                <TableRow>
-                                    <TablePagination 
-                                        rowsPerPageOptions={OPTIONS_LIMIT}
-                                        colSpan={4}
-                                        count={this.state.count}
-                                        rowsPerPage={this.state.limit}
-                                        labelRowsPerPage={LIMIT_LABEL}
-                                        labelDisplayedRows={DISPLAYED_ROWS}
-                                        page={this.state.page - 1}
-                                        SelectProps={{ inputProps: {'aria-label': 'Limite'} }}
-                                        onChangePage={this.changePage}
-                                        
-                                        onChangeRowsPerPage={this.defineLimit}
-                                    />
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
+                                    </TableRow>
+                                </TableFooter>
+                            </Table>
+                        </Container>
+                    </Paper>
+                }
+                {this.state.loading &&
+                    <Container className="center spinnerContainer">
+                        <img src={Searching} alt="Procurando Comentários"/>
+                        <h4>
+                            Procurando comentários, por favor aguarde...
+                        </h4>
                     </Container>
-                </Paper>
+                }
+                { this.state.comments.length === 0 && !this.state.loading &&
+                    <NotFound msg="Ops! nenhum comentário encontrado" />
+                }
             </Grid>
         )
     }

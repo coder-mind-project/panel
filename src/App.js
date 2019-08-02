@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-import { Container } from '@material-ui/core'
+import { Container, Grid, Fade } from '@material-ui/core'
+
+import Loading from './assets/loading.gif'
 
 //Requests imports
 import axios from 'axios'
@@ -61,7 +63,7 @@ class App extends Component {
         }).catch(() => {
           this.props.setError(true)
         })
-      }  
+      }
       this.toogleValidatingToken()
     }
 
@@ -78,47 +80,51 @@ class App extends Component {
       return (
         <Container className="page">
           { !this.state.validatingToken && 
-            <Router>
-              <Menu/>
-              <Container>
-                {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
-                {!user && 
-                  <Redirect to="/auth"/>
-                }
-                {/* Caso existe um erro é redirecionado para tela de erro */}
-                {this.props.error && 
-                  <Redirect to="/error"/>
-                }
-                {/* Caso tente se acessar o diretório / é redirecionado para um determinado diretório */}
-                {this.state.redirectTo && 
-                  <Redirect to={`/${this.state.redirectTo}`}/>
-                }
-                <Route path="/" exact component={Stats}/>
-                <Route path="/auth" exact component={Auth}/>
-                <Route path="/user" exact component={User}/>
-                <Route path="/user/:id" exact component={User}/>
-                <Route path="/users" exact component={Users}/>
-                <Route path="/article" exact component={Article}/>
-                <Route path="/article/:id" exact component={Article}/>
-                <Route path="/articles" exact component={Articles}/>
-                <Route path="/management" exact component={Management}/>
-                <Route path="/theme" exact component={Theme}/>
-                <Route path="/theme/:id" exact component={Theme}/>
-                <Route path="/themes" exact component={Themes}/>
-                <Route path="/category" exact component={Category}/>
-                <Route path="/category/:id" exact component={Category}/>
-                <Route path="/categories" exact component={Categories}/>
-                <Route path="/my-account" exact component={MyAccount}/>
-                <Route path="/comments" exact component={Comments}/>
-                <Route path="/comments/:id" exact component={Comment}/>
-                <Route path="/error" exact component={Error}/>
-              </Container>
-            </Router>
+            <Fade in={!this.state.validatingToken}>
+              <Router>
+                <Menu/>
+                <Container>
+                  {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
+                  {!user && 
+                    <Redirect to="/auth"/>
+                  }
+                  {/* Caso existe um erro é redirecionado para tela de erro */}
+                  {this.props.error && 
+                    <Redirect to="/error"/>
+                  }
+                  {/* Caso tente se acessar o diretório / é redirecionado para um determinado diretório */}
+                  {this.state.redirectTo && 
+                    <Redirect to={`/${this.state.redirectTo}`}/>
+                  }
+                  <Route path="/" exact component={Stats}/>
+                  <Route path="/auth" exact component={Auth}/>
+                  <Route path="/user" exact component={User}/>
+                  <Route path="/user/:id" exact component={User}/>
+                  <Route path="/users" exact component={Users}/>
+                  <Route path="/article" exact component={Article}/>
+                  <Route path="/article/:id" exact component={Article}/>
+                  <Route path="/articles" exact component={Articles}/>
+                  <Route path="/management" exact component={Management}/>
+                  <Route path="/theme" exact component={Theme}/>
+                  <Route path="/theme/:id" exact component={Theme}/>
+                  <Route path="/themes" exact component={Themes}/>
+                  <Route path="/category" exact component={Category}/>
+                  <Route path="/category/:id" exact component={Category}/>
+                  <Route path="/categories" exact component={Categories}/>
+                  <Route path="/my-account" exact component={MyAccount}/>
+                  <Route path="/comments" exact component={Comments}/>
+                  <Route path="/comments/:id" exact component={Comment}/>
+                  <Route path="/error" exact component={Error}/>
+                </Container>
+              </Router>
+            </Fade>
           }
           { this.state.validatingToken &&
-            <Container>
-              Validando token...
-            </Container>
+            <Fade in={this.state.validatingToken} >
+              <Grid item xs={12} className="loading-app-area">
+                <img src={Loading} alt="Carregando..." />
+              </Grid>
+            </Fade>
           }
         </Container>
       )

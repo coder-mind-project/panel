@@ -37,6 +37,8 @@ export default (props) => {
             <['primary','secondary','inherit']> : 'inherit'
         text: String - Texto do botão
             <[]> : '' (String vazia)
+        disabled: Boolean - Desabilita o botão
+            <[true, false]> : false
         
     */
 
@@ -46,6 +48,7 @@ export default (props) => {
                 fullWidth={props.fullWidth || matches}
                 variant={props.variant || 'contained'}
                 onClick={props.onClick}
+                disabled={props.disabled || false}
         >
             { Boolean(!props.disableIcon && !props.loading) &&
                 <Icon fontSize={props.iconSize || 'default'} 

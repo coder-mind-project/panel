@@ -17,6 +17,17 @@
     overflow-y: visible;
 }
 
+.article-header-img{
+    max-height: 300px;
+    overflow: hidden;
+    box-shadow: 0px 4px 4px gray;
+}
+
+.preview-container{
+    margin-top: 25px;
+    padding: 0 !important;
+}
+
 .article_content, .ql-editor{
     padding: 15px;
     font-family: 'Ubuntu', sans-serif !important;

@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Container, Grid, Button, Table,
     TableRow, TableHead, TableBody, TableCell,
     TableFooter, TablePagination, Dialog, DialogActions, DialogContent,
-    DialogContentText, DialogTitle, CircularProgress, Paper, Icon,
-    Box } from '@material-ui/core'
+    DialogContentText, DialogTitle, Paper, Icon, Box } from '@material-ui/core'
 
 import { ToastContainer, toast } from 'react-toastify'
 import { Redirect, Link } from 'react-router-dom'
@@ -12,6 +11,7 @@ import SearchBar from 'material-ui-search-bar'
 import CustomButton from '../components/Button.jsx'
 import CustomIconButton from '../components/IconButton.jsx'
 import Header from '../components/Header.jsx'
+import Searching from '../assets/searching.gif'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../config/backend'
@@ -20,7 +20,7 @@ import { OPTIONS_LIMIT, DEFAULT_LIMIT, LIMIT_LABEL, DISPLAYED_ROWS } from '../co
 class Themes extends Component {
     state = { 
         themes: [],
-        loading: true,
+        loading: false,
         query: '',
         page: 1,
         count: 0,
@@ -30,6 +30,10 @@ class Themes extends Component {
         loadingOp: false,
         themeSelected: null
 
+    }
+
+    toogleLoading(){
+        this.setState({loading: !this.state.loading})
     }
 
     async changeQueryValue(query){
@@ -48,18 +52,18 @@ class Themes extends Component {
 
         const url = `${backendUrl}/themes?page=${this.state.page}&query=${this.state.query}&limit=${this.state.limit}`
         if(this.state.themes.length > 0) this.setState({themes: []})
-        if(!this.state.loading) this.setState({loading: true})
+        await this.toogleLoading()
         await axios(url).then(res => {
             this.setState({
                 themes: res.data.themes,
                 count: res.data.count,
                 limit: res.data.limit,
                 error: false,
-                loading: false,
             })
         }).catch(error => {
             this.setState({error: true})
         })
+        this.toogleLoading()
     }
 
     async remove(){
@@ -167,10 +171,10 @@ class Themes extends Component {
                 </Container>
                 {this.state.loading && 
                     <Container className="center spinnerContainer">
-                        <CircularProgress/>
-                        <p>
+                        <img src={Searching} alt="Procurando temas" />
+                        <h4>
                             Carregando, por favor aguarde...
-                        </p>
+                        </h4>
                     </Container>
                 }
                 {!this.state.loading && this.state.themes.length === 0 &&

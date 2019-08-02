@@ -18,7 +18,7 @@ import { backendUrl, defineErrorMsg } from '../config/backend'
 
 import ReCAPTCHA from "react-google-recaptcha"
 
-import Logo from '../assets/estudante_ti1.png'
+import Logo from '../assets/logo-gestao-preto1.png'
 
 import './css/Auth.css'
 import './css/defaultPage.css'
@@ -99,9 +99,7 @@ class Auth extends Component {
                 <ToastContainer/>
                 <Paper className="modal">
                     <Grid item xs={12} className="modalTitle">
-                        <h2>Coder Mind</h2>
-                        <small>Painel de controle</small>
-                        {/* <img src={Logo} alt="Logo" width="180"/> */}
+                        <img src={Logo} alt="Logo" width="180"/>
                     </Grid>
                     <form onSubmit={this.signIn}>
                         <Grid item xs={12} className="modalForm">
@@ -120,7 +118,7 @@ class Auth extends Component {
                         </Grid> 
                         <Box display="flex" justifyContent="center" alignItems="center" width="100%" mb={2} mt={2}>
                             <ReCAPTCHA 
-                                size="compact"
+                                size="normal"
                                 sitekey="6LePkK8UAAAAACKAocqyAEB2YQr4cnd3j8Ya2b2U"
                                 onChange={(response) => this.setState({response}) }
                             />

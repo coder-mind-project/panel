@@ -2,7 +2,7 @@ export const styles = theme => ({
     container: {
         display: 'flex',
         flexDirection: 'column',
-        marginTop: 20,
+        marginTop: 65,
         marginBottom: 20,
     },
     icon: {

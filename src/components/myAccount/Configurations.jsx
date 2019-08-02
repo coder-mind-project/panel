@@ -41,8 +41,10 @@ class Configurations extends Component {
 
         await axios.delete(url).then( () => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Conta removida com sucesso, aguarde alguns segundos... Estamos lhe redirecionando</div>), {autoClose: 5000, closeOnClick: true})
-            localStorage.removeItem('user')
-            window.location.href = '/'
+            setTimeout(async () => {
+                await localStorage.removeItem('user')
+                window.location.href = '/'
+            }, 5000)
         }).catch( async error => {
             const msg = await defineErrorMsg(error)
             toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))

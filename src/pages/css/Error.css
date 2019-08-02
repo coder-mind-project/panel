@@ -1,8 +1,12 @@
 .modal_error{
-    min-height: 100vh !important;
     display: flex;
     justify-content: center;
     align-items: center; 
+}
+
+.modal_error_block{
+    display: flex;
+    flex-wrap: nowrap;
 }
 
 
