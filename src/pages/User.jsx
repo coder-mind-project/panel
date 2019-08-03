@@ -398,12 +398,12 @@ export default class User extends Component{
                             </DialogContent>
                             <DialogActions>
                                 { !this.state.loadingOp &&
-                                    <Button color="primary"
+                                    <Button color="secondary"
                                         onClick={this.toogleDialog(false)}>
                                             Fechar
                                     </Button>}
                                 { !this.state.loadingOp &&
-                                    <Button color="primary"
+                                    <Button color="secondary"
                                         onClick={this.changePassword}>
                                             Confirmar
                                     </Button>

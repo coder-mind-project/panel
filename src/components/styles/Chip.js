@@ -14,10 +14,10 @@ export const styles = theme => ({
         },
     },
     default: {
-        backgroundColor: 'rgb(17,125,187)',
+        backgroundColor: '#f50057',
         color: '#fff',
         '&:hover':{
-            backgroundColor: 'rgba(10,115,177)',
+            backgroundColor: '#cc0249',
         },
     },
     gray: {

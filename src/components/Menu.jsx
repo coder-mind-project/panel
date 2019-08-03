@@ -183,7 +183,7 @@ const MenuApp = props => {
                                 className={classes.drawerButton}
                             >
                                 <strong className={classes.menuButtonContent}>
-                                    <Icon  className={classes.iconButtonMenu}>
+                                    <Icon className={classes.iconButtonMenu}>
                                         library_books
                                     </Icon>
                                     Artigos

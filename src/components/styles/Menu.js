@@ -21,6 +21,7 @@ export const styles = theme => ({
     },
     iconButtonMenu: {
         marginRight: '10px',
+        color: '#f50057'
     },
     link: {
         color: 'inherit',

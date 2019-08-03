@@ -198,7 +198,7 @@ export default class User extends Component{
                         </strong>
                     </Breadcrumbs>
                 </Box>
-                { this.state.category._id && !this.state.loading && 
+                { !this.state.loading && 
                     <Paper className="form">
                         {this.state.redirectTo && 
                             <Redirect to={`/${this.state.redirectTo}`} />

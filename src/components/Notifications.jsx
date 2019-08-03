@@ -136,7 +136,7 @@ class Notifications extends Component {
                     <Box>
                         <Box>
                             <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                                <Badge badgeContent={this.state.notifications.length} max={99} color="primary">
+                                <Badge badgeContent={this.state.notifications.length} max={99} color="secondary">
                                     <Icon>notifications_active</Icon>
                                 </Badge>
                             </IconButton>

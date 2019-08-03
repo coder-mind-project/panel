@@ -27,10 +27,10 @@ export const styles = theme => ({
         borderRadius: 4
     },
     default: {
-        backgroundColor: 'rgb(17,125,187)',
+        backgroundColor: '#f50057',
         color: '#fff',
         '&:hover':{
-            backgroundColor: 'rgb(10,115,160)',
+            backgroundColor: '#cc0249',
         },
         marginBottom: '10px',
         fontSize: '1rem',
@@ -39,10 +39,10 @@ export const styles = theme => ({
         borderRadius: 4
     },
     defaultMaxWidth: {
-        backgroundColor: 'rgb(17,125,187)',
+        backgroundColor: '#f50057',
         color: '#fff',
         '&:hover':{
-            backgroundColor: 'rgb(10,115,160)',
+            backgroundColor: '#cc0249',
         },
         marginBottom: '10px',
         fontSize: '1rem',

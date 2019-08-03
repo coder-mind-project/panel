@@ -26,10 +26,10 @@ export const styles = (theme) => ({
     },
     default: {
         ...fontFamily,
-        backgroundColor: 'rgb(17,125,187)',
+        backgroundColor: '#f50057',
         color: '#fff',
         '&:hover':{
-            backgroundColor: 'rgb(10,115,160)',
+            backgroundColor: '#cc0249',
         },
         marginBottom: '10px',
         paddingLeft: '10px',

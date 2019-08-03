@@ -12,9 +12,9 @@ export const styles = theme => ({
         },
     },
     default: {
-        color: 'rgb(17,125,187)',
+        color: '#f50057',
         '&:hover':{
-            backgroundColor: 'rgba(17,125,187,0.1)',
+            backgroundColor: 'rgba(204, 2, 73,.2)',
         },
     },
     gray: {

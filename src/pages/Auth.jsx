@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Container, Paper, Grid, TextField,
         CircularProgress, FormControl,
-        InputLabel , Icon, Box} from '@material-ui/core'
+        InputLabel , Icon, Box,Fade} from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
 import PasswordField from 'material-ui-password-field'
 import { ToastContainer, toast } from 'react-toastify'
 
 import ButtonBase from '../components/ButtonBase.jsx'
+import RedeemAccount from './RedeemAccount.jsx'
 
 import { setUser } from '../redux/userActions'
 import { setMenu } from '../redux/menuActions'
@@ -37,6 +38,10 @@ class Auth extends Component {
         redirect: false,
     }
 
+    toogleRescuePassword(){
+        this.setState({rescuePassword: !this.state.rescuePassword})
+    }
+
     signIn = async (event) => {
         /* Resposável por realizar a autenticação */
 
@@ -53,7 +58,7 @@ class Auth extends Component {
 
         this.setState({loading: true})
 
-        const url = `${backendUrl}/signIn`
+        const url = `${backendUrl}/auth`
         await axios.post(url, user).then( async res => {
 
             await this.props.setUser(res.data)
@@ -97,37 +102,44 @@ class Auth extends Component {
         return (
             <Container className="container">
                 <ToastContainer/>
-                <Paper className="modal">
-                    <Grid item xs={12} className="modalTitle">
-                        <img src={Logo} alt="Logo" width="180"/>
-                    </Grid>
-                    <form onSubmit={this.signIn}>
-                        <Grid item xs={12} className="modalForm">
-                                <TextField label="E-mail" className="modalFormInput"
-                                    fullWidth onChange={this.handleChange('email')} 
-                                    inputProps={{ autoComplete: 'username' }}
-                                />
-                                <FormControl fullWidth>
-                                    <InputLabel htmlFor="password">Senha</InputLabel>
-                                    <PasswordField id="password" 
-                                        inputProps={{ autoComplete: 'current-password' }} 
-                                        fullWidth onChange={this.handleChange('password')}
-                                    />
-                                </FormControl>
-                            <small className="fakeLink">Esqueceu seu e-mail/senha?</small>
-                        </Grid> 
-                        <Box display="flex" justifyContent="center" alignItems="center" width="100%" mb={2} mt={2}>
-                            <ReCAPTCHA 
-                                size="normal"
-                                sitekey="6LePkK8UAAAAACKAocqyAEB2YQr4cnd3j8Ya2b2U"
-                                onChange={(response) => this.setState({response}) }
-                            />
-                        </Box>
-                        <Grid item xs={12} className="button-area">
-                            <ButtonBase class="defaultMaxWidth" type="submit" disableIcon={true} text={this.state.loading ? <span className="centerInline"><CircularProgress size={20} color="inherit" /><span className="marginLeft">Entrando...</span></span> : 'Entrar'}/>
+                { !this.state.rescuePassword &&
+                    <Paper className="modal">
+                        <Grid item xs={12} className="modalTitle">
+                            <img src={Logo} alt="Logo" width="180"/>
                         </Grid>
-                    </form>
-                </Paper>
+                        <form onSubmit={this.signIn}>
+                            <Grid item xs={12} className="modalForm">
+                                    <TextField label="E-mail" className="modalFormInput"
+                                        fullWidth onChange={this.handleChange('email')} 
+                                        inputProps={{ autoComplete: 'username' }}
+                                    />
+                                    <FormControl fullWidth>
+                                        <InputLabel htmlFor="password">Senha</InputLabel>
+                                        <PasswordField id="password" 
+                                            inputProps={{ autoComplete: 'current-password' }} 
+                                            fullWidth onChange={this.handleChange('password')}
+                                        />
+                                    </FormControl>
+                                <small className="fakeLink" onClick={() => this.toogleRescuePassword()}>Esqueceu seu e-mail/senha?</small>
+                                <Box display="flex" justifyContent="center" alignItems="center" width="100%" mb={2} mt={2}>
+                                    <ReCAPTCHA 
+                                        size="normal"
+                                        sitekey="6LePkK8UAAAAACKAocqyAEB2YQr4cnd3j8Ya2b2U"
+                                        onChange={(response) => this.setState({response}) }
+                                    />
+                                </Box>
+                            </Grid> 
+                            <Grid item xs={12} className="button-area">
+                                <ButtonBase class="defaultMaxWidth" type="submit" disableIcon={true} text={this.state.loading ? <span className="centerInline"><CircularProgress size={20} color="inherit" /><span className="marginLeft">Entrando...</span></span> : 'Entrar'}/>
+                            </Grid>
+                        </form>
+                    </Paper>
+                }
+                { this.state.rescuePassword &&
+                    <Fade in={this.state.rescuePassword}>
+                        <RedeemAccount back={() => this.toogleRescuePassword()} />
+                    </Fade>
+                }
                 {this.state.redirect &&
                     <Redirect to="/"/>
                 }
