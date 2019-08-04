@@ -11,7 +11,7 @@ const Float = (props) => {
     
     return trigger ? (
         <Slide direction="up" in={true} mountOnEnter unmountOnExit>
-            <Fab className={"floatingButton defaultButtonColor"} 
+            <Fab color="secondary" className={"floatingButton"} 
                 onClick={action}>
                 <Icon>{props.icon || 'keyboard_arrow_up'}</Icon>
             </Fab>

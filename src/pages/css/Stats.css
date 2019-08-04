@@ -35,3 +35,11 @@
 .stats-block-generated-at{
     font-size: 0.8rem;
 }
+
+.stats-wrapper-table{
+    overflow-x: scroll;
+}
+
+.stats-table{
+    padding: 10px;
+}

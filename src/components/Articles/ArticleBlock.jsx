@@ -129,11 +129,17 @@ export default (props) => {
             {!matches && 
                 <Container className={classes.info}>
                     <Box className="betweenInline fullWidth">
-                            <h3>{article.title}</h3>      
-                            <Box ref={anchorRef}>
-                                <IconButton aria-haspopup="true" aria-owns="menu-list-options" onClick={toogle}>
-                                    <Icon>more_vert</Icon>
-                                </IconButton>
+                            <Box width="100%" display="flex" alignItems="center">
+                                <Grid item xs={10}>
+                                    <h3>{article.title}</h3>      
+                                </Grid>
+                                <Grid item xs={2}>
+                                    <Box ref={anchorRef}>
+                                        <IconButton aria-haspopup="true" aria-owns="menu-list-options" onClick={toogle}>
+                                            <Icon>more_vert</Icon>
+                                        </IconButton>
+                                    </Box>
+                                </Grid>
                             </Box>
                             <Popper open={open} anchorEl={anchorRef.current} transition disablePortal>
                                 {({ TransitionProps, placement }) => (
@@ -184,11 +190,13 @@ export default (props) => {
                 </Container>
             }
             <Grid item xs={12} sm={12} md={4} className={classes.logo}>
-                <img 
-                    className={matches ? classes.imgArticle : classes.imgArticleXs} 
-                    src={article.smallImg ? `${backendUrl}/${article.smallImg}` : LogoDefault } 
-                    alt={article.title}
-                />
+                { matches && 
+                    <img 
+                        className={matches ? classes.imgArticle : classes.imgArticleXs} 
+                        src={article.smallImg ? `${backendUrl}/${article.smallImg}` : LogoDefault } 
+                        alt={article.title}
+                    />
+                }
                 { !matches && 
                     <Box display="flex" alignItems="center" flexWrap="wrap" justifyContent="center">
                         <Box className={classes.moreInformation} mr={1}>
@@ -223,7 +231,7 @@ export default (props) => {
             </Grid>
             {!matches && 
                 <Container className={classes.buttonXsScreen}>
-                    <CustomButton fullWidth={true} text="Ver/Editar" icon="edit" color="a" onClick={() => setRedirectTo(`/article/${article.customURL}`)} />
+                    <CustomButton fullWidth={true} text="Abrir" icon="edit" color="a" onClick={() => setRedirectTo(`/article/${article.customURL}`)} />
                 </Container>
             }
             {matches && 
@@ -267,7 +275,7 @@ export default (props) => {
                         >
                             <CustomButton className={classes.button}
                                 fullWidth={true}
-                                icon="create" text="Ver/Editar"
+                                icon="create" text="Abrir"
                             />
                         </Link>
                         {article.published && 
