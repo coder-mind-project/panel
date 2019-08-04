@@ -295,7 +295,7 @@ class Categories extends Component {
                                 </DialogContent>
                                 <DialogActions>
                                     { !this.state.loadingOp && 
-                                        <Button color="primary" 
+                                        <Button color="secondary" 
                                             onClick={() => this.toogleDialog(false)}
                                         >
                                             Fechar

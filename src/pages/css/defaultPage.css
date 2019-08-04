@@ -94,7 +94,7 @@
 .defaultFontColor {
     color: rgba(0, 0, 0, .54)
 }
-
+/* 
 .defaultButtonColor {
     background-color: rgb(17,125,187) !important;
     color: #fff !important;
@@ -102,7 +102,7 @@
 
 .defaultButtonColor:hover{
     background-color: rgb(10,115,160) !important;
-}
+} */
 
 .textColor {
     color: rgba(65, 65, 65, 1)

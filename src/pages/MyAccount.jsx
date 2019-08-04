@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { Container, ExpansionPanel, ExpansionPanelSummary,
         ExpansionPanelDetails, Grid, Icon, Box,
-        CircularProgress, Divider } from '@material-ui/core'
+        Divider } from '@material-ui/core'
 
 import Header from '../components/Header.jsx'
 
 import GeneralInformation from '../components/myAccount/GeneralInformation.jsx'
 import ExtraInformation from '../components/myAccount/ExtraInformation.jsx'
 import Configurations from '../components/myAccount/Configurations.jsx'
+import Searching from '../assets/searching.gif'
 
 import { connect } from 'react-redux'
 
@@ -23,7 +24,7 @@ class MyAccount extends Component {
     state = { 
         expanded: false,
         user: null,
-        loading: true,
+        loading: false,
         error: false
     }
 
@@ -42,6 +43,7 @@ class MyAccount extends Component {
         const id = this.props.user._id
         if(id){
             const url = `${backendUrl}/users/${id}`
+            await this.toogleLoading()
             await axios(url).then( res => {
                 this.setState({user: res.data})
             }).catch( () => {
@@ -58,12 +60,6 @@ class MyAccount extends Component {
         }
     }
     
-    componentDidUpdate(){
-        if(!this.state.user){
-            this.getUser()
-        }
-    }
-
     render() { 
         return ( 
             <Container>
@@ -160,13 +156,13 @@ class MyAccount extends Component {
                         </ExpansionPanel>
                     </Grid>
                 }
-                { this.state.loading && 
-                    <Grid item xs={12}>
-                        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                            <CircularProgress />
-                            <h4>Carregando suas informações, por favor aguarde...</h4>
-                        </Box>
-                    </Grid>
+                {this.state.loading && 
+                    <Container className="center spinnerContainer">
+                        <img src={Searching} alt="Obtendo suas informações..."/>
+                        <h4>
+                            Carregando, por favor aguarde...
+                        </h4>
+                    </Container>
                 }
             </Container>
         )
