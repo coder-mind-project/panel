@@ -14,8 +14,6 @@ import BigImgDefault from '../../assets/img_not_found_1080.png'
 
 import CustomButton from '../Button.jsx'
 
-import Image from 'material-ui-image'
-
 import './css/ArticleImages.css'
 
 class ArticleImages extends Component {
@@ -210,22 +208,10 @@ class ArticleImages extends Component {
                     <Grid item xs={12} className="bigImgSection">
                             <Grid item xs={12} sm={6} md={4}>
                                 <Tooltip title={this.state.smallImgDirectory ? "Remover Imagem" : ""} placement="right-start">
-                                    {/* <figure className={this.state.smallImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'smallImg')}>
+                                    <figure className={this.state.smallImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'smallImg')}>
                                         <img src={this.state.smallImgDirectory ? this.state.smallImgDirectory : SmallImgDefault} alt="Logo do artigo" width="100%"></img>
-                                    </figure> */}
-                                    <Box width="100%">
-                                        <Image
-                                            imageStyle={this.state.smallImgDirectory ? {
-                                                height: '100%',
-                                            } : {
-                                                borderRadius: '30px',
-                                            }}
-                                            className={this.state.smallImgDirectory ? "img" : ""}
-                                            onClick={this.removeFile(this.state, 'smallImg')}
-                                            src={this.state.smallImgDirectory ? this.state.smallImgDirectory : SmallImgDefault}
-                                        />
-                                        {/* <small className="imgDescription">Logo do artigo</small> */}
-                                    </Box>
+                                        <figcaption className="imgDescription">Logo do artigo - Use imagens quadradas, exemplo: 256x256, 512x512</figcaption>
+                                    </figure>
                                 </Tooltip>
                             </Grid>
                             <Grid item xs={12} sm={6} md={8}>
@@ -255,7 +241,7 @@ class ArticleImages extends Component {
                                 <Tooltip title={this.state.mediumImgDirectory ? "Remover Imagem" : ""} placement="right-start">
                                     <figure className={this.state.mediumImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'mediumImg')}>
                                         <img src={this.state.mediumImgDirectory ? this.state.mediumImgDirectory : MediumImgDefault} alt="Logo do artigo" width="100%"></img>
-                                        <figcaption className="imgDescription">Usado para artigos relacionados | Prefira imagens de resolução 1360 x 768</figcaption>
+                                        <figcaption className="imgDescription">Aparece em 'artigos relacionados' - Imagens retangulares, exemplo:  1360 x 768 ou semelhante</figcaption>
                                     </figure>
                                 </Tooltip>
                             </Grid>
@@ -282,7 +268,7 @@ class ArticleImages extends Component {
                                 <Tooltip title={this.state.bigImgDirectory ? "Remover Imagem" : ""} placement="right-start">
                                     <figure className={this.state.bigImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'bigImg')}>
                                         <img src={this.state.bigImgDirectory ? this.state.bigImgDirectory : BigImgDefault} alt="Cabeçalho do artigo" width="100%"></img>
-                                        <figcaption className="figCaption">Cabeçalho do artigo | Prefire imagens de resolução 1920 x 1080</figcaption>
+                                        <figcaption className="figCaption">Cabeçalho do artigo - Prefire imagens ambiente, ou seja, sem foco específico com resolução de aproximadamente 1920 x 1080</figcaption>
                                     </figure>
                                 </Tooltip>
                             </Grid>

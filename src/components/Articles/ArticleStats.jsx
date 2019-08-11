@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Grid, Box, Table, TableBody, TableCell,
-    TableFooter, TableHead, TablePagination, TableRow,
+    TableHead, TableRow,
     Container, Paper, Icon, DialogTitle, DialogActions,
-    DialogContent, DialogContentText, Dialog, TextField} from '@material-ui/core'
+    DialogContent, DialogContentText, Dialog, TextField } from '@material-ui/core'
 
 import axios from 'axios'
 import { backendUrl } from '../../config/backend'
@@ -14,9 +14,8 @@ import CustomChip from '../Chip.jsx'
 import CustomIconButton from '../IconButton.jsx'
 import CustomButton from '../Button.jsx'
 
-import { OPTIONS_LIMIT, DEFAULT_LIMIT, LIMIT_LABEL, DISPLAYED_ROWS } from '../../config/dataProperties'
+import { DEFAULT_LIMIT } from '../../config/dataProperties'
 import { toast } from 'react-toastify'
-// import { displayFullDate } from '../config/masks'
 
 import './css/ArticleStats.css'
 
@@ -64,9 +63,39 @@ class ArticleStats extends Component {
 
     openComment(comment){
         if(!comment.readed){
-            this.readComment()
+            this.readComment(comment)
         }
         this.setState({dialogAnswer: true, comment})
+    }
+
+    aproveComment(comment){
+        if(comment.confirmed) 
+            return toast.info((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Este comentário já está aprovado</div>), {autoClose: 3000, closeOnClick: true})
+
+        comment.confirmed = true
+
+        const url = `${backendUrl}/comments`
+        axios.patch(url, comment).then(() => {
+            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon><span>Comentário aprovado com sucesso</span></div>), {autoClose: 3000, closeOnClick: true})
+            this.getComments()
+        }).catch(error => {
+            const msg = error.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'
+            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        })
+    }
+
+    getComments(){
+        if(!this.props.article) return toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Ocorreu um erro ao encontrar o artigo, se persistir reporte!</div>), {autoClose: 3000, closeOnClick: true})
+        const page = this.state.pageComments
+        const limit = this.state.limitComments
+
+        const url = `${backendUrl}/articles/comments/${this.props.article._id}?page=${page}&limit=${limit}`
+        axios(url).then(res => {
+            this.setState({
+                comments: res.data.comments,
+                countComments: res.data.count
+            })
+        })
     }
 
     readComment(comment){
@@ -173,18 +202,18 @@ class ArticleStats extends Component {
                                 </Grid>
                             </Grid>
                         </Box>
-                        <Box>
-                        <Box pl={5} pr={5}>
-                            <Box display="flex" alignItems="center" width="100%">
-                                    <Box mr={1}>
-                                        <Icon>chat_bubble_outline</Icon>
-                                    </Box>
-                                    <Box>
-                                        <h4>Comentários</h4>
+                        { this.state.comments.length > 0 && !this.state.loading && 
+                            <Box>
+                                <Box pl={5} pr={5}>
+                                    <Box display="flex" alignItems="center" width="100%">
+                                        <Box mr={1}>
+                                            <Icon>chat_bubble_outline</Icon>
+                                        </Box>
+                                        <Box>
+                                            <h4>Comentários</h4>
+                                        </Box>
                                     </Box>
                                 </Box>
-                            </Box>
-                            { this.state.comments.length > 0 && !this.state.loading &&
                                 <Paper>
                                     <Container className="wrapper">
                                         <Table className="defaultTable">
@@ -256,11 +285,20 @@ class ArticleStats extends Component {
                                                         }
                                                     </TableCell>
                                                     <TableCell scope="_id">
-                                                        <CustomIconButton icon="more_horiz"
-                                                            aria-label="More" color="default"
-                                                            tooltip="Responder comentário"
-                                                            onClick={() => this.openComment(comment)}
-                                                        />
+                                                        { comment.confirmed && 
+                                                            <CustomIconButton icon="more_horiz"
+                                                                aria-label="Answer" color="default"
+                                                                tooltip="Responder comentário"
+                                                                onClick={() => this.openComment(comment)}
+                                                            />
+                                                        }
+                                                        { !comment.confirmed && 
+                                                            <CustomIconButton icon="done"
+                                                                aria-label="Aprove" color="default"
+                                                                tooltip="Aprovar comentário"
+                                                                onClick={() => this.aproveComment(comment)}
+                                                            />
+                                                        }
                                                     </TableCell>
                                                 </TableRow>
                                             ))}
@@ -286,8 +324,7 @@ class ArticleStats extends Component {
                                         </Table>
                                     </Container>
                                 </Paper>
-                            }
-                        </Box>
+                        </Box>}
                     </Grid>
                 }
                 { this.state.error && 

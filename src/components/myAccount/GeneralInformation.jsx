@@ -238,7 +238,7 @@ class GeneralInformation extends Component {
                                         { !this.state.sendingPhoto ? 
                                             <img className={this.state.user.profilePhoto ? "profile_photo" : "profile_photo_not_found"} 
                                                 src={this.state.user.profilePhoto ? this.state.user.profilePhoto : ImgDefault}
-                                                alt="Foto de perfil" /> : <CircularProgress />
+                                                alt="Foto de perfil" /> : <CircularProgress color="secondary" />
                                             }
                                     </figure>
                                 </Tooltip>

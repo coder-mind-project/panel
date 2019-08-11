@@ -202,7 +202,7 @@ export default class User extends Component{
                 {this.state.redirectTo && 
                     <Redirect to={`/${this.state.redirectTo}`}/>
                 }
-                { this.state.user._id && !this.state.loading && 
+                { !this.state.loading && 
                     <Paper className="form">
                         <Grid container>
                             <Grid item xs={12}>
