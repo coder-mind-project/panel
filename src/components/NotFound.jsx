@@ -35,7 +35,7 @@ const NotFound = (props) => {
                             <figcaption style={{textAlign: 'center', fontSize: '0.8rem'}}>Tired Robot by Vonholdt</figcaption>
                         </figure>
                     </Box>
-                    <h4>
+                    <h4 className={classes.notFoundMsg}>
                         {props.msg}
                     </h4>
                 </Grid>

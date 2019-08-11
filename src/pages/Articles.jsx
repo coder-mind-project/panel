@@ -151,9 +151,9 @@ export default class Articles extends Component {
                 </Container>
                 {!this.state.loading && !this.state.error &&
                     <Container className="footList">
-                        <Box mt={1}>
+                        <Box mt={1} display="flex" flexWrap="wrap">
                             <span className="defaultFontColor marginRight">
-                                Artigos: {this.state.count}
+                                Total de registros: {this.state.count}
                             </span>
                             <span className="defaultFontColor marginRight">
                                 |

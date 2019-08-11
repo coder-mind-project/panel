@@ -34,6 +34,9 @@ export const styles = theme => ({
         alignItems: 'center',
         padding: '10px',
     },
+    notFoundMsg:{
+        textAlign: 'center',
+    },
     tiredRobot:{
         width: '300px'
     },

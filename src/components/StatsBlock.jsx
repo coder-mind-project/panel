@@ -9,6 +9,7 @@ import '../pages/css/Stats.css'
 
 
 const StatsBlock = (props) => {
+
     
     const displayFullDate = (date) => {
         const aux = date.split(' ')
@@ -22,7 +23,7 @@ const StatsBlock = (props) => {
 
     return (
         <Paper className="stats-block">
-            { props.data.id && 
+            { props.data && props.data.id && 
                 <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
                     <Box display="flex">
                         <Box className="stats-block-title-icon">
@@ -32,7 +33,7 @@ const StatsBlock = (props) => {
                             <h4>
                                 {props.title}
                             </h4>
-                            <small className="stats-block-description">Referente ao mês {props.data.month}</small>
+                            { props.data.month && <small className="stats-block-description">Referente ao mês {props.data.month}</small>}
                         </Box>
                     </Box>
                     <Divider />
@@ -40,11 +41,11 @@ const StatsBlock = (props) => {
                         <h1>{props.data.count}</h1>
                     </Box>
                         <Box display="flex" justifyContent="center" alignItems="flex-end">
-                            <small className="stats-block-generated-at">Ultima atualização em: {displayFullDate(props.data.generated_at)}</small>
+                            { props.data.generated_at && <small className="stats-block-generated-at">Ultima atualização em: {displayFullDate(props.data.generated_at)}</small>}
                         </Box>
                 </Box>
             }
-            { !props.data.id && 
+            { props.data && !props.data.id && 
                 <Box display="flex" justifyContent="center" alignItems="center" height="100%">
                     <img src={Loading} height="75px" alt="Carregando..." />
                     {props.loadingMsg}

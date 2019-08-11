@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Box, TextField, Container, Grid,
+import { Box, Container, Grid,
         Typography, Icon, Tooltip, Divider } from '@material-ui/core'
 
 import axios from 'axios'
@@ -12,23 +12,29 @@ import SmallImgDefault from '../../assets/img_not_found_512x512.png'
 import MediumImgDefault from '../../assets/img_not_found_768.png'
 import BigImgDefault from '../../assets/img_not_found_1080.png'
 
-import CustomBaseButton from '../ButtonBase.jsx'
 import CustomButton from '../Button.jsx'
+
+import Image from 'material-ui-image'
 
 import './css/ArticleImages.css'
 
 class ArticleImages extends Component {
     
     state = {
-        smallImg: null,
         smallImgDirectory: '',
         mediumImg: null,
         mediumImgDirectory: '',
         bigImg: null,
-        bigImgDirectory: ''
+        bigImgDirectory: '',
+
+        sending: false,
     }
 
-    sendFile = (state, path) => async event => {
+    toogleSending(){
+        this.setState({sending: !this.state.sending})
+    }
+
+    sendFile = async (photo, path) => {
 
         /* Realiza o envio da imagem */
 
@@ -40,19 +46,18 @@ class ArticleImages extends Component {
             - Assim a imagem é enviada
         */
         
-        event.preventDefault()
+        const img = photo.target.files[0]
         
         //Verifica o tipo de imagem, aceitando apenas bigImg ou smallImg
         if(path !== 'bigImg' && path !== 'smallImg' && path !== 'mediumImg') 
         return toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Ocorreu um erro desconhecido, se persistir reporte [Code: 10]</div>), {autoClose: 2000, closeOnClick: true}) 
         
         //Verifica se há imagem
-        if(!state[path]) 
+        if(!img) 
         return toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon>Selecione uma imagem</div>), {autoClose: 2000, closeOnClick: true}) 
 
         //Obtém se o ID do artigo e a imagem selecionada
         const id = this.props.article._id
-        const img = state[path]
 
         /*  Configuração do formData para persistencia da imagem
             Adicionando a imagem e também o id do artigo
@@ -109,7 +114,7 @@ class ArticleImages extends Component {
         }
         
         const url = `${backendUrl}/articles/img/${id}?path=${path}&size=${size}`
-        
+        await this.toogleSending()
         await axios[method](url, formData, config).then( res => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
             /*  Definição do diretório para visualização da imagem após exito
@@ -117,13 +122,14 @@ class ArticleImages extends Component {
             */
             this.setState({
                 [directory]: `${backendUrl}/${res.data}`,
-                [path]: null
             })
 
         }).catch( async error => {
             const msg = await defineErrorMsg(error)
             toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
         })
+
+        this.toogleSending()
     }
 
     removeFile = (state, path) => event => {
@@ -176,6 +182,7 @@ class ArticleImages extends Component {
         /* Disponibiliza as imagens definidas do artigo caso estejam definidas */
         await this.setState({
             smallImgDirectory: article.smallImg ? `${backendUrl}/${article.smallImg}` : '',
+            mediumImgDirectory: article.mediumImg ? `${backendUrl}/${article.mediumImg}` : '',
             bigImgDirectory: article.bigImg ? `${backendUrl}/${article.bigImg}` : ''
         })
 
@@ -195,67 +202,107 @@ class ArticleImages extends Component {
                         </Box>
                         <Box>
                             <Typography variant="caption" component="small">
-                                Defina as imagens deste artigo, para remover uma imagem desejada basta clicar em cima da escolhida.
+                                Defina as imagens deste artigo, <strong>para remover uma imagem desejada basta clicar em cima da opção desejada</strong>.
                             </Typography>
                         </Box>
                     </Box>
                     <ToastContainer />
-                    <form onSubmit={this.sendFile(this.state, 'smallImg')}>
                     <Grid item xs={12} className="bigImgSection">
                             <Grid item xs={12} sm={6} md={4}>
                                 <Tooltip title={this.state.smallImgDirectory ? "Remover Imagem" : ""} placement="right-start">
-                                    <figure className={this.state.smallImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'smallImg')}>
+                                    {/* <figure className={this.state.smallImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'smallImg')}>
                                         <img src={this.state.smallImgDirectory ? this.state.smallImgDirectory : SmallImgDefault} alt="Logo do artigo" width="100%"></img>
-                                        <figcaption className="figCaption">Logo do artigo</figcaption>
-                                    </figure>
+                                    </figure> */}
+                                    <Box width="100%">
+                                        <Image
+                                            imageStyle={this.state.smallImgDirectory ? {
+                                                height: '100%',
+                                            } : {
+                                                borderRadius: '30px',
+                                            }}
+                                            className={this.state.smallImgDirectory ? "img" : ""}
+                                            onClick={this.removeFile(this.state, 'smallImg')}
+                                            src={this.state.smallImgDirectory ? this.state.smallImgDirectory : SmallImgDefault}
+                                        />
+                                        {/* <small className="imgDescription">Logo do artigo</small> */}
+                                    </Box>
                                 </Tooltip>
                             </Grid>
                             <Grid item xs={12} sm={6} md={8}>
-                                <Box className="formGroupWithSmallImg">
-                                    <TextField type="file" className="inputImg" name="smallImg" id="small_img_article" helperText="Prefire imagens quadráticas e com resolução por volta de 256px" onChange={(file) => this.changeFile(file, 'smallImg')}/>
-                                    <CustomBaseButton type="submit" class="success" icon="save" />
+                                <Box width="100%" mt={1}>
+                                    <label className="fakeButton">
+                                        <Icon>
+                                            photo
+                                        </Icon>
+                                        {this.state.sending ?
+                                            'Enviando...' : 'Alterar imagem'
+                                        }
+                                        <input type="file" name="smallImg" id="small_img_article"
+                                            onChange={(photo) => this.sendFile(photo, 'smallImg')}
+                                            className="profile_photo_input"
+                                            />
+                                    </label>
+                                    {/* <Box className="formGroupWithSmallImg">
+                                        <TextField type="file" className="inputImg" name="smallImg" id="small_img_article" helperText="Prefire imagens quadráticas e com resolução por volta de 256px" onChange={(file) => this.changeFile(file, 'smallImg')}/>
+                                        <CustomBaseButton type="submit" class="success" icon="save" />
+                                    </Box> */}
                                 </Box>
                             </Grid>
                         </Grid>
-                    </form>
                     <Divider />
-                    <form onSubmit={this.sendFile(this.state, 'mediumImg')}>
-                        <Grid item xs={12} className="bigImgSection">
-                        <Grid item xs={12}>
-                            <Tooltip title={this.state.mediumImgDirectory ? "Remover Imagem" : ""} placement="right-start">
-                                <figure className={this.state.mediumImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'mediumImg')}>
-                                    <img src={this.state.mediumImgDirectory ? this.state.mediumImgDirectory : MediumImgDefault} alt="Imagem de bloco do artigo" width="100%"></img>
-                                    <figcaption className="figCaption">Imagem de bloco do artigo</figcaption>
-                                </figure>
-                            </Tooltip>
+                        <Grid item xs={12} className="mediumImg">
+                            <Grid item xs={12}>
+                                <Tooltip title={this.state.mediumImgDirectory ? "Remover Imagem" : ""} placement="right-start">
+                                    <figure className={this.state.mediumImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'mediumImg')}>
+                                        <img src={this.state.mediumImgDirectory ? this.state.mediumImgDirectory : MediumImgDefault} alt="Logo do artigo" width="100%"></img>
+                                        <figcaption className="imgDescription">Usado para artigos relacionados | Prefira imagens de resolução 1360 x 768</figcaption>
+                                    </figure>
+                                </Tooltip>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Box width="100%" mt={1}>
+                                    <label className="fakeButton">
+                                        <Icon>
+                                            photo
+                                        </Icon>
+                                        {this.state.sending ?
+                                            'Enviando...' : 'Alterar imagem'
+                                        }
+                                        <input type="file" name="mediumImg" id="medium_img_article"
+                                            onChange={(photo) => this.sendFile(photo, 'mediumImg')}
+                                            className="profile_photo_input"
+                                            />
+                                    </label>
+                                </Box>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Box className="formGroupWithBigImg">
-                                <TextField type="file" className="inputImg" name="mediumImg" id="medium_img_article" helperText="Prefencialmente imagens com resolução 1920x1080p (FULL HD)" onChange={(file) => this.changeFile(file, 'mediumImg')}/>
-                                <CustomBaseButton type="submit" class="success" icon="save" />
-                            </Box>
-                        </Grid>
-                        </Grid>
-                    </form>
                     <Divider />
-                    <form onSubmit={this.sendFile(this.state, 'bigImg')}>
                         <Grid item xs={12} className="bigImgSection">
-                        <Grid item xs={12}>
-                            <Tooltip title={this.state.bigImgDirectory ? "Remover Imagem" : ""} placement="right-start">
-                                <figure className={this.state.bigImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'bigImg')}>
-                                    <img src={this.state.bigImgDirectory ? this.state.bigImgDirectory : BigImgDefault} alt="Cabeçalho do artigo" width="100%"></img>
-                                    <figcaption className="figCaption">Cabeçalho do artigo</figcaption>
-                                </figure>
-                            </Tooltip>
+                            <Grid item xs={12}>
+                                <Tooltip title={this.state.bigImgDirectory ? "Remover Imagem" : ""} placement="right-start">
+                                    <figure className={this.state.bigImgDirectory ? "img" : ""} onClick={this.removeFile(this.state, 'bigImg')}>
+                                        <img src={this.state.bigImgDirectory ? this.state.bigImgDirectory : BigImgDefault} alt="Cabeçalho do artigo" width="100%"></img>
+                                        <figcaption className="figCaption">Cabeçalho do artigo | Prefire imagens de resolução 1920 x 1080</figcaption>
+                                    </figure>
+                                </Tooltip>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Box width="100%" mt={1}>
+                                    <label className="fakeButton">
+                                        <Icon>
+                                            photo
+                                        </Icon>
+                                        {this.state.sending ?
+                                            'Enviando...' : 'Alterar imagem'
+                                        }
+                                        <input type="file" name="bigImg" id="small_img_article"
+                                            onChange={(photo) => this.sendFile(photo, 'bigImg')}
+                                            className="profile_photo_input"
+                                            />
+                                    </label>
+                                </Box>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Box className="formGroupWithBigImg">
-                                <TextField type="file" className="inputImg" name="bigImg" id="small_img_article" helperText="Prefire imagens retangulares e com resolução com largura de 1080px" onChange={(file) => this.changeFile(file, 'bigImg')}/>
-                                <CustomBaseButton type="submit" class="success" icon="save" />
-                            </Box>
-                        </Grid>
-                        </Grid>
-                    </form>
                     <Grid item xs={12} className="footList formGroup">
                         <Link to="/articles" className="linkRouter linkButton"><CustomButton color="gray" text="Voltar" icon="exit_to_app" /></Link>
                     </Grid>

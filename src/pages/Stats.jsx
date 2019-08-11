@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Container, Grid, Box, Icon, Paper, TableHead, TableBody, TableCell, TableRow, Table} from '@material-ui/core'
+import {Container, Grid, Box, Icon, Paper, TableHead, TableBody, TableCell, TableRow, Table, Divider} from '@material-ui/core'
 import {connect} from 'react-redux'
 
 import Header from '../components/Header.jsx'
@@ -21,6 +21,7 @@ class Stats extends Component{
         loadingLikes: false,
         views: {},
         comments: {},
+        likes: {},
     }
 
     toogleLoadingLikes(){
@@ -33,11 +34,11 @@ class Stats extends Component{
 
     async getLastLikes(){
         await this.toogleLoadingLikes()
-        const url = `${backendUrl}/...`
+        const url = `${backendUrl}/likes`
         await axios(url).then(res => {
-            this.setState({lastViews: res.data.views})
+            this.setState({lastLikes: res.data.likes})
         })
-        //this.toogleLoadingLikes()
+        this.toogleLoadingLikes()
     }
 
     async getLastViews(){
@@ -48,24 +49,21 @@ class Stats extends Component{
         })
         this.toogleLoadingLastViews()
     }
-    
-    getViews(){
-        const url = `${backendUrl}/views/stats`
-        axios(url).then(res => {
-            this.setState({views: res.data})
-        })
-    }
 
-    async getComments(){
-        const url = `${backendUrl}/comments/stats`
-        await axios(url).then(res => {
-            this.setState({comments: res.data})
+    getStats(){
+        const url = `${backendUrl}/stats`
+        axios(url).then( res => {
+            this.setState({
+                views: res.data.views,
+                comments: res.data.comments,
+                likes: res.data.likes
+            })
         })
+
     }
     
     componentDidMount(){
-        this.getViews()
-        this.getComments()
+        this.getStats()
     }
 
 
@@ -77,9 +75,9 @@ class Stats extends Component{
                     <Grid item xs={12} md={4}>
                         <StatsBlock icon="touch_app" title="Visualizações por mês" loadingMsg="Obtendo visualizações" data={this.state.views} />
                     </Grid>
-                    {/*<Grid item xs={12} md={4}>
-                        <StatsBlock icon="touch_app" title="Visualizações por mês" loadingMsg="Obtendo avaliações" data={{}} />
-                    </Grid>*/}
+                    <Grid item xs={12} md={4}>
+                        <StatsBlock icon="thumb_up" title="Curtidas por mês" loadingMsg="Obtendo avaliações" data={this.state.likes} />
+                    </Grid>
                     <Grid item xs={12} md={4}>
                         <StatsBlock icon="comment" title="Comentários por mês" loadingMsg="Obtendo comentários" data={this.state.comments} />
                     </Grid>
@@ -128,7 +126,8 @@ class Stats extends Component{
                             }
                         </Box>
                     </Grid>
-                    {/*<Grid item xs={12}>
+                    <Box mt={3} mb={3} width="100%"><Divider /></Box>
+                    <Grid item xs={12}>
                         <Box>
                             <Box width="100%" display="flex" alignItems="center">
                                 <Box mr={1}>
@@ -141,7 +140,7 @@ class Stats extends Component{
                                 </Box>
                             </Box>
                             { this.state.lastLikes.length === 0 && 
-                                <CustomButtom text={this.state.loadingLikes ? 'Carregando...' : 'Carregar avaliações'} icon="thumb_up" loading={this.state.loadingLikes} onClick={() => this.getLastLikes()} fullWidth />
+                                <CustomButtom text={this.state.loadingLikes ? 'Carregando...' : 'Carregar ultimas avaliações'} icon="thumb_up" loading={this.state.loadingLikes} onClick={() => this.getLastLikes()} fullWidth />
                             }
                             { this.state.lastLikes.length > 0 && !this.state.loadingLastViews &&
                                 <Paper className="stats-wrapper-table">
@@ -151,18 +150,18 @@ class Stats extends Component{
                                         <TableCell>Artigo</TableCell>
                                         <TableCell align="right">Leitor (IP)</TableCell>
                                         <TableCell align="right">Data da avaliação</TableCell>
-                                        <TableCell align="right">Quantidade de acessos</TableCell>
+                                        <TableCell align="right">Like Ativo</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {this.state.lastLikes.map(view => (
-                                        <TableRow key={view._id}>
+                                        {this.state.lastLikes.map(like => (
+                                        <TableRow key={like._id}>
                                             <TableCell scope="row">
-                                            {view.article.title}
+                                                {like.article.title}
                                             </TableCell>
-                                            <TableCell align="right">{view.reader}</TableCell>
-                                            <TableCell align="right">{view.startRead}</TableCell>
-                                            <TableCell align="right">{view.viewsQuantity}</TableCell>
+                                            <TableCell align="right">{like.reader}</TableCell>
+                                            <TableCell align="right">{displayFullDate(like.createdAt)}</TableCell>
+                                            <TableCell align="right">{like.confirmed ? 'Sim' : 'Não'}</TableCell>
                                         </TableRow>
                                         ))}
                                     </TableBody>
@@ -170,7 +169,7 @@ class Stats extends Component{
                                 </Paper>
                             }
                         </Box>
-                    </Grid>*/}
+                    </Grid>
                 </Grid>
             </Container>
         )

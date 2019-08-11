@@ -9,7 +9,7 @@ export const styles = (theme) => ({
         borderRadius: 10,
         marginBottom: 10,
         padding: 15,
-        height: 275,
+        height: 285,
         backgroundColor: '#fff'
     },
     containerXs: {

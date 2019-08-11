@@ -4,16 +4,11 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 
 import Avatar from 'react-avatar'
-import ReactQuill from 'react-quill'
 
 import { backendUrl, defineErrorMsg } from '../../config/backend'
-import { displayDate } from '../../config/masks'
 
-import { Grid, Icon, Box, Typography, Container,
-    CircularProgress, Divider } from '@material-ui/core'
+import { Grid, Icon, Box, Divider } from '@material-ui/core'
     
-import DefaultBigImg from '../../assets/img_not_found_1080.png'
-
 import './css/ArticlePreview.css'
 
 class ArticlePreview extends Component {
@@ -30,19 +25,36 @@ class ArticlePreview extends Component {
         })
     }
 
+    formatDate(date){
+        const aux = date.split('T')
+        let dayMonthYear = aux[0].split('-')
+        dayMonthYear = `${dayMonthYear[2]}/${dayMonthYear[1]}/${dayMonthYear[0]}`
+        
+        let hours = aux[1].split('.')[0]
+
+        return `${dayMonthYear} - ${hours}`
+    }
+
     async componentDidMount(){
         await this.toogleLoading()
         const id = this.props.article._id
 
-        if(!id) return this.setState({
-            article: this.props.article,
-            loading: false
-        })
+        if(!id){
+            document.querySelector("#article-content").innerHTML = this.props.article.textArticle
+
+            return this.setState({
+                article: this.props.article,
+                loading: false
+            })
+        }
         
         const url = `${backendUrl}/articles/management/${id}`
 
         axios(url).then(res => {
             this.setState({article: res.data})
+
+            document.querySelector("#article-content").innerHTML = res.data.textArticle
+
         }).catch( async error => {
             this.setState({error: true})
             const msg = await defineErrorMsg(error)
@@ -55,71 +67,52 @@ class ArticlePreview extends Component {
 
     render() { 
         return (
-            <Container className="preview-container">
-                { !this.state.loading && this.state.article && !this.state.error &&
-                    <Grid container className="article_content">
-                        <Grid item xs={12} className="article-header-img">
-                            <img src={ this.state.article.bigImg ?
-                            `${backendUrl}/${this.state.article.bigImg}` : DefaultBigImg}
-                            alt={this.state.article.longDescription ? this.state.article.longDescription : 'Imagem de titulo do artigo'} 
-                            width="100%" className="article_big_image"/>
+            <Grid className="article-wrapper">
+                { this.state.article && !this.state.loading &&
+                    <Grid item xs={12} className="article-content">
+                        { this.state.article.bigImg && 
+                            <Grid item xs={12} className="article-header">
+                                <img src={`${backendUrl}/${this.state.article.bigImg}`} alt={this.state.article.longDescription}/>
+                            </Grid>
+                        }
+                        <Grid item xs={12} className="article-title">
+                            <h1>{this.state.article.title}</h1>
                         </Grid>
-                        <Grid item xs={12}>
-                            <h1>{ this.state.article._id ? this.state.article.title : this.props.article.title}</h1>
-                            <Divider/>
-                            <p>
-                                {this.state.article._id ? this.state.article.shortDescription : this.props.article.shortDescription}
-                            </p>
+                        <Grid item xs={12} className="article-short-description">
+                            <h2 className="short-description">{this.state.article.shortDescription}</h2>
                         </Grid>
-                        <Grid item xs={12} className="headerinfos">
-                            <Box display="flex" alignItems="center" mb={1}>
-                                <Avatar src={`${backendUrl}/${this.props.user.profilePhoto}`} size={40} round="20px" />
-                                <Box ml={1}>
-                                    <small>
-                                        {this.state.article.author ? this.state.article.author.name : this.props.user.name }
-                                    </small>
+                        <Grid item xs={12} className="header-hud-bar">
+                            <Box display="flex" justifyContent="center" alignItems="center" mr={1} ml={1}>
+                                <Box mr={1} display="flex" alignItems="center">
+                                    <Avatar src={ this.state.article.author ? `${backendUrl}/${this.state.article.author.profilePhoto}` : ''} name={this.state.article.author ? this.state.article.author.name : this.props.user.name} size={30} round={true} />
                                 </Box>
+                                <p>{this.state.article.author ? this.state.article.author.name : this.props.user.name}</p>
                             </Box>
-                            <Box display="flex" alignItems="center" mb={1}>
-                                <Box mr={1}>
-                                    <small>
-                                        Publicado em: { this.state.article.publishAt ? displayDate(this.state.article.createdAt) : `Não publicado`}
-                                    </small>
+                            {this.state.article.theme && this.state.article.theme.name &&
+                                <Box display="flex" alignItems="center" justifyContent="center" mr={1} ml={1}>
+                                    <Box mr={1}>
+                                        <Icon>class</Icon>
+                                    </Box>
+                                    <p>{this.state.article.theme.name}</p>
                                 </Box>
-                            </Box>
+                            }
+                            {this.state.article.category && this.state.article.category.name &&
+                                <Box display="flex" alignItems="center" justifyContent="center" mr={1} ml={1}>
+                                    <Box mr={1}>
+                                        <Icon>class</Icon>
+                                    </Box>
+                                    <p>{this.state.article.category.name}</p>
+                                </Box>
+                            }
+                            { this.state.article.publishAt && <Box display="flex" justifyContent="center" alignItems="center" mr={1} ml={1}>
+                                <p>Publicado em: {`${this.formatDate(this.state.article.publishAt)}`}</p>
+                            </Box>}
                         </Grid>
-                        <Grid item xs={12} className="previewArticle">
-                            <ReactQuill value={this.state.article._id ? this.state.article.textArticle : this.props.article.textArticle} readOnly={true} theme={null}></ReactQuill>
                         </Grid>
-                    </Grid>
-                }
-                { this.state.loading && 
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <Box display="flex" m={5} p={5} flexDirection="column" alignItems="center">
-                                <CircularProgress />
-                                <Typography variant="body1" component="p">
-                                    Carregando...
-                                </Typography>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                }
-                { !this.state.loading && this.state.error && 
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" m={5} p={5}>
-                                <Typography variant="body1" component="p">
-                                    Ops, algo deu errado! 
-                                </Typography>
-                                <Typography variant="body1" component="p">
-                                    Tente recarregar a página, se persistir reporte!
-                                </Typography>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                }
-            </Container>
+                    }
+                <Divider className="divider" />  
+                <Grid item xs={12} id="article-content"></Grid>
+            </Grid>
         )
     }
 }

@@ -10,6 +10,7 @@ import CustomButton from '../components/Button.jsx'
 import ArticleImages from '../components/Articles/ArticleImages.jsx'
 import ArticlePreview from '../components/Articles/ArticlePreview'
 import ArticleConfig from '../components/Articles/ArticleConfig'
+import ArticleStats from '../components/Articles/ArticleStats'
 import FloatingButton from '../components/FloatingButton.jsx'
 import Searching from '../assets/searching.gif'
 
@@ -172,6 +173,7 @@ class Article extends Component {
                     value: article.category ? article.category._id : ''
                 } || null,
                 smallImg: article.smallImg || '',
+                mediumImg: article.mediumImg || '',
                 bigImg: article.bigImg || '',
                 customURL: article.customURL || '',
                 shortDescription: article.shortDescription || '',
@@ -316,6 +318,7 @@ class Article extends Component {
                             <Tab label={(<span className="centerInline"><Icon>description</Icon>Informações principais</span>)} />
                             <Tab label={(<span className="centerInline"><Icon>visibility</Icon>Visualizar</span>)}/>
                             <Tab label={(<span className="centerInline"><Icon>images</Icon>Imagens</span>)}/>
+                            <Tab label={(<span className="centerInline"><Icon>bar_chart</Icon>Estatísticas</span>)} disabled={!this.state.article._id}/>
                             <Tab label={(<span className="centerInline"><Icon>settings</Icon>Configurações</span>)} disabled={!this.state.article._id}/>
                         </Tabs>
                         { this.state.currentTab === 0 && 
@@ -372,7 +375,10 @@ class Article extends Component {
                         {this.state.currentTab === 2 && 
                             <ArticleImages article={this.state.article}/>
                         }
-                        {this.state.currentTab === 3 && this.state.article._id && 
+                        {this.state.currentTab === 3 && 
+                            <ArticleStats article={this.state.article}/>
+                        }
+                        {this.state.currentTab === 4 && this.state.article._id && 
                             <ArticleConfig article={this.state.article}/>
                         }
                     </Paper>

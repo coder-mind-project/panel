@@ -83,9 +83,9 @@ export const styles = (theme) => ({
         ...fontFamily,
         backgroundColor: 'transparent',
         border: '1px solid rgba(0,0,0,.23)',
-        color: 'rgb(17,125,187)',
+        color: '#f50057',
         '&:hover':{
-            backgroundColor: 'rgba(17,125,187,.15)',
+            backgroundColor: 'rgba(245, 0, 87, .15)',
         },
         marginBottom: '10px',
         paddingLeft: '10px',

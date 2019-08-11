@@ -1,49 +1,205 @@
-.previewArticle{
-    margin-top: 15px !important;
+
+.article-wrapper{
+    margin-top: 6% !important;
 }
 
-.headerinfos{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-
-}
-
-.ql-editor .ql-syntax{
-    background-color: #23241f;
-    color: #f8f8f2;
-    overflow-x: visible;
-    overflow-y: visible;
-}
-
-.article-header-img{
+.article-header{
     max-height: 300px;
+    width: 100%;
     overflow: hidden;
     box-shadow: 0px 4px 4px gray;
 }
 
-.preview-container{
-    margin-top: 25px;
-    padding: 0 !important;
+.article-header img {
+    width: 100%;
 }
 
-.article_content, .ql-editor{
+.header-hud-bar{
     padding: 15px;
-    font-family: 'Ubuntu', sans-serif !important;
-
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.article_big_image{
-    margin-bottom: 15px;
+.share-button{
+    margin: 3px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.article-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 15px 2px 15px;
+    text-align: center;
+}
+
+.article-short-description{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;
+    text-align: center;
+}
+.article-footer{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 15px;
+}
+
+.foot-button{
+    cursor: pointer;
+}
+
+.short-description{
+    font-size: 1rem !important;
+    font-weight: 400;
+}
+
+.divider{
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+}
+
+.more_related, .comments{
+    padding: 15px;
+}
+
+.more_related_title, .comments_title{
+    margin: 15px 0px;
+}
+
+.more_related_content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.comments-content{
+    margin-top: 20px;
+    padding: px;
+}
+
+.comments-input{
+    margin: 10px 0px !important;
+}
+
+.comments-comment textarea{
+    height: 120px !important;
+    overflow-y: scroll !important;
+}
+
+.info_comment{
+    background-color: rgba(200,200,200,.8);
+    border-radius: 15px;
+    min-height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.form-comment{
+    padding: 20px;
+}
+
+#article-content{
+    padding: 20px;
+    height: 70%;
+    font-size: 1.1rem !important;
+}
+
+.ql-align-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#article-content code{
+    padding: 15px 0px;
+}
+
+#article-content pre{
+    overflow-x: scroll;
+}
+
+#article-content pre::-webkit-scrollbar{
+    display: none 
+}
+
+#article-content blockquote{
+    background-color: #f5f5f5;
+    padding: 20px;
     border-radius: 10px;
 }
 
-@media(max-width: 850px){
-    .ql-editor img{
-        width: 100%;
+#article-content a{
+    color: #f50057 !important;
+    font-weight: 600 !important;
+    text-decoration: underline !important;
+}
+
+.message-error{
+    text-align: center;
+}
+
+.error-icon{
+    font-size: 5rem !important;
+}
+
+@media(max-width: 1055px){
+    
+    .article-header{
+        height: 180px;
+        overflow: hidden;
+        box-shadow: none;
+    }
+    
+    .more_related_content{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 }
 
+@media(max-width: 768px){
+    .error-icon-area{
+        width: 100%;
+    }
+    
+    .ql-align-center{
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        overflow-x: scroll;    
+    }
 
+    #article-content pre::-webkit-scrollbar{
+        display: block;
+        height: 5px;
+    }
+    
+    #article-content pre::-webkit-scrollbar-track{
+        background-color: #f5f5f5;
+        border-radius: 10px;
+    }
+    
+    #article-content pre::-webkit-scrollbar-thumb{
+        background-color: #f50057;
+        border-radius: 10px;
+    }
 
+    .article-title{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 35px 15px 2px 15px;
+    }
+}

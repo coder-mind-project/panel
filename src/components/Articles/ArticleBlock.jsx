@@ -33,7 +33,6 @@ export default (props) => {
     
     const anchorRef = React.useRef(null)
 
-    
     const toogle = event => {
         /* Usado para habilitar e desabilitar o menu em telas pequenas*/
 
@@ -203,6 +202,7 @@ export default (props) => {
                             {article.author && article.author.name ?
                                 (<span className={classes.author}>
                                     <Avatar className="marginRight"
+                                        src={`${backendUrl}/${article.author.profilePhoto}`}
                                         name={article.author.name}
                                         size={40} round="20px" 
                                     />
@@ -246,6 +246,7 @@ export default (props) => {
                         {article.author && article.author.name ?
                                 (<Box mb={1} className={classes.author}>
                                     <Avatar className="marginRight"
+                                        src={`${backendUrl}/${article.author.profilePhoto}`}
                                         name={article.author.name}
                                         size={40} round="20px" 
                                     />

@@ -6,6 +6,10 @@
     justify-content: flex-start !important;
 }
 
+.imgDescription{
+    text-align: center;
+}
+
 .formGroupWithSmallImg{
     display: flex;
     justify-content: center;
@@ -29,6 +33,16 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    width: 100%;
+}
+
+.mediumImg{
+    margin: 15px 0 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .inputImg{

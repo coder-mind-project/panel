@@ -83,7 +83,7 @@ class Notifications extends Component {
                 { this.state.notifications.length === 0 && !this.state.loading &&
                     <Box>
                         <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                            <Icon>notifications</Icon>
+                            <Icon>mode_comment</Icon>
                         </IconButton>
                         <Menu
                             id="fade-menu"
@@ -97,10 +97,10 @@ class Notifications extends Component {
                                 <div className="header-menu">
                                     <Box display="flex" alignItems="center">
                                         <Box mr={1}>
-                                            <Icon>notifications_active</Icon>
+                                            <Icon>comment</Icon>
                                         </Box>
                                         <Box>
-                                            <h4>Notificações</h4>
+                                            <h4>Comentários</h4>
                                             <small>Comentários dos leitores</small>
                                         </Box>
                                     </Box>
@@ -137,7 +137,7 @@ class Notifications extends Component {
                         <Box>
                             <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
                                 <Badge badgeContent={this.state.notifications.length} max={99} color="secondary">
-                                    <Icon>notifications_active</Icon>
+                                    <Icon>comments</Icon>
                                 </Badge>
                             </IconButton>
                         </Box>
@@ -153,10 +153,10 @@ class Notifications extends Component {
                                 <div className="header-menu">
                                     <Box display="flex" alignItems="center">
                                         <Box mr={1}>
-                                            <Icon>notifications_active</Icon>
+                                            <Icon>comments</Icon>
                                         </Box>
                                         <Box>
-                                            <h4>Notificações</h4>
+                                            <h4>Comentários</h4>
                                             <small>Comentários dos leitores</small>
                                         </Box>
                                     </Box>
