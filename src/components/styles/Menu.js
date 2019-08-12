@@ -37,7 +37,7 @@ export const styles = theme => ({
     },
     buttonLink:{
         color: 'inherit',
-        textDecoration: 'none'
+        textDecoration: 'none',
     },
     drawer: {
         width: 250,
@@ -49,6 +49,8 @@ export const styles = theme => ({
     drawerButton: {
         display: 'flex',
         justifyContent: 'center',
+        paddingTop: 20,
+        paddingBottom: 20,
     },
     logo:{
         cursor: 'pointer',

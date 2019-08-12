@@ -7,10 +7,10 @@ import Avatar from 'react-avatar'
 
 import { AppBar, Toolbar, useScrollTrigger, Slide,
     IconButton, Menu, MenuItem, Drawer, List, ListItem,
-    useMediaQuery, Icon, Box } from '@material-ui/core'
+    useMediaQuery, Icon, Box, Divider } from '@material-ui/core'
 
-import Logo from '../assets/logo-gestao1.png'
-import LogoBlack from '../assets/logo-gestao-preto1.png'
+import Logo from '../assets/logo-gestao-branco.png'
+import LogoBlack from '../assets/logo-gestao-preto.png'
 
 import Notifications from './Notifications.jsx'
 
@@ -76,7 +76,7 @@ const MenuApp = props => {
                             </IconButton>
                         }
                         <Link className={classes.link} to="/">
-                            <img src={Logo} width="110"
+                            <img src={Logo} width="130"
                                 className={classes.menuLogo}
                                 alt="Coder Mind | Gestão"
                             />
@@ -174,12 +174,13 @@ const MenuApp = props => {
                         {/* <h2>Coder Mind</h2> */}
                     </div>
                 </Link>
+                <Divider />
                 <div className={classes.drawer}>
                     <List className={classes.list}>
                         <Link to="/articles" className={classes.buttonLink}
                             onClick={() => setState({drawerMenu: false})}
                         >
-                            <ListItem button key={'articles'} 
+                            <ListItem button  
                                 className={classes.drawerButton}
                             >
                                 <strong className={classes.menuButtonContent}>
@@ -193,7 +194,7 @@ const MenuApp = props => {
                         <Link to="/users" className={classes.buttonLink}
                             onClick={() => setState({drawerMenu: false})}
                         >
-                            <ListItem button key={'users'} 
+                            <ListItem button  
                                 className={classes.drawerButton}
                             >
                                 <strong className={classes.menuButtonContent}>
@@ -207,7 +208,7 @@ const MenuApp = props => {
                         <Link to="/comments" className={classes.buttonLink}
                             onClick={() => setState({drawerMenu: false})}
                         >
-                            <ListItem button key={'comments'}
+                            <ListItem button 
                                 className={classes.drawerButton}
                             >
                                 <strong className={classes.menuButtonContent}>
@@ -218,10 +219,24 @@ const MenuApp = props => {
                                 </strong>
                             </ListItem>
                         </Link>
+                        <Link to="/my-account" className={classes.buttonLink}
+                            onClick={() => setState({drawerMenu: false})}
+                        >
+                            <ListItem button
+                                className={classes.drawerButton}
+                            >
+                                <strong className={classes.menuButtonContent}>
+                                    <Icon  className={classes.iconButtonMenu}>
+                                        person_outline
+                                    </Icon>
+                                    Meus dados
+                                </strong>
+                            </ListItem>
+                        </Link>
                         <Link to="/management" className={classes.buttonLink}
                             onClick={() => setState({drawerMenu: false})}
                         >
-                            <ListItem button key={'stats'}
+                            <ListItem button 
                                 className={classes.drawerButton}
                             >
                                 <strong className={classes.menuButtonContent}>

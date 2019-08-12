@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 
 import { Paper, Grid, Box, Button, Container, TextField,
-        Icon} from '@material-ui/core'
+        Icon, Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 
-import Logo from '../assets/logo-gestao-preto1.png'
+import Logo from '../assets/logo-gestao-preto.png'
 
 import ReCAPTCHA from "react-google-recaptcha"
 
@@ -24,7 +24,8 @@ class RescueAccount extends Component {
         email: '',
         celphone: '',
         response: null,
-        waiting: false
+        waiting: false,
+        openDialog: false,
     }
 
     toogleOption(option){
@@ -168,7 +169,7 @@ class RescueAccount extends Component {
                                     <Icon>contact_support</Icon>
                                 </Box>
                                 <Box alignItems="center" justifyContent="center">
-                                    <small className="fakeLink"><u>Não sei uma ou mais informações solicitadas</u></small>
+                                    <small className="fakeLink" onClick={() => this.setState({openDialog: true})}><u>Não sei uma ou mais informações solicitadas</u></small>
                                 </Box>
                             </Box>
                             <Box width="100%" mt={1}>
@@ -180,6 +181,24 @@ class RescueAccount extends Component {
                         </Grid> 
                     </Paper>
                 }
+                <Dialog onClose={() => this.setState({openDialog: false})} aria-labelledby="dialog-more-information" open={this.state.openDialog}>
+                    <DialogTitle id="customized-dialog-title" onClose={() => this.setState({openDialog: false})}>
+                        Mais informações
+                    </DialogTitle>
+                    <DialogContent dividers>
+                    <p>
+                        Caso nao saiba essas informações será necessário entrar em contato com o administrador do sistema.
+                    </p>
+                    <p>
+                        Assim recomendamos relatar suas tentativas e por consequência o motivo de não ter recuperado sua conta.
+                    </p>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.setState({openDialog: false})} color="secondary">
+                            Entendi
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Container>
         )
     }

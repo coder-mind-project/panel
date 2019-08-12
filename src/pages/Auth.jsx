@@ -19,7 +19,7 @@ import { backendUrl, defineErrorMsg } from '../config/backend'
 
 import ReCAPTCHA from "react-google-recaptcha"
 
-import Logo from '../assets/logo-gestao-preto1.png'
+import Logo from '../assets/logo-gestao-preto.png'
 
 import './css/Auth.css'
 import './css/defaultPage.css'
@@ -36,6 +36,8 @@ class Auth extends Component {
         rescuePassword: false,
         loading: false,
         redirect: false,
+
+        reloadCaptcha: false,
     }
 
     toogleRescuePassword(){
@@ -74,7 +76,8 @@ class Auth extends Component {
         }).catch(async error => {
             const msg = await defineErrorMsg(error)
             toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
-            this.setState({loading: false})
+            await this.setState({loading: false, reloadCaptcha: true})
+            this.setState({reloadCaptcha: false})
         })
         
     }
@@ -111,7 +114,7 @@ class Auth extends Component {
                             <Grid item xs={12} className="modalForm">
                                     <TextField label="E-mail" className="modalFormInput"
                                         fullWidth onChange={this.handleChange('email')} 
-                                        inputProps={{ autoComplete: 'username' }}
+                                        inputProps={{ autoComplete: 'email' }}
                                     />
                                     <FormControl fullWidth>
                                         <InputLabel htmlFor="password">Senha</InputLabel>
@@ -122,11 +125,13 @@ class Auth extends Component {
                                     </FormControl>
                                 <small className="fakeLink" onClick={() => this.toogleRescuePassword()}>Esqueceu seu e-mail/senha?</small>
                                 <Box display="flex" justifyContent="center" alignItems="center" width="100%" mb={2} mt={2}>
-                                    <ReCAPTCHA 
-                                        size="normal"
-                                        sitekey="6LePkK8UAAAAACKAocqyAEB2YQr4cnd3j8Ya2b2U"
-                                        onChange={(response) => this.setState({response}) }
-                                    />
+                                    { !this.state.reloadCaptcha && 
+                                        <ReCAPTCHA 
+                                            size="normal"
+                                            sitekey="6LePkK8UAAAAACKAocqyAEB2YQr4cnd3j8Ya2b2U"
+                                            onChange={(response) => this.setState({response}) }
+                                        />
+                                    }
                                 </Box>
                             </Grid> 
                             <Grid item xs={12} className="button-area">

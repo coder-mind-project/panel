@@ -2,7 +2,7 @@
 //const backendUrl = 'http://localhost:3001'
 
 //Production APIS
-const backendUrl = 'http://api-gestao-codermind-com-br.umbler.net'
+const backendUrl = 'http://api-gestao.codermind.com.br'
 
 const defineErrorMsg = error => {
 

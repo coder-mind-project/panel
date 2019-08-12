@@ -9,6 +9,7 @@ import CustomButtom from '../components/Button.jsx'
 import { displayFullDate } from '../config/masks'
 import axios from 'axios'
 import {backendUrl} from '../config/backend'
+import {APP_VERSION, APP_BUILD} from '../config/dataProperties'
 
 import './css/Stats.css'
 
@@ -168,6 +169,26 @@ class Stats extends Component{
                                     </Table>
                                 </Paper>
                             }
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box width="100%" display="flex" alignItems="center" mt={5}>
+                            <Box mr={1}>
+                                <Icon>
+                                    code
+                                </Icon>
+                            </Box>
+                            <Box>
+                                <h3>Informações Nerds</h3>
+                            </Box>
+                        </Box>
+                        <Box width="100%" display="flex" alignItems="center">
+                            <Box>
+                                <p>Versão da aplicação: {APP_VERSION}</p>
+                                <p>Build: {APP_BUILD}</p>
+                                <p>Desenvolvido por: Allan Wanderley Alves</p>
+                                <p>Copyright: Coder Mind</p>
+                            </Box>
                         </Box>
                     </Grid>
                 </Grid>
