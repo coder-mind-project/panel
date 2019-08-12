@@ -1,8 +1,8 @@
 //Development APIS
-//const backendUrl = 'http://localhost:3001'
+const backendUrl = 'http://localhost:3001'
 
 //Production APIS
-const backendUrl = 'http://api-gestao.codermind.com.br'
+//const backendUrl = 'http://api-gestao.codermind.com.br'
 
 const defineErrorMsg = error => {
 
