@@ -138,6 +138,7 @@ class ArticleImages extends Component {
             inexistente
         */
         if(!state.smallImgDirectory && path === 'smallImg') return
+        if(!state.mediumImgDirectory && path === 'mediumImg') return
         if(!state.bigImgDirectory && path === 'bigImg') return
         
         const option = window.confirm('Tem certeza que deseja remover esta imagem?')
@@ -152,7 +153,9 @@ class ArticleImages extends Component {
                     imagem do backend para visualização) e retirada de visualização 
                     da imagem. 
                 */
-                const directory = path === 'smallImg' ? 'smallImgDirectory' : 'bigImgDirectory'
+
+                const directory = `${path}Directory`
+                
                 this.setState({
                     [directory]: ''
                 })
