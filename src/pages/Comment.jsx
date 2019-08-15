@@ -53,7 +53,6 @@ class Comment extends Component {
         dialogAnswer: false,
         answer: '',
         authorAnswer: '',
-
     }
 
     toogleLoading(){

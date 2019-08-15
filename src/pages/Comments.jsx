@@ -347,13 +347,15 @@ class Comments extends Component {
                             color="danger"
                             variant="contained"
                             icon="clear"
+                            disabled={this.state.sendingAnswer}
                         />
                         <CustomButton
-                            text="Enviar"
+                            text={this.state.sendingAnswer ? 'Enviando...' : 'Enviar' }
                             onClick={() => this.sendAnswer()}
                             color="success"
                             variant="contained"
                             icon="save"
+                            disabled={this.state.sendingAnswer}
                         />
                     </DialogActions>
                 </Dialog>
