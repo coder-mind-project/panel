@@ -189,8 +189,8 @@ class ArticleStats extends Component {
                                 </Box>
                             </Box>
                         </Box>
-                        <Box p={5}>
-                            <Grid item xs={12} className="stats-blocks">
+                        <Box className="stats-blocks">
+                            <Grid item xs={12}>
                                 <Grid item xs={12} md={4}>
                                     <StatsBlock icon="touch_app" title="Visualizações" loadingMsg="Obtendo visualizações" data={{id: 'none', count: this.state.countViews}} />
                                 </Grid>

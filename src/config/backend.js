@@ -4,6 +4,10 @@
 //Production APIS
 const backendUrl = 'https://cm-gestao-v1.allanalves23.top'
 
+//ipinfo.io API
+const ipinfo = 'https://ipinfo.io'
+const ipinfoToken = 'eee6292429bd9f'
+
 const defineErrorMsg = error => {
 
     let errorMsg = 'Ocorreu um erro desconhecido, se persistir reporte'
@@ -14,4 +18,4 @@ const defineErrorMsg = error => {
     return errorMsg
 }
 
-export {backendUrl, defineErrorMsg}
+export {backendUrl, defineErrorMsg, ipinfo, ipinfoToken}

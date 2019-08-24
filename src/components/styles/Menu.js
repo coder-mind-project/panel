@@ -40,7 +40,7 @@ export const styles = theme => ({
         textDecoration: 'none',
     },
     drawer: {
-        width: 250,
+        width: 300,
         height: '100%',
         display: 'flex',
         flexDirection: 'column',

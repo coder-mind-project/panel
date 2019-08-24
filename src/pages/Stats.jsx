@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import {Container, Grid, Box, Icon, Paper, TableHead, TableBody, TableCell, TableRow, Table, Divider} from '@material-ui/core'
+import {Container, Grid, Box, Icon, Paper,
+    TableHead, TableBody, TableCell, TableRow,
+    Table, Divider, Button} from '@material-ui/core'
 import {connect} from 'react-redux'
 
 import Header from '../components/Header.jsx'
@@ -10,6 +12,8 @@ import { displayFullDate } from '../config/masks'
 import axios from 'axios'
 import {backendUrl} from '../config/backend'
 import {APP_VERSION, APP_BUILD} from '../config/dataProperties'
+
+import GeolocalizationModal from '../components/Geolocalization/Modal.jsx'
 
 import './css/Stats.css'
 
@@ -23,6 +27,9 @@ class Stats extends Component{
         views: {},
         comments: {},
         likes: {},
+
+        dialogModal: false,
+        ipSelected: '',
     }
 
     toogleLoadingLikes(){
@@ -61,6 +68,14 @@ class Stats extends Component{
             })
         })
 
+    }
+
+    async toogleDialogModal(ipAddress){
+        await this.setState({ipSelected: !this.state.dialogModal ? ipAddress : ''})
+        
+        this.setState({
+            dialogModal: !this.state.dialogModal
+        })
     }
     
     componentDidMount(){
@@ -116,7 +131,7 @@ class Stats extends Component{
                                             <TableCell scope="row">
                                             {view.article.title}
                                             </TableCell>
-                                            <TableCell align="right">{view.reader}</TableCell>
+                                            <TableCell align="right"><Button size="small" variant="text" color="secondary" onClick={() => this.toogleDialogModal(view.reader)} className="">{view.reader}</Button></TableCell>
                                             <TableCell align="right">{displayFullDate(view.startRead)}</TableCell>
                                             <TableCell align="right">{view.viewsQuantity}</TableCell>
                                         </TableRow>
@@ -160,7 +175,7 @@ class Stats extends Component{
                                             <TableCell scope="row">
                                                 {like.article.title}
                                             </TableCell>
-                                            <TableCell align="right">{like.reader}</TableCell>
+                                            <TableCell align="right"><Button size="small" variant="text" color="secondary" onClick={() => this.toogleDialogModal(like.reader)} className="">{like.reader}</Button></TableCell>
                                             <TableCell align="right">{displayFullDate(like.createdAt)}</TableCell>
                                             <TableCell align="right">{like.confirmed ? 'Sim' : 'Não'}</TableCell>
                                         </TableRow>
@@ -171,6 +186,7 @@ class Stats extends Component{
                             }
                         </Box>
                     </Grid>
+                    { this.state.dialogModal && <GeolocalizationModal closeDialog={() => this.toogleDialogModal()} ipAddress={this.state.ipSelected}/> }
                     <Grid item xs={12}>
                         <Box width="100%" display="flex" alignItems="center" mt={5}>
                             <Box mr={1}>

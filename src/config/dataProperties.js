@@ -38,5 +38,5 @@ export const ERROR_MSG_CUSTOM = "Ops, parece que ocorreu um erro. Tente recarreg
 export const LIMIT_LABEL = "Limite: "
 export const DISPLAYED_ROWS = (value) => `${value.from}-${value.to} de ${value.count}`
 
-export const APP_VERSION = "1.0.1"
+export const APP_VERSION = "1.0.2"
 export const APP_BUILD = "BETA"

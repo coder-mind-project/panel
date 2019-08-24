@@ -24,6 +24,7 @@ const useStyles = makeStyles(styles)
 
 export default (props) => {
 
+    const matches400 = useMediaQuery('(min-width: 400px)')
     const matches = useMediaQuery('(min-width: 960px)')
     const classes = useStyles()
 
@@ -35,7 +36,6 @@ export default (props) => {
 
     const toogle = event => {
         /* Usado para habilitar e desabilitar o menu em telas pequenas*/
-
         if(open && anchorRef.current && anchorRef.current.contains(event.target)) return
         setOpen(!open)
     }
@@ -198,18 +198,20 @@ export default (props) => {
                 }
                 { !matches && 
                     <Box display="flex" alignItems="center" flexWrap="wrap" justifyContent="center">
-                        <Box className={classes.moreInformation} mr={1}>
-                            {article.author && article.author.name ?
-                                (<span className={classes.author}>
-                                    <Avatar className="marginRight"
-                                        src={`${backendUrl}/${article.author.profilePhoto}`}
-                                        name={article.author.name}
-                                        size={40} round="20px" 
-                                    />
-                                    <strong>{article.author.name}</strong>
-                                </span>)  : 'Autor desconhecido'
-                            }
-                        </Box>
+                        {matches400 && 
+                            <Box className={classes.moreInformation} mr={1}>
+                                {article.author && article.author.name ?
+                                    (<span className={classes.author}>
+                                        <Avatar className="marginRight"
+                                            src={`${backendUrl}/${article.author.profilePhoto}`}
+                                            name={article.author.name}
+                                            size={40} round="20px" 
+                                        />
+                                        <strong>{article.author.name}</strong>
+                                    </span>)  : 'Autor desconhecido'
+                                }
+                            </Box>
+                        }
                         {article.inactivated && 
                             <CustomChip color="warning"
                                 sizeIcon="small" icon="warning"

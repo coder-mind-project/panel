@@ -1,6 +1,6 @@
 {
-  "name": "coder-mind-react-app",
-  "version": "1.0.1",
+  "name": "coder-mind-panel-react-app",
+  "version": "1.0.2",
   "description": "Aplicação para gerenciar a plataforma coder mind",
   "private": true,
   "author": "Allan Wanderley Alves",

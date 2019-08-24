@@ -65,3 +65,12 @@ code {
 }
 
 
+@media(max-width: 768px){
+  body{
+    padding: 0;
+  }
+
+  .page{
+    padding: 0 !important;
+  }
+}

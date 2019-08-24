@@ -10,7 +10,7 @@ body{
 }
 
 .modal{
-    width: 350px;
+    min-width: 350px;
 }
 
 .modalTitle{
@@ -56,8 +56,27 @@ body{
     text-align: center;
 }
 
+.captchaArea{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 15px 0;
+}
+
 @media(max-width: 768px){
     .modal{
-        width: 100;
+        min-width: 100%;
+    }
+
+    .captchaArea{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .button-area{
+        padding: 10px 25px;
     }
 }

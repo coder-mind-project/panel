@@ -34,6 +34,8 @@ const useStyles = makeStyles(styles)
 const MenuApp = props => {
     const classes = useStyles()
     const matches = useMediaQuery('(min-width: 820px)')
+    const matches350 = useMediaQuery('(min-width: 350px)')
+    const matches460 = useMediaQuery('(min-width: 460px)')
 
     const [anchorEl, setAnchorEl] = React.useState(null)
 
@@ -108,13 +110,17 @@ const MenuApp = props => {
                     <div>
                         { props.user && props.user.name ?
                             <Box display="flex" alignItems="center">
-                                <Notifications />
-                                <div className={classes.menuButton}>
-                                    <Avatar onClick={openMyAccountIcon} 
-                                        style={{cursor: 'pointer'}} color="#888"
-                                        size="50" round="30px" src={`${backendUrl}/${props.user.profilePhoto}`}
+                                { matches350 && 
+                                    <Notifications />
+                                }
+                                { matches460 && 
+                                    <div className={classes.menuButton}>
+                                        <Avatar onClick={openMyAccountIcon} 
+                                            style={{cursor: 'pointer'}} color="#888"
+                                            size="50" round="30px" src={`${backendUrl}/${props.user.profilePhoto}`}
                                         />
-                                </div>
+                                    </div>
+                                }
                             </Box> : '' 
                             
                         }

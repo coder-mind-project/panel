@@ -124,10 +124,10 @@ class Auth extends Component {
                                         />
                                     </FormControl>
                                 <small className="fakeLink" onClick={() => this.toogleRescuePassword()}>Esqueceu seu e-mail/senha?</small>
-                                <Box display="flex" justifyContent="center" alignItems="center" width="100%" mb={2} mt={2}>
+                                <Box className="captchaArea">
                                     { !this.state.reloadCaptcha && 
                                         <ReCAPTCHA 
-                                            size="normal"
+                                            size="compact"
                                             sitekey="6LePkK8UAAAAACKAocqyAEB2YQr4cnd3j8Ya2b2U"
                                             onChange={(response) => this.setState({response}) }
                                         />

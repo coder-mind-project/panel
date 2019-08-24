@@ -1,3 +1,13 @@
 .article-stats label, .article-stats input{
     color: #000 !important; 
 }
+
+.stats-blocks{
+    padding: 20px;
+}
+
+@media(max-width: 768px){
+    .stats-blocks{
+        padding: 5px;
+    }
+}
