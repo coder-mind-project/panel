@@ -1,5 +1,5 @@
 //Development APIS
-const backendUrl = 'http://localhost:3001'
+const backendUrl = 'https://cm-gestao-v1.allanalves23.top'
 
 //Production APIS
 //const backendUrl = 'https://cm-gestao-v1.allanalves23.top'
