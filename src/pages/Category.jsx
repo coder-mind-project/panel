@@ -5,7 +5,7 @@ import { Container, Grid, TextField, Divider,
         Paper, FormGroup, InputLabel, Icon, Breadcrumbs,
         Box } from '@material-ui/core'
 
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import AsyncSelect from 'react-select/async'
 
 import axios from 'axios'
@@ -203,7 +203,6 @@ export default class User extends Component{
                         {this.state.redirectTo && 
                             <Redirect to={`/${this.state.redirectTo}`} />
                         }
-                        <ToastContainer />
                         <Grid container>
                             <Grid item xs={12} md={6} className="formGroup">
                                 <TextField label="Categoria *" 

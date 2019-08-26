@@ -10,10 +10,12 @@ import CustomButtom from '../components/Button.jsx'
 
 import { displayFullDate } from '../config/masks'
 import axios from 'axios'
-import {backendUrl} from '../config/backend'
-import {APP_VERSION, APP_BUILD} from '../config/dataProperties'
+import { backendUrl } from '../config/backend'
+import { APP_VERSION, APP_BUILD } from '../config/dataProperties'
 
 import GeolocalizationModal from '../components/Geolocalization/Modal.jsx'
+
+import { toast } from 'react-toastify'
 
 import './css/Stats.css'
 
@@ -28,6 +30,8 @@ class Stats extends Component{
         comments: {},
         likes: {},
 
+        loadingStats: false,
+
         dialogModal: false,
         ipSelected: '',
     }
@@ -40,10 +44,17 @@ class Stats extends Component{
         this.setState({loadingLastViews: !this.state.loadingLastViews})
     }
 
+    toogleLoadingStats(){
+        this.setState({loadingStats: !this.state.loadingStats})
+    }
+
     async getLastLikes(){
         await this.toogleLoadingLikes()
         const url = `${backendUrl}/likes`
         await axios(url).then(res => {
+            if(res.data.likes.length === 0){
+                toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon>Nenhuma avaliação encontrada</div>))
+            }
             this.setState({lastLikes: res.data.likes})
         })
         this.toogleLoadingLikes()
@@ -53,21 +64,25 @@ class Stats extends Component{
         await this.toogleLoadingLastViews()
         const url = `${backendUrl}/views`
         await axios(url).then(res => {
+            if(res.data.views.length === 0){
+                toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon>Nenhuma visualização encontrada</div>))
+            }
             this.setState({lastViews: res.data.views})
         })
         this.toogleLoadingLastViews()
     }
 
-    getStats(){
+    async getStats(){
         const url = `${backendUrl}/stats`
-        axios(url).then( res => {
+        await this.toogleLoadingStats()
+        await axios(url).then( res => {
             this.setState({
                 views: res.data.views,
                 comments: res.data.comments,
                 likes: res.data.likes
             })
         })
-
+        this.toogleLoadingStats()
     }
 
     async toogleDialogModal(ipAddress){
@@ -89,13 +104,13 @@ class Stats extends Component{
                 <Header icon="assessment" title="Estatísticas" description="Bem vindo ao painel Coder Mind"/>
                 <Grid item xs={12} className="stats-blocks">
                     <Grid item xs={12} md={4}>
-                        <StatsBlock icon="touch_app" title="Visualizações por mês" loadingMsg="Obtendo visualizações" data={this.state.views} />
+                        <StatsBlock icon="touch_app" loading={this.state.loadingStats} title="Visualizações por mês" loadingMsg="Obtendo visualizações" data={this.state.views} />
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <StatsBlock icon="thumb_up" title="Curtidas por mês" loadingMsg="Obtendo avaliações" data={this.state.likes} />
+                        <StatsBlock icon="thumb_up" loading={this.state.loadingStats} title="Curtidas por mês" loadingMsg="Obtendo avaliações" data={this.state.likes} />
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <StatsBlock icon="comment" title="Comentários por mês" loadingMsg="Obtendo comentários" data={this.state.comments} />
+                        <StatsBlock icon="comment" loading={this.state.loadingStats} title="Comentários por mês" loadingMsg="Obtendo comentários" data={this.state.comments} />
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>

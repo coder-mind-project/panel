@@ -4,7 +4,7 @@ import { Container, Paper, Grid, TextField,
         InputLabel , Icon, Box,Fade} from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
 import PasswordField from 'material-ui-password-field'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 
 import ButtonBase from '../components/ButtonBase.jsx'
 import RedeemAccount from './RedeemAccount.jsx'
@@ -104,7 +104,6 @@ class Auth extends Component {
     render() { 
         return (
             <Container className="container">
-                <ToastContainer/>
                 { !this.state.rescuePassword &&
                     <Paper className="modal">
                         <Grid item xs={12} className="modalTitle">

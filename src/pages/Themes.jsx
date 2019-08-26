@@ -4,7 +4,7 @@ import { Container, Grid, Button, Table,
     TableFooter, TablePagination, Dialog, DialogActions, DialogContent,
     DialogContentText, DialogTitle, Paper, Icon, Box } from '@material-ui/core'
 
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { Redirect, Link } from 'react-router-dom'
 import SearchBar from 'material-ui-search-bar'
 
@@ -137,7 +137,6 @@ class Themes extends Component {
     render() { 
         return ( 
             <Container>
-                <ToastContainer />
                 {this.state.redirectTo && 
                     <Redirect to={this.state.redirectTo} />
                 }

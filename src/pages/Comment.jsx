@@ -7,7 +7,7 @@ import { Grid, Box, TextField,
         TableHead, TableRow, Dialog, DialogActions,
         DialogContent, DialogTitle} from '@material-ui/core'
 
-import {toast, ToastContainer} from 'react-toastify'
+import {toast} from 'react-toastify'
 
 import CustomIconButton from '../components/IconButton.jsx'
 import CustomButton from '../components/Button.jsx'
@@ -138,7 +138,6 @@ class Comment extends Component {
                         }
                     </Breadcrumbs>
                 </Box>
-                <ToastContainer />
                 { !this.state.loading && this.state.comment._id &&
                     <Paper className="paper">
                         <Grid item xs={12}>

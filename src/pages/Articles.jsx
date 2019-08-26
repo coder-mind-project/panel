@@ -16,8 +16,6 @@ import axios from 'axios'
 import { backendUrl } from '../config/backend'
 import { OPTIONS_LIMIT , DEFAULT_LIMIT, ERROR_MSG_CUSTOM, SAUDATION_LOADING_MSG } from '../config/dataProperties'
 
-import { ToastContainer } from 'react-toastify'
-    
 import './css/defaultPage.css'
 
 export default class Articles extends Component {
@@ -101,7 +99,6 @@ export default class Articles extends Component {
                     description="Consulte, altere e crie novos artigos" 
                     icon="description"
                 />
-                <ToastContainer/>
                 {this.state.redirectTo && 
                     <Redirect to={`/${this.state.redirectTo}`} />
                 }

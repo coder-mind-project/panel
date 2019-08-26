@@ -7,7 +7,7 @@ import { Grid, Container, Button, TableHead, TableRow,
     DialogActions, Paper, Icon } from '@material-ui/core'
 import SearchBar from 'material-ui-search-bar'
 
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { connect } from 'react-redux'
 
 import axios from 'axios'
@@ -165,7 +165,6 @@ class Users extends Component {
     render(){
         return (
             <Container>
-                <ToastContainer />
                 {this.state.redirectTo && 
                     <Redirect to={this.state.redirectTo}/>
                 }

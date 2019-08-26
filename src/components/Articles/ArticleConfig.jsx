@@ -133,7 +133,7 @@ class ArticleConfig extends Component {
     }
 
     componentDidMount(){
-        this.setState({article: this.props.article})   
+        this.setState({article: this.props.article})  
     }
 
     render() { 
@@ -152,7 +152,7 @@ class ArticleConfig extends Component {
                                 <TextField label="Autor" margin="dense" value={this.state.article.author.name} disabled /> 
                             </Grid>
                             <Grid item xs={12} md={4}>
-                                <TextField label="Criado em" margin="dense" value={displayFullDate(this.state.article.createdAt)} disabled /> 
+                                <TextField label="Criado em" margin="dense" value={displayFullDate(this.state.article.created_at)} disabled /> 
                             </Grid>
                             <Grid item xs={12} md={4}>
                                 <TextField label="Publicado em" margin="dense" value={this.state.article.publishAt ? displayFullDate(this.state.article.publishAt) : 'Não publicado'} disabled /> 

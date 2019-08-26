@@ -307,7 +307,7 @@ export default (props) => {
                             onClick={() => remove(article._id)}
                         />
                         <Grid className={classes.moreInformation}>
-                            <Box>Criado em: {displayDate(article.createdAt) || 'N/C'}</Box>
+                            <Box>Criado em: {displayDate(article.created_at) || 'N/C'}</Box>
                         </Grid>
                     </Grid>
                 </Grid>

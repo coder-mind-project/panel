@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { Container, Grid, Fade } from '@material-ui/core'
+import { ToastContainer } from 'react-toastify'
 
 import Loading from './assets/loading.gif'
 
@@ -83,6 +84,7 @@ class App extends Component {
             <Fade in={!this.state.validatingToken}>
               <Router>
                 <Menu/>
+                <ToastContainer/>
                 <Container>
                   {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
                   {!user && 

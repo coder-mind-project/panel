@@ -4,7 +4,7 @@ import { Box, Container, Grid,
 
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 
 import { backendUrl, defineErrorMsg } from '../../config/backend'
 
@@ -207,7 +207,6 @@ class ArticleImages extends Component {
                             </Typography>
                         </Box>
                     </Box>
-                    <ToastContainer />
                     <Grid item xs={12} className="bigImgSection">
                             <Grid item xs={12} sm={6} md={4}>
                                 <Tooltip title={this.state.smallImgDirectory ? "Remover Imagem" : ""} placement="right-start">

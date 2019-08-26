@@ -6,7 +6,7 @@ import { backendUrl } from '../config/backend'
 
 import { Link } from 'react-router-dom'
 
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 
 
 import CustomChip from '../components/Chip.jsx'
@@ -192,7 +192,6 @@ class Comments extends Component {
     render() { 
         return ( 
             <Grid item xs={12}>
-                <ToastContainer />
                 <Header title="Comentários" description="Interaja com seus leitores" icon="comments"/>
                 { this.state.comment._id && 
                     <Grow in={Boolean(this.state.comment._id)}>

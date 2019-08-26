@@ -15,7 +15,7 @@ import FloatingButton from '../components/FloatingButton.jsx'
 import Searching from '../assets/searching.gif'
 
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { connect } from 'react-redux'
 
 import { backendUrl, defineErrorMsg } from '../config/backend'
@@ -43,7 +43,7 @@ class Article extends Component {
             mediumImg: null,
             bigImg: null,
             customURL: '',
-            createdAt: '',
+            created_at: '',
             publishAt: '',
             updatedAt: '',
             published : true, 
@@ -179,7 +179,7 @@ class Article extends Component {
                 shortDescription: article.shortDescription || '',
                 longDescription: article.longDescription || '',
                 textArticle: article.textArticle || '',
-                createdAt: article.createdAt,
+                created_at: article.created_at,
                 publishAt: article.publishAt,
                 updatedAt: article.updatedAt,
                 published : article.published, 
@@ -296,7 +296,6 @@ class Article extends Component {
     render(){
         return(
             <Container>
-                <ToastContainer />
                 <FloatingButton action={() => document.documentElement.scrollTop = 0}/>
                 { this.state.redirectTo && 
                     <Redirect to={`/${this.state.redirectTo}`} />

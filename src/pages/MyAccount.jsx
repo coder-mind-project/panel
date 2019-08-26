@@ -15,8 +15,6 @@ import { connect } from 'react-redux'
 import axios from 'axios'
 import { backendUrl } from '../config/backend'
 
-import { ToastContainer } from 'react-toastify'
-
 import './css/defaultPage.css'
 
 class MyAccount extends Component {
@@ -64,7 +62,6 @@ class MyAccount extends Component {
         return ( 
             <Container>
                 <Header icon="account_box" title="Meus dados" description="Altere e gerencie informações de sua conta" />
-                <ToastContainer/>
                 {this.state.user && !this.state.loading &&
                     <Grid item xs={12}>
                         <ExpansionPanel expanded={this.state.expanded === 'general_information'}

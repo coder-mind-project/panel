@@ -5,7 +5,7 @@ import { Container, Grid, TextField, Button,
         MenuItem, Divider, Icon, InputLabel,
         FormControl, Box, Paper, Dialog, DialogActions,
         DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import PasswordField from 'material-ui-password-field'
@@ -198,7 +198,6 @@ export default class User extends Component{
                     description="Consulte, altere, crie e remova usuários do sistema"
                     icon="person_add"
                 />
-                <ToastContainer/>
                 {this.state.redirectTo && 
                     <Redirect to={`/${this.state.redirectTo}`}/>
                 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { Redirect, Link } from 'react-router-dom'
 
 import { Container, Grid, Button, Table,
@@ -142,7 +142,6 @@ class Categories extends Component {
     render() { 
         return ( 
             <Container>
-                <ToastContainer />
                 {this.state.redirectTo && 
                     <Redirect to={this.state.redirectTo} />
                 }

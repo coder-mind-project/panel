@@ -15,7 +15,7 @@ import LogoBlack from '../assets/logo-gestao-preto.png'
 import Notifications from './Notifications.jsx'
 
 import { styles } from './styles/Menu'
-import { backendUrl } from '../config/backend';
+import { backendUrl } from '../config/backend'
 
 const HideOnScroll = props => {
     const {children, window} = props

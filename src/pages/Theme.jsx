@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 
 import { Container, Grid, TextField, Divider,
         Paper, Icon, Breadcrumbs, Box } from '@material-ui/core'
@@ -133,7 +133,6 @@ export default class User extends Component{
                         {this.state.redirectTo &&
                             <Redirect to={`/${this.state.redirectTo}`} />
                         }
-                        <ToastContainer />
                         <Grid container>
                             <Grid item xs={12} md={6} className="formGroup">
                                 <TextField label="Tema *" 
