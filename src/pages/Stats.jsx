@@ -77,9 +77,9 @@ class Stats extends Component{
         await this.toogleLoadingStats()
         await axios(url).then( res => {
             this.setState({
-                views: res.data.views,
-                comments: res.data.comments,
-                likes: res.data.likes
+                views: res.data.views || [],
+                comments: res.data.comments || [],
+                likes: res.data.likes || []
             })
         })
         this.toogleLoadingStats()
