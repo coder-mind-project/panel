@@ -237,7 +237,7 @@ class Comment extends Component {
                                                     <TableCell scope="userEmail">
                                                         {comment.userEmail}
                                                     </TableCell>
-                                                    <TableCell scope="createdAt">
+                                                    <TableCell scope="created_at">
                                                         {displayFullDate(comment.created_at)}
                                                     </TableCell>
                                                     <TableCell scope="_id">

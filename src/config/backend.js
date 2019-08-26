@@ -1,8 +1,8 @@
 //Development APIS
-//const backendUrl = 'http://localhost:3001'
+const backendUrl = 'http://localhost:3001'
 
 //Production APIS
-const backendUrl = 'https://cm-gestao-v1.allanalves23.top'
+//const backendUrl = 'https://cm-gestao-v1.allanalves23.top'
 
 //ipinfo.io API
 const ipinfo = 'https://ipinfo.io'
