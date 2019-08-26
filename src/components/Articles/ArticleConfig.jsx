@@ -173,7 +173,7 @@ class ArticleConfig extends Component {
                                     <FormControlLabel
                                         control={
                                         <Checkbox
-                                            checked={Boolean(this.state.article.createdAt)}
+                                            checked={Boolean(this.state.article.created_at)}
                                             disabled
                                             value="awaiting"
                                             color="primary"

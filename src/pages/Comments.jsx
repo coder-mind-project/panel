@@ -242,7 +242,7 @@ class Comments extends Component {
                                             className="form-input"
                                             label="Comentado em"
                                             multiline
-                                            value={displayFullDate(this.state.comment.createdAt)}
+                                            value={displayFullDate(this.state.comment.created_at)}
                                             fullWidth
                                             disabled
                                         />

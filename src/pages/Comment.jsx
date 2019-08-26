@@ -238,7 +238,7 @@ class Comment extends Component {
                                                         {comment.userEmail}
                                                     </TableCell>
                                                     <TableCell scope="createdAt">
-                                                        {displayFullDate(comment.createdAt)}
+                                                        {displayFullDate(comment.created_at)}
                                                     </TableCell>
                                                     <TableCell scope="_id">
                                                         <CustomIconButton icon="speaker_notes"

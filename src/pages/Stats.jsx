@@ -191,7 +191,7 @@ class Stats extends Component{
                                                 {like.article.title}
                                             </TableCell>
                                             <TableCell align="right"><Button size="small" variant="text" color="secondary" onClick={() => this.toogleDialogModal(like.reader)} className="">{like.reader}</Button></TableCell>
-                                            <TableCell align="right">{displayFullDate(like.createdAt)}</TableCell>
+                                            <TableCell align="right">{displayFullDate(like.created_at)}</TableCell>
                                             <TableCell align="right">{like.confirmed ? 'Sim' : 'Não'}</TableCell>
                                         </TableRow>
                                         ))}
