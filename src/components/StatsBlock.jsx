@@ -22,7 +22,7 @@ const StatsBlock = (props) => {
     }
 
     return (
-        <Paper className="stats-block">
+        <Paper className="stat-block">
             { props.data && props.data.id && !props.loading &&
                 <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
                     <Box display="flex">
