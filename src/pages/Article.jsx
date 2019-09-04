@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Container, Divider, Grid, TextField,
     FormGroup, InputLabel, Paper, Box, Icon, 
-    Tabs, Tab, Breadcrumbs } from '@material-ui/core'
+    Tabs, Tab, Breadcrumbs, InputAdornment } from '@material-ui/core'
+import { FaYoutube, FaGithub } from 'react-icons/fa'
 import AsyncSelect from 'react-select/async'
 
 import Header from '../components/Header'
@@ -38,6 +39,8 @@ class Article extends Component {
             category: null,
             shortDescription: '',
             longDescription: '',
+            youtube: '',
+            github: '',
             textArticle: '',
             smallImg: null,
             mediumImg: null,
@@ -178,6 +181,8 @@ class Article extends Component {
                 customURL: article.customURL || '',
                 shortDescription: article.shortDescription || '',
                 longDescription: article.longDescription || '',
+                youtube: article.youtube || '',
+                github: article.github || '',
                 textArticle: article.textArticle || '',
                 created_at: article.created_at,
                 publishAt: article.publishAt,
@@ -208,6 +213,8 @@ class Article extends Component {
             shortDescription: this.state.article.shortDescription,
             customURL: this.state.article.customURL ? formatCustomURL(this.state.article.customURL) : formatCustomURL(this.state.article.title),
             longDescription: this.state.article.longDescription,
+            youtube: this.state.article.youtube,
+            github: this.state.article.github,
             textArticle: this.state.article.textArticle,
             author: {
                 _id: author._id,
@@ -345,10 +352,42 @@ class Article extends Component {
                                         <TextField fullWidth id="custom_url" label="Link personalizado" helperText={`Link atual: ${this.state.article.customURL ? formatCustomURL(this.state.article.customURL) : formatCustomURL(this.state.article.title)}`} value={this.state.article.customURL} margin="normal" onChange={this.handleChange('customURL')} />
                                     </Grid>
                                     <Grid item xs={12} className="formGroup">
-                                        <TextField fullWidth error={this.state.article.longDescription.trim().length > 300} id="long_description" helperText={this.state.article.longDescription.trim().length > 300 ? "Máximo permitido são 300 caracteres" : "Usado para descrever a futura imagem de titulo do artigo"} label="Longa descrição" value={this.state.article.longDescription || ''} margin="normal" onChange={this.handleChange('longDescription')}/>
+                                        <TextField fullWidth error={this.state.article.longDescription.trim().length > 300} id="long_description" helperText={this.state.article.longDescription.trim().length > 300 ? "Máximo permitido são 300 caracteres" : ""} label="Longa descrição" value={this.state.article.longDescription || ''} margin="normal" onChange={this.handleChange('longDescription')}/>
                                     </Grid>
                                     <Grid item xs={12} className="formGroup">
                                         <TextField fullWidth id="author" label="Autor" disabled value={this.state.article && this.state.article.author && this.state.article.author.name ? this.state.article.author.name : this.props.user.name} margin="normal"/>
+                                    </Grid>
+                                    <Grid item xs={12} md={6} className="formGroup">
+                                        <TextField fullWidth id="yt-link" label="Possui vídeo no youtube?"
+                                            value={this.state.article.youtube || ''}
+                                            onChange={this.handleChange('youtube')}
+                                            margin="normal" error={this.state.article.youtube.trim().length > 300}
+                                            helperText={this.state.article.youtube.trim().length > 300 ? 
+                                                "Máximo permitido são 300 caracteres" : "Caso possua copie o link do video aqui"}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <FaYoutube />
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                    </Grid>
+                                    <Grid item xs={12} md={6} className="formGroup">
+                                        <TextField fullWidth id="gh-link" label="Possui repositório no github?"
+                                            onChange={this.handleChange('github')}
+                                            value={this.state.article.github || ''} margin="normal"
+                                            error={this.state.article.github.trim().length > 300}
+                                            helperText={this.state.article.github.trim().length > 300 ?
+                                                "Máximo permitido são 300 caracteres" : "Caso possua copie o link do repositório aqui"}
+                                                InputProps={{
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <FaGithub />
+                                                        </InputAdornment>
+                                                    ),
+                                            }}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} className="divider">
                                         <Divider />

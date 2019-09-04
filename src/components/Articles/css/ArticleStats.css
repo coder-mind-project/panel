@@ -3,7 +3,15 @@
 }
 
 .stats-blocks{
-    padding: 20px;
+    margin: 20px;
+}
+
+.stats-blocks > :nth-child(1){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
 }
 
 @media(max-width: 768px){
