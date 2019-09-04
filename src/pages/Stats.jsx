@@ -102,7 +102,7 @@ class Stats extends Component{
         return(
             <Container>
                 <Header icon="assessment" title="Estatísticas" description="Bem vindo ao painel Coder Mind"/>
-                <Grid item xs={12} className="stats-blocks">
+                <Grid item xs={12} className="stats-blocks-home">
                     <Grid item xs={12} md={4}>
                         <StatsBlock icon="touch_app" loading={this.state.loadingStats} title="Visualizações por mês" loadingMsg="Obtendo visualizações" data={this.state.views} />
                     </Grid>

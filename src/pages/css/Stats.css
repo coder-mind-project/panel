@@ -1,17 +1,17 @@
-.stats-blocks{
+.stats-blocks-home{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
 
-.stats-block{
+.stat-block{
     height: 170px;
     margin: 5px;
     padding: 25px 15px;
 }
 
-.stats-block h4{
+.stat-block h4{
     margin: 0;
 }
 
