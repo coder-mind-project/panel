@@ -67,6 +67,7 @@ class Stats extends Component{
             if(res.data.views.length === 0){
                 toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon>Nenhuma visualização encontrada</div>))
             }
+            console.log(res.data.views)
             this.setState({lastViews: res.data.views})
         })
         this.toogleLoadingLastViews()
@@ -144,7 +145,7 @@ class Stats extends Component{
                                         {this.state.lastViews.map(view => (
                                         <TableRow key={view._id}>
                                             <TableCell scope="row">
-                                            {view.article.title}
+                                            {Boolean(view.article) ? view.article.title : 'N/D'}
                                             </TableCell>
                                             <TableCell align="right"><Button size="small" variant="text" color="secondary" onClick={() => this.toogleDialogModal(view.reader)} className="">{view.reader}</Button></TableCell>
                                             <TableCell align="right">{displayFullDate(view.startRead)}</TableCell>
