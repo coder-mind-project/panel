@@ -180,7 +180,7 @@ export default class User extends Component{
 
     render(){
         return(
-            <Container>
+            <Container id="component">
                 <Header title="Categoria" 
                     description="Consulte, altere, crie e remova categorias do sistema"
                     icon="category"

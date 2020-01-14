@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { toast } from 'react-toastify'
 import { Redirect, Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import { Container, Grid, Button, Table,
     TableRow, TableHead, TableBody, TableCell,
@@ -141,19 +142,21 @@ class Categories extends Component {
 
     render() { 
         return ( 
-            <Container>
+            <Container id="component">
                 {this.state.redirectTo && 
                     <Redirect to={this.state.redirectTo} />
                 }
                 <Header title="Categorias" description="categorias para artigos" icon="category"></Header>
                 <Container className="hudBar">
                     <Grid item className="hudBarChild">
-                        <Box mr={1} className="linkButton">
-                            <Link to="/category" className="linkRouter linkButton">
-                                <CustomButton color="default" text="Nova Categoria"
-                                    icon="add_circle_outline" />
-                            </Link>
-                        </Box>
+                        { this.props.user.tagAdmin && 
+                            <Box mr={1} className="linkButton">
+                                <Link to="/category" className="linkRouter linkButton">
+                                    <CustomButton color="default" text="Nova Categoria"
+                                        icon="add_circle_outline" />
+                                </Link>
+                            </Box>
+                        }
                         <Box mr={1} className="linkButton">
                             <Link to="/management" className="linkRouter linkButton">
                                 <CustomButton color="gray" text="Configurações"
@@ -214,14 +217,16 @@ class Categories extends Component {
                                                 Tema
                                             </span>
                                         </TableCell>
-                                        <TableCell>
-                                            <span className="centerVertical">
-                                                <Icon fontSize="small" className="marginRight">
-                                                    build
-                                                </Icon>
-                                                Ações
-                                            </span>
-                                        </TableCell>
+                                        { this.props.user.tagAdmin && 
+                                            <TableCell>
+                                                <span className="centerVertical">
+                                                    <Icon fontSize="small" className="marginRight">
+                                                        build
+                                                    </Icon>
+                                                    Ações
+                                                </span>
+                                            </TableCell>
+                                        }
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -237,16 +242,18 @@ class Categories extends Component {
                                         <TableCell scope="theme">
                                             {category.theme.name || 'Sem categoria'}
                                         </TableCell>
-                                        <TableCell scope="_id">
-                                            <CustomIconButton icon="edit" color="default"
-                                                aria-label="Editar" tooltip="Editar"
-                                                onClick={this.goTo(`category/${category._id}`)}
-                                            />
-                                            <CustomIconButton icon="delete_forever" color="danger"
-                                                aria-label="Delete" tooltip="Remover"
-                                                onClick={this.selectCategory(category)}
-                                            />
-                                        </TableCell>
+                                        { this.props.user.tagAdmin && 
+                                            <TableCell scope="_id">
+                                                <CustomIconButton icon="edit" color="default"
+                                                    aria-label="Editar" tooltip="Editar"
+                                                    onClick={this.goTo(`category/${category._id}`)}
+                                                />
+                                                <CustomIconButton icon="delete_forever" color="danger"
+                                                    aria-label="Delete" tooltip="Remover"
+                                                    onClick={this.selectCategory(category)}
+                                                />
+                                            </TableCell>
+                                        }
                                     </TableRow>
                                 ))}
                                 </TableBody>
@@ -317,4 +324,6 @@ class Categories extends Component {
     }
 }
 
-export default Categories
+
+const mapStateToProps = state => ({user: state.user})
+export default connect(mapStateToProps)(Categories)

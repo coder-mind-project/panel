@@ -193,7 +193,7 @@ export default class User extends Component{
 
     render(){
         return(
-            <Container>
+            <Container id="component">
                 <Header title="Usuário" 
                     description="Consulte, altere, crie e remova usuários do sistema"
                     icon="person_add"
@@ -302,7 +302,9 @@ export default class User extends Component{
                                     mask="__/__/____"
                                     maxDate={new Date()}
                                     maxDateMessage="Data acima do permitido"
-                                    minDateMessage="Data abaixo do permitido" />
+                                    minDateMessage="Data abaixo do permitido"
+                                    format="DD/MM/YYYY"
+                                    invalidDateMessage="Formato de data inválido" />
                             </MuiPickersUtilsProvider>
                             <TextField label="Endereço"
                                 className="formInput"

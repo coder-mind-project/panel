@@ -1,3 +1,5 @@
+import { COLOR_APP } from '../../config/dataProperties'
+
 export const styles = theme => ({
     menu: {
         display: 'flex',
@@ -6,7 +8,7 @@ export const styles = theme => ({
         alignItems: 'center',
         paddingLeft: 10,
         paddingRight: 10,
-        backgroundColor: 'rgb(50,50,50)',
+        backgroundColor: 'rgb(20,20,20)',
     },
     menuLogo: {
         marginRight: '25px',
@@ -21,7 +23,7 @@ export const styles = theme => ({
     },
     iconButtonMenu: {
         marginRight: '10px',
-        color: '#f50057'
+        color: COLOR_APP
     },
     link: {
         color: 'inherit',

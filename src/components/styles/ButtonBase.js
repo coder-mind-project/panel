@@ -1,3 +1,5 @@
+import { COLOR_APP, COLOR_APP_HOVER } from '../../config/dataProperties'
+
 export const styles = theme => ({
     success: {
         backgroundColor: 'rgb(30,178,15)',
@@ -27,10 +29,10 @@ export const styles = theme => ({
         borderRadius: 4
     },
     default: {
-        backgroundColor: '#f50057',
+        backgroundColor: COLOR_APP,
         color: '#fff',
         '&:hover':{
-            backgroundColor: '#cc0249',
+            backgroundColor: COLOR_APP_HOVER,
         },
         marginBottom: '10px',
         fontSize: '1rem',
@@ -39,10 +41,10 @@ export const styles = theme => ({
         borderRadius: 4
     },
     defaultMaxWidth: {
-        backgroundColor: '#f50057',
+        backgroundColor: COLOR_APP,
         color: '#fff',
         '&:hover':{
-            backgroundColor: '#cc0249',
+            backgroundColor: COLOR_APP_HOVER,
         },
         marginBottom: '10px',
         fontSize: '1rem',

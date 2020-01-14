@@ -10,6 +10,8 @@ import userReducer from './redux/userReducer'
 import errorReducer from './redux/errorReducer'
 import menuReducer from './redux/menuReducer'
 
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+
 import './config/axios'
 
 import './index.css'
@@ -20,9 +22,23 @@ const reducers = combineReducers({
     menu: menuReducer
 })
 
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#088FF6'
+        },
+        secondary: {
+            main: '#8a05be'
+        }
+    }
+})
+
 
 
 ReactDOM.render(
     <Provider store={createStore(reducers)}>
-        <App />
-    </Provider>, document.getElementById('root'));
+        <MuiThemeProvider theme={theme}>
+            <App />
+        </MuiThemeProvider>
+    </Provider>
+    , document.getElementById('root'));

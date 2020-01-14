@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');@import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+@import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Offside&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Dancing+Script&display=swap');
 
 body {
   margin: 0;
@@ -8,19 +8,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: rgba(220, 220, 220, .8);
-  padding: 15px;
+}
+
+#component{
+  padding: 20px;
 }
 
 label.Mui-focused{
-  color: #f50057 !important;
+  color: #8a05be !important;
 }
 
 .Mui-focused fieldset{
-  border-color: #f50057 !important;
+  border-color: #8a05be !important;
 }
 
 .MuiInput-underline:after{
-  border-bottom-color: #f50057 !important;
+  border-bottom-color: #8a05be !important;
 }
 
 .loading-app-area{
@@ -33,7 +36,7 @@ label.Mui-focused{
 .coder-mind{
   font-family: 'Offside', cursive !important;
   font-size: 10rem;
-  color: #f50057;
+  color: #8a05be;
   margin: 0;
   text-align: center;
 }
@@ -41,7 +44,7 @@ label.Mui-focused{
 .gestao{
   font-family: 'Dancing Script', cursive;
 
-  color: #f50057;
+  color: #8a05be;
   font-size: 7rem;
   margin: 0;
 }

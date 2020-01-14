@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Paper, Grid, TextField,
+import { Paper, Grid, TextField,
         CircularProgress, FormControl,
         InputLabel , Icon, Box,Fade} from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
@@ -7,7 +7,7 @@ import PasswordField from 'material-ui-password-field'
 import { toast } from 'react-toastify'
 
 import ButtonBase from '../components/ButtonBase.jsx'
-import RedeemAccount from './RedeemAccount.jsx'
+import RedeemAccount from '../components/RedeemAccount.jsx'
 
 import { setUser } from '../redux/userActions'
 import { setMenu } from '../redux/menuActions'
@@ -16,10 +16,11 @@ import { connect } from 'react-redux'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../config/backend'
+import { CAPTCHA_SITE_KEY } from '../config/dataProperties'
 
-import ReCAPTCHA from "react-google-recaptcha"
+import Recaptcha from "react-google-invisible-recaptcha"
 
-import Logo from '../assets/logo-gestao-preto.png'
+import Logo from '../assets/coder-mind-painelv1-preto.png'
 
 import './css/Auth.css'
 import './css/defaultPage.css'
@@ -28,6 +29,9 @@ import './css/defaultPage.css'
 class Auth extends Component {
     props = this.props
     
+    recaptchaRef = React.createRef()
+
+    imgs = ['background-image1','background-image2']
     
     state = { 
         email: '',
@@ -36,29 +40,37 @@ class Auth extends Component {
         rescuePassword: false,
         loading: false,
         redirect: false,
+        currentImg: 0,
 
         reloadCaptcha: false,
+        ok: ''
     }
 
     toogleRescuePassword(){
         this.setState({rescuePassword: !this.state.rescuePassword})
     }
 
-    signIn = async (event) => {
-        /* Resposável por realizar a autenticação */
-
+    resolve = (event) => {
         event.preventDefault()
 
         // Caso ja esteja carregando não será possível mandar nova autenticação 
         if(this.state.loading) return
 
+        this.setState({loading: true})
+        
+        this.recaptchaRef.execute()
+    }
+
+    signIn = async () => {
+        /* Resposável por realizar a autenticação */
+
+        const response = await this.recaptchaRef.getResponse()
+
         const user = {
             email: this.state.email,
             password: this.state.password,
-            response: this.state.response,
+            response: response
         }
-
-        this.setState({loading: true})
 
         const url = `${backendUrl}/auth`
         await axios.post(url, user).then( async res => {
@@ -68,7 +80,7 @@ class Auth extends Component {
 
             localStorage.setItem('user', JSON.stringify({token: res.data.token}))
             
-            await this.setState({
+            this.setState({
                 redirect: true,
                 loading: false
             })
@@ -103,13 +115,13 @@ class Auth extends Component {
 
     render() { 
         return (
-            <Container className="container">
+            <div className="container">
                 { !this.state.rescuePassword &&
                     <Paper className="modal">
                         <Grid item xs={12} className="modalTitle">
                             <img src={Logo} alt="Logo" width="180"/>
                         </Grid>
-                        <form onSubmit={this.signIn}>
+                        <form onSubmit={this.resolve}>
                             <Grid item xs={12} className="modalForm">
                                     <TextField label="E-mail" className="modalFormInput"
                                         fullWidth onChange={this.handleChange('email')} 
@@ -125,10 +137,10 @@ class Auth extends Component {
                                 <small className="fakeLink" onClick={() => this.toogleRescuePassword()}>Esqueceu seu e-mail/senha?</small>
                                 <Box className="captchaArea">
                                     { !this.state.reloadCaptcha && 
-                                        <ReCAPTCHA 
-                                            size="compact"
-                                            sitekey="6LePkK8UAAAAACKAocqyAEB2YQr4cnd3j8Ya2b2U"
-                                            onChange={(response) => this.setState({response}) }
+                                        <Recaptcha 
+                                            sitekey={CAPTCHA_SITE_KEY}
+                                            ref={ref => this.recaptchaRef = ref}
+                                            onResolved={this.signIn}
                                         />
                                     }
                                 </Box>
@@ -147,7 +159,7 @@ class Auth extends Component {
                 {this.state.redirect &&
                     <Redirect to="/"/>
                 }
-            </Container>
+            </div>
         )
     }
 }

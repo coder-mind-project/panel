@@ -6,7 +6,7 @@ import { Container, Divider, Grid, TextField,
 import { FaYoutube, FaGithub } from 'react-icons/fa'
 import AsyncSelect from 'react-select/async'
 
-import Header from '../components/Header'
+import Header from '../components/Header' 
 import CustomButton from '../components/Button.jsx'
 import ArticleImages from '../components/Articles/ArticleImages.jsx'
 import ArticlePreview from '../components/Articles/ArticlePreview'
@@ -302,7 +302,7 @@ class Article extends Component {
 
     render(){
         return(
-            <Container>
+            <Container id="component">
                 <FloatingButton action={() => document.documentElement.scrollTop = 0}/>
                 { this.state.redirectTo && 
                     <Redirect to={`/${this.state.redirectTo}`} />

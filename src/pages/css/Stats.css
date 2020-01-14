@@ -16,7 +16,7 @@
 }
 
 .stats-block-title-icon{
-    color: #f50057;
+    color: #8a05be;
     margin: 0 5px;
 }
 
@@ -28,7 +28,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    color: #f50057;
+    color: #8a05be;
     padding: 5px 15px;
 
 }
@@ -42,4 +42,24 @@
 
 .stats-table{
     padding: 10px;
+}
+
+.stats-short-table{
+    padding: 10px;
+    height: 300px;
+    overflow: scroll;
+    margin: 20px;
+}
+
+.paper-section{
+    padding: 1px 30px;
+    margin-top: 50px;
+}
+
+.table-results, .table-results > div{
+    margin: 20px 10px;
+}
+
+.section-description{
+    color: rgba(0, 0, 0, .54);
 }

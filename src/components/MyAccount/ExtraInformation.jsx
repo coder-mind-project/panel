@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { TextField,
-    Grid, Icon, InputAdornment, Box } from '@material-ui/core'
+    Grid, Icon, InputAdornment, Box, Switch, Divider } from '@material-ui/core'
 import { FaTwitterSquare, FaYoutube, FaGithub, FaInstagram } from 'react-icons/fa'
 
 import CustomButton from '../Button.jsx'
@@ -13,6 +13,8 @@ import { toast } from 'react-toastify'
 import { connect } from 'react-redux'
 import { setUser } from '../../redux/userActions'
 import { bindActionCreators } from 'redux'
+
+import {formatCustomURL} from '../../config/masks'
 
 import ReactQuill from 'react-quill'
 //import { modules } from '../config/QuillEditor'
@@ -31,14 +33,16 @@ class ExtraInformation extends Component {
             youtube: '',
             occupation: '',
             especiality: '',
+            customUrl: '',
+            publicProfile: false
         },
         saving: false
     }
 
-    handleChange = attr =>  async event => {
-        const value = event.target.value
+    handleChange = (attr, isSwitch = false) => event => {
+        const value = isSwitch ? event.target.checked : event.target.value
         const user = this.state.user
-        await this.setState({user: {...user, [attr]: value}})
+        this.setState({user: {...user, [attr]: value}})
     }
 
     toogleSaving = () => {
@@ -76,6 +80,8 @@ class ExtraInformation extends Component {
                 youtube: user.youtube || '',
                 occupation: user.occupation || '',
                 especiality: user.especiality || '',
+                customUrl: user.customUrl || '',
+                publicProfile: user.publicProfile
             }
         })
     }
@@ -90,6 +96,26 @@ class ExtraInformation extends Component {
     render() { 
         return ( 
             <Grid item xs={12} className="extra_information_content">
+                <Grid item xs={12} sm={6} md={3} className="formGroup">
+                    <TextField label="Url Personalizada"
+                        className="formInput"
+                        fullWidth
+                        error={false}
+                        helperText={(<small><small>Informe uma Url personalizada para acesso público ao seu perfil</small><br/><small>Sua url ficará: {formatCustomURL(this.state.user.customUrl)}</small></small>)}
+                        value={this.state.user.customUrl || ''}
+                        onChange={this.handleChange('customUrl')}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} className="formGroup">
+                    <label htmlFor="public-profile">Perfil público?</label>
+                    <Box display="flex" alignItems="center">
+                        <Switch checked={Boolean(this.state.user.publicProfile)} id="public-profile" value={this.state.user.publicProfile} onChange={this.handleChange('publicProfile', true)}></Switch>
+                        <small>Marque para deixar seu perfil de autor público na plataforma</small>
+                    </Box>
+                </Grid>
+                <Grid item xs={12}>
+                    <Divider/>
+                </Grid>
                 <Grid item xs={12} sm={6} md={3} className="formGroup">
                     <TextField label="Instragram"
                         className="formInput"

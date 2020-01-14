@@ -7,15 +7,20 @@ import Avatar from 'react-avatar'
 
 import { AppBar, Toolbar, useScrollTrigger, Slide,
     IconButton, Menu, MenuItem, Drawer, List, ListItem,
-    useMediaQuery, Icon, Box, Divider } from '@material-ui/core'
+    useMediaQuery, Icon, Box, Divider, Tooltip } from '@material-ui/core'
 
-import Logo from '../assets/logo-gestao-branco.png'
-import LogoBlack from '../assets/logo-gestao-preto.png'
+import Logo from '../assets/coder-mind-painelv1-branco.png'
+import LogoBlack from '../assets/coder-mind-painelv1-preto.png'
 
 import Notifications from './Notifications.jsx'
+import MoreInfo from '../components/Modals/MoreInfo.jsx'
 
 import { styles } from './styles/Menu'
 import { backendUrl } from '../config/backend'
+
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBook, faCode } from '@fortawesome/free-solid-svg-icons'
 
 const HideOnScroll = props => {
     const {children, window} = props
@@ -33,13 +38,23 @@ const useStyles = makeStyles(styles)
 
 const MenuApp = props => {
     const classes = useStyles()
-    const matches = useMediaQuery('(min-width: 820px)')
     const matches350 = useMediaQuery('(min-width: 350px)')
     const matches460 = useMediaQuery('(min-width: 460px)')
 
     const [anchorEl, setAnchorEl] = React.useState(null)
+    
+    const [dialog, setDialog] = React.useState(false)
 
     const open = Boolean(anchorEl)
+
+    const openDialog = () => {
+        closeMyAccountIcon()
+        setDialog(true)
+    }
+
+    const closeDialog = () => {
+        setDialog(false)
+    }
 
     const openMyAccountIcon = e => {
         setAnchorEl(e.currentTarget)
@@ -48,7 +63,6 @@ const MenuApp = props => {
     const closeMyAccountIcon = () => {
         setAnchorEl(null)
     }
-
 
     const logout = () => {
         localStorage.removeItem('user')
@@ -69,23 +83,28 @@ const MenuApp = props => {
             <HideOnScroll {...props}>
                 <AppBar className={classes.menu}>
                     <Toolbar>
-                        { !matches && 
+                        {/* { !matches && 
                             <IconButton onClick={() => setState({drawerMenu: true})} 
                                 edge="start" className={classes.menuButton}
                                 color="inherit" aria-label="Menu"
                             >
                                 <Icon>menu</Icon>
                             </IconButton>
-                        }
+                        } */}
+                        <IconButton onClick={() => setState({drawerMenu: true})} 
+                            edge="start" className={classes.menuButton}
+                            color="inherit" aria-label="Menu"
+                        >
+                            <Icon>menu</Icon>
+                        </IconButton>
                         <Link className={classes.link} to="/">
                             <img src={Logo} width="130"
                                 className={classes.menuLogo}
-                                alt="Coder Mind | Gestão"
+                                alt="Painel Coder Mind"
                             />
-
-                            {/* <h2>Coder Mind</h2> */}
+                            {/* <h3 className="bla">Painel</h3> */}
                         </Link>
-                        { matches && 
+                        {/* { matches && 
                             <Link to="/articles" className={classes.menuLink}>
                                 <strong className={classes.menuButtonContent}>
                                     Artigos
@@ -105,7 +124,7 @@ const MenuApp = props => {
                                     Configurações
                                 </strong>
                             </Link>
-                        }
+                        } */}
                     </Toolbar>
                     <div>
                         { props.user && props.user.name ?
@@ -113,11 +132,25 @@ const MenuApp = props => {
                                 { matches350 && 
                                     <Notifications />
                                 }
+                                { props.user.tagAuthor && <Box mr={3}>
+                                    <Tooltip title={`Olá ${props.user.name}, seu nivel de acesso atual é: Autor`}>
+                                        <IconButton onClick={openDialog} >
+                                            <FontAwesomeIcon icon={faBook} color="#fff"/> 
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>}
+                                { props.user.tagAdmin && <Box mr={3}>
+                                    <Tooltip title={`Olá ${props.user.name}, seu nivel de acesso atual é: Administrador`}>
+                                        <IconButton onClick={openDialog} >
+                                            <FontAwesomeIcon icon={faCode} color="#fff"/> 
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>}
                                 { matches460 && 
                                     <div className={classes.menuButton}>
                                         <Avatar onClick={openMyAccountIcon} 
                                             style={{cursor: 'pointer'}} color="#888"
-                                            size="50" round="30px" src={`${backendUrl}/${props.user.profilePhoto}`}
+                                            name={props.user.name} size="50" round="30px" src={`${backendUrl}/${props.user.profilePhoto}`}
                                         />
                                     </div>
                                 }
@@ -149,14 +182,6 @@ const MenuApp = props => {
                                     </span>
                                 </MenuItem>
                             </Link>
-                            { /* <MenuItem>
-                                <span className={classes.menuButtonContent}>
-                                    <Icon className={classes.iconButtonMenu}>
-                                        library_books
-                                    </Icon>
-                                    Meus artigos
-                                </span>
-                            </MenuItem> */}
                             <MenuItem onClick={logout}>
                                 <span className={classes.menuButtonContent}>
                                     <Icon className={classes.iconButtonMenu}>
@@ -169,15 +194,18 @@ const MenuApp = props => {
                     </div>
                 </AppBar>
             </HideOnScroll>
+
+            {/* Modal de mais informações */}
+            { dialog && <MoreInfo closeDialog={closeDialog} user={props.user} />}
+
             <Drawer open={state.drawerMenu} 
                 onClose={() => setState({drawerMenu: false})}
             >
                 <Link to="/" onClick={() => setState({drawerMenu: false})}>
                     <div className={classes.logo}>
                             <img src={LogoBlack} width="180"
-                                alt="Coder Mind | Gestão"
+                                alt="Painel Coder Mind"
                             />
-                        {/* <h2>Coder Mind</h2> */}
                     </div>
                 </Link>
                 <Divider />
@@ -194,20 +222,6 @@ const MenuApp = props => {
                                         library_books
                                     </Icon>
                                     Artigos
-                                </strong>
-                            </ListItem>
-                        </Link>
-                        <Link to="/users" className={classes.buttonLink}
-                            onClick={() => setState({drawerMenu: false})}
-                        >
-                            <ListItem button  
-                                className={classes.drawerButton}
-                            >
-                                <strong className={classes.menuButtonContent}>
-                                    <Icon  className={classes.iconButtonMenu}>
-                                        person_outline
-                                    </Icon>
-                                    Usuários
                                 </strong>
                             </ListItem>
                         </Link>
@@ -250,6 +264,20 @@ const MenuApp = props => {
                                         settings
                                     </Icon>
                                     Configurações
+                                </strong>
+                            </ListItem>
+                        </Link>
+                        <Link to="/stats" className={classes.buttonLink}
+                            onClick={() => setState({drawerMenu: false})}
+                        >
+                            <ListItem button 
+                                className={classes.drawerButton}
+                            >
+                                <strong className={classes.menuButtonContent}>
+                                    <Icon  className={classes.iconButtonMenu}>
+                                        assessment
+                                    </Icon>
+                                    Estatísticas
                                 </strong>
                             </ListItem>
                         </Link>

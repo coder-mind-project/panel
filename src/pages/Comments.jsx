@@ -191,7 +191,7 @@ class Comments extends Component {
 
     render() { 
         return ( 
-            <Grid item xs={12}>
+            <Container id="component">
                 <Header title="Comentários" description="Interaja com seus leitores" icon="comments"/>
                 { this.state.comment._id && 
                     <Grow in={Boolean(this.state.comment._id)}>
@@ -477,7 +477,7 @@ class Comments extends Component {
                 { this.state.comments.length === 0 && !this.state.loading &&
                     <NotFound msg="Ops! nenhum comentário encontrado" />
                 }
-            </Grid>
+            </Container>
         )
     }
 }

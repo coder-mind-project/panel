@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-import { Container, Grid, Fade } from '@material-ui/core'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
+import { Grid, Fade } from '@material-ui/core'
 import { ToastContainer } from 'react-toastify'
+import ScrollToTop from './config/ScrollToTop'
 
 import Loading from './assets/loading.gif'
 
@@ -33,6 +34,7 @@ import Error from './pages/Error.jsx'
 import MyAccount from './pages/MyAccount.jsx'
 import Comments from './pages/Comments.jsx'
 import Comment from './pages/Comment.jsx'
+import RedeemAccount from './pages/RedeemAccount.jsx'
 
 
 //Css imports
@@ -45,7 +47,8 @@ class App extends Component {
 
     state = {
       redirectTo: '',
-      validatingToken: false
+      validatingToken: false,
+      path: ''
     }
 
     validateToken = async () => {
@@ -71,23 +74,30 @@ class App extends Component {
     toogleValidatingToken(){
       this.setState({validatingToken: !this.state.validatingToken})
     }
-  
-    async componentWillMount(){
-      
-      await this.validateToken()
+
+    getPath(){
+      const url = window.location.href
+      const path = `/${url.split('/')[3].split('?')[0]}`
+      return path
+    }
+
+    componentWillMount(){
+      const path = this.getPath()
+      this.setState({path})
+      this.validateToken()
     }
 
     render(){
       return (
-        <Container className="page">
+        <div className="page">
           { !this.state.validatingToken && 
             <Fade in={!this.state.validatingToken}>
               <Router>
                 <Menu/>
                 <ToastContainer/>
-                <Container>
+                <div>
                   {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
-                  {!user && 
+                  {!user && this.state.path !== '/auth' && this.state.path !== '/redeem-account' && 
                     <Redirect to="/auth"/>
                   }
                   {/* Caso existe um erro é redirecionado para tela de erro */}
@@ -98,26 +108,32 @@ class App extends Component {
                   {this.state.redirectTo && 
                     <Redirect to={`/${this.state.redirectTo}`}/>
                   }
-                  <Route path="/" exact component={Stats}/>
-                  <Route path="/auth" exact component={Auth}/>
-                  <Route path="/user" exact component={User}/>
-                  <Route path="/user/:id" exact component={User}/>
-                  <Route path="/users" exact component={Users}/>
-                  <Route path="/article" exact component={Article}/>
-                  <Route path="/article/:id" exact component={Article}/>
-                  <Route path="/articles" exact component={Articles}/>
-                  <Route path="/management" exact component={Management}/>
-                  <Route path="/theme" exact component={Theme}/>
-                  <Route path="/theme/:id" exact component={Theme}/>
-                  <Route path="/themes" exact component={Themes}/>
-                  <Route path="/category" exact component={Category}/>
-                  <Route path="/category/:id" exact component={Category}/>
-                  <Route path="/categories" exact component={Categories}/>
-                  <Route path="/my-account" exact component={MyAccount}/>
-                  <Route path="/comments" exact component={Comments}/>
-                  <Route path="/comments/:id" exact component={Comment}/>
-                  <Route path="/error" exact component={Error}/>
-                </Container>
+                  <ScrollToTop>
+                    <Switch>
+                      <Route path="/" exact component={Articles}/>
+                      <Route path="/auth" exact component={Auth}/>
+                      <Route path="/redeem-account" exact component={RedeemAccount}/>
+                      <Route path="/user" exact component={User}/>
+                      <Route path="/user/:id" exact component={User}/>
+                      <Route path="/users" exact component={Users}/>
+                      <Route path="/article" exact component={Article}/>
+                      <Route path="/article/:id" exact component={Article}/>
+                      <Route path="/articles" exact component={Articles}/>
+                      <Route path="/management" exact component={Management}/>
+                      <Route path="/theme" exact component={Theme}/>
+                      <Route path="/theme/:id" exact component={Theme}/>
+                      <Route path="/themes" exact component={Themes}/>
+                      <Route path="/category" exact component={Category}/>
+                      <Route path="/category/:id" exact component={Category}/>
+                      <Route path="/categories" exact component={Categories}/>
+                      <Route path="/my-account" exact component={MyAccount}/>
+                      <Route path="/comments" exact component={Comments}/>
+                      <Route path="/comments/:id" exact component={Comment}/>
+                      <Route path="/error" exact component={Error}/>
+                      <Route path="/stats" exact component={Stats}/>
+                    </Switch>
+                  </ScrollToTop>
+                </div>
               </Router>
             </Fade>
           }
@@ -128,7 +144,7 @@ class App extends Component {
               </Grid>
             </Fade>
           }
-        </Container>
+        </div>
       )
     }
   }

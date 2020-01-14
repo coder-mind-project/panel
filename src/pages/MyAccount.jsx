@@ -5,9 +5,9 @@ import { Container, ExpansionPanel, ExpansionPanelSummary,
 
 import Header from '../components/Header.jsx'
 
-import GeneralInformation from '../components/myAccount/GeneralInformation.jsx'
-import ExtraInformation from '../components/myAccount/ExtraInformation.jsx'
-import Configurations from '../components/myAccount/Configurations.jsx'
+import GeneralInformation from '../components/MyAccount/GeneralInformation.jsx'
+import ExtraInformation from '../components/MyAccount/ExtraInformation.jsx'
+import Configurations from '../components/MyAccount/Configurations.jsx'
 import Searching from '../assets/searching.gif'
 
 import { connect } from 'react-redux'
@@ -60,7 +60,7 @@ class MyAccount extends Component {
     
     render() { 
         return ( 
-            <Container>
+            <Container id="component">
                 <Header icon="account_box" title="Meus dados" description="Altere e gerencie informações de sua conta" />
                 {this.state.user && !this.state.loading &&
                     <Grid item xs={12}>

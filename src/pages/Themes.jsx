@@ -5,6 +5,7 @@ import { Container, Grid, Button, Table,
     DialogContentText, DialogTitle, Paper, Icon, Box } from '@material-ui/core'
 
 import { toast } from 'react-toastify'
+import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
 import SearchBar from 'material-ui-search-bar'
 
@@ -136,7 +137,7 @@ class Themes extends Component {
 
     render() { 
         return ( 
-            <Container>
+            <Container id="component">
                 {this.state.redirectTo && 
                     <Redirect to={this.state.redirectTo} />
                 }
@@ -145,13 +146,15 @@ class Themes extends Component {
                 />
                 <Container className="hudBar">
                     <Grid item className="hudBarChild">
-                        <Box mr={1} className="linkButton">
-                            <Link to="/theme" className="linkRouter linkButton">
-                                <CustomButton color="default" text="Novo Tema"
-                                    icon="add_circle_outline" 
-                                />
-                            </Link>
-                        </Box>
+                        { this.props.user.tagAdmin && 
+                            <Box mr={1} className="linkButton">
+                                <Link to="/theme" className="linkRouter linkButton">
+                                    <CustomButton color="default" text="Novo Tema"
+                                        icon="add_circle_outline" 
+                                    />
+                                </Link>
+                            </Box>
+                        }
                         <Box mr={1} className="linkButton">
                             <Link to="/management" className="linkRouter linkButton">
                                 <CustomButton color="gray" text="Configurações"
@@ -206,14 +209,16 @@ class Themes extends Component {
                                                 Alias
                                             </span>
                                         </TableCell>
-                                        <TableCell>
-                                            <span className="centerVertical">
-                                                <Icon fontSize="small" className="marginRight">
-                                                    build
-                                                </Icon>
-                                                Ações
-                                            </span>
-                                        </TableCell>
+                                        { this.props.user.tagAdmin && 
+                                            <TableCell>
+                                                <span className="centerVertical">
+                                                    <Icon fontSize="small" className="marginRight">
+                                                        build
+                                                    </Icon>
+                                                    Ações
+                                                </span>
+                                            </TableCell>
+                                        }
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -226,16 +231,18 @@ class Themes extends Component {
                                         <TableCell scope="alias">
                                             {theme.alias}
                                         </TableCell>
-                                        <TableCell scope="_id">
-                                            <CustomIconButton icon="edit" color="default"
-                                                aria-label="Editar" tooltip="Editar"
-                                                onClick={this.goTo(`theme/${theme._id}`)}
-                                            />
-                                            <CustomIconButton icon="delete_forever" color="danger"
-                                                aria-label="Delete" tooltip="Remover"
-                                                onClick={this.selectTheme(theme)}
-                                            />
-                                        </TableCell>
+                                        { this.props.user.tagAdmin && 
+                                            <TableCell scope="_id">
+                                                <CustomIconButton icon="edit" color="default"
+                                                    aria-label="Editar" tooltip="Editar"
+                                                    onClick={this.goTo(`theme/${theme._id}`)}
+                                                />
+                                                <CustomIconButton icon="delete_forever" color="danger"
+                                                    aria-label="Delete" tooltip="Remover"
+                                                    onClick={this.selectTheme(theme)}
+                                                />
+                                            </TableCell>
+                                        }
                                     </TableRow>
                                 ))}
                                 </TableBody>
@@ -307,4 +314,5 @@ class Themes extends Component {
     }
 }
 
-export default Themes
+const mapStateToProps = state => ({user: state.user})
+export default connect(mapStateToProps)(Themes)

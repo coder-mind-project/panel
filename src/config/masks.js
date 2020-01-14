@@ -37,14 +37,25 @@ export const displayDate = (date) => {
 }
 
 export const displayFullDate = (date) => {
-    const aux = date.split('T')
+    let aux = date.split('T')
+
+    if(aux.length === 1){
+        aux = date.split(' ')
+    }
+
     let dayMonthYear = aux[0].split('-')
     dayMonthYear = `${dayMonthYear[2]}/${dayMonthYear[1]}/${dayMonthYear[0]}`
-    
     let hours = aux[1].split('.')[0]
 
     return `${dayMonthYear} - ${hours}`
 } 
+
+export const randomNumber = (min, max) => {
+    const integerMin = Math.ceil(min)
+    const integerMax = Math.floor(max)
+
+    return Math.floor(Math.random() * (integerMax - integerMin) + integerMin)
+}
 
 
 export default {cpfMask, telphoneMask, celphoneMask, displayFullDate}

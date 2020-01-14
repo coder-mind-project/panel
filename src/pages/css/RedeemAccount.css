@@ -1,0 +1,8 @@
+.redeem-account-container{
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100vh;
+    margin: 0px;
+    padding: 0px;
+}

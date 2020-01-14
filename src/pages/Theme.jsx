@@ -110,7 +110,7 @@ export default class User extends Component{
 
     render(){
         return(
-            <Container>
+            <Container id="component">
                 <Header title="Tema" 
                     description="Consulte, altere, crie e remova temas do sistema"
                     icon="bookmark"

@@ -119,7 +119,7 @@ class Comment extends Component {
 
     render() { 
         return ( 
-            <Grid item xs={12}>
+            <Container id="component">
                 <Header icon="history" title="Histórico de comentários" description={`Visualize o histórico do comentário abaixo`} />
                 <Box mb={3}>
                     <Breadcrumbs separator={<Icon>navigate_next_icon</Icon>}>
@@ -324,7 +324,7 @@ class Comment extends Component {
                 { this.state.error && 
                     <ErrorBlock />
                 }
-            </Grid> 
+            </Container> 
         )
     }
 }

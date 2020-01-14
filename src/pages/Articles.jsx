@@ -94,7 +94,7 @@ export default class Articles extends Component {
     
     render (){
         return (
-            <Container>
+            <Container id="component">
                 <Header title="Artigos" 
                     description="Consulte, altere e crie novos artigos" 
                     icon="description"

@@ -4,7 +4,8 @@ import { Redirect, Link } from 'react-router-dom'
 import { Grid, Container, Button, TableHead, TableRow,
     TableCell, Table, TableBody, TableFooter, TablePagination,
     Dialog, DialogTitle, DialogContent, DialogContentText,
-    DialogActions, Paper, Icon } from '@material-ui/core'
+    DialogActions, Paper, Icon, FormControl, InputLabel } from '@material-ui/core'
+import PasswordField from 'material-ui-password-field'
 import SearchBar from 'material-ui-search-bar'
 
 import { toast } from 'react-toastify'
@@ -19,6 +20,7 @@ import CustomIconButton from '../components/IconButton.jsx'
 import CustomChip from '../components/Chip.jsx'
 import Header from '../components/Header'
 import Searching from '../assets/searching.gif'
+import RemovedUsers from '../components/Modals/Users/RemovedUsers.jsx'
 
 import './css/defaultPage.css'
 import './css/Users.css'
@@ -39,11 +41,23 @@ class Users extends Component {
         errorOp: false,
         dialog: false,
         userSelected: null,
-        redirectTo: ''
+        redirectTo: '',
+
+        dialogRequestPassword: false,
+        validatingPass: false,
+        password: '',
+        removedUsers: {
+            status: false,
+            lastOpened: null
+        }
     }
 
     toogleLoading(){
         this.setState({loading: !this.state.loading})
+    }
+
+    toogleValidatingPass(){
+        this.setState({validatingPass: !this.state.validatingPass})
     }
 
     async changeQueryValue(query){
@@ -136,6 +150,23 @@ class Users extends Component {
         })
     }
 
+    toogleDialogRequestPassword = (option = false) => {
+        /* Realiza o toogle no dialog de exclusão */
+
+        if(this.state.removedUsers.lastOpened && (this.state.removedUsers.lastOpened > Date.now())){
+            return this.setState({
+                removedUsers: {
+                    ...this.state.removedUsers,
+                    status: true
+                }
+            })
+        }
+
+        this.setState({
+            dialogRequestPassword: option ? true : false
+        })
+    }
+
     changePage = async (event, page) => {
         /* Realiza a alternação de páginas da tabela de registros */
 
@@ -157,14 +188,56 @@ class Users extends Component {
 
         this.searchUsers()
     }
+
+    addEventListener(){
+        document.addEventListener('keydown', (evt) => {
+            if(evt.code === 'F10' && !this.state.dialogRequestPassword){
+                this.toogleDialogRequestPassword(true)
+            }
+        })
+    }
+
+    handleChange = attr =>  async event => {
+        const value = event.target.value
+        this.setState({[attr]: value})
+    }
+
+    async validatePassword(evt){
+        if(evt) evt.preventDefault()
+
+        this.toogleValidatingPass()
+
+        const url = `${backendUrl}/auth/logged`
+        
+        const payload = {
+            password: this.state.password
+        }
+
+        await axios.patch(url, payload).then( async res => {
+            this.toogleDialogRequestPassword(false)
+            await this.setState({
+                removedUsers: {
+                    status: true,
+                    lastOpened: Date.now() + (1000*60)
+                }
+            })
+
+        }).catch(async error => {
+            const msg = await defineErrorMsg(error)
+            toast.error((<div className="centerInline"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        })
+        
+        this.toogleValidatingPass()
+    }
     
     componentDidMount(){
         this.searchUsers()
+        this.addEventListener()
     }
     
     render(){
         return (
-            <Container>
+            <Container id="component">
                 {this.state.redirectTo && 
                     <Redirect to={this.state.redirectTo}/>
                 }
@@ -347,6 +420,51 @@ class Users extends Component {
                                     }
                                 </DialogActions>
                             </Dialog>
+                            
+                            {/* RequestPassword dialog */}
+                            <Dialog
+                                open={this.state.dialogRequestPassword}
+                                onClose={() => this.toogleDialogRequestPassword(false)}
+                                disableBackdropClick={this.state.validatingPass}
+                                disableEscapeKeyDown={this.state.validatingPass}
+                            >
+                                <DialogTitle id="title">
+                                    Informe sua senha de adminstrador
+                                </DialogTitle>
+                                <DialogContent>
+                                    <Container>
+                                        <form onSubmit={(evt) => this.validatePassword(evt)}>
+                                            <FormControl fullWidth>
+                                                <InputLabel htmlFor="password">Senha</InputLabel>
+                                                <PasswordField id="password" 
+                                                    inputProps={{ autoComplete: 'current-password' }} 
+                                                    fullWidth onChange={this.handleChange('password')}
+                                                    autoFocus={true}
+                                                />
+                                            </FormControl>
+                                        </form>
+                                    </Container>
+                                </DialogContent>
+                                <DialogActions>
+                                    { !this.state.loadingOp && 
+                                        <Button color="primary" 
+                                            onClick={() => this.toogleDialogRequestPassword(false)}
+                                            disabled={this.state.validatingPass}
+                                        >
+                                            Fechar
+                                        </Button>
+                                    }
+                                    {!this.state.loadingOp && 
+                                        <Button color="secondary" 
+                                            onClick={() => this.validatePassword()}
+                                            disabled={this.state.validatingPass}
+                                        >
+                                                {this.state.validatingPass ? 'Validando...' : 'Confirmar'}
+                                        </Button>
+                                    }
+                                </DialogActions>
+                            </Dialog>
+                            { this.state.removedUsers.status && <RemovedUsers closeDialog={() => this.setState({removedUsers: {...this.state.removedUsers, status: false}})}/>}
                         </Container>
                     </Paper>
                 }
