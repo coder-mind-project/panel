@@ -3,14 +3,11 @@
 /.pnp
 .pnp.js
 
-
 # local env files
 .env
 
-
 # testing
 /coverage
-
 
 # production
 /build
