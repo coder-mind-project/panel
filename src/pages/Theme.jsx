@@ -7,7 +7,7 @@ import { Container, Grid, TextField, Divider,
 
 import CustomButton from '../components/Button.jsx'
 import Header from '../components/Header'
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../config/backend'

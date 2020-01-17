@@ -13,7 +13,7 @@ import { backendUrl, defineErrorMsg } from '../config/backend'
 
 import CustomButton from '../components/Button.jsx'
 import Header from '../components/Header'
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 
 import './css/defaultPage.css'
 import './css/forms.css'

@@ -12,7 +12,7 @@ import { toast } from 'react-toastify'
 import CustomChip from '../components/Chip.jsx'
 import CustomIconButton from '../components/IconButton.jsx'
 import CustomButton from '../components/Button.jsx'
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 import NotFound from '../components/NotFound.jsx'
 
 import { Grid, Table, TableHead, TableRow, 

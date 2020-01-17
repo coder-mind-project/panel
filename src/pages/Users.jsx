@@ -19,7 +19,7 @@ import CustomButton from '../components/Button.jsx'
 import CustomIconButton from '../components/IconButton.jsx'
 import CustomChip from '../components/Chip.jsx'
 import Header from '../components/Header'
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 import RemovedUsers from '../components/Modals/Users/RemovedUsers.jsx'
 
 import './css/defaultPage.css'

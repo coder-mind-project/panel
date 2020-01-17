@@ -12,7 +12,7 @@ import PasswordField from 'material-ui-password-field'
 
 import Header from '../components/Header'
 import CustomButton from '../components/Button.jsx'
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../config/backend'

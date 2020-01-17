@@ -8,7 +8,7 @@ import Header from '../components/Header.jsx'
 import GeneralInformation from '../components/MyAccount/GeneralInformation.jsx'
 import ExtraInformation from '../components/MyAccount/ExtraInformation.jsx'
 import Configurations from '../components/MyAccount/Configurations.jsx'
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 
 import { connect } from 'react-redux'
 

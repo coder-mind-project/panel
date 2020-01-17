@@ -1,18 +1,17 @@
 import React, { Component } from 'react'
 import { Container, Grid, Box, Icon, Paper,
     TableHead, TableBody, TableCell, TableRow,
-    Table, Button, TextField, FormGroup, InputLabel,
-    Checkbox, CircularProgress, Divider, Switch, FormControl } from '@material-ui/core'
+    Table, Button, FormGroup, InputLabel,
+    Checkbox, CircularProgress, Divider, Switch, MenuItem,
+    FormControl, Select } from '@material-ui/core'
 import AsyncSelect from 'react-select/async'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrophy, faMedal, faFlagCheckered } from '@fortawesome/free-solid-svg-icons'
+import { faTrophy, faMedal, faFlagCheckered, faThumbsUp, faUsers, faBookOpen} from '@fortawesome/free-solid-svg-icons'
 
 import { connect } from 'react-redux'
 import { setUser } from '../redux/userActions'
 import { bindActionCreators } from 'redux'
-
-import { Link } from 'react-router-dom'
 
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
@@ -34,6 +33,8 @@ import './css/Stats.css'
 
 import { Line, Doughnut} from 'react-chartjs-2'
 
+import LoadingGraph from '../assets/loading-graph.gif'
+
 class Stats extends Component{
 
     state = {
@@ -49,6 +50,9 @@ class Stats extends Component{
         viewsChartData: {},
         viewsTableDataByArticle: [],
         viewsTableDataByAuthor: [],
+        likesChartData: {},
+        likesTableDataByArticle: [],
+        likesTableDataByAuthor: [],
 
         loadingStats: false,
         loadingArticleStats: false,
@@ -63,6 +67,19 @@ class Stats extends Component{
         onlyViews: true,
         onlyLikes: false,
         both: false,
+        years: []
+    }
+
+    defineYears(){
+        const begin = 2019
+        let years = this.state.years
+        
+        for (let year = begin; year <= new Date().getFullYear(); year++) {
+            years.push(year)
+        }
+        years.sort((x, y) => y-x)
+
+        this.setState({years})
     }
 
     toogleLoadingLikes(){
@@ -134,7 +151,7 @@ class Stats extends Component{
             })
         }
         
-        await this.toogleLoadingStats()
+        this.toogleLoadingStats()
         await axios(url).then( res => {
             const chartData = {
                 labels: res.data.chartData.month,
@@ -222,24 +239,33 @@ class Stats extends Component{
 
         const url = `${backendUrl}/stats/articles`
 
-        axios(url).then(async res => {
+        await axios(url).then(async res => {
 
-            const byArticle = res.data.views.byArticle
-            const byAuthor = res.data.views.byAuthor
+            const viewsByArticle = res.data.views.byArticle
+            const viewsByAuthor = res.data.views.byAuthor
+            const likesByArticle = res.data.likes.byArticle
+            const likesByAuthor = res.data.likes.byAuthor
 
-            /* Define os dados originais para persistir na tabela de mais visualizados */
-            let viewsTableDataByArticle = byArticle.originalData
-            let viewsTableDataByAuthor = byAuthor.originalData
+            /* Define os dados originais para persistir na tabela de mais visualizados e mais avaliados*/
+            let viewsTableDataByArticle = viewsByArticle.originalData
+            let viewsTableDataByAuthor = viewsByAuthor.originalData
+            let likesTableDataByArticle = likesByArticle.originalData
+            let likesTableDataByAuthor = likesByAuthor.originalData
 
-            /** Ordenando os resultados para apresentar os mais visualizados */
+            /** Ordenando os resultados para apresentar os mais visualizados e mais avaliados */
             viewsTableDataByArticle.sort((elem , secElem) => secElem.quantity - elem.quantity)
             viewsTableDataByAuthor.sort((elem , secElem) => secElem.quantity - elem.quantity)
+            likesTableDataByArticle.sort((elem , secElem) => secElem.quantity - elem.quantity)
+            likesTableDataByAuthor.sort((elem , secElem) => secElem.quantity - elem.quantity)
             
-            const viewsChartData = this.defineChartByArticle(byArticle)
+            const viewsChartData = this.defineChartByArticle(viewsByArticle)
+            // const likesChartData = this.defineChartByArticle(likesByArticle)
 
-            this.setState({viewsChartData, viewsTableDataByArticle, viewsTableDataByAuthor })
+            this.setState({viewsChartData, viewsTableDataByArticle, viewsTableDataByAuthor, likesTableDataByArticle, likesTableDataByAuthor})
             
         })
+
+        this.toogleLoadingArticleStats()
     }
 
     defineChartByArticle = (byArticle) => {
@@ -276,6 +302,8 @@ class Stats extends Component{
         await this.setState({
             [attr]: evt.target.value
         })
+
+        if(attr === 'year') this.getStats()
     }
 
     handleDateBegin = date => {
@@ -334,8 +362,9 @@ class Stats extends Component{
 
         const url = `${backendUrl}/stats/authors`
 
-        axios.patch(url, payload).then( res => {
-            this.props.setUser(res.data)
+        axios.patch(url, payload).then( async res => {
+            await this.props.setUser(res.data)
+            localStorage.setItem('user', JSON.stringify({token: res.data.token}))
             this.getStats()
         }).catch( () => {
             toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon><span>Ocorreu um erro desconhecido, tente novamente</span></div>), {autoClose: 5000, closeOnClick: true})
@@ -376,21 +405,22 @@ class Stats extends Component{
 
     componentDidMount(){
         this.getStats()
+        this.defineYears()
     }
 
 
     render(){
         return(
             <Container id="component">
-                <Header icon="assessment" title="Estatísticas" description="Bem vindo ao painel Coder Mind"/>
-                <Box width="100%" display="flex" alignItems="center" justifyContent="flex-end">
+                <Header icon="assessment" title="Estatísticas" description="Acompanhe o desempenho de suas publicações"/>
+                { this.props.user.tagAdmin && <Box width="100%" display="flex" alignItems="center" justifyContent="flex-end">
                     <InputLabel>Estatísticas da plataforma?</InputLabel>
                     <Switch 
                         checked={this.state.platformStats}
                         onChange={(evt) => this.tooglePlatformStats(evt)}
                         id="platform-stats"
                     />
-                </Box>
+                </Box>}
                 <Grid item xs={12} className="stats-blocks-home">
                     <Grid item xs={12} md={4}>
                         <StatsBlock icon="touch_app" loading={this.state.loadingStats} title="Visualizações por mês" loadingMsg="Obtendo visualizações" data={this.state.views} />
@@ -402,25 +432,46 @@ class Stats extends Component{
                         <StatsBlock icon="comment" loading={this.state.loadingStats} title="Comentários por mês" loadingMsg="Obtendo comentários" data={this.state.comments} />
                     </Grid>
                 </Grid>
-                <form onSubmit={ (evt) => { evt.preventDefault(); this.getStats();} }>
-                    <Box width="100%" display="flex" flexWrap="wrap" mt={7} mb={2}>
-                        <Box mr={2} mb={2}>
-                            <TextField label="Ano" value={this.state.year} onChange={this.handleChange('year')} inputProps={{
-                                maxLength: 4
-                            }} />
+                { !this.state.loadingStats && 
+                    <form onSubmit={ (evt) => { evt.preventDefault(); this.getStats();} }>
+                        <Box width="100%" display="flex" flexWrap="wrap" mt={7} mb={2} mr={2} ml={2} >
+                            <Box mr={2} mb={2}>
+                                <FormControl>
+                                    <InputLabel>Ano</InputLabel>
+                                    <Select
+                                        id="year"
+                                        value={this.state.year}
+                                        onChange={this.handleChange('year')}
+                                    >
+                                    { 
+                                        this.state.years.map( year => <MenuItem value={year} key={year}>{year}</MenuItem>)
+                                    }
+                                    </Select>
+                                </FormControl>
+                            </Box>
                         </Box>
-                        <Box ml={2} mt={2}>
-                            <Button color="primary" variant="contained" onClick={() => this.getStats()}>Confirmar</Button>
-                        </Box>
+                    </form>
+                }
+                { this.state.loadingStats &&
+                    <Box width="100%" display="flex" justifyContent="center" alignItems="center" flexDirection="column" mt={5} mb={5}>
+                        <img src={LoadingGraph} alt="Carregando"/>
+                        <span>Carregando visualizações...</span>
                     </Box>
-                </form>
-                <Line data={this.state.chartData}  options={{title:{ display: `Visualizações da plataforma - Ano ${this.state.year}`, text: `Visualizações da plataforma - Ano ${this.state.year}` , fontSize: 20, padding: 15}}} />
+                }
+                { !this.state.loadingStats &&
+                    <Line data={this.state.chartData}  options={{title:{ display: `Visualizações ${this.props.user.platformStats && this.props.user.tagAdmin ? 'da plataforma' : `de ${this.props.user.name}`} - Ano ${this.state.year}`, text: `Visualizações ${this.props.user.platformStats && this.props.user.tagAdmin ? 'da plataforma' : `de ${this.props.user.name}`} - Ano ${this.state.year}` , fontSize: 20, padding: 15}}} 
+                />}
                 <Paper className="paper-section">
-                    <Box mt={3}>
-                        <Icon id="filter-for-recent-info">filter_list</Icon>
+                    <Box mt={3} display="flex" alignItems="center">
+                        <Box mr={1}>
+                            <Icon id="filter-for-recent-info">filter_list</Icon>
+                        </Box>
+                        <Box>
+                            <span >Aplique filtros para a relação das ultimas visualizações e avaliações</span>
+                        </Box>
                     </Box>
                     <Box width="100%" mt={2} mb={1} display="flex" alignItems="baseline" flexWrap="wrap">
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} md={4} className="filter-hud">
                             <Box mr={4}>
                                 <FormGroup>
                                     <InputLabel className="margin_bottom_x1">Artigo</InputLabel>
@@ -428,12 +479,12 @@ class Stats extends Component{
                                 </FormGroup>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} md={3}>
+                        <Grid item xs={12} md={3} className="filter-hud">
                             <MuiPickersUtilsProvider utils={MomentUtils}>
                                 <KeyboardDatePicker label="Data Inicio"
                                     clearable cancelLabel="Cancelar"
                                     clearLabel="Limpar"
-                                    className="formInput"
+                                    className="form-input-data"
                                     value={this.state.dateBegin}
                                     onChange={ date => this.handleDateBegin(date)}
                                     mask="__/__/____"
@@ -443,12 +494,12 @@ class Stats extends Component{
                                     invalidDateMessage="Formato de data inválido" />
                             </MuiPickersUtilsProvider>
                         </Grid>
-                        <Grid item xs={12} md={3}>
+                        <Grid item xs={12} md={3} className="filter-hud">
                             <MuiPickersUtilsProvider utils={MomentUtils}>
                                 <KeyboardDatePicker label="Data fim"
                                     clearable cancelLabel="Cancelar"
                                     clearLabel="Limpar"
-                                    className="formInput"
+                                    className="form-input-data"
                                     value={this.state.dateEnd}
                                     onChange={this.handleDateEnd}
                                     mask="__/__/____"
@@ -458,7 +509,7 @@ class Stats extends Component{
                                     invalidDateMessage="Formato de data inválido" />
                             </MuiPickersUtilsProvider>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} className="filter-hud">
                             <Box display="flex" flexWrap="wrap" width="100%" alignItems="center" justifyContent="center" m={2}>
                                 <Box display="flex" alignItems="center">
                                     <Checkbox
@@ -492,14 +543,14 @@ class Stats extends Component{
                             </Box>
                         </Grid>
                     </Box>
-                    <Box width="100%" display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
-                    <Box mr={2} mb={2}>
-                        <Button color="primary" variant="contained" onClick={() => this.filterSubmit()}>Confirmar</Button>
+                    <Box width="100%" display="flex" justifyContent="center" alignItems="center" flexWrap="wrap" className="filter-hud">
+                        <Box mr={2} mb={2}>
+                            <Button color="secondary" variant="contained" onClick={() => this.filterSubmit()}>Confirmar</Button>
+                        </Box>
+                        <Box mr={2} mb={2}>
+                            <Button color="primary" variant="contained" onClick={() => this.clearFilters()}>Limpar</Button>
+                        </Box>
                     </Box>
-                    <Box mr={2} mb={2}>
-                        <Button color="secondary" variant="contained" onClick={() => this.clearFilters()}>Limpar</Button>
-                    </Box>
-                </Box>
                 </Paper>
                 <Box width="100%" display="flex" flexWrap="wrap" justifyContent="center" alignItems="flex-start">
                     <Grid item xs={12} md={6} className="table-results">
@@ -539,19 +590,19 @@ class Stats extends Component{
                                     <Table size="small" className="stats-table">
                                     <TableHead>
                                         <TableRow>
-                                        <TableCell>Artigo</TableCell>
-                                        <TableCell align="right">Leitor (IP)</TableCell>
-                                        <TableCell align="right">Data de leitura</TableCell>
-                                        <TableCell align="right">Quantidade de acessos</TableCell>
+                                        <TableCell align="center">Artigo</TableCell>
+                                        <TableCell align="center">Leitor</TableCell>
+                                        <TableCell align="center">Data de leitura</TableCell>
+                                        <TableCell align="center">Acessos</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
                                         {this.state.lastViews.map(view => (
                                         <TableRow key={view._id}>
                                             <TableCell scope="row">
-                                                {Boolean(view.article) && <Link to={`/article/${view.article.customURL}`}>
-                                                    {view.article.title}
-                                                </Link>}
+                                                {Boolean(view.article) && 
+                                                    <span>{view.article.title}</span>
+                                                }
                                                 {!Boolean(view.article) && 
                                                     <span>N/D</span>
                                                 }
@@ -628,28 +679,38 @@ class Stats extends Component{
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <Box width="100%" display="flex" alignItems="center">
-                            <Box mr={1}>
-                                <Icon id="article-stats">menu_book</Icon>
+                        { this.state.viewsChartData && this.state.viewsChartData.datasets && this.state.viewsChartData.datasets[0].data.length > 0 && !this.state.loadingArticleStats &&
+                            <Box width="100%">
+                                <Box width="100%" display="flex" alignItems="center">
+                                    <Box mr={1}>
+                                        <Icon id="article-stats">menu_book</Icon>
+                                    </Box>
+                                    <Box>
+                                        <h3>Informações por artigo</h3>
+                                    </Box> 
+                                </Box>
+                                <Box width="100%" mb={1}>
+                                    <small className="section-description">Informações como visualizações gerais dos artigos, avaliações e mais comentários</small>
+                                </Box>
+                                <Divider/>
+                                <Grid item xs={12}>
+                                    <Doughnut data={this.state.viewsChartData} options={{title:{ display: 'Artigos visualizados', text: 'Artigos visualizados', fontSize: 20, padding: 15}}}/>
+                                </Grid>
                             </Box>
-                            <Box>
-                                <h3>Informações por artigo</h3>
-                            </Box> 
-                        </Box>
-                        <Box width="100%" mb={1}>
-                            <small className="section-description">Informações como visualizações gerais dos artigos, avaliações e mais comentários</small>
-                        </Box>
-                        <Divider/>
-                        <Grid item xs={12}>
-                            <Doughnut data={this.state.viewsChartData} options={{title:{ display: 'Artigos visualizados', text: 'Artigos visualizados', fontSize: 20, padding: 15}}}/>
-                        </Grid>
-                        <Box width="100%" display="flex" alignItems="flex-start" flexWrap="wrap">
-                            <Grid item xs={12} md={6}>
-                                { this.state.viewsTableDataByArticle.length > 0 && 
+                        }
+                        { this.state.loadingArticleStats && 
+                            <Box width="100%" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                                <img src={LoadingGraph} alt="Carregando"/>
+                                Carregando...
+                            </Box>
+                        }
+                        <Box width="100%" display="flex" alignItems="flex-start" flexWrap="wrap" mt={3}>
+                            { this.state.viewsTableDataByArticle.length > 0 && 
+                                <Grid item xs={12} md={6}>
                                     <Paper className="stats-short-table">
                                         <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={1}>
                                             <Box mr={1}>
-                                                <FontAwesomeIcon icon={faFlagCheckered} color="#000" />
+                                                <FontAwesomeIcon icon={faBookOpen} color="#000" />
                                             </Box>
                                             <Box>
                                                 <h4>Mais visualizações</h4>
@@ -683,51 +744,131 @@ class Stats extends Component{
                                             </TableBody>
                                         </Table>
                                     </Paper>
-
-                                }
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                            { this.state.viewsTableDataByAuthor.length > 0 && 
-                                <Paper className="stats-short-table">
-                                    <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={1}>
-                                        <Box mr={1}>
-                                            <FontAwesomeIcon icon={faFlagCheckered} color="#000" />
-                                        </Box>
-                                        <Box>
-                                            <h4>Top autores</h4>
-                                        </Box>
-                                    </Box>
-                                    <Table size="small" className="stats-table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>#</TableCell>
-                                                <TableCell>Autor</TableCell>
-                                                <TableCell align="center">Visualizações</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {this.state.viewsTableDataByAuthor.map((view, index) => (
-                                            <TableRow key={view._id}>
-                                                <TableCell scope="row">
-                                                    { index === 0 && <FontAwesomeIcon icon={faTrophy} color="#F9A602"/> }
-                                                    { index === 1 && <FontAwesomeIcon icon={faMedal} color="#C4CACE"/> }
-                                                    { index === 2 && <FontAwesomeIcon icon={faMedal} color="#CD7F32"/> }
-                                                    { index > 2 && <span>{ index + 1}</span>}
-                                                </TableCell>
-                                                <TableCell scope="row">
-                                                    {view.name}
-                                                </TableCell>
-                                                <TableCell align="center">
-                                                    {view.quantity}
-                                                </TableCell>
-                                            </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </Paper>
-
+                                </Grid>
                             }
-                        </Grid>
+                            { this.state.viewsTableDataByAuthor.length > 0 && 
+                                <Grid item xs={12} md={6}>
+                                    <Paper className="stats-short-table">
+                                        <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={1}>
+                                            <Box mr={1}>
+                                                <FontAwesomeIcon icon={faUsers} color="#000" />
+                                            </Box>
+                                            <Box>
+                                                <h4>Top autores - visualizações</h4>
+                                            </Box>
+                                        </Box>
+                                        <Table size="small" className="stats-table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>#</TableCell>
+                                                    <TableCell>Autor</TableCell>
+                                                    <TableCell align="center">Visualizações</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {this.state.viewsTableDataByAuthor.map((view, index) => (
+                                                <TableRow key={view._id}>
+                                                    <TableCell scope="row">
+                                                        { index === 0 && <FontAwesomeIcon icon={faTrophy} color="#F9A602"/> }
+                                                        { index === 1 && <FontAwesomeIcon icon={faMedal} color="#C4CACE"/> }
+                                                        { index === 2 && <FontAwesomeIcon icon={faMedal} color="#CD7F32"/> }
+                                                        { index > 2 && <span>{ index + 1}</span>}
+                                                    </TableCell>
+                                                    <TableCell scope="row">
+                                                        {view.name}
+                                                    </TableCell>
+                                                    <TableCell align="center">
+                                                        {view.quantity}
+                                                    </TableCell>
+                                                </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </Paper>
+                                </Grid>
+                            }
+                            { this.state.likesTableDataByArticle.length > 0 && 
+                                <Grid item xs={12} md={6}>
+                                    <Paper className="stats-short-table">
+                                        <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={1}>
+                                            <Box mr={1}>
+                                                <FontAwesomeIcon icon={faThumbsUp} color="#000" />
+                                            </Box>
+                                            <Box>
+                                                <h4>Mais avaliados</h4>
+                                            </Box>
+                                        </Box>
+                                        <Table size="small" className="stats-table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>#</TableCell>
+                                                    <TableCell>Artigo</TableCell>
+                                                    <TableCell align="center">Avaliações</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {this.state.likesTableDataByArticle.map((view, index) => (
+                                                <TableRow key={view._id}>
+                                                    <TableCell scope="row">
+                                                        { index === 0 && <FontAwesomeIcon icon={faTrophy} color="#F9A602"/> }
+                                                        { index === 1 && <FontAwesomeIcon icon={faMedal} color="#C4CACE"/> }
+                                                        { index === 2 && <FontAwesomeIcon icon={faMedal} color="#CD7F32"/> }
+                                                        { index > 2 && <span>{ index + 1}</span>}
+                                                    </TableCell>
+                                                    <TableCell scope="row">
+                                                        {view.title}
+                                                    </TableCell>
+                                                    <TableCell align="center">
+                                                        {view.quantity}
+                                                    </TableCell>
+                                                </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </Paper>
+                                </Grid>
+                            }
+                            { this.state.likesTableDataByAuthor.length > 0 && 
+                                <Grid item xs={12} md={6}>
+                                    <Paper className="stats-short-table">
+                                        <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={1}>
+                                            <Box mr={1}>
+                                                <FontAwesomeIcon icon={faUsers} color="#000" />
+                                            </Box>
+                                            <Box>
+                                                <h4>Top autores - avaliações</h4>
+                                            </Box>
+                                        </Box>
+                                        <Table size="small" className="stats-table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>#</TableCell>
+                                                    <TableCell>Autor</TableCell>
+                                                    <TableCell align="center">Avaliações</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {this.state.likesTableDataByAuthor.map((view, index) => (
+                                                <TableRow key={view._id}>
+                                                    <TableCell scope="row">
+                                                        { index === 0 && <FontAwesomeIcon icon={faTrophy} color="#F9A602"/> }
+                                                        { index === 1 && <FontAwesomeIcon icon={faMedal} color="#C4CACE"/> }
+                                                        { index === 2 && <FontAwesomeIcon icon={faMedal} color="#CD7F32"/> }
+                                                        { index > 2 && <span>{ index + 1}</span>}
+                                                    </TableCell>
+                                                    <TableCell scope="row">
+                                                        {view.name}
+                                                    </TableCell>
+                                                    <TableCell align="center">
+                                                        {view.quantity}
+                                                    </TableCell>
+                                                </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </Paper>
+                                </Grid>
+                            }
                         </Box>
                     </Grid>
                     { this.state.dialogModal && <GeolocalizationModal closeDialog={() => this.toogleDialogModal()} ipAddress={this.state.ipSelected}/> }

@@ -9,7 +9,7 @@ import CustomButton from '../components/Button.jsx'
 import Header from '../components/Header.jsx'
 import ArticleBlock from '../components/Articles/ArticleBlock.jsx'
 import FloatingButton from '../components/FloatingButton'
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 import NotFound from '../components/NotFound.jsx'
 
 import axios from 'axios'
@@ -136,7 +136,7 @@ export default class Articles extends Component {
                         </Container>
                     }
                     {!this.state.loading && this.state.articles.length > 0 && 
-                        this.state.articles.map((article, key) => 
+                        this.state.articles.map((article) => 
                             <ArticleBlock article={article} key={article._id} />)
                     }
                     {!this.state.loading && this.state.articles.length === 0 && !this.state.error &&

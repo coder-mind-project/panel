@@ -38,7 +38,7 @@ const useStyles = makeStyles(styles)
 
 const MenuApp = props => {
     const classes = useStyles()
-    const matches350 = useMediaQuery('(min-width: 350px)')
+    // const matches350 = useMediaQuery('(min-width: 350px)')
     const matches460 = useMediaQuery('(min-width: 460px)')
 
     const [anchorEl, setAnchorEl] = React.useState(null)
@@ -83,14 +83,6 @@ const MenuApp = props => {
             <HideOnScroll {...props}>
                 <AppBar className={classes.menu}>
                     <Toolbar>
-                        {/* { !matches && 
-                            <IconButton onClick={() => setState({drawerMenu: true})} 
-                                edge="start" className={classes.menuButton}
-                                color="inherit" aria-label="Menu"
-                            >
-                                <Icon>menu</Icon>
-                            </IconButton>
-                        } */}
                         <IconButton onClick={() => setState({drawerMenu: true})} 
                             edge="start" className={classes.menuButton}
                             color="inherit" aria-label="Menu"
@@ -102,34 +94,12 @@ const MenuApp = props => {
                                 className={classes.menuLogo}
                                 alt="Painel Coder Mind"
                             />
-                            {/* <h3 className="bla">Painel</h3> */}
                         </Link>
-                        {/* { matches && 
-                            <Link to="/articles" className={classes.menuLink}>
-                                <strong className={classes.menuButtonContent}>
-                                    Artigos
-                                </strong>
-                            </Link>
-                        }
-                        { matches && 
-                            <Link to="/users" className={classes.menuLink}>
-                                <strong className={classes.menuButtonContent}>
-                                    Usuários
-                                </strong>
-                            </Link>
-                        }
-                        { matches && 
-                            <Link to="/management" className={classes.menuLink}>
-                                <strong className={classes.menuButtonContent}>
-                                    Configurações
-                                </strong>
-                            </Link>
-                        } */}
                     </Toolbar>
                     <div>
                         { props.user && props.user.name ?
                             <Box display="flex" alignItems="center">
-                                { matches350 && 
+                                { matches460 && 
                                     <Notifications />
                                 }
                                 { props.user.tagAuthor && <Box mr={3}>
@@ -225,48 +195,6 @@ const MenuApp = props => {
                                 </strong>
                             </ListItem>
                         </Link>
-                        <Link to="/comments" className={classes.buttonLink}
-                            onClick={() => setState({drawerMenu: false})}
-                        >
-                            <ListItem button 
-                                className={classes.drawerButton}
-                            >
-                                <strong className={classes.menuButtonContent}>
-                                    <Icon  className={classes.iconButtonMenu}>
-                                        question_answer
-                                    </Icon>
-                                    Comentários
-                                </strong>
-                            </ListItem>
-                        </Link>
-                        <Link to="/my-account" className={classes.buttonLink}
-                            onClick={() => setState({drawerMenu: false})}
-                        >
-                            <ListItem button
-                                className={classes.drawerButton}
-                            >
-                                <strong className={classes.menuButtonContent}>
-                                    <Icon  className={classes.iconButtonMenu}>
-                                        person_outline
-                                    </Icon>
-                                    Meus dados
-                                </strong>
-                            </ListItem>
-                        </Link>
-                        <Link to="/management" className={classes.buttonLink}
-                            onClick={() => setState({drawerMenu: false})}
-                        >
-                            <ListItem button 
-                                className={classes.drawerButton}
-                            >
-                                <strong className={classes.menuButtonContent}>
-                                    <Icon  className={classes.iconButtonMenu}>
-                                        settings
-                                    </Icon>
-                                    Configurações
-                                </strong>
-                            </ListItem>
-                        </Link>
                         <Link to="/stats" className={classes.buttonLink}
                             onClick={() => setState({drawerMenu: false})}
                         >
@@ -281,6 +209,76 @@ const MenuApp = props => {
                                 </strong>
                             </ListItem>
                         </Link>
+                        <Link to="/comments" className={classes.buttonLink}
+                            onClick={() => setState({drawerMenu: false})}
+                        >
+                            <ListItem button 
+                                className={classes.drawerButton}
+                            >
+                                <strong className={classes.menuButtonContent}>
+                                    <Icon  className={classes.iconButtonMenu}>
+                                        question_answer
+                                    </Icon>
+                                    Comentários
+                                </strong>
+                            </ListItem>
+                        </Link>
+                        { props.user.tagAuthor && <Link to="/themes" className={classes.buttonLink}
+                            onClick={() => setState({drawerMenu: false})}
+                        >
+                            <ListItem button
+                                className={classes.drawerButton}
+                            >
+                                <strong className={classes.menuButtonContent}>
+                                    <Icon  className={classes.iconButtonMenu}>
+                                        bookmark
+                                    </Icon>
+                                    Temas
+                                </strong>
+                            </ListItem>
+                        </Link>}
+                        {props.user.tagAuthor && <Link to="/categories" className={classes.buttonLink}
+                            onClick={() => setState({drawerMenu: false})}
+                        >
+                            <ListItem button
+                                className={classes.drawerButton}
+                            >
+                                <strong className={classes.menuButtonContent}>
+                                    <Icon  className={classes.iconButtonMenu}>
+                                        category
+                                    </Icon>
+                                    Categorias
+                                </strong>
+                            </ListItem>
+                        </Link>}
+                        <Link to="/my-account" className={classes.buttonLink}
+                            onClick={() => setState({drawerMenu: false})}
+                        >
+                            <ListItem button
+                                className={classes.drawerButton}
+                            >
+                                <strong className={classes.menuButtonContent}>
+                                    <Icon  className={classes.iconButtonMenu}>
+                                        person_outline
+                                    </Icon>
+                                    Meus dados
+                                </strong>
+                            </ListItem>
+                        </Link>
+                        { props.user.tagAdmin && <Link to="/management" className={classes.buttonLink}
+                            onClick={() => setState({drawerMenu: false})}
+                        >
+                            <ListItem button 
+                                className={classes.drawerButton}
+                            >
+                                <strong className={classes.menuButtonContent}>
+                                    <Icon  className={classes.iconButtonMenu}>
+                                        settings
+                                    </Icon>
+                                    Configurações
+                                </strong>
+                            </ListItem>
+                        </Link>}
                     </List>
                     <List className={classes.list}>
                         <ListItem button onClick={logout} 

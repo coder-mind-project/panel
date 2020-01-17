@@ -13,7 +13,7 @@ import ArticlePreview from '../components/Articles/ArticlePreview'
 import ArticleConfig from '../components/Articles/ArticleConfig'
 import ArticleStats from '../components/Articles/ArticleStats'
 import FloatingButton from '../components/FloatingButton.jsx'
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 
 import axios from 'axios'
 import { toast } from 'react-toastify'

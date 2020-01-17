@@ -12,7 +12,7 @@ import {toast} from 'react-toastify'
 import CustomIconButton from '../components/IconButton.jsx'
 import CustomButton from '../components/Button.jsx'
 
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 
 import ErrorBlock from '../components/ErrorBlock.jsx'
 

@@ -38,6 +38,7 @@
 
 .stats-wrapper-table{
     overflow-x: scroll;
+    height: 450px;
 }
 
 .stats-table{
@@ -62,4 +63,14 @@
 
 .section-description{
     color: rgba(0, 0, 0, .54);
+}
+
+@media(max-width: 960px){
+    .form-input-data{
+        width: 100% !important;
+    }
+    
+    .filter-hud{
+        margin-bottom: 15px !important;
+    }
 }

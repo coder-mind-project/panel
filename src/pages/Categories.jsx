@@ -13,7 +13,7 @@ import SearchBar from 'material-ui-search-bar'
 import CustomButton from '../components/Button.jsx'
 import CustomIconButton from '../components/IconButton.jsx'
 import Header from '../components/Header.jsx'
-import Searching from '../assets/searching.gif'
+import Searching from '../assets/loading.gif'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../config/backend'
@@ -146,7 +146,7 @@ class Categories extends Component {
                 {this.state.redirectTo && 
                     <Redirect to={this.state.redirectTo} />
                 }
-                <Header title="Categorias" description="categorias para artigos" icon="category"></Header>
+                <Header title="Categorias" description="Categorias para artigos" icon="category"></Header>
                 <Container className="hudBar">
                     <Grid item className="hudBarChild">
                         { this.props.user.tagAdmin && 
@@ -157,12 +157,12 @@ class Categories extends Component {
                                 </Link>
                             </Box>
                         }
-                        <Box mr={1} className="linkButton">
+                        { this.props.user.tagAdmin && <Box mr={1} className="linkButton">
                             <Link to="/management" className="linkRouter linkButton">
                                 <CustomButton color="gray" text="Configurações"
                                     icon="settings" />
                             </Link>
-                        </Box>
+                        </Box>}
                     </Grid>
                     <Grid item className="hudBarChild">
                         <SearchBar id="search_field" className="searchTextField"

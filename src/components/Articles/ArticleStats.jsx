@@ -7,7 +7,7 @@ import { Grid, Box, Table, TableBody, TableCell,
 import axios from 'axios'
 import { backendUrl } from '../../config/backend'
 
-import Searching from '../../assets/searching.gif'
+import Searching from '../../assets/loading.gif'
 import ErrorBlock from '../ErrorBlock.jsx'
 import StatsBlock from '../StatsBlock.jsx'
 import CustomChip from '../Chip.jsx'
