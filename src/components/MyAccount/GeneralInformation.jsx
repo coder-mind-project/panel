@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container, TextField,
-    MenuItem, Grid, Icon, Tooltip, Box, CircularProgress } from '@material-ui/core'
+    MenuItem, Grid, Icon, Tooltip, Box, CircularProgress,
+    InputAdornment } from '@material-ui/core'
 
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
@@ -21,6 +22,7 @@ import { bindActionCreators } from 'redux'
 import ImgDefault from '../../assets/img_not_found_512x512.png'
 
 import '../../pages/css/defaultPage.css'
+import './css/MyAccountGeneralInformation.css'
 
 class GeneralInformation extends Component {
     state = { 
@@ -36,11 +38,13 @@ class GeneralInformation extends Component {
             celphone: '',
             address: '',
             number: '',
-            type: ''
+            type: '',
         },
         sendingPhoto: false,
         photo: '',
-        saving: false
+        saving: false,
+        emailHelper: false,
+        resendingEmail: false,
     }
 
     handleChange = attr =>  async event => {
@@ -86,7 +90,7 @@ class GeneralInformation extends Component {
 
         const url = `${backendUrl}/users/${this.state.user._id}`
 
-        const user = this.state.user 
+        const user = await this.formatData() 
 
         await axios.put(url, user).then( () => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Informações salvas com sucesso</div>), {autoClose: 3000, closeOnClick: true})
@@ -101,20 +105,16 @@ class GeneralInformation extends Component {
     }
 
     formatData = async () => {
-        const formData = new FormData()
-        await formData.append('user', this.state.user)
-        if(this.state.photo){
-            await formData.append('profilePhoto', this.state.photo)
-            const config = {
-                headers: {
-                    'content-type': 'multipart/form-data' 
-                }
-            }
-            return {formData, config}
+        const data = {
+            ...this.state.user,
+        }
+        
+        if(this.props.user.email !== data.email) {
+            data.confirmEmail = data.email
+            delete data.email
         }
 
-        return
-
+        return data
     }
 
     addPhoto = async (photo) => {
@@ -201,12 +201,44 @@ class GeneralInformation extends Component {
                 photo: ''
 
             })
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(error => {
+            const msg = defineErrorMsg(error)
+            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 10000, closeOnClick: true})
         })
     }
 
+    displayEmailHelpMessage(){
+        if(this.props.user.confirmEmail){
+            this.setState({emailHelper: true})
+        }
+    }
+
+    hideEmailHelpMessage(){
+        this.setState({emailHelper: false})
+    }
+
+    toogleResendingEmail(){
+        this.setState({resendingEmail: !this.state.resendingEmail})
+    }
+
+    async resendEmail(){
+        if(this.state.resendingEmail) return
+        
+        const id = this.state.user._id
+        const url = `${backendUrl}/users/configs/${id}`
+        const user = this.props.user
+
+        this.toogleResendingEmail()
+        await axios.post(url, user).then( res => {
+            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>{res.data}</div>), {autoClose: 30000, closeOnClick: true})
+        }).catch( error => {
+            const msg = defineErrorMsg(error)
+            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 10000, closeOnClick: true})
+        })
+        
+        this.toogleResendingEmail()
+    }
+    
     async componentDidMount(){
         const user = this.props.user
         if(user){
@@ -229,10 +261,20 @@ class GeneralInformation extends Component {
                     <Box xs={12} display="flex" justifyContent="center"
                         alignItems="center" flexWrap="wrap"
                     >
+                        { this.props.user.confirmEmail && <Box className="confirm-email-warning">
+                            <Box display="flex" alignItems="center" mr={2}>
+                                <Icon fontSize="large">
+                                    warning
+                                </Icon>
+                            </Box>
+                            <Box display="flex" alignItems="center">
+                                <p>Existe uma confirmação de e-mail pendente para <strong>{this.state.user.confirmEmail}</strong>, para trocar seu e-mail visite sua caixa de entrada e clique no link para confirmar o novo e-mail. { !this.state.resendingEmail && <strong  onClick={() => this.resendEmail()}  className='resend-email'>Reenviar e-mail</strong>} { this.state.resendingEmail && <strong>Reenviando e-mail...</strong>}</p>
+                            </Box>
+                        </Box>}
                         <Grid item xs={12} lg={3} className="formGroup">
                             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                                <Tooltip title={this.state.user.profilePhoto ? "Remover Imagem" : ""} 
-                                    placement="right-start"
+                                <Tooltip title={this.state.user.profilePhoto ? "Remover Imagem" : "Imagem de perfil não definida"} 
+                                    placement="top"
                                 >
                                     <figure onClick={this.removePhoto}>
                                         { !this.state.sendingPhoto ? 
@@ -265,6 +307,26 @@ class GeneralInformation extends Component {
                             </Box>
                         </Grid>
                         <Grid item xs={12} lg={9} className="formGroup">
+                            <Box width="100%" alignItems="center">
+                                <TextField label="E-mail *"
+                                    className="formInput"
+                                    value={this.state.user.email}
+                                    onFocus={() => this.displayEmailHelpMessage()}
+                                    onBlur={() => this.hideEmailHelpMessage()}
+                                    fullWidth={true}
+                                    InputProps={this.props.user.confirmEmail ? {
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <Icon fontSize="small" color="secondary">
+                                                    warning
+                                                </Icon>
+                                            </InputAdornment>
+                                        )
+                                    } : {}}
+                                    helperText={ this.state.emailHelper ? 'Existe uma confirmação de e-mail pendente, caso não seja o e-mail desejado informe um novo e salve, depois basta olhar sua caixa de entrada' : ''}
+                                    onChange={this.handleChange('email')}
+                                />
+                            </Box>
                             <TextField label="Nome *"
                                 className="formInput"
                                 error={Boolean(this.state.user.name.length > 50)}
@@ -272,11 +334,6 @@ class GeneralInformation extends Component {
                                     "Máximo permitido 50 caracteres" : ""}
                                 value={this.state.user.name}
                                 onChange={this.handleChange('name')}
-                            />
-                            <TextField label="E-mail *"
-                                className="formInput"
-                                value={this.state.user.email}
-                                onChange={this.handleChange('email')}
                             />
                             <TextField label="Genero *"
                                 className="formInput"
@@ -340,11 +397,11 @@ class GeneralInformation extends Component {
                         </Grid>
                     </Box>
                     
-                    <Grid item xs={12}>
+                    <Box width="100%" display="flex" alignItems="center" justifyContent='flex-end'>
                         <CustomButton color="success" icon="done" iconSize="small"
                             text={this.state.saving ? 'Salvando...' : 'Salvar' } onClick={this.save} loading={this.state.saving}
                         />
-                    </Grid>
+                    </Box>
             </Container>
         );
     }

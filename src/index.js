@@ -29,6 +29,10 @@ const theme = createMuiTheme({
         },
         secondary: {
             main: '#8a05be'
+        },
+        action:{
+            disabled: 'rgb(0,0,0)',
+            disabledBackground: 'rgb(190,190,190)'
         }
     }
 })

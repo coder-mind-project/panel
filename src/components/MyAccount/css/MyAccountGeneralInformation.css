@@ -1,0 +1,32 @@
+.confirm-email-warning{
+    width: 100%;
+    min-height: 60px;
+    padding: 20px;
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.resend-email{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+@media(min-width: 1280px){
+    .confirm-email-warning{
+        width: 100%;
+        min-height: 45px;
+        padding: 20px;
+        color: #856404;
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+        border-radius: 25px;  
+        display: flex;
+        justify-content: center;
+        align-items: center;  
+    }
+}

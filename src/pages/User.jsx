@@ -21,6 +21,8 @@ import { cpfMask, telphoneMask, celphoneMask } from '../config/masks'
 import './css/defaultPage.css'
 import './css/forms.css'
 
+import {formatCustomURL} from '../config/masks'
+
 export default class User extends Component{
 
     state = {
@@ -37,8 +39,14 @@ export default class User extends Component{
             number: '',
             password: '',
             type: 'author',
+            created_at: '',
+            updatedAt: '',
+            firstLogin: '',
+            customUrl: '',
+            oldEmail: '',
         },
         loading: false,
+        saving: false,
         openDialog: false,
         loadingOp: false,
         redirectTo: ''
@@ -50,9 +58,10 @@ export default class User extends Component{
 
 
     handleChange = attr =>  async event => {
-        const value = event.target.value
+        let value = event.target.value
+        if(attr === 'customUrl') value = await formatCustomURL(value)
         const user = this.state.user
-        await this.setState({user: {...user, [attr]: value}})
+        this.setState({user: {...user, [attr]: value}})
     }
 
     handleChangeMaskData = attr => event => {
@@ -84,7 +93,6 @@ export default class User extends Component{
 
     formatData = () => {
         /* Formata o usuario de acordo com o registro na base de dados */
-
         return {
             _id: this.state.user._id, 
             name: this.state.user.name,
@@ -97,18 +105,26 @@ export default class User extends Component{
             birthDate: this.state.user.birthDate,
             address: this.state.user.address,
             number: this.state.user.number,
-            password: this.state.user.password
+            password: this.state.user.password,
+            customUrl: this.state.user.customUrl
         }
+    }
+
+    toogleSaving(){
+        this.setState({saving: !this.state.saving})
     }
 
     save = async() =>{
         /* Responsável por persistir o usuario */
 
         const user = await this.formatData()
+
         const method = user._id ? 'put' : 'post'
         const url =  method === 'post' ? `${backendUrl}/users` : `${backendUrl}/users/${user._id}`
+        
+        this.toogleSaving()
 
-        axios[method](url, user).then(() => {
+        await axios[method](url, user).then(() => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Informações salvas com sucesso</div>), {autoClose: 3000, closeOnClick: true})
             setTimeout(() => {
                 this.goTo("users")
@@ -117,6 +133,8 @@ export default class User extends Component{
             const msg = await defineErrorMsg(error)
             toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
         })
+        
+        this.toogleSaving()
     }
 
     toogleDialog = openDialog => event => {
@@ -164,6 +182,7 @@ export default class User extends Component{
         await axios(url).then(res => {
             this.setState({ user: {
                 ...res.data,
+                oldEmail: res.data.email,
                 address: res.data.address || '', 
                 number: res.data.number || '', 
                 type: res.data.tagAdmin ? 'admin':'author'
@@ -348,6 +367,55 @@ export default class User extends Component{
                                 </form>
                             </Grid>
                         }
+                        { this.state.user._id &&
+                            <Grid item xs={12}>
+                                <Divider className="separator"/>
+                            </Grid>
+                        }
+                        { this.state.user._id &&
+                            <Grid item xs={12}>
+                                <Box display="flex" className="textColor">
+                                    <Icon>
+                                        security
+                                    </Icon>
+                                    <h3 className="marginNone">
+                                        Informações de gerenciamento
+                                    </h3>
+                                </Box>
+                            </Grid>
+                        }
+                        { this.state.user._id && 
+                            <Grid item xs={12} className="formGroup">
+                                <TextField label="Usuário criado em"
+                                    className="formInput"
+                                    inputProps={{
+                                        className: "disabled-text-field min-width-300"
+                                    }}
+                                    InputLabelProps={{
+                                        className: "disabled-text-field"
+                                    }}
+                                    value={this.state.user.created_at}
+                                    disabled={true}
+                                />
+                                <TextField label="Última atualização do cadastro"
+                                    className="formInput"
+                                    inputProps={{
+                                        className: "disabled-text-field min-width-300"
+                                    }}
+                                    InputLabelProps={{
+                                        className: "disabled-text-field"
+                                    }}
+                                    value={this.state.user.updatedAt}
+                                    disabled={true}
+                                />
+                                <TextField label="URL customizada"
+                                    className="formInput min-width-300"
+                                    value={this.state.user.customUrl}
+                                    onChange={this.handleChange('customUrl')}
+                                    helperText={`A url customizada ficará: ${formatCustomURL(this.state.user.customUrl)}`}
+                                />
+                            </Grid>
+                        }
                         <Grid item xs={12} className="betweenInline">
                             <small className="defaultFontColor">
                                 * Dados obrigatórios
@@ -357,6 +425,7 @@ export default class User extends Component{
                                     text="Alterar senha" iconSize="small"
                                     icon="lock" 
                                     onClick={this.toogleDialog(true)}
+                                    disabled={this.state.saving}
                                 />
                             }
                         </Grid>
@@ -418,12 +487,15 @@ export default class User extends Component{
                                 color="gray"
                                 text="Voltar"
                                 onClick={() => this.goTo("users")}
+                                disabled={this.state.saving}
                             />
                             <CustomButton className="buttonFootList"
                                 iconSize="small"
                                 color="success"
                                 icon="done"
-                                text="Salvar"
+                                text={`${this.state.saving ? 'Salvando...' : 'Salvar' }`}
+                                loading={this.state.saving}
+                                disabled={this.state.saving}
                                 onClick={this.save}
                             />
                         </Grid>

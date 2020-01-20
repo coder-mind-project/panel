@@ -4,7 +4,7 @@ export const styles = theme => ({
     success: {
         backgroundColor: 'rgb(30,178,15)',
         color: '#fff',
-        '&:hover':{
+        '&:hover':{ 
             backgroundColor: 'rgb(15,150,7)',
         },
         marginBottom: '10px',
@@ -14,7 +14,7 @@ export const styles = theme => ({
         paddingBottom: 6,
         paddingLeft: 10,
         paddingRight: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     danger: {
         backgroundColor: 'rgb(215,49,12)',

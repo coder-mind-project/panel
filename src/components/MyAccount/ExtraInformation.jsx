@@ -39,9 +39,10 @@ class ExtraInformation extends Component {
         saving: false
     }
 
-    handleChange = (attr, isSwitch = false) => event => {
-        const value = isSwitch ? event.target.checked : event.target.value
+    handleChange = (attr, isSwitch = false) => async event => {
+        let value = isSwitch ? event.target.checked : event.target.value
         const user = this.state.user
+        if(attr === 'customUrl') value = await formatCustomURL(value)
         this.setState({user: {...user, [attr]: value}})
     }
 
@@ -204,13 +205,11 @@ class ExtraInformation extends Component {
                         <small>Informe suas especialidades, técnicas e profissionais.</small>
                     </Box>
                 </Grid>
-                <Grid item xs={12}>
-                    <Box m={1}>
-                        <CustomButton color="success" icon="done" iconSize="small"
-                            text={this.state.saving ? 'Salvando...' : 'Salvar' } onClick={this.save} loading={this.state.saving}
-                        />
-                    </Box>
-                </Grid>
+                <Box width="100%" display="flex" alignItems="center" justifyContent="flex-end" mt={3}>
+                    <CustomButton color="success" icon="done" iconSize="small"
+                        text={this.state.saving ? 'Salvando...' : 'Salvar' } onClick={this.save} loading={this.state.saving}
+                    />
+                </Box>
             </Grid>
         );
     }

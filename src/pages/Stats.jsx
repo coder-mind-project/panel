@@ -7,7 +7,7 @@ import { Container, Grid, Box, Icon, Paper,
 import AsyncSelect from 'react-select/async'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrophy, faMedal, faFlagCheckered, faThumbsUp, faUsers, faBookOpen} from '@fortawesome/free-solid-svg-icons'
+import { faTrophy, faMedal, faThumbsUp, faUsers, faBookOpen} from '@fortawesome/free-solid-svg-icons'
 
 import { connect } from 'react-redux'
 import { setUser } from '../redux/userActions'
