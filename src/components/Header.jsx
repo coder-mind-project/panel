@@ -27,7 +27,7 @@ export default (props) => {
 
     const classes = useStyles()
     return(
-        <Grid container className={classes.container}>
+        <Grid container className={props.noMarginTop ? classes.containerNoMarginTop : classes.container}>
             <Grid item xs={12} className={classes.line}>
                 <Icon fontSize="large" className={classes.icon}>
                     {props.icon}

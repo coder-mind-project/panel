@@ -35,6 +35,7 @@ import MyAccount from './pages/MyAccount.jsx'
 import Comments from './pages/Comments.jsx'
 import Comment from './pages/Comment.jsx'
 import RedeemAccount from './pages/RedeemAccount.jsx'
+import Ticket from './pages/Ticket.jsx'
 
 
 //Css imports
@@ -48,8 +49,10 @@ class App extends Component {
     state = {
       redirectTo: '',
       validatingToken: false,
-      path: ''
+      path: '',
     }
+
+    acceptableRoutes = ['/auth', '/redeem-account', '/ticket'] //Rotas aceitáveis sem necessidade de autenticação
 
     validateToken = async () => {
       await this.toogleValidatingToken()
@@ -75,6 +78,16 @@ class App extends Component {
       this.setState({validatingToken: !this.state.validatingToken})
     }
 
+    validateRoutes(){
+      let top = 0
+
+      for (let i = 0; i < this.acceptableRoutes.length; i++) {
+        if(this.acceptableRoutes[i] !== this.state.path) top++
+      }
+
+      return Boolean(top === this.acceptableRoutes.length)
+    }
+
     getPath(){
       const url = window.location.href
       const path = `/${url.split('/')[3].split('?')[0]}`
@@ -97,7 +110,7 @@ class App extends Component {
                 <ToastContainer/>
                 <div>
                   {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
-                  {!user && this.state.path !== '/auth' && this.state.path !== '/redeem-account' && 
+                  {!user && this.validateRoutes() &&
                     <Redirect to="/auth"/>
                   }
                   {/* Caso existe um erro é redirecionado para tela de erro */}
@@ -113,6 +126,7 @@ class App extends Component {
                       <Route path="/" exact component={Articles}/>
                       <Route path="/auth" exact component={Auth}/>
                       <Route path="/redeem-account" exact component={RedeemAccount}/>
+                      <Route path="/ticket" exact component={Ticket}/>
                       <Route path="/user" exact component={User}/>
                       <Route path="/user/:id" exact component={User}/>
                       <Route path="/users" exact component={Users}/>

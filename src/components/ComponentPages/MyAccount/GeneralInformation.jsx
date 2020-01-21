@@ -6,22 +6,22 @@ import { Container, TextField,
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 
-import { cpfMask, telphoneMask, celphoneMask } from '../../config/masks'
+import { cpfMask, telphoneMask, celphoneMask } from '../../../config/masks'
 
-import CustomButton from '../Button.jsx'
+import CustomButton from '../../Button.jsx'
 
 import axios from 'axios'
-import { backendUrl, defineErrorMsg } from '../../config/backend'
+import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 import { toast } from 'react-toastify'
 
 import { connect } from 'react-redux'
-import { setUser } from '../../redux/userActions'
+import { setUser } from '../../../redux/userActions'
 import { bindActionCreators } from 'redux'
 
-import ImgDefault from '../../assets/img_not_found_512x512.png'
+import ImgDefault from '../../../assets/img_not_found_512x512.png'
 
-import '../../pages/css/defaultPage.css'
+import '../../../pages/css/defaultPage.css'
 import './css/MyAccountGeneralInformation.css'
 
 class GeneralInformation extends Component {

@@ -5,9 +5,9 @@ import { Container, ExpansionPanel, ExpansionPanelSummary,
 
 import Header from '../components/Header.jsx'
 
-import GeneralInformation from '../components/MyAccount/GeneralInformation.jsx'
-import ExtraInformation from '../components/MyAccount/ExtraInformation.jsx'
-import Configurations from '../components/MyAccount/Configurations.jsx'
+import GeneralInformation from '../components/ComponentPages/MyAccount/GeneralInformation.jsx'
+import ExtraInformation from '../components/ComponentPages/MyAccount/ExtraInformation.jsx'
+import Configurations from '../components/ComponentPages/MyAccount/Configurations.jsx'
 import Searching from '../assets/loading.gif'
 
 import { connect } from 'react-redux'

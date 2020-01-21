@@ -5,6 +5,12 @@ export const styles = theme => ({
         marginTop: 65,
         marginBottom: 20,
     },
+    containerNoMarginTop: {
+        display: 'flex',
+        flexDirection: 'column',
+        marginTop: 10,
+        marginBottom: 20,
+    },
     icon: {
         color: 'rgb(50,50,50)'
     },

@@ -4,8 +4,8 @@ import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
 import Avatar from 'react-avatar'
 
-import { backendUrl, defineErrorMsg } from '../../config/backend'
-import { displayDate } from '../../config/masks'
+import { backendUrl, defineErrorMsg } from '../../../config/backend'
+import { displayDate } from '../../../config/masks'
 import { styles } from './styles/ArticleBlock'
 
 import { Container, Grid, Grow, ClickAwayListener, 
@@ -13,12 +13,12 @@ import { Container, Grid, Grow, ClickAwayListener,
     Popper, Paper, Box, Icon, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
-import CustomButton from '../Button.jsx'
-import CustomChip from '../Chip.jsx'
+import CustomButton from '../../Button.jsx'
+import CustomChip from '../../Chip.jsx'
 
-import LogoDefault from '../../assets/HPArticleThumb.png'
+import LogoDefault from '../../../assets/HPArticleThumb.png'
 
-import '../../pages/css/defaultPage.css'
+import '../../../pages/css/defaultPage.css'
 
 const useStyles = makeStyles(styles)
 

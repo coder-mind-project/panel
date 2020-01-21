@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import { Box } from '@material-ui/core'
 
-import CustomButton from '../Button.jsx'
+import CustomButton from '../../Button.jsx'
 
 import { connect } from 'react-redux'
-import { setUser } from '../../redux/userActions'
+import { setUser } from '../../../redux/userActions'
 import { bindActionCreators } from 'redux'
 
-import ChangeMyPassoword from '../Modals/Users/ChangeMyPassword.jsx'
-import RemoveAccount from '../Modals/Users/RemoveAccount.jsx'
+import ChangeMyPassoword from '../../Modals/Users/ChangeMyPassword.jsx'
+import RemoveAccount from '../../Modals/Users/RemoveAccount.jsx'
 
-import '../../pages/css/defaultPage.css'
+import '../../../pages/css/defaultPage.css'
 
 class Configurations extends Component {
     state = { 

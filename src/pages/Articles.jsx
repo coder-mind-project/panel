@@ -7,7 +7,7 @@ import SearchBar from 'material-ui-search-bar'
 
 import CustomButton from '../components/Button.jsx'
 import Header from '../components/Header.jsx'
-import ArticleBlock from '../components/Articles/ArticleBlock.jsx'
+import ArticleBlock from '../components/ComponentPages/Articles/ArticleBlock.jsx'
 import FloatingButton from '../components/FloatingButton'
 import Searching from '../assets/loading.gif'
 import NotFound from '../components/NotFound.jsx'
@@ -95,7 +95,8 @@ export default class Articles extends Component {
     render (){
         return (
             <Container id="component">
-                <Header title="Artigos" 
+                <Header 
+                    title="Artigos" 
                     description="Consulte, altere e crie novos artigos" 
                     icon="description"
                 />

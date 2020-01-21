@@ -3,24 +3,24 @@ import { TextField,
     Grid, Icon, InputAdornment, Box, Switch, Divider } from '@material-ui/core'
 import { FaTwitterSquare, FaYoutube, FaGithub, FaInstagram } from 'react-icons/fa'
 
-import CustomButton from '../Button.jsx'
+import CustomButton from '../../Button.jsx'
 
 import axios from 'axios'
-import { backendUrl, defineErrorMsg } from '../../config/backend'
+import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 import { toast } from 'react-toastify'
 
 import { connect } from 'react-redux'
-import { setUser } from '../../redux/userActions'
+import { setUser } from '../../../redux/userActions'
 import { bindActionCreators } from 'redux'
 
-import {formatCustomURL} from '../../config/masks'
+import {formatCustomURL} from '../../../config/masks'
 
 import ReactQuill from 'react-quill'
 //import { modules } from '../config/QuillEditor'
 import 'react-quill/dist/quill.snow.css'
 
-import '../../pages/css/defaultPage.css'
+import '../../../pages/css/defaultPage.css'
 import './css/MyAccountExtraInformation.css'
 
 class ExtraInformation extends Component {

@@ -141,7 +141,6 @@ const MenuApp = props => {
                             }}
                             open={open}
                             onClose={closeMyAccountIcon}>
-                            {/*  */}
                             <Link to="/my-account" onClick={() => closeMyAccountIcon()} className="linkRouterBlack">
                                 <MenuItem>
                                     <span className={classes.menuButtonContent}>
@@ -149,6 +148,16 @@ const MenuApp = props => {
                                             person_outline
                                         </Icon>
                                         Meus dados
+                                    </span>
+                                </MenuItem>
+                            </Link>
+                            <Link to="/ticket" onClick={() => closeMyAccountIcon()} className="linkRouterBlack">
+                                <MenuItem>
+                                    <span className={classes.menuButtonContent}>
+                                        <Icon className={classes.iconButtonMenu}>
+                                            feedback
+                                        </Icon>
+                                        Suporte
                                     </span>
                                 </MenuItem>
                             </Link>
