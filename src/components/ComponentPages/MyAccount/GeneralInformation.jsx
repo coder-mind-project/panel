@@ -39,12 +39,15 @@ class GeneralInformation extends Component {
             address: '',
             number: '',
             type: '',
+            confirmEmail: '',
+            confirmEmailToken: ''
         },
         sendingPhoto: false,
         photo: '',
         saving: false,
         emailHelper: false,
         resendingEmail: false,
+        cancelingChangeEmail: false,
     }
 
     handleChange = attr =>  async event => {
@@ -92,9 +95,17 @@ class GeneralInformation extends Component {
 
         const user = await this.formatData() 
 
-        await axios.put(url, user).then( () => {
+        await axios.put(url, user).then( response => {
             toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Informações salvas com sucesso</div>), {autoClose: 3000, closeOnClick: true})
-            
+            if(response.data.confirmEmail){
+                this.setState({
+                    user: {
+                        ...this.state.user,
+                        confirmEmail: response.data.confirmEmail,
+                        confirmEmailToken: response.data.confirmEmailToken
+                    } 
+                })
+            }
             this.props.setUser(user)
         }).catch( async error => {
             const msg = await defineErrorMsg(error)
@@ -221,22 +232,46 @@ class GeneralInformation extends Component {
         this.setState({resendingEmail: !this.state.resendingEmail})
     }
 
+    toogleCancelingChangeEmail(){
+        this.setState({cancelingChangeEmail: !this.state.cancelingChangeEmail})
+    }
+
     async resendEmail(){
         if(this.state.resendingEmail) return
         
         const id = this.state.user._id
-        const url = `${backendUrl}/users/configs/${id}`
-        const user = this.props.user
+        const url = `${backendUrl}/users/emails/${id}`
+        const user = this.state.user
 
         this.toogleResendingEmail()
         await axios.post(url, user).then( res => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>{res.data}</div>), {autoClose: 30000, closeOnClick: true})
+            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>{res.data}</div>), {autoClose: 10000, closeOnClick: true})
         }).catch( error => {
             const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 10000, closeOnClick: true})
+            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 5000, closeOnClick: true})
         })
         
         this.toogleResendingEmail()
+    }
+
+    async cancelChangeEmail(){
+        if(this.state.cancelingChangeEmail) return
+        
+        const id = this.state.user._id
+        const url = `${backendUrl}/users/emails/${id}`
+
+        this.toogleCancelingChangeEmail()
+        await axios.patch(url).then( () => {
+            const user = this.state.user
+            delete user.confirmEmail
+            this.setState({user})
+            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Solicitação de alteração de e-mail removida com sucesso!</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch( error => {
+            const msg = defineErrorMsg(error)
+            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 5000, closeOnClick: true})
+        })
+        
+        this.toogleCancelingChangeEmail()
     }
     
     async componentDidMount(){
@@ -245,7 +280,7 @@ class GeneralInformation extends Component {
             await this.setState({
                 user: {
                     ...user,
-                    profilePhoto: user.profilePhoto ? `${backendUrl}/${user.profilePhoto}` : '',
+                    profilePhoto: user.profilePhoto ? `${user.profilePhoto}` : '',
                     birthDate: user.birthDate || null,
                     address: user.address || '',
                     number: user.number || '',
@@ -261,16 +296,31 @@ class GeneralInformation extends Component {
                     <Box xs={12} display="flex" justifyContent="center"
                         alignItems="center" flexWrap="wrap"
                     >
-                        { this.props.user.confirmEmail && <Box className="confirm-email-warning">
-                            <Box display="flex" alignItems="center" mr={2}>
-                                <Icon fontSize="large">
-                                    warning
-                                </Icon>
+                        { this.state.user.confirmEmail && 
+                            <Box className="confirm-email-warning">
+                                <Box display="flex" alignItems="center" mr={2}>
+                                    <Icon fontSize="large">
+                                        warning
+                                    </Icon>
+                                </Box>
+                                <Box display="flex" justifyContent="center" flexDirection="column">
+                                    <p>
+                                        Existe uma confirmação de e-mail pendente para <strong>{this.state.user.confirmEmail}</strong>, para trocar seu e-mail visite sua caixa de entrada e clique no link para confirmar o novo e-mail.
+                                    </p>
+                                    <Box display="flex" justifyContent="space-between" alignItems='center' flexWrap="wrap">
+                                        <Box mb={2}>
+                                            { !this.state.resendingEmail && <strong  onClick={() => this.resendEmail()}  className='resend-email'>Reenviar e-mail</strong>} 
+                                            { this.state.resendingEmail && <strong>Reenviando e-mail...</strong>}
+
+                                        </Box>
+                                        <Box mb={2}>
+                                            { !this.state.cancelingChangeEmail && <strong onClick={() => this.cancelChangeEmail()}  className='resend-email'>Cancelar alteração de e-mail</strong>}
+                                            { this.state.cancelingChangeEmail && <strong>Cancelando alteração de e-mail...</strong>}
+                                        </Box>
+                                    </Box>
+                                </Box>
                             </Box>
-                            <Box display="flex" alignItems="center">
-                                <p>Existe uma confirmação de e-mail pendente para <strong>{this.state.user.confirmEmail}</strong>, para trocar seu e-mail visite sua caixa de entrada e clique no link para confirmar o novo e-mail. { !this.state.resendingEmail && <strong  onClick={() => this.resendEmail()}  className='resend-email'>Reenviar e-mail</strong>} { this.state.resendingEmail && <strong>Reenviando e-mail...</strong>}</p>
-                            </Box>
-                        </Box>}
+                        }
                         <Grid item xs={12} lg={3} className="formGroup">
                             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                                 <Tooltip title={this.state.user.profilePhoto ? "Remover Imagem" : "Imagem de perfil não definida"} 
@@ -279,7 +329,7 @@ class GeneralInformation extends Component {
                                     <figure onClick={this.removePhoto}>
                                         { !this.state.sendingPhoto ? 
                                             <img className={this.state.user.profilePhoto ? "profile_photo" : "profile_photo_not_found"} 
-                                                src={this.state.user.profilePhoto ? this.state.user.profilePhoto : ImgDefault}
+                                                src={this.state.user.profilePhoto ? `${backendUrl}/${this.state.user.profilePhoto}` : ImgDefault}
                                                 alt="Foto de perfil" /> : <CircularProgress color="secondary" />
                                             }
                                     </figure>
@@ -314,7 +364,7 @@ class GeneralInformation extends Component {
                                     onFocus={() => this.displayEmailHelpMessage()}
                                     onBlur={() => this.hideEmailHelpMessage()}
                                     fullWidth={true}
-                                    InputProps={this.props.user.confirmEmail ? {
+                                    InputProps={this.state.user.confirmEmail ? {
                                         startAdornment: (
                                             <InputAdornment position="start">
                                                 <Icon fontSize="small" color="secondary">

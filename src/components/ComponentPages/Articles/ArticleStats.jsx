@@ -5,16 +5,16 @@ import { Grid, Box, Table, TableBody, TableCell,
     DialogContent, DialogContentText, Dialog, TextField } from '@material-ui/core'
 
 import axios from 'axios'
-import { backendUrl } from '../../config/backend'
+import { backendUrl } from '../../../config/backend'
 
-import Searching from '../../assets/loading.gif'
-import ErrorBlock from '../ErrorBlock.jsx'
-import StatsBlock from '../StatsBlock.jsx'
-import CustomChip from '../Chip.jsx'
-import CustomIconButton from '../IconButton.jsx'
-import CustomButton from '../Button.jsx'
+import Searching from '../../../assets/loading.gif'
+import ErrorBlock from '../../ErrorBlock.jsx'
+import StatsBlock from '../../StatsBlock.jsx'
+import CustomChip from '../../Chip.jsx'
+import CustomIconButton from '../../IconButton.jsx'
+import CustomButton from '../../Button.jsx'
 
-import { DEFAULT_LIMIT } from '../../config/dataProperties'
+import { DEFAULT_LIMIT } from '../../../config/dataProperties'
 import { toast } from 'react-toastify'
 
 import './css/ArticleStats.css'

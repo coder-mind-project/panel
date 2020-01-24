@@ -157,7 +157,7 @@ const MenuApp = props => {
                                         <Icon className={classes.iconButtonMenu}>
                                             feedback
                                         </Icon>
-                                        Suporte
+                                        Fale conosco
                                     </span>
                                 </MenuItem>
                             </Link>

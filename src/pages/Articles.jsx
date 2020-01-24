@@ -56,6 +56,12 @@ export default class Articles extends Component {
                 limit: res.data.limit
             })
         }).catch(error => {
+            /*  #1 - Esta instrução é acionada quando o usuário acessa a plataforma sem estar autenticado,
+                Para evitar o error de acionar mudança de estado quando o componente não está montado,
+                (o setState abaixo) evitamos tal instruçao, já que a aplicação já trabalha por si só para
+                redirecionar para a tela de autenticação.
+            */
+            if(error.response.status === 401) return // #1
             this.setState({
                 error: true,
                 loading: false
@@ -91,7 +97,7 @@ export default class Articles extends Component {
     componentDidMount(){
         this.searchArticles()
     }
-    
+
     render (){
         return (
             <Container id="component">

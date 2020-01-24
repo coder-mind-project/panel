@@ -6,13 +6,13 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-import { backendUrl, defineErrorMsg } from '../../config/backend'
+import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
-import SmallImgDefault from '../../assets/img_not_found_512x512.png'
-import MediumImgDefault from '../../assets/img_not_found_768.png'
-import BigImgDefault from '../../assets/img_not_found_1080.png'
+import SmallImgDefault from '../../../assets/img_not_found_512x512.png'
+import MediumImgDefault from '../../../assets/img_not_found_768.png'
+import BigImgDefault from '../../../assets/img_not_found_1080.png'
 
-import CustomButton from '../Button.jsx'
+import CustomButton from '../../Button.jsx'
 
 import './css/ArticleImages.css'
 

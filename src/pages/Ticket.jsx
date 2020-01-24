@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Container, TextField, Box, Paper, Icon,
         Tooltip, IconButton, Divider, Card, CardContent,
-        CardActions, Button } from '@material-ui/core'
+        CardActions, Button, Grid } from '@material-ui/core'
 
 import Header from '../components/Header.jsx'
 
@@ -18,6 +18,8 @@ import { toast } from 'react-toastify'
 
 import CustomButton from '../components/Button.jsx'
 import WhatIsTicketDialog from '../components/Modals/WhatIsTicket.jsx'
+import AccountProblem from '../components/ComponentPages/Ticket/AccountProblem.jsx'
+import BugReport from '../components/ComponentPages/Ticket/BugReport.jsx'
 
 import './css/defaultPage.css'
 import './css/Ticket.css'
@@ -60,7 +62,7 @@ class Ticket extends Component {
     defineTicketType(type = false){
         const searchUrl = this.props.location.search
 
-        if(!searchUrl) console.log('not search url found')
+        if(!searchUrl && !this.state.authenticated) window.location.href = '/auth'
 
         const params = this.formatParamsSearchUrl(searchUrl)
 
@@ -174,167 +176,175 @@ class Ticket extends Component {
                 />
                 { this.state.whatIsTicketFlag && <WhatIsTicketDialog closeDialog={() => this.dispatchDialog('what-is-ticket', true)} />}
                 <Paper className={this.state.success ? "paper-container-success-area" : "paper-container"}>
-                    { this.state.success && 
-                        <Box width="100%" display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" p={2}>
-                            <Box display="flex" alignItems="center" mr={2}>
-                                <FontAwesomeIcon icon={faCheckCircle} size="5x" color="#28a745"/>
-                            </Box>
-                            <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                                <h3 className="success-msg">Ticket enviado com sucesso! Agora basta aguardar, responderemos rapidinho ;)</h3>
-                                <span className="text-explication">Redirectionando em {this.state.timeToCloseWindow} ...</span>
-                            </Box>
-                        </Box>
-                    }  
-                    {!this.state.authenticated && this.state.type === "account-changed" && !this.state.success &&
-                        <Box width="100%" display="flex" flexDirection="column" pl={4} pr={4} pt={1}>
-                            <Box>
-                                <h4>Recuperação de conta</h4>
-                            </Box>
-                            <Box>
-                                <p className="text-explication">Descreva seu problema e caso o campo <strong>E-mail de contato</strong> não esteja preenchido inclua-o para solicitar a revisão do seu problema. Prometemos responder rapidinho =D</p>
-                            </Box>
-                        </Box>
-                    }
-                    { !this.state.authenticated && this.state.type === 'account-changed' && !this.state.success && <Divider/>}
-                    {this.state.authenticated && !this.state.success &&
-                        <Box display="flex" alignItems="center" justifyContent="space-between" pt={4} pl={2} pr={2} pb={4}>
-                            <Box display='flex' alignItems="center" justifyContent="center" flexWrap='wrap'>
-                                <Box display="flex" flexDirection="column">
-                                    <span>Olá <strong>{this.props.user.name}</strong>, aqui você pode gerar tickets para os administradores do sistema.</span>
-                                    <span>Informe o tipo de problema e descreva o ocorrido, respostas serão enviadas ao seu e-mail de cadastro na plataforma.</span>
+                    <Grid item xs={12}>
+                        { this.state.success && 
+                            <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" p={2}>
+                                <Box display="flex" alignItems="center" mr={2}>
+                                    <FontAwesomeIcon icon={faCheckCircle} size="5x" color="#28a745"/>
+                                </Box>
+                                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                                    <h3 className="success-msg">Ticket enviado com sucesso! Agora basta aguardar, responderemos rapidinho ;)</h3>
+                                    <span className="text-explication">Redirectionando em {this.state.timeToCloseWindow} ...</span>
                                 </Box>
                             </Box>
-                            <Tooltip title={(<span className="text-tooltip-button">O que é ticket?</span>)} placement="left-start">
-                                <IconButton size="small" onClick={() => this.dispatchDialog('what-is-ticket')}>
-                                    <FontAwesomeIcon icon={faQuestionCircle} color={COLOR_APP} size="2x"/>
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                    }
-                    { this.state.type === 'account-changed' && !this.state.authenticated && !this.state.success &&
-                        <Box p={3} pt={0} display="flex" alignItems="center" flexWrap="wrap">
-                            <TextField 
-                                className="container-text-field"
-                                label="Primeiro Código"
-                                value={this.state.accountChanged.firstCode}
-                                inputProps={{
-                                    className: "text-field"
-                                }}
-                                InputLabelProps={{
-                                    className: "text-field"
-                                }}
-                                disabled={true}
-                            />
-                            <TextField
-                                className="container-text-field"
-                                label="Segundo Código"
-                                value={this.state.accountChanged.secondCode}
-                                inputProps={{
-                                    className: "text-field"
-                                }}
-                                InputLabelProps={{
-                                    className: "text-field"
-                                }}
-                                disabled={true}
-                            />
-                            <TextField 
-                                className="container-text-field"
-                                label="E-mail de contato"
-                                value={this.state.accountChanged.emailUser}
-                                onChange={this.handleChange('emailUser', 'accountChanged')}
-                                inputProps={{
-                                    className: "text-field"
-                                }}
-                                InputLabelProps={{
-                                    className: "text-field"
-                                }}
-                            />
-                            <TextField 
-                                className="container-text-field"
-                                label="Data da ocorrência"
-                                value={this.state.accountChanged.date}
-                                disabled={true}
-                                inputProps={{
-                                    className: "text-field"
-                                }}
-                                InputLabelProps={{
-                                    className: "text-field"
-                                }}
-                            />
-                            <TextField 
-                                className="container-text-field"
-                                label="Descreva aqui o seu problema"
-                                multiline={true}
-                                fullWidth={true}
-                                value={this.state.accountChanged.msg}
-                                rows="10"
-                                onChange={this.handleChange('msg', 'accountChanged')}
-                                inputProps={{
-                                    className: "text-field"
-                                }}
-                                InputLabelProps={{
-                                    className: "text-field"
-                                }}
-                            />
-                            <Box width="100%">
-                                <p className="form-explication">Seu ticket será respondido através do e-mail de contato fornecido, é importante descrever o máximo possível de informações. Você receberá uma mensagem automática que recebemos o seu ticket após o envio, assim entraremos em contato o mais breve possível com a análise já realizada ou solicitando mais informações.</p>
+                        }  
+                        {!this.state.authenticated && this.state.type === "account-changed" && !this.state.success &&
+                            <Box display="flex" flexDirection="column" pl={4} pr={4} pt={1}>
+                                <Box>
+                                    <h4>Recuperação de conta</h4>
+                                </Box>
+                                <Box>
+                                    <p className="text-explication">Descreva seu problema e caso o campo <strong>E-mail de contato</strong> não esteja preenchido inclua-o para solicitar a revisão do seu problema. Prometemos responder rapidinho =D</p>
+                                </Box>
                             </Box>
-                            <Box width="100%" mt={4} mb={4}>
-                                <CustomButton 
-                                    color="default"
-                                    loading={this.state.sendingTicket}
-                                    disabled={this.state.sendingTicket}
-                                    fullWidth={true}
-                                    icon="save"
-                                    text={this.state.sendingTicket ? 'Enviando ticket...' : 'Enviar ticket'}
-                                    onClick={() => this.sendTicket()}
+                        }
+                        { !this.state.authenticated && this.state.type === 'account-changed' && !this.state.success && <Divider/>}
+                        {this.state.authenticated && !this.state.success &&
+                            <Box display="flex" alignItems="center" justifyContent="space-between" pt={4} pl={2} pr={2} pb={4}>
+                                <Box display='flex' alignItems="center" justifyContent="center" flexWrap='wrap'>
+                                    <Box display="flex" flexDirection="column">
+                                        <span>Olá <strong>{this.props.user.name}</strong>, aqui você pode gerar tickets para os administradores do sistema.</span>
+                                        <span>Informe o tipo de problema e descreva o ocorrido, respostas serão enviadas ao seu e-mail de cadastro na plataforma.</span>
+                                    </Box>
+                                </Box>
+                                <Tooltip title={(<span className="text-tooltip-button">O que é ticket?</span>)} placement="left-start">
+                                    <IconButton size="small" onClick={() => this.dispatchDialog('what-is-ticket')}>
+                                        <FontAwesomeIcon icon={faQuestionCircle} color={COLOR_APP} size="2x"/>
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
+                        }
+                        { this.state.type === 'account-changed' && !this.state.authenticated && !this.state.success &&
+                            <Box p={3} pt={0} display="flex" alignItems="center" flexWrap="wrap">
+                                <TextField 
+                                    className="container-text-field"
+                                    label="Primeiro Código"
+                                    value={this.state.accountChanged.firstCode}
+                                    inputProps={{
+                                        className: "text-field"
+                                    }}
+                                    InputLabelProps={{
+                                        className: "text-field"
+                                    }}
+                                    disabled={true}
                                 />
+                                <TextField
+                                    className="container-text-field"
+                                    label="Segundo Código"
+                                    value={this.state.accountChanged.secondCode}
+                                    inputProps={{
+                                        className: "text-field"
+                                    }}
+                                    InputLabelProps={{
+                                        className: "text-field"
+                                    }}
+                                    disabled={true}
+                                />
+                                <TextField 
+                                    className="container-text-field"
+                                    label="E-mail de contato"
+                                    value={this.state.accountChanged.emailUser}
+                                    onChange={this.handleChange('emailUser', 'accountChanged')}
+                                    inputProps={{
+                                        className: "text-field"
+                                    }}
+                                    InputLabelProps={{
+                                        className: "text-field"
+                                    }}
+                                />
+                                <TextField 
+                                    className="container-text-field"
+                                    label="Data da ocorrência"
+                                    value={this.state.accountChanged.date}
+                                    disabled={true}
+                                    inputProps={{
+                                        className: "text-field"
+                                    }}
+                                    InputLabelProps={{
+                                        className: "text-field"
+                                    }}
+                                />
+                                <TextField 
+                                    className="container-text-field"
+                                    label="Descreva aqui o seu problema"
+                                    multiline={true}
+                                    fullWidth={true}
+                                    value={this.state.accountChanged.msg}
+                                    rows="10"
+                                    onChange={this.handleChange('msg', 'accountChanged')}
+                                    inputProps={{
+                                        className: "text-field"
+                                    }}
+                                    InputLabelProps={{
+                                        className: "text-field"
+                                    }}
+                                />
+                                <Box width="100%">
+                                    <p className="form-explication">Seu ticket será respondido através do e-mail de contato fornecido, é importante descrever o máximo possível de informações. Você receberá uma mensagem automática que recebemos o seu ticket após o envio, assim entraremos em contato o mais breve possível com a análise já realizada ou solicitando mais informações.</p>
+                                </Box>
+                                <Box width="100%" mt={4} mb={4}>
+                                    <CustomButton 
+                                        color="default"
+                                        loading={this.state.sendingTicket}
+                                        disabled={this.state.sendingTicket}
+                                        fullWidth={true}
+                                        icon="save"
+                                        text={this.state.sendingTicket ? 'Enviando ticket...' : 'Enviar ticket'}
+                                        onClick={() => this.sendTicket()}
+                                    />
+                                </Box>
                             </Box>
-                        </Box>
-                    }
-                    { this.state.authenticated && this.state.type === 'menu' &&
-                        <Box p={3}>
-                            <Divider/>
-                            <Box width="100%">
-                                <h4>Selecione o tipo de ticket que deseja enviar</h4>
+                        }
+                        { this.state.authenticated && this.state.type === 'menu' &&
+                            <Box p={3}>
+                                <Divider/>
+                                <Box width="100%">
+                                    <h4>Selecione o tipo de ticket que deseja enviar</h4>
+                                </Box>
+                                <Box display="flex" alignItems="center" flexWrap="wrap">
+                                    <Card className="card" variant="outlined">
+                                        <CardContent>
+                                            <h4>Alteraram os dados da minha conta!</h4>
+                                            <span className="text-explication">
+                                                Problemas relacionados a configurações da sua conta na Coder Mind por terceiros.
+                                            </span>
+                                        </CardContent>
+                                        <CardActions className="card-actions">
+                                            <Button size="small" color="secondary" variant="outlined" onClick={() => this.defineTicketType('account-problem')}>Abrir Ticket</Button>
+                                        </CardActions>
+                                    </Card>
+                                    <Card className="card" variant="outlined">
+                                        <CardContent>
+                                            <h4>Reporte de bugs</h4>
+                                            <span className="text-explication">
+                                                Encontrou algum bug no painel ou em nosso website? reporte!
+                                            </span>
+                                        </CardContent>
+                                        <CardActions className="card-actions">
+                                            <Button size="small" color="secondary" variant="outlined" onClick={() => this.defineTicketType('bug-report')}>Abrir Ticket</Button>
+                                        </CardActions>
+                                    </Card>
+                                    <Card className="card" variant="outlined">
+                                        <CardContent>
+                                            <h4>Sugestão de melhorias</h4>
+                                            <span className="text-explication">
+                                                Encontrou algo que pode ficar melhor? por favor nos conte =D
+                                            </span>
+                                        </CardContent>
+                                        <CardActions className="card-actions">
+                                            <Button size="small" color="secondary" variant="outlined" onClick={() => this.defineTicketType('improvement-suggestion')}>Abrir Ticket</Button>
+                                        </CardActions>
+                                    </Card>
+                                </Box>
                             </Box>
-                            <Box display="flex" alignItems="center" flexWrap="wrap">
-                                <Card className="card" variant="outlined">
-                                    <CardContent>
-                                        <h4>Estou com problema na minha conta</h4>
-                                        <span className="text-explication">
-                                            Problemas relacionados a configurações da sua conta na Coder Mind
-                                        </span>
-                                    </CardContent>
-                                    <CardActions className="card-actions">
-                                        <Button size="small" color="secondary" variant="outlined" onClick={() => this.defineTicketType('account-problem')}>Abrir Ticket</Button>
-                                    </CardActions>
-                                </Card>
-                                <Card className="card" variant="outlined">
-                                    <CardContent>
-                                        <h4>Reporte de bugs</h4>
-                                        <span className="text-explication">
-                                            Encontrou algum bug no painel ou em nosso website? reporte!
-                                        </span>
-                                    </CardContent>
-                                    <CardActions className="card-actions">
-                                        <Button size="small" color="secondary" variant="outlined" onClick={() => this.defineTicketType('bug-report')}>Abrir Ticket</Button>
-                                    </CardActions>
-                                </Card>
-                                <Card className="card" variant="outlined">
-                                    <CardContent>
-                                        <h4>Sugestão de melhorias</h4>
-                                        <span className="text-explication">
-                                            Encontrou algo que pode ficar melhor? por favor nos conte =D
-                                        </span>
-                                    </CardContent>
-                                    <CardActions className="card-actions">
-                                        <Button size="small" color="secondary" variant="outlined" onClick={() => this.defineTicketType('improvement-suggestion')}>Abrir Ticket</Button>
-                                    </CardActions>
-                                </Card>
-                            </Box>
-                        </Box>
-                    }
+                        }
+                        { this.state.authenticated && this.state.type === 'account-problem' && 
+                            <AccountProblem goBack={() => this.defineTicketType('menu')}/>
+                        }
+                        { this.state.authenticated && this.state.type === 'bug-report' && 
+                            <BugReport goBack={() => this.defineTicketType('menu')}/>
+                        }
+                    </Grid>
                 </Paper>
             </Container>
         )

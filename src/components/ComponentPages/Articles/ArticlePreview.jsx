@@ -5,7 +5,7 @@ import axios from 'axios'
 
 import Avatar from 'react-avatar'
 
-import { backendUrl, defineErrorMsg } from '../../config/backend'
+import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 import { Grid, Icon, Box, Divider } from '@material-ui/core'
     

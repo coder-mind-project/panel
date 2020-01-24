@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { Grid, TextField, Box, Icon, CircularProgress, Divider,
         FormControlLabel, Checkbox, LinearProgress} from '@material-ui/core'
 import axios from 'axios'
-import { backendUrl, defineErrorMsg } from '../../config/backend'
+import { backendUrl, defineErrorMsg } from '../../../config/backend'
 import { toast } from 'react-toastify'
 
-import CustomButton from '../Button.jsx'
+import CustomButton from '../../Button.jsx'
 
 
-import { displayFullDate } from '../../config/masks'
+import { displayFullDate } from '../../../config/masks'
 
 import './css/ArticleConfig.css'
 class ArticleConfig extends Component {

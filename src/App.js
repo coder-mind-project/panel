@@ -36,6 +36,8 @@ import Comments from './pages/Comments.jsx'
 import Comment from './pages/Comment.jsx'
 import RedeemAccount from './pages/RedeemAccount.jsx'
 import Ticket from './pages/Ticket.jsx'
+import ConfirmEmail from './pages/ConfirmEmail.jsx'
+import RemoveAccount from './pages/RemoveAccount.jsx'
 
 
 //Css imports
@@ -52,7 +54,13 @@ class App extends Component {
       path: '',
     }
 
-    acceptableRoutes = ['/auth', '/redeem-account', '/ticket'] //Rotas aceitáveis sem necessidade de autenticação
+    acceptableRoutes = [
+      '/auth',
+      '/redeem-account',
+      '/ticket',
+      '/confirm-email',
+      '/remove-account'
+    ] //Rotas aceitáveis sem necessidade de autenticação
 
     validateToken = async () => {
       await this.toogleValidatingToken()
@@ -106,7 +114,7 @@ class App extends Component {
           { !this.state.validatingToken && 
             <Fade in={!this.state.validatingToken}>
               <Router>
-                <Menu/>
+                {this.getPath() !== '/confirm-email' && <Menu/>}
                 <ToastContainer/>
                 <div>
                   {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
@@ -126,7 +134,9 @@ class App extends Component {
                       <Route path="/" exact component={Articles}/>
                       <Route path="/auth" exact component={Auth}/>
                       <Route path="/redeem-account" exact component={RedeemAccount}/>
+                      <Route path="/remove-account" exact component={RemoveAccount}/>
                       <Route path="/ticket" exact component={Ticket}/>
+                      <Route path="/confirm-email" exact component={ConfirmEmail}/>
                       <Route path="/user" exact component={User}/>
                       <Route path="/user/:id" exact component={User}/>
                       <Route path="/users" exact component={Users}/>
