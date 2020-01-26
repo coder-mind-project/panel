@@ -36,6 +36,10 @@
     margin-bottom: 20px !important;
 }
 
+.helperText{
+    font-size: 0.7rem;
+}
+
 @media(max-width: 690px){
     .formInput{
         margin-bottom: 30px !important;

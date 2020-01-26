@@ -38,6 +38,7 @@ import RedeemAccount from './pages/RedeemAccount.jsx'
 import Ticket from './pages/Ticket.jsx'
 import ConfirmEmail from './pages/ConfirmEmail.jsx'
 import RemoveAccount from './pages/RemoveAccount.jsx'
+import Tickets from './pages/Tickets.jsx'
 
 
 //Css imports
@@ -136,6 +137,7 @@ class App extends Component {
                       <Route path="/redeem-account" exact component={RedeemAccount}/>
                       <Route path="/remove-account" exact component={RemoveAccount}/>
                       <Route path="/ticket" exact component={Ticket}/>
+                      <Route path="/tickets" exact component={Tickets}/>
                       <Route path="/confirm-email" exact component={ConfirmEmail}/>
                       <Route path="/user" exact component={User}/>
                       <Route path="/user/:id" exact component={User}/>

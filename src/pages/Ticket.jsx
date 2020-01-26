@@ -1,14 +1,12 @@
 import React, {Component} from 'react'
 import { Container, TextField, Box, Paper, Icon,
-        Tooltip, IconButton, Divider, Card, CardContent,
+        IconButton, Divider, Card, CardContent,
         CardActions, Button, Grid } from '@material-ui/core'
 
 import Header from '../components/Header.jsx'
 
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faQuestionCircle, faCheckCircle} from '@fortawesome/free-solid-svg-icons'
-
-import { COLOR_APP } from '../config/dataProperties'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 import { connect } from 'react-redux'
 import axios from 'axios'
@@ -20,10 +18,10 @@ import CustomButton from '../components/Button.jsx'
 import WhatIsTicketDialog from '../components/Modals/WhatIsTicket.jsx'
 import AccountProblem from '../components/ComponentPages/Ticket/AccountProblem.jsx'
 import BugReport from '../components/ComponentPages/Ticket/BugReport.jsx'
+import ImprovementSuggestion from '../components/ComponentPages/Ticket/ImprovementSuggestion.jsx'
 
 import './css/defaultPage.css'
 import './css/Ticket.css'
-
 class Ticket extends Component {
 
     state = {
@@ -114,7 +112,7 @@ class Ticket extends Component {
 
         data.type = this.state.type
         
-        const url = `${backendUrl}/tickets`
+        const url = `${backendUrl}/tickets/not-authenticated`
         await axios.post(url, data).then( () => {
             this.setState({
                 success: true
@@ -200,18 +198,18 @@ class Ticket extends Component {
                         }
                         { !this.state.authenticated && this.state.type === 'account-changed' && !this.state.success && <Divider/>}
                         {this.state.authenticated && !this.state.success &&
-                            <Box display="flex" alignItems="center" justifyContent="space-between" pt={4} pl={2} pr={2} pb={4}>
+                            <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" pt={4} pl={2} pr={2} pb={4}>
                                 <Box display='flex' alignItems="center" justifyContent="center" flexWrap='wrap'>
                                     <Box display="flex" flexDirection="column">
                                         <span>Olá <strong>{this.props.user.name}</strong>, aqui você pode gerar tickets para os administradores do sistema.</span>
                                         <span>Informe o tipo de problema e descreva o ocorrido, respostas serão enviadas ao seu e-mail de cadastro na plataforma.</span>
                                     </Box>
                                 </Box>
-                                <Tooltip title={(<span className="text-tooltip-button">O que é ticket?</span>)} placement="left-start">
-                                    <IconButton size="small" onClick={() => this.dispatchDialog('what-is-ticket')}>
-                                        <FontAwesomeIcon icon={faQuestionCircle} color={COLOR_APP} size="2x"/>
+                                <Box mt={2}>
+                                    <IconButton color="secondary" size="small" variant="outlined" onClick={() => this.dispatchDialog('what-is-ticket')}>
+                                        <span style={{textDecoration: 'underline'}}>O que é ticket?</span>
                                     </IconButton>
-                                </Tooltip>
+                                </Box>
                             </Box>
                         }
                         { this.state.type === 'account-changed' && !this.state.authenticated && !this.state.success &&
@@ -298,10 +296,15 @@ class Ticket extends Component {
                         { this.state.authenticated && this.state.type === 'menu' &&
                             <Box p={3}>
                                 <Divider/>
-                                <Box width="100%">
-                                    <h4>Selecione o tipo de ticket que deseja enviar</h4>
+                                <Box width="100%" display='flex' alignItems="center">
+                                    <Box display="flex" alignItems="center" mr={1}>
+                                        <Icon>label</Icon>
+                                    </Box>
+                                    <Box display="flex" alignItems="center">
+                                        <h4>Selecione o tipo de ticket que deseja enviar</h4>
+                                    </Box>
                                 </Box>
-                                <Box display="flex" alignItems="center" flexWrap="wrap">
+                                <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap">
                                     <Card className="card" variant="outlined">
                                         <CardContent>
                                             <h4>Alteraram os dados da minha conta!</h4>
@@ -343,6 +346,9 @@ class Ticket extends Component {
                         }
                         { this.state.authenticated && this.state.type === 'bug-report' && 
                             <BugReport goBack={() => this.defineTicketType('menu')}/>
+                        }
+                        { this.state.authenticated && this.state.type === 'improvement-suggestion' && 
+                            <ImprovementSuggestion goBack={() => this.defineTicketType('menu')} changeType={(type) => this.defineTicketType(type)}/>
                         }
                     </Grid>
                 </Paper>

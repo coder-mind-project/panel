@@ -192,45 +192,80 @@ class Management extends Component {
                 { this.props.user.tagAdmin && <Grid item xs={12}><Divider/></Grid>}
                 
                 { this.props.user.tagAdmin && <Grid item xs={12}>
-                    <Box width="100%" display="flex" alignItems="center">
-                        <Box mr={1}>
-                            <Icon>people</Icon>
+                    <Box mb={3}>
+                        <Box width="100%" display="flex" alignItems="center">
+                            <Box mr={1}>
+                                <Icon>people</Icon>
+                            </Box>
+                            <h3>Gerenciamento</h3>
                         </Box>
-                        <h3>Usuários</h3>
+                        <span>
+                            Gerencie usuários da plataforma, visualize e responda a tickets de atendimento aos autores da plataforma.
+                        </span>
                     </Box>
-                    <span>
-                        Crie perfis para autores, administradores para acesso a plataforma. Usuários de tipos diferentes possui acesso a diferentes funcionalidades.
-                    </span>
-                    <Box mt={3} display="flex" flexWrap="wrap" alignItems="center">
-                        <Card>
-                            <CardContent>
-                                <Box display="flex" alignItems="center">
-                                    <Box mr={1} display="flex" alignItems="center">
-                                        <Icon>
-                                            person
-                                        </Icon>
-                                    </Box>
+                    <Box width="100%" display="flex" flexWrap="wrap" alignItems="center">
+                        <Grid item xs={12} md={6}>
+                            <Card className="card-management">
+                                <CardContent>
                                     <Box display="flex" alignItems="center">
-                                        <h3>
-                                            Visualizar usuários
-                                        </h3>
+                                        <Box mr={1} display="flex" alignItems="center">
+                                            <Icon>
+                                                person
+                                            </Icon>
+                                        </Box>
+                                        <Box display="flex" alignItems="center">
+                                            <h3>
+                                                Usuários
+                                            </h3>
+                                        </Box>
                                     </Box>
-                                </Box>
-                                <Typography>
-                                    Visualize, atualize, crie e remove cadastros de usuários da plataforma
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Box width="100%" ml={2} mr={2}>
-                                    <Link to="/users" className="linkRouter">
-                                        <Button color="default"
-                                            icon="exit_to_app"
-                                            text="Acessar"
-                                        />
-                                    </Link>
-                                </Box>
-                            </CardActions>
-                        </Card>
+                                    <Typography>
+                                        Crie perfis para autores, administradores para acesso a plataforma. Usuários de tipos diferentes possui acesso a diferentes funcionalidades.
+                                    </Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Box width="100%" ml={2} mr={2}>
+                                        <Link to="/users" className="linkRouter">
+                                            <Button color="default"
+                                                icon="exit_to_app"
+                                                text="Acessar"
+                                            />
+                                        </Link>
+                                    </Box>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <Card className="card-management">
+                                <CardContent>
+                                    <Box display="flex" alignItems="center">
+                                        <Box mr={1} display="flex" alignItems="center">
+                                            <Icon>
+                                                label
+                                            </Icon>
+                                        </Box>
+                                        <Box display="flex" alignItems="center">
+                                            <h3>
+                                                Tickets
+                                            </h3>
+                                        </Box>
+                                    </Box>
+                                    <Typography>
+                                        Visualize e responda tickets de atendimento aos autores da plataforma
+                                    </Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Box width="100%" ml={2} mr={2}>
+                                        <Link to="/tickets" className="linkRouter">
+                                            <Button color="default"
+                                                icon="exit_to_app"
+                                                text="Acessar"
+                                            />
+                                        </Link>
+                                    </Box>
+                                </CardActions>
+                            </Card>
+                        </Grid>
                     </Box>
                 </Grid>}
             </Container>
