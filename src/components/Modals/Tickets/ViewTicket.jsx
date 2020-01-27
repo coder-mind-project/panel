@@ -1,7 +1,7 @@
 import React , { Component } from 'react'
 import { Box, Icon, Button, TextField,
         Dialog, DialogTitle, DialogContent, Container,
-        DialogActions} from '@material-ui/core' 
+        DialogActions, Grow, Switch, LinearProgress } from '@material-ui/core' 
 
 import { displayFullDate } from '../../../config/masks'
 
@@ -15,44 +15,35 @@ import {backendUrl, defineErrorMsg} from '../../../config/backend'
 
 import '../../../pages/css/defaultPage.css'
 import '../../../pages/css/forms.css'
+import './css/ViewTicket.css'
 
 class ViewTicket extends Component {
     state = {
         isSending: false,
         success: false,
-        error: false
+        error: false,
+        showResponseField: false,
+        sendingResponse: false,
+        response: '',
+        sendEmail: true,
+        updated: false,
+        ticket: {
+            content: {},
+            user: {},
+            admin: {}
+        }
     }
 
     handleChange = attr => evt => {
         const value = evt.target.value
 
-        this.setState({ ticket : {
-            ...this.props.ticket,
-            [attr]: value
-        }})
+        this.setState({[attr]: value})
     }
 
-    toogleIsSending(){
-        this.setState({
-            isSending: !this.state.isSending
-        })
-    }
+    handleChangeCheckered = attr => evt => {
+        const value = evt.target.checked
 
-    async sendTicket(){
-        this.toogleIsSending()
-        const data = this.props.ticket
-
-        data.emailUser = this.props.user.email
-        const url = `${backendUrl}/tickets`
-
-        await axios.post(url, data).then( response => {
-            this.setState({success: true})
-        }).catch( error =>{
-            const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
-        })
-
-        this.toogleIsSending()
+        this.setState({[attr]: value})
     }
 
     defineDevice(device){
@@ -106,9 +97,57 @@ class ViewTicket extends Component {
         }
     }
 
+    toogleResponse(){
+        if(this.state.sendingResponse) return
+        this.setState({showResponseField: !this.state.showResponseField})
+    }
+
+    toogleSendingResponse(){
+        this.setState({sendingResponse : !this.state.sendingResponse})
+    }
+
+    close(){
+        if(this.state.sendingResponse) return 
+
+        this.props.onClose()
+    }
+
+    async sendResponse(){
+        if(this.state.sendingResponse) return
+
+        const url = `${backendUrl}/tickets/${this.state.ticket.content._id}`
+
+        const data = {
+            response: this.state.response,
+            sendEmail: this.state.sendEmail
+        }
+
+        this.toogleSendingResponse()
+        
+        await axios.put(url, data).then( response => {
+            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Resposta enviada com sucesso!</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch(error => {
+            const msg = defineErrorMsg(error)
+            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        })
+        this.toogleSendingResponse()
+    }
+
+    async readTicket(){
+        await this.setState({
+            ticket: this.props.ticket
+        })
+
+        const url = `${backendUrl}/tickets/${this.state.ticket.content._id}`
+
+        axios.patch(url).then( response => {
+            const ticket = response.data
+            this.props.updateTicket(ticket)
+        })
+    }
 
     componentDidMount(){
-        
+        this.readTicket()
     }
 
     render(){
@@ -117,15 +156,30 @@ class ViewTicket extends Component {
                 open={true}
                 onClose={() => this.props.onClose()}
                 maxWidth="lg"
+                disableBackdropClick={this.state.sendingResponse}
+                disableEscapeKeyDown={this.state.sendingResponse}
             >
-                <DialogTitle id="title">Detalhes do ticket {this.props.ticket.content._id}</DialogTitle>
+                <DialogTitle id="title">
+                    <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
+                        <span>Detalhes do ticket {this.state.ticket.content._id}</span>
+                        <Box display="flex" alignItems="center" justifyContent="center">
+                            {this.state.ticket.content.responses && this.state.ticket.content.responses.length > 0 && <Button variant="text" color="secondary" onClick={() => this.toogleResponse()}>
+                                Ver respostas
+                            </Button>}
+                            <Button variant="text" color="secondary" onClick={() => this.toogleResponse()}>
+                                {this.state.showResponseField ? 'Ocultar' : 'Responder'}
+                            </Button>
+                        </Box>
+                    </Box>
+                </DialogTitle>
+                { this.state.sendingResponse && <LinearProgress color="secondary" />}
                 <DialogContent>
                     <Container>
                         <Box width="100%" display="flex" alignItems="center" flexWrap="wrap">
                             <TextField 
                                 label="Ticket"
                                 className="formInput"
-                                value={this.props.ticket.content._id}
+                                value={this.state.ticket.content._id}
                                 InputLabelProps={{
                                     className: "disabled-text-field"
                                 }}
@@ -137,7 +191,7 @@ class ViewTicket extends Component {
                             <TextField 
                                 label="Tipo de ticket"
                                 className="formInput"
-                                value={this.props.defineType(this.props.ticket.content.type)}
+                                value={this.props.defineType(this.state.ticket.content.type)}
                                 InputLabelProps={{
                                     className: "disabled-text-field"
                                 }}
@@ -149,7 +203,7 @@ class ViewTicket extends Component {
                             <TextField 
                                 label="E-mail de solicitação"
                                 className="formInput"
-                                value={this.props.ticket.content.email}
+                                value={this.state.ticket.content.email}
                                 InputLabelProps={{
                                     className: "disabled-text-field"
                                 }}
@@ -158,11 +212,11 @@ class ViewTicket extends Component {
                                 }}
                                 disabled={true}
                             />
-                            { this.props.ticket.content.type !== 'account-changed' && this.props.ticket.content.type !== 'simple-account-problem' && 
+                            { this.state.ticket.content.type !== 'account-changed' && this.state.ticket.content.type !== 'simple-account-problem' && 
                                 <TextField 
                                     label="Nome do usuário"
                                     className="formInput"
-                                    value={this.props.ticket.user.name}
+                                    value={this.state.ticket.user.name}
                                     InputLabelProps={{
                                         className: "disabled-text-field"
                                     }}
@@ -172,11 +226,11 @@ class ViewTicket extends Component {
                                     disabled={true}
                                 />
                             }
-                            { Boolean(this.props.ticket.content.type === 'account-changed' || this.props.ticket.content.type === 'simple-account-problem') && 
+                            { Boolean(this.state.ticket.content.type === 'account-changed' || this.state.ticket.content.type === 'simple-account-problem') && 
                                 <TextField 
                                     label="Código do usuário"
                                     className="formInput"
-                                    value={this.props.ticket.user._id}
+                                    value={this.state.ticket.user._id}
                                     InputLabelProps={{
                                         className: "disabled-text-field"
                                     }}
@@ -186,11 +240,11 @@ class ViewTicket extends Component {
                                     disabled={true}
                                 />
                             }
-                            { Boolean(this.props.ticket.content.type === 'account-changed' || this.props.ticket.content.type === 'simple-account-problem') && 
+                            { Boolean(this.state.ticket.content.type === 'account-changed' || this.state.ticket.content.type === 'simple-account-problem') && 
                                 <TextField 
                                     label="Código do administrador"
                                     className="formInput"
-                                    value={this.props.ticket.admin ? this.props.ticket.admin._id : 'Administrador não localizado'}
+                                    value={this.state.ticket.admin ? this.state.ticket.admin._id : 'Administrador não localizado'}
                                     InputLabelProps={{
                                         className: "disabled-text-field"
                                     }}
@@ -200,11 +254,11 @@ class ViewTicket extends Component {
                                     disabled={true}
                                 />
                             }
-                            {this.props.ticket.content.dateOccurrence && 
+                            {this.state.ticket.content.dateOccurrence && 
                                 <TextField 
                                     label="Data de ocorrência"
                                     className="formInput"
-                                    value={displayFullDate(this.props.ticket.content.dateOccurrence)}
+                                    value={this.state.ticket.content.dateOccurrence ? displayFullDate(this.state.ticket.content.dateOccurrence) : ''}
                                     InputLabelProps={{
                                         className: "disabled-text-field"
                                     }}
@@ -218,7 +272,7 @@ class ViewTicket extends Component {
                             <TextField 
                                 label="Data de envio"
                                 className="formInput"
-                                value={displayFullDate(this.props.ticket.content.createdAt)}
+                                value={this.state.ticket.content.createdAt ? displayFullDate(this.state.ticket.content.createdAt) : ''}
                                 InputLabelProps={{
                                     className: "disabled-text-field"
                                 }}
@@ -229,13 +283,13 @@ class ViewTicket extends Component {
                                 helperText={(<span className="helperText">Momento que o ticket foi enviado</span>)}
                             />
                         </Box>
-                        { this.props.ticket.content.type === 'bug-report' && 
+                        { this.state.ticket.content.type === 'bug-report' && 
                             <Box width="100%">
                                 <Box width="100%">
                                     <TextField 
                                         label="Software"
                                         className="formInput"
-                                        value={this.defineSoftware(this.props.ticket.content.software)}
+                                        value={this.defineSoftware(this.state.ticket.content.software)}
                                         InputLabelProps={{
                                             className: "disabled-text-field"
                                         }}
@@ -249,7 +303,7 @@ class ViewTicket extends Component {
                                 <TextField 
                                     label="Dispositivo"
                                     className="formInput"
-                                    value={this.defineDevice(this.props.ticket.content.device)}
+                                    value={this.defineDevice(this.state.ticket.content.device)}
                                     InputLabelProps={{
                                         className: "disabled-text-field"
                                     }}
@@ -258,11 +312,11 @@ class ViewTicket extends Component {
                                     }}
                                     disabled={true}
                                 />
-                                { Boolean(this.props.ticket.content.device === 'computer' || this.props.ticket.content.device === 'celphone - webapp') && 
+                                { Boolean(this.state.ticket.content.device === 'computer' || this.state.ticket.content.device === 'celphone - webapp') && 
                                     <TextField 
                                         label="Navegador"
                                         className="formInput"
-                                        value={this.defineBrowser(this.props.ticket.content.browser)}
+                                        value={this.defineBrowser(this.state.ticket.content.browser)}
                                         InputLabelProps={{
                                             className: "disabled-text-field"
                                         }}
@@ -272,52 +326,74 @@ class ViewTicket extends Component {
                                         disabled={true}
                                     />
                                 }
-                                { Boolean(this.props.ticket.content.device === 'computer' || this.props.ticket.content.device === 'celphone - webapp') && this.props.ticket.content.browser === 'other' && 
+                                { Boolean(this.state.ticket.content.device === 'computer' || this.state.ticket.content.device === 'celphone - webapp') && this.state.ticket.content.browser === 'other' && 
                                     <TextField 
                                         label="Outro navegador"
                                         className="formInput"
-                                        value={this.props.ticket.content.anotherBrowser}
+                                        value={this.state.ticket.content.anotherBrowser}
                                         InputLabelProps={{
                                             className: "disabled-text-field"
                                         }}
                                         inputProps={{
                                             className: "disabled-text-field"
                                         }}
+                                        fullWidth={true}
                                         disabled={true}
                                     />
                                 }
                             </Box>
                         }
-                        <Box width="100%">
-                            <TextField 
-                                label="Descrição"
-                                className="formInput"
-                                value={this.props.ticket.content.msg}
-                                InputLabelProps={{
-                                    className: "disabled-text-field"
-                                }}
-                                inputProps={{
-                                    className: "disabled-text-field"
-                                }}
-                                multiline={true}
-                                rows="10"
-                                disabled={true}
-                                fullWidth={true}
-                            />
+                        <Box display='flex' alignItems="flex-start" flexWrap="wrap">
+                            <Box className={this.state.showResponseField ? 'description-response-area' : 'description-area'}>
+                                <TextField 
+                                    label="Descrição"
+                                    value={this.state.ticket.content.msg}
+                                    InputLabelProps={{
+                                        className: "disabled-text-field"
+                                    }}
+                                    inputProps={{
+                                        className: "disabled-text-field"
+                                    }}
+                                    multiline={true}
+                                    rows="8"
+                                    disabled={true}
+                                    fullWidth={true}
+                                />
+                            </Box>
+                            { this.state.showResponseField && 
+                                <Grow in={true}>
+                                    <Box className="description-response-area">
+                                        <TextField 
+                                            label="Escreva a resposta aqui..."
+                                            value={this.state.toogleResponse}
+                                            onChange={this.handleChange('response')}
+                                            multiline={true}
+                                            rows="8"
+                                            fullWidth={true}
+                                        />
+                                        <Box display="flex" flexDirection="column" mt={2}>
+                                            <span>Enviar e-mail de notificação?</span>
+                                            <Switch checked={this.state.sendEmail} onChange={this.handleChangeCheckered('sendEmail')}></Switch>
+                                        </Box>
+                                    </Box>
+                                </Grow>
+                            }
                         </Box>
                     </Container>
                 </DialogContent>
                 <DialogActions>
                     <Button color="secondary" 
-                        onClick={() => this.props.onClose()}
+                        onClick={() => this.close()}
                     >
                         Fechar
                     </Button>
-                    <Button color="secondary" 
-                        onClick={() => this.remove(this.props.ticket)}
-                    >
-                        Responder
-                    </Button>
+                    { this.state.showResponseField &&
+                        <Button color="secondary" 
+                            onClick={() => this.sendResponse()}
+                        >
+                            {this.state.sendingResponse ? 'Enviando...' : 'Enviar resposta'}
+                        </Button>
+                    }
                 </DialogActions>
             </Dialog>
         )

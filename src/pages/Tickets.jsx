@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Grid, Table,
     TableRow, TableHead, TableBody, TableCell,
-    TableFooter, TablePagination, Paper, Box } from '@material-ui/core'
+    TableFooter, TablePagination, Paper, Box, Button, Tooltip } from '@material-ui/core'
 
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
@@ -175,6 +175,18 @@ class Tickets extends Component {
         if(!user || !user.tagAdmin) return window.location.href = '/'
     }
 
+    async updateTicket(ticket){
+        const tickets = await this.state.tickets.map(tkt => {
+            if(tkt._id === ticket._id){
+                tkt.content = ticket
+            }
+
+            return tkt
+        })
+
+        this.setState({tickets})
+    }
+
     componentDidMount(){
         this.verificationAdmin()
         this.get()
@@ -260,7 +272,13 @@ class Tickets extends Component {
                                             {this.defineType(ticket.content.type)}
                                         </TableCell>
                                         <TableCell scope="_id">
-                                            {ticket.content._id}
+                                            <Tooltip title={(<span style={{fontSize: '0.8rem'}}>Abrir ticket</span>)}>
+                                                <Button variant="text" color="secondary"
+                                                    onClick={() => this.toogleDialog(true, ticket)}
+                                                >
+                                                    {ticket.content._id}
+                                                </Button>
+                                            </Tooltip>
                                         </TableCell>
                                         <TableCell scope="email">
                                             {ticket.content.email}
@@ -269,10 +287,17 @@ class Tickets extends Component {
                                             { ticket.content.responses.length}
                                         </TableCell>
                                         <TableCell scope="_id">
-                                            <CustomIconButton icon="receipt" color="default"
-                                                aria-label="Abrir Ticket" tooltip={(<span style={{fontSize: '0.8rem'}}>Abrir ticket</span>)}
-                                                onClick={() => this.toogleDialog(true, ticket)}
-                                            />
+                                            <Box display='flex' alignItems='center' justifyContent='center' flexWrap='wrap'>
+                                                <CustomIconButton icon="receipt" color="default"
+                                                    aria-label="Abrir Ticket" tooltip={(<span style={{fontSize: '0.8rem'}}>Abrir ticket</span>)}
+                                                    onClick={() => this.toogleDialog(true, ticket)}
+                                                />
+                                                { !ticket.content.readed &&
+                                                    <CustomIconButton icon="info" color="default"
+                                                        aria-label="Ticket não lido" tooltip={(<span style={{fontSize: '0.8rem'}}>Ticket não lido</span>)}
+                                                    />
+                                                }
+                                            </Box>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -299,7 +324,7 @@ class Tickets extends Component {
                                 </TableFooter>
                             </Table>
                             {/* Ticket's content dialog */}
-                            {this.state.dialog && <ViewTicket ticket={this.state.ticketSelected} onClose={this.toogleDialog} defineType={this.defineType}/>}
+                            {this.state.dialog && <ViewTicket ticket={this.state.ticketSelected} onClose={this.toogleDialog} defineType={this.defineType} updateTicket={(ticket) => this.updateTicket(ticket)}/>}
                         </Container>
                     </Paper>
                 }
