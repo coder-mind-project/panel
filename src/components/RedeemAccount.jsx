@@ -15,7 +15,7 @@ import { CAPTCHA_SITE_KEY } from '../config/dataProperties'
 
 import { cpfMask, celphoneMask } from '../config/masks'
 
-import '../pages/css/Auth.css'
+import '../pages/auth-section/css/Auth.css'
 import '../pages/css/defaultPage.css'
 
 class RescueAccount extends Component {

@@ -9,6 +9,7 @@ import {Provider} from 'react-redux'
 import userReducer from './redux/userReducer'
 import errorReducer from './redux/errorReducer'
 import menuReducer from './redux/menuReducer'
+import toastReducer from './redux/toastReducer'
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
@@ -19,7 +20,8 @@ import './index.css'
 const reducers = combineReducers({
     user: userReducer,
     error: errorReducer,
-    menu: menuReducer
+    menu: menuReducer,
+    toast: toastReducer
 })
 
 const theme = createMuiTheme({

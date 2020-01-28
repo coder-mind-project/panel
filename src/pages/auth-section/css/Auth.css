@@ -1,0 +1,113 @@
+.container{
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100vh;
+    margin: 0px;
+    padding: 0px;
+    background-image: url('../../../assets/background1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.background-image1{
+    background-image: url('../../../assets/background1.jpg');
+}
+.background-image2{
+    background-image: url('../../../assets/background2.jpg');
+}
+
+body{
+    margin-top: 0px;
+}
+
+.modal{
+    min-width: 350px;
+    max-width: 350px;
+}
+
+.modalTitle{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #CCC; 
+    min-height: 100px;
+}
+
+.modalTitle h2{
+    margin: 0px;
+}
+
+.titleText{
+    font-size: 1.3rem;
+
+}
+
+.modalForm{
+    margin: 15px 0px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0px 25px;
+}
+
+.button-area{
+    padding: 25px;
+}
+
+.modalFormInput{
+    margin: 20px 0px !important;
+}
+
+.fakeLink{
+    padding: 10px;
+    font-weight: 600;
+    color: #8a05be;
+    text-decoration: underline;
+    cursor: pointer;
+    text-align: center;
+}
+
+.captchaArea{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 15px 0;
+}
+
+@media(max-width: 768px){
+    .container{
+        display: flex;
+        justify-content: center !important;
+        align-items: center !important;
+        height: 100vh;
+    }
+}
+
+@media(max-width: 565px){
+    .modal{
+        min-width: 90%;
+    }
+
+    .container{
+        display: flex;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .captchaArea{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .button-area{
+        padding: 10px 25px;
+    }
+
+}

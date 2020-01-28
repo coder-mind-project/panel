@@ -15,30 +15,34 @@ import { connect } from 'react-redux'
 import { setUser } from './redux/userActions'
 import { setError } from './redux/errorActions'
 import { setMenu } from './redux/menuActions'
+import { setToast } from './redux/toastActions'
 import { bindActionCreators } from 'redux'
 
 //Components imports
-import Menu from './components/Menu.jsx'
-import Users from './pages/Users.jsx'
-import User from './pages/User.jsx'
-import Articles from './pages/Articles.jsx'
-import Article from './pages/Article.jsx'
-import Stats from './pages/Stats.jsx'
-import Auth from './pages/Auth.jsx'
-import Management from './pages/Management.jsx'
-import Theme from './pages/Theme.jsx'
-import Themes from './pages/Themes.jsx'
-import Categories from './pages/Categories.jsx'
-import Category from './pages/Category.jsx'
-import Error from './pages/Error.jsx'
-import MyAccount from './pages/MyAccount.jsx'
-import Comments from './pages/Comments.jsx'
-import Comment from './pages/Comment.jsx'
-import RedeemAccount from './pages/RedeemAccount.jsx'
-import Ticket from './pages/Ticket.jsx'
-import ConfirmEmail from './pages/ConfirmEmail.jsx'
-import RemoveAccount from './pages/RemoveAccount.jsx'
-import Tickets from './pages/Tickets.jsx'
+import Menu from './components/menu-application/Menu.jsx'
+import Toast from './components/Toast.jsx'
+
+//Pages imports
+import Users from './pages/users-section/Users.jsx'
+import User from './pages/users-section/User.jsx'
+import Articles from './pages/articles-section/Articles.jsx'
+import Article from './pages/articles-section/Article.jsx'
+import Stats from './pages/statistics-section/Stats.jsx'
+import Auth from './pages/auth-section/Auth.jsx'
+import Management from './pages/managements-section/Management.jsx'
+import Theme from './pages/managements-section/Themes/Theme.jsx'
+import Themes from './pages/managements-section/Themes/Themes.jsx'
+import Categories from './pages/managements-section/Categories/Categories.jsx'
+import Category from './pages/managements-section/Categories/Category.jsx'
+import Error from './pages/error-presentation/Error.jsx'
+import MyAccount from './pages/users-section/MyAccount.jsx'
+import Comments from './pages/comments-section/Comments.jsx'
+import Comment from './pages/comments-section/Comment.jsx'
+import RedeemAccount from './pages/auth-section/RedeemAccount.jsx'
+import Ticket from './pages/tickets-section/Ticket.jsx'
+import ConfirmEmail from './pages/auth-section/ConfirmEmail.jsx'
+import RemoveAccount from './pages/auth-section/RemoveAccount.jsx'
+import Tickets from './pages/tickets-section/Tickets.jsx'
 
 
 //Css imports
@@ -49,11 +53,16 @@ var user = JSON.parse(localStorage.getItem('user'))
 
 class App extends Component {
 
-    state = {
-      redirectTo: '',
-      validatingToken: false,
-      path: '',
+    constructor(props){
+      super(props)
+      
+      this.state = {
+        redirectTo: '',
+        validatingToken: true,
+        path: '',
+      }
     }
+
 
     acceptableRoutes = [
       '/auth',
@@ -64,7 +73,6 @@ class App extends Component {
     ] //Rotas aceitáveis sem necessidade de autenticação
 
     validateToken = async () => {
-      await this.toogleValidatingToken()
       if(user){
         const url = `${backendUrl}/validate_token`
         await axios.post(url, user).then(async res => {
@@ -103,7 +111,17 @@ class App extends Component {
       return path
     }
 
-    componentWillMount(){
+    closeToast(){
+      const toast = {
+        type: 'success',
+        msg: '',
+        display: false
+      }
+
+      this.props.setToast(toast)
+    }
+
+    componentDidMount(){
       const path = this.getPath()
       this.setState({path})
       this.validateToken()
@@ -117,6 +135,7 @@ class App extends Component {
               <Router>
                 {this.getPath() !== '/confirm-email' && <Menu/>}
                 <ToastContainer/>
+                { this.props.toast.display && <Toast show={this.props.toast.display} color={this.props.toast.type} text={this.props.toast.msg} closeToast={() => this.closeToast()} /> } 
                 <div>
                   {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
                   {!user && this.validateRoutes() &&
@@ -176,8 +195,8 @@ class App extends Component {
   }
 
 
-const mapStateToProps = state => ({user: state.user, error: state.error, menu: state.menu})
-const mapDispatchToProps = dispatch => bindActionCreators({setUser, setError, setMenu}, dispatch)
+const mapStateToProps = state => ({user: state.user, error: state.error, menu: state.menu, toast: state.toast})
+const mapDispatchToProps = dispatch => bindActionCreators({setUser, setError, setMenu, setToast}, dispatch)
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
