@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 
 import {Grid, Box, FormControl, Dialog, DialogActions,
-    DialogContent, DialogTitle, Button, InputLabel, Icon,
+    DialogContent, DialogTitle, Button, InputLabel,
     LinearProgress, Slide} from '@material-ui/core'
 
 import PasswordField from 'material-ui-password-field'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 import axios from 'axios'
-import { toast } from 'react-toastify'
 
-class ChangeMyPassoword extends Component {
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { setToast } from '../../../redux/toastActions'
+import { success, error } from '../../../config/toasts'
+
+class ChangeMyPassword extends Component {
 
     state = {
         open: true,
@@ -67,28 +72,28 @@ class ChangeMyPassoword extends Component {
 
         await axios.put(url, payload).then( res => {
             this.setState({authorized: true})
-        }).catch(error => {
-            const msg = defineErrorMsg(error) 
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch(err => {
+            const msg = defineErrorMsg(err) 
+            this.props.setToast(error(msg))
         })
-
+        
         this.toogleAuthorizing()
     }
-
+    
     changePassword(){
         const payload = this.state.newPass
-
+        
         const url = `${backendUrl}/users/${this.props.user._id}`
-
+        
         this.toogleSaving()
-
+        
         axios.post(url, payload).then(res => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Senha alterada com sucesso</div>),{autoClose: 3000, closeOnClick: true}) 
+            this.props.setToast(success('Senha alterada com sucesso'))
             this.state.handleClose()
-        }).catch(error => {
+        }).catch(err => {
             this.toogleSaving()
-            const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+            const msg = defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
     }
 
@@ -173,4 +178,7 @@ class ChangeMyPassoword extends Component {
     }
 }
 
-export default ChangeMyPassoword
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeMyPassword)

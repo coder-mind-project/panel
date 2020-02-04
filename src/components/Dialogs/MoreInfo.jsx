@@ -7,22 +7,30 @@ import {APP_VERSION, APP_BUILD} from '../../config/dataProperties'
 class MoreInfo extends Component {
 
     state = {
-        open: true,
-        handleClose: () => null,
-
+        open: false
     }
 
-    componentDidMount(){
+    closeDialog(){
         this.setState({
-            handleClose: this.props.closeDialog,
+            open: false
         })
+
+        this.props.closeDialog()
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps.opened !== this.props.opened && this.props.opened){
+            this.setState({
+                open: this.props.opened
+            })
+        }
     }
 
     render(){
         return (
             <Dialog
                 open={this.state.open}
-                onClose={this.state.handleClose}
+                onClose={() => this.closeDialog()}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -49,7 +57,7 @@ class MoreInfo extends Component {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.state.handleClose} color="secondary" autoFocus>
+                    <Button onClick={() => this.closeDialog()} color="secondary" autoFocus>
                         Fechar
                     </Button>
                 </DialogActions>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { TextField,
-    Grid, Icon, InputAdornment, Box, Switch, Divider } from '@material-ui/core'
+    Grid, InputAdornment, Box, Switch, Divider } from '@material-ui/core'
 import { FaTwitterSquare, FaYoutube, FaGithub, FaInstagram } from 'react-icons/fa'
 
 import CustomButton from '../../Button.jsx'
@@ -8,16 +8,17 @@ import CustomButton from '../../Button.jsx'
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
-import { toast } from 'react-toastify'
 
 import { connect } from 'react-redux'
 import { setUser } from '../../../redux/userActions'
 import { bindActionCreators } from 'redux'
 
+import { setToast } from '../../../redux/toastActions'
+import { success, error } from '../../../config/toasts'
+
 import {formatCustomURL} from '../../../config/masks'
 
 import ReactQuill from 'react-quill'
-//import { modules } from '../config/QuillEditor'
 import 'react-quill/dist/quill.snow.css'
 
 import '../../../pages/css/defaultPage.css'
@@ -62,10 +63,10 @@ class ExtraInformation extends Component {
         const url = `${backendUrl}/users/${this.state.user._id}`
 
         await axios.patch(url, this.state.user).then( () => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Informações salvas com sucesso</div>), {autoClose: 3000, closeOnClick: true})
-        }).catch( async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+            this.props.setToast(success('Informações salvas com sucesso'))
+        }).catch( async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleSaving()
@@ -215,7 +216,7 @@ class ExtraInformation extends Component {
     }
 }
 
-const mapStateToProps = state => ({user: state.user})
-const mapDispatchToProps = dispatch => bindActionCreators({setUser}, dispatch)
+const mapStateToProps = state => ({user: state.user, toast: state.toast})
+const mapDispatchToProps = dispatch => bindActionCreators({setUser, setToast}, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExtraInformation);
+export default connect(mapStateToProps, mapDispatchToProps)(ExtraInformation)

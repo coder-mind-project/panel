@@ -7,7 +7,10 @@ import { Grid, Box, TextField,
         TableHead, TableRow, Dialog, DialogActions,
         DialogContent, DialogTitle} from '@material-ui/core'
 
-import {toast} from 'react-toastify'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { info } from '../../config/toasts'
+import { setToast } from '../../redux/toastActions'
 
 import CustomIconButton from '../../components/IconButton.jsx'
 import CustomButton from '../../components/Button.jsx'
@@ -92,7 +95,7 @@ class Comment extends Component {
             let answers = this.state.answers
             if(res.data.answers.length === 0){
                 this.setState({existMore: false})
-                toast.info((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Não existem mais respostas a este comentário</div>), {autoClose: 5000, closeOnClick: true})
+                this.props.setToast(info('Não existem mais respostas a este comentário'))
             }else{
                 const count = this.state.count + res.data.count
                 answers.push(...res.data.answers)
@@ -329,4 +332,7 @@ class Comment extends Component {
     }
 }
 
-export default Comment
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment)

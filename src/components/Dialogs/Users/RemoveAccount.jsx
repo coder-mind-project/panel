@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
 
 import {FormControl, Dialog, DialogActions,
-    DialogContent, DialogTitle, Button, InputLabel, Icon,
+    DialogContent, DialogTitle, Button, InputLabel,
     LinearProgress, DialogContentText} from '@material-ui/core'
 
 import PasswordField from 'material-ui-password-field'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 import axios from 'axios'
-import { toast } from 'react-toastify'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { setToast } from '../../../redux/toastActions'
+import { success, error } from '../../../config/toasts'
 
 class RemoveAccount extends Component {
 
@@ -40,14 +45,14 @@ class RemoveAccount extends Component {
         }
 
         await axios.put(url, payload).then( () => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Conta removida com sucesso, aguarde alguns segundos... Estamos lhe redirecionando</div>), {autoClose: 5000, closeOnClick: true})
+            this.props.setToast(success('Conta removida com sucesso, aguarde alguns segundos... Estamos lhe redirecionando'))
             setTimeout(async () => {
                 await localStorage.removeItem('user')
                 window.location.href = '/'
             }, 5000)
-        }).catch( async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch( async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleRemoving()
@@ -108,4 +113,6 @@ class RemoveAccount extends Component {
     }
 }
 
-export default RemoveAccount
+const mapStateToProps = state => ({toast: state.toast})
+const mapDispatchToProps = dispatch => bindActionCreators({ setToast }, dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(RemoveAccount)

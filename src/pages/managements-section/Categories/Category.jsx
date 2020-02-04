@@ -5,7 +5,6 @@ import { Container, Grid, TextField, Divider,
         Paper, FormGroup, InputLabel, Icon, Breadcrumbs,
         Box } from '@material-ui/core'
 
-import { toast } from 'react-toastify'
 import AsyncSelect from 'react-select/async'
 
 import axios from 'axios'
@@ -18,8 +17,12 @@ import Searching from '../../../assets/loading.gif'
 import '../../css/defaultPage.css'
 import '../../css/forms.css'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { setToast } from "../../../redux/toastActions"
+import { success, error } from "../../../config/toasts"
 
-export default class User extends Component{
+class Category extends Component{
 
     state = {
         category: {
@@ -122,13 +125,13 @@ export default class User extends Component{
 
 
         axios[method](url, category).then(() => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
+            this.props.setToast(success('Operação realizada com sucesso'))
             setTimeout(() => {
                 this.goTo('categories')
             }, 2000)
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 2000, closeOnClick: true})
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
     }
 
@@ -155,17 +158,13 @@ export default class User extends Component{
                     label: res.data.theme.name
                 } : null,
             })
-        }).catch(error => {
-            const msg = error.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'
-
-            if(error.response.status === 404){
-                toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
-                
+        }).catch(err => {
+            const msg = err && err.response && err.response.data ? err.response.data  : 'Ocorreu um erro desconhecido, se persistir reporte'
+            this.props.setToast(error(msg))
+            if(err && err.response && err.response.status === 404){
                 setTimeout(() => {
                     this.setState({redirectTo: 'categories'})
                 }, 3000)
-            }else{
-                toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
             }
         })
         
@@ -280,3 +279,8 @@ export default class User extends Component{
         )
     }
 }
+
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category)

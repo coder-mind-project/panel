@@ -1,17 +1,17 @@
 import React , { Component } from 'react'
-import { Box, Icon, Button, TextField,
+import { Box, Button, TextField,
         Dialog, DialogTitle, DialogContent, Container,
         DialogActions, Grow, Switch, LinearProgress } from '@material-ui/core' 
 
 import { displayFullDate } from '../../../config/masks'
 
 import { connect } from 'react-redux'
-
-import { toast } from 'react-toastify'
+import { bindActionCreators } from 'redux'
+import { success, error } from '../../../config/toasts'
+import { setToast } from '../../../redux/toastActions'
 
 import axios from 'axios'
 import {backendUrl, defineErrorMsg} from '../../../config/backend'
-
 
 import '../../../pages/css/defaultPage.css'
 import '../../../pages/css/forms.css'
@@ -124,11 +124,11 @@ class ViewTicket extends Component {
 
         this.toogleSendingResponse()
         
-        await axios.put(url, data).then( response => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Resposta enviada com sucesso!</div>), {autoClose: 3000, closeOnClick: true})
-        }).catch(error => {
-            const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        await axios.put(url, data).then( () => {
+            this.props.setToast(success('Resposta enviada com sucesso!'))
+        }).catch(err => {
+            const msg = defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
         this.toogleSendingResponse()
     }
@@ -400,5 +400,7 @@ class ViewTicket extends Component {
     }
 }
 
-const mapStateToProps = state => ({user: state.user})
-export default connect(mapStateToProps)(ViewTicket)
+const mapStateToProps = state => ({user: state.user, toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewTicket)

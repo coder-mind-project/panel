@@ -9,10 +9,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { setToast } from '../../redux/toastActions'
+import { error } from '../../config/toasts'
 import axios from 'axios'
 
 import { backendUrl, defineErrorMsg } from '../../config/backend'
-import { toast } from 'react-toastify'
+
 
 import CustomButton from '../../components/Button.jsx'
 import WhatIsTicketDialog from '../../components/Dialogs/Tickets/WhatIsTicket.jsx'
@@ -128,9 +132,9 @@ class Ticket extends Component {
                     }
                 }, 1000)
             }
-        }).catch( error => {
-            const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 5000, closeOnClick: true})
+        }).catch( err => {
+            const msg = defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleSendingTicket()
@@ -358,5 +362,6 @@ class Ticket extends Component {
 }  
 
 const mapStateToProps = state => ({user: state.user, menu: state.menu})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
 
-export default connect(mapStateToProps)(Ticket)
+export default connect(mapStateToProps, mapDispatchToProps)(Ticket)

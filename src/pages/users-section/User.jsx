@@ -6,7 +6,6 @@ import { Container, Grid, TextField, Button,
         FormControl, Box, Paper, Dialog, DialogActions,
         DialogContent, DialogContentText, DialogTitle,
         Breadcrumbs } from '@material-ui/core'
-import { toast } from 'react-toastify'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 import PasswordField from 'material-ui-password-field'
@@ -19,12 +18,18 @@ import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../config/backend'
 import { cpfMask, telphoneMask, celphoneMask } from '../../config/masks'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { setToast } from '../../redux/toastActions'
+import { success, error } from '../../config/toasts'
+
 import '../css/defaultPage.css'
 import '../css/forms.css'
 
 import {formatCustomURL} from '../../config/masks'
 
-export default class User extends Component{
+class User extends Component{
 
     state = {
         user: {
@@ -126,18 +131,18 @@ export default class User extends Component{
         this.toogleSaving()
 
         await axios[method](url, user).then(() => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Informações salvas com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success('Informações salvas com sucesso'))
             setTimeout(() => {
                 this.goTo("users")
             }, 3000)
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
         
         this.toogleSaving()
     }
-
+    
     toogleDialog = openDialog => event => {
         //false to close Dialog
         //true to open Dialog
@@ -145,23 +150,24 @@ export default class User extends Component{
         this.setState({openDialog, user: {...user, password: ''}})
     }
     
-    changePassword = async () => {
+    changePassword = async (evt) => {
         /* Responśavel por alterar a senha do usuário */
-
+        evt.preventDefault()
+        
         this.setState({loadingOp: true})
         const url = `${backendUrl}/users`
-
+        
         const payload = {
             _id: this.state.user._id,
             password: this.state.user.password
         }
-
+        
         await axios.patch(url, payload).then( () => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Senha alterada com sucesso!</div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success('Senha alterada com sucesso!'))
             this.setState({openDialog: false})
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         const user = this.state.user
@@ -188,17 +194,14 @@ export default class User extends Component{
                 number: res.data.number || '', 
                 type: res.data.tagAdmin ? 'admin':'author'
             }})
-        }).catch(error => {
-            const msg = error.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'
+        }).catch(err => {
+            const msg = err.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'
 
-            if(error.response.status === 404){
-                toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
-                
+            this.props.setToast(error(msg))
+            if(err.response.status === 404){
                 setTimeout(() => {
                     this.setState({redirectTo: 'users'})
                 }, 3000)
-            }else{
-                toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
             }
         })
 
@@ -466,7 +469,7 @@ export default class User extends Component{
                                         </DialogContentText>
                                     }
                                     { !this.state.loadingOp && 
-                                        <form>
+                                        <form onSubmit={this.changePassword}>
                                             <FormControl fullWidth>
                                                 <InputLabel htmlFor="changePassword">
                                                     Senha
@@ -527,3 +530,8 @@ export default class User extends Component{
         )
     }
 }
+
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(User)

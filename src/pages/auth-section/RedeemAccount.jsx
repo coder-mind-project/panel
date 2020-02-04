@@ -1,10 +1,13 @@
 import React, {Component} from 'react'
 
 import { Grid, Paper, FormControl,
-    InputLabel, CircularProgress, Box, Icon,
-    Button } from '@material-ui/core'
+    InputLabel, CircularProgress, Box, Button } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import PasswordField from 'material-ui-password-field'
 import ButtonBase from '../../components/ButtonBase.jsx'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 import { Redirect } from 'react-router-dom'
 
@@ -15,11 +18,13 @@ import axios from 'axios'
 
 import { backendUrl, defineErrorMsg } from '../../config/backend'
 
-
 import '../css/defaultPage.css'
 import './css/RedeemAccount.css'
-import { toast } from 'react-toastify'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { success } from '../../config/toasts'
+import { setToast } from '../../redux/toastActions'
 class RedeemAccount extends Component {
     
     _isMounted = false
@@ -57,11 +62,9 @@ class RedeemAccount extends Component {
                             user: res.data._id
                         }
                     })
-            }).catch(error => {
-                    const msg = defineErrorMsg(error)
-                    toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 8000, closeOnClick: true})
-                    this.setState({tokenError: true})
-                    this.toogleLoading()
+            }).catch(err => {
+                this.setState({tokenError: true})
+                this.toogleLoading()
             })
         }
     }
@@ -115,13 +118,15 @@ class RedeemAccount extends Component {
 
         await axios.patch(url, data).then( res => {
             const msg = res.data
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success(msg))
             setTimeout(() => {
                 window.location.href = "/auth"
             },3000)
-        }).catch(error => {
-            const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">close</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch(err => {
+            const msg = defineErrorMsg(err)
+            this.setState({
+                error: msg
+            })
         })
 
         this.toogleConfirming()
@@ -169,6 +174,9 @@ class RedeemAccount extends Component {
                                     fullWidth onChange={(evt) => this.handleChange(evt, 'secondField')}
                                 />
                             </FormControl>
+                            <Box mt={3}>
+                                { Boolean(this.state.error) && <Alert severity="warning">{this.state.error}</Alert>}
+                            </Box>
                         </Grid>
                         <Grid item xs={12} className="button-area">
                             <ButtonBase class="defaultMaxWidth" type="submit" disableIcon={true} text={this.state.confirming ? <span className="centerInline"><CircularProgress size={20} color="inherit" /><span className="marginLeft">Por favor aguarde... </span></span> : 'Confirmar'}/>
@@ -182,12 +190,11 @@ class RedeemAccount extends Component {
                             <span>Por favor, aguarde...</span>
                         </Box>
                     }
-                    {
-                        this.state.tokenError && 
-                        <Grid item xs={12}>
+                    { this.state.tokenError && 
+                        <Box p={2} >
                             <Box width="100%" display="flex" justifyContent="center" flexWrap="wrap" alignItems="center">
-                                <Box m={3}>
-                                    <Icon fontSize="large">highlight_off</Icon>
+                                <Box m={2}>
+                                    <FontAwesomeIcon size="3x" icon={faTimesCircle} />
                                 </Box>
                                 <Box mr={2}>
                                     <h3>Ops, não foi possível recuperar o seu token.</h3>
@@ -197,7 +204,7 @@ class RedeemAccount extends Component {
                             <Box width="100%" display="flex" justifyContent="center" alignItems="center" mb={3} mt={2}>
                                 <Button color="secondary" variant="contained" onClick={() => this.goTo('/auth')}>Ir para o Login</Button>
                             </Box>
-                        </Grid>
+                        </Box>
                     }
                 </Paper>
             </div>
@@ -205,4 +212,7 @@ class RedeemAccount extends Component {
     }
 }
 
-export default RedeemAccount
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(RedeemAccount)

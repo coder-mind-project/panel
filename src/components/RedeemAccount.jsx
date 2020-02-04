@@ -7,8 +7,13 @@ import Logo from '../assets/coder-mind-painelv1-preto.png'
 
 import Recaptcha from "react-google-invisible-recaptcha"
 
-import { toast } from 'react-toastify'
 import axios from 'axios'
+
+import { connect } from "react-redux"
+import { bindActionCreators } from 'redux'
+import { setToast } from "../redux/toastActions"
+import { success, error, info } from "../config/toasts"
+
 import { backendUrl, defineErrorMsg } from '../config/backend'
 
 import { CAPTCHA_SITE_KEY } from '../config/dataProperties'
@@ -61,15 +66,16 @@ class RescueAccount extends Component {
         const response = await this.recaptchaRef.getResponse()
         const data = option === 'onlyEmail' ? {email: this.state.email, response} : {cpf: this.state.cpf, celphone: this.state.celphone, response} 
 
-        toast.info((<div className="centerVertical"><Icon className="marginRight">info</Icon>Estamos verificando as informações fornecidas, por favor aguarde...</div>), {autoClose: 7000, closeOnClick: true})
+        //verificar necessidade deste toast
+        this.props.setToast(info('Estamos verificando as informações fornecidas, por favor aguarde...'))
 
         await axios[method](url, data).then( res => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>{res.data}</div>), {autoClose: 25000, closeOnClick: true})
+            this.props.setToast(success(res.data))
             this.setState({option: 'menu'})
-        }).catch(async error => {
+        }).catch(async err => {
             this.setState({option: 'menu', cpf: '', celphone: '', email: ''})
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 25000, closeOnClick: true})
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleWaiting()
@@ -215,4 +221,7 @@ class RescueAccount extends Component {
     }
 }
 
-export default RescueAccount
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(RescueAccount)

@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { toast } from 'react-toastify'
 import axios from 'axios'
 
 import Avatar from 'react-avatar'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { setToast } from '../../../redux/toastActions'
+import { error } from '../../../config/toasts'
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
@@ -55,10 +58,10 @@ class ArticlePreview extends Component {
 
             document.querySelector("#article-content").innerHTML = res.data.textArticle
 
-        }).catch( async error => {
+        }).catch( async err => {
             this.setState({error: true})
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleLoading()
@@ -117,6 +120,7 @@ class ArticlePreview extends Component {
     }
 }
 
-const mapStateToProps = state => ({user: state.user})
+const mapStateToProps = state => ({user: state.user, toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
 
-export default connect(mapStateToProps)(ArticlePreview)
+export default connect(mapStateToProps, mapDispatchToProps)(ArticlePreview)

@@ -1,9 +1,13 @@
 import React from 'react'
-import { toast } from 'react-toastify'
-import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
 import Avatar from 'react-avatar'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { setToast } from '../../../redux/toastActions'
+import { success, error } from '../../../config/toasts'
+
+import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 import { displayDate } from '../../../config/masks'
 import { styles } from './styles/ArticleBlock'
@@ -22,7 +26,7 @@ import '../../../pages/css/defaultPage.css'
 
 const useStyles = makeStyles(styles)
 
-export default (props) => {
+const ArticleBlock = (props) => {
 
     const matches400 = useMediaQuery('(min-width: 400px)')
     const matches = useMediaQuery('(min-width: 960px)')
@@ -47,75 +51,75 @@ export default (props) => {
     const remove = (id) => {
         /* Usado para remover artigos */
         
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
+        if(!id) props.setToast(error('Artigo não encontrado')) 
     
         const url = `${backendUrl}/articles/management/${id}`
-        axios.delete(url).then(async () => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>removido</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+        axios.delete(url).then(() => {
+            props.setToast(success('Artigo removido com sucesso'))
             reloadPage()
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            props.setToast(error(msg))
         })
     }
-
+    
     const publish = (id) => {
         /* Usado para publicar artigos */
-
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
-    
+        
+        if(!id) props.setToast(error('Artigo não encontrado')) 
+        
         const url = `${backendUrl}/articles/management/${id}?op=publish`
-        axios.patch(url).then(async (res) => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>publicado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+        axios.patch(url).then((res) => {
+            props.setToast(success('Artigo publicado com sucesso'))
             setArticle(res.data)
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            props.setToast(error(msg))
         })
     }
-
+    
     const inactive = (id) => {
         /* Usado para inativar artigos */
-
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
-    
+        
+        if(!id) props.setToast(error('Artigo não encontrado')) 
+        
         const url = `${backendUrl}/articles/management/${id}?op=inactive`
-        axios.patch(url).then(async (res) => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>inativado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+        axios.patch(url).then( (res) => {
+            props.setToast(success('Artigo inativado com sucesso'))
             setArticle(res.data)
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            props.setToast(error(msg))
         })
     }
     
     const boost = (id) => {
         /* Usado para impulsionar artigos */
-
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
+        
+        if(!id) props.setToast(error('Artigo não encontrado')) 
         
         const url = `${backendUrl}/articles/management/${id}?op=boost`
-        axios.patch(url).then(async (res) => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>impulsionado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+        axios.patch(url).then((res) => {
+            props.setToast(success('Artigo impulsionado com sucesso'))
             setArticle(res.data)
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            props.setToast(error(msg))
         })
     }
     
     const active = (id) => {
         /* Usado para reativar artigos */
-
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
-    
+        
+        if(!id) props.setToast(error('Artigo não encontrado')) 
+        
         const url = `${backendUrl}/articles/management/${id}?op=active`
         axios.patch(url).then(async (res) => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>reativado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+            props.setToast(success('Artigo reativado com sucesso'))
             setArticle(res.data)
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            props.setToast(error(msg))
         })
     }
     
@@ -315,3 +319,8 @@ export default (props) => {
         </Grid>
     )
 }
+
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleBlock)

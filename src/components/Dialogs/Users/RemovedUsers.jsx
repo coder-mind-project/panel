@@ -16,7 +16,12 @@ import { OPTIONS_LIMIT, LIMIT_LABEL, DISPLAYED_ROWS } from '../../../config/data
 import '../../../pages/css/defaultPage.css'
 import '../../../pages/users-section/css/Users.css'
 import './css/RemovedUsers.css'
-import { toast } from 'react-toastify'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { setToast } from '../../../redux/toastActions'
+import { success, error, info } from '../../../config/toasts'
 
 class RemovedUsers extends Component {
 
@@ -99,7 +104,7 @@ class RemovedUsers extends Component {
 
         const _id = user._id
         
-        if(!_id) toast.info((<div className="centerInline"><Icon className="marginRight">clear</Icon>Usuário não encontrado</div>), {autoClose: 3000, closeOnClick: true})
+        if(!_id) this.props.setToast(info('Usuário não encontrado')) 
         
         this.toogleRestoring()
 
@@ -107,10 +112,10 @@ class RemovedUsers extends Component {
 
         await axios.patch(url).then( res => {
             this.searchUsers()
-            toast.success((<div className="centerInline"><Icon className="marginRight">done</Icon>Usuário restaurado com sucesso</div>), {autoClose: 3000, closeOnClick: true})
-        }).catch( error => {
-            const msg = defineErrorMsg(error)
-            toast.success((<div className="centerInline"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success('Usuário restaurado com sucesso'))
+        }).catch( err => {
+            const msg = defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleRestoring()
@@ -268,4 +273,7 @@ class RemovedUsers extends Component {
     }
 }
 
-export default RemovedUsers
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(RemovedUsers)

@@ -1,6 +1,6 @@
 export const styles = theme => ({
     toast: {
-        marginTop: 60
+        marginTop: 50
     }    
 })
 

@@ -4,8 +4,6 @@ import { Container, Grid, Button, Table,
     TableFooter, TablePagination, Dialog, DialogActions, DialogContent,
     DialogContentText, DialogTitle, Paper, Icon, Box } from '@material-ui/core'
 
-import { toast } from 'react-toastify'
-import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
 import SearchBar from 'material-ui-search-bar'
 
@@ -17,6 +15,11 @@ import Searching from '../../../assets/loading.gif'
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 import { OPTIONS_LIMIT, DEFAULT_LIMIT, LIMIT_LABEL, DISPLAYED_ROWS } from '../../../config/dataProperties'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from "redux"
+import { setToast } from "../../../redux/toastActions"
+import { success, error } from "../../../config/toasts"
 
 class Themes extends Component {
     state = { 
@@ -75,10 +78,10 @@ class Themes extends Component {
         const url = `${backendUrl}/themes/${id}`
 
         await axios.delete(url).then(() => {
-            toast.success((<div className="centerInline"><Icon>done</Icon><span>Operação realizada com sucesso</span></div>), {autoClose: 3000, closeOnClick: true})
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerInline"><Icon>clear</Icon><span>{msg}</span></div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success('Operação realizada com sucesso'))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
         this.setState({loadingOp: false, dialog: false})
         this.searchThemes()
@@ -314,5 +317,7 @@ class Themes extends Component {
     }
 }
 
-const mapStateToProps = state => ({user: state.user})
-export default connect(mapStateToProps)(Themes)
+const mapStateToProps = state => ({user: state.user, toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Themes)

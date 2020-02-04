@@ -4,7 +4,11 @@ import { Box, Container, Grid,
 
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { toast } from 'react-toastify'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { setToast } from '../../../redux/toastActions'
+import { success, error, info } from '../../../config/toasts'
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
@@ -48,11 +52,11 @@ class ArticleImages extends Component {
         
         //Verifica o tipo de imagem, aceitando apenas bigImg ou smallImg
         if(path !== 'bigImg' && path !== 'smallImg' && path !== 'mediumImg') 
-        return toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Ocorreu um erro desconhecido, se persistir reporte [Code: 10]</div>), {autoClose: 2000, closeOnClick: true}) 
-        
+        return this.props.setToast(error('Ocorreu um erro desconhecido, se persistir reporte'))
+
         //Verifica se há imagem
         if(!img) 
-        return toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon>Selecione uma imagem</div>), {autoClose: 2000, closeOnClick: true}) 
+        return this.props.setToast(info('Selecione uma imagem'))
 
         //Obtém se o ID do artigo e a imagem selecionada
         const id = this.props.article._id
@@ -114,7 +118,7 @@ class ArticleImages extends Component {
         const url = `${backendUrl}/articles/img/${id}?path=${path}&size=${size}`
         await this.toogleSending()
         await axios[method](url, formData, config).then( res => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
+            this.props.setToast(success('Operação realizada com sucesso'))
             /*  Definição do diretório para visualização da imagem após exito
                 do envio e remoção da imagem do campo Input
             */
@@ -122,9 +126,9 @@ class ArticleImages extends Component {
                 [directory]: `${backendUrl}/${res.data}`,
             })
 
-        }).catch( async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch( async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleSending()
@@ -147,7 +151,7 @@ class ArticleImages extends Component {
             const id = this.props.article._id
             const url = `${backendUrl}/articles/img/${id}?path=${path}`
             axios.delete(url).then(() => {
-                toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
+                this.props.setToast(success('Operação realizada com sucesso'))
                 /*  Definição do campo de diretorio 
                     (Este campo é referido da URL pública que será pego a
                     imagem do backend para visualização) e retirada de visualização 
@@ -159,9 +163,9 @@ class ArticleImages extends Component {
                 this.setState({
                     [directory]: ''
                 })
-            }).catch(async error => {
-                const msg = await defineErrorMsg(error)
-                toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+            }).catch(async err => {
+                const msg = await defineErrorMsg(err)
+                this.props.setToast(error(msg))
             })
         }
     }
@@ -171,14 +175,14 @@ class ArticleImages extends Component {
             do input tipo file 
         */
         if(path !== 'smallImg' && path !== 'bigImg' && path !== 'mediumImg') 
-        return toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Ocorreu um erro ao selecionar a imagem, se persistir reporte</div>), {autoClose: 2000, closeOnClick: true})
+        return this.props.setToast(info('Ocorreu um erro ao selecionar a imagem, se persistir reporte'))
         
         this.setState({[path]: img.target.files[0]})
     }
 
     async componentDidMount(){
         const article = this.props.article
-        if(!article) return toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Ocorreu um erro ao recuperar as informações do artigo, se persistir reporte</div>), {autoClose: 2000, closeOnClick: true})
+        if(!article) return this.props.setToast(error('Ocorreu um erro ao recuperar as informações do artigo, se persistir reporte'))
         
         /* Disponibiliza as imagens definidas do artigo caso estejam definidas */
         await this.setState({
@@ -314,4 +318,7 @@ class ArticleImages extends Component {
     }
 }
 
-export default ArticleImages;
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleImages)

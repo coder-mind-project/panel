@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import { Grid, Fade } from '@material-ui/core'
-import { ToastContainer } from 'react-toastify'
-import ScrollToTop from './config/ScrollToTop'
 
 import Loading from './assets/loading.gif'
 
@@ -47,7 +45,6 @@ import Tickets from './pages/tickets-section/Tickets.jsx'
 
 //Css imports
 import './index.css'
-import 'react-toastify/dist/ReactToastify.css'
 
 var user = JSON.parse(localStorage.getItem('user'))
 
@@ -134,8 +131,7 @@ class App extends Component {
             <Fade in={!this.state.validatingToken}>
               <Router>
                 {this.getPath() !== '/confirm-email' && <Menu/>}
-                <ToastContainer/>
-                { this.props.toast.display && <Toast show={this.props.toast.display} color={this.props.toast.type} text={this.props.toast.msg} closeToast={() => this.closeToast()} /> } 
+                <Toast show={this.props.toast.display} color={this.props.toast.type} text={this.props.toast.msg} closeToast={() => this.closeToast()} />
                 <div>
                   {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
                   {!user && this.validateRoutes() &&
@@ -149,8 +145,7 @@ class App extends Component {
                   {this.state.redirectTo && 
                     <Redirect to={`/${this.state.redirectTo}`}/>
                   }
-                  <ScrollToTop>
-                    <Switch>
+                  <Switch>
                       <Route path="/" exact component={Articles}/>
                       <Route path="/auth" exact component={Auth}/>
                       <Route path="/redeem-account" exact component={RedeemAccount}/>
@@ -177,7 +172,6 @@ class App extends Component {
                       <Route path="/error" exact component={Error}/>
                       <Route path="/stats" exact component={Stats}/>
                     </Switch>
-                  </ScrollToTop>
                 </div>
               </Router>
             </Fade>

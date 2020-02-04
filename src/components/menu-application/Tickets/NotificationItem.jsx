@@ -1,38 +1,41 @@
 import React from 'react'
-import axios from 'axios'
-import { backendUrl } from '../../../config/backend'
-import { Box, Grid, Icon, Button } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Box, Grid, Divider } from '@material-ui/core'
+import { displayFullDate } from "../../../config/masks"
 
 import './css/NotificationItem.css'
 
-const checkNotification = (props) => {
-    const readed = {
-        _id: props.notification._id,
-        readed: true
+const NotificationItem = props => {
+
+    const defineType = type => {
+        switch(type){
+            case 'account-changed':{
+                return 'Conta alterada - Perfil 2'
+            }
+            case 'simple-account-problem':{
+                return 'Conta alterada - Perfil 1'
+            }
+            case 'bug-report':{
+                return 'Reporte de Bug'
+            }
+            case 'improvement-suggestion':{
+                return 'Sugestão de melhoria'
+            }
+            default:{
+                return 'N/D'
+            }
+        }
     }
 
-    const url = `${backendUrl}/comments`
-
-    axios.patch(url, readed).then( () => {
-        props.reloadComments()
-    })
-}
-
-const NotificationItem = props => {
     return (
         <Box className="notification">
-            <Grid item xs={2} className="notification-aside">
-                <Icon fontSize="large">info</Icon>
-                <Button color="secondary" variant="text" onClick={() => checkNotification(props)}>
-                    Lido
-                </Button>
-            </Grid>
-            <Grid item xs={10} className="notification-content">
-                <h4 className="title"><strong>{props.notification.userName}</strong> fez um novo comentário</h4>
-                <small className="description">Artigo <Link to={`/article/${props.notification.article.customURL}`} onClick={() => props.close()}><strong>{props.notification.article.title}</strong></Link></small>
+            <Grid item xs={12} className="notification-content">
+                <h4 className="title"><strong>{defineType(props.notification.type)}</strong></h4>
+                <span className="message">Enviado em: { displayFullDate(props.notification.createdAt)}</span>
                 <Box className="message">
-                    { props.notification.comment.length > 40 ? `${props.notification.comment.slice(0, 37)} ...` : props.notification.comment}
+                    Mensagem: { props.notification.msg.length > 40 ? `${props.notification.msg.slice(0, 37)} ...` : props.notification.msg}
+                </Box>
+                <Box mt={2}>
+                    <Divider />
                 </Box>
             </Grid>
         </Box>

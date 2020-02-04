@@ -9,8 +9,9 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import CustomButton from '../../Button.jsx'
 
 import { connect } from 'react-redux'
-
-import { toast } from 'react-toastify'
+import { bindActionCreators } from 'redux'
+import { setToast } from "../../../redux/toastActions"
+import { error } from "../../../config/toasts"
 
 import axios from 'axios'
 import {backendUrl, defineErrorMsg} from '../../../config/backend'
@@ -58,9 +59,9 @@ class ImprovementSuggestion extends Component {
 
         await axios.post(url, data).then( () => {
             this.setState({success: true})
-        }).catch( error =>{
-            const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch( async err =>{
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleIsSending()
@@ -137,5 +138,7 @@ class ImprovementSuggestion extends Component {
     }
 }
 
-const mapStateToProps = state => ({user: state.user})
-export default connect(mapStateToProps)(ImprovementSuggestion)
+const mapStateToProps = state => ({user: state.user, toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ImprovementSuggestion)

@@ -5,9 +5,10 @@ import { backendUrl } from '../../../config/backend'
 import { Box, IconButton, Icon,
     CircularProgress, Badge, Fade,
     Divider, Menu, BottomNavigation, 
-    BottomNavigationAction } from '@material-ui/core'
+    BottomNavigationAction, Tooltip,
+    Typography } from '@material-ui/core'
 
-import NotificationItem from './NotificationItem.jsx.js'
+import NotificationItem from './NotificationItem.jsx'
 
 import { connect } from 'react-redux'
 
@@ -44,10 +45,10 @@ class Notifications extends Component {
 
     async getNotifications(){
         await this.toogleLoading()
-        const url = `${backendUrl}/comments?type=not-readed`
-
+        const url = `${backendUrl}/tickets?nr=true&fn=true`
+        
         await axios(url).then( res => {
-            this.setState({notifications: res.data.comments})
+            this.setState({notifications: res.data.tickets})
         })
 
         this.toogleLoading()
@@ -82,9 +83,11 @@ class Notifications extends Component {
             <Box mr={3}>
                 { this.state.notifications.length === 0 && !this.state.loading &&
                     <Box>
-                        <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                            <Icon>mode_comment</Icon>
-                        </IconButton>
+                        <Tooltip title={(<Typography component="p" variant="body2">Tickets não visualizados</Typography>)}>
+                            <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
+                                <Icon>label</Icon>
+                            </IconButton>
+                        </Tooltip>
                         <Menu
                             id="fade-menu"
                             anchorEl={this.menuRef.current}
@@ -97,21 +100,18 @@ class Notifications extends Component {
                                 <div className="header-menu">
                                     <Box display="flex" alignItems="center">
                                         <Box mr={1}>
-                                            <Icon>comment</Icon>
+                                            <Icon>label</Icon>
                                         </Box>
                                         <Box>
-                                            <h4>Comentários</h4>
-                                            <small>Comentários dos leitores</small>
+                                            <h4>Tickets</h4>
+                                            <small>Tickets não visualizados</small>
                                         </Box>
                                     </Box>
-                                    <IconButton onClick={() => this.closeMenuNotifications()}>
-                                        <Icon>clear</Icon>
-                                    </IconButton>
                                 </div>
                                 <Divider/>
                                 <Box p={1} mb={2} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                                    <span>Parabéns, você está em dia</span> 
-                                    <span>com seus leitores</span>
+                                    <span>Ops, não há nenhum</span> 
+                                    <span>ticket novo recebido</span>
                                 </Box>
                                 <BottomNavigation 
                                     onChange={(event, bottomNavigationValue) => {
@@ -120,8 +120,7 @@ class Notifications extends Component {
                                     showLabels
                                     value={0}
                                 >
-                                    <BottomNavigationAction label="Ver todos" className="notification-footer-button" onClick={() => window.location.href = '/comments'} icon={<Icon color="secondary">more_horiz</Icon>} />
-                                    <BottomNavigationAction label="Fechar" onClick={() => this.closeMenuNotifications()} icon={<Icon>clear</Icon>} />
+                                    <BottomNavigationAction label="Visualizar Tickets" className="notification-footer-button" onClick={() => window.location.href = '/tickets'} icon={<Icon color="secondary">more_horiz</Icon>} />
                                 </BottomNavigation>
                             </Box>
                         </Menu>
@@ -135,11 +134,13 @@ class Notifications extends Component {
                 { this.state.notifications.length > 0 && !this.state.loading &&
                     <Box>
                         <Box>
-                            <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                                <Badge badgeContent={this.state.notifications.length} max={99} color="secondary">
-                                    <Icon>comments</Icon>
-                                </Badge>
-                            </IconButton>
+                            <Tooltip title={(<Typography component="p" variant="body2">Tickets não visualizados</Typography>)}>
+                                <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
+                                    <Badge badgeContent={this.state.notifications.length} max={99} color="secondary">
+                                        <Icon>label</Icon>
+                                    </Badge>
+                                </IconButton>
+                            </Tooltip>
                         </Box>
                         <Menu
                             id="fade-menu"
@@ -151,13 +152,13 @@ class Notifications extends Component {
                         >
                             <Box pl={1.3} pr={1.3}>
                                 <div className="header-menu">
-                                    <Box display="flex" alignItems="center">
+                                    <Box display="flex" alignItems="center" mr={2}>
                                         <Box mr={1}>
-                                            <Icon>comments</Icon>
+                                            <Icon>label</Icon>
                                         </Box>
                                         <Box>
-                                            <h4>Comentários</h4>
-                                            <small>Comentários dos leitores</small>
+                                            <h4>Tickets</h4>
+                                            <small>Tickets não visualizados</small>
                                         </Box>
                                     </Box>
                                     <IconButton onClick={() => this.closeMenuNotifications()}>
@@ -167,7 +168,7 @@ class Notifications extends Component {
                                 <Divider/>
                                 <Box p={1} mb={2}>
                                     {this.state.notifications.map(notification => (
-                                        <NotificationItem key={notification._id} notification={notification} reloadComments={this.removeNotification.bind(this, notification)} close={this.closeMenuNotifications.bind(this)}/>
+                                        <NotificationItem key={notification._id} notification={notification.content} reloadComments={this.removeNotification.bind(this, notification)} close={this.closeMenuNotifications.bind(this)}/>
                                     ))}
                                 </Box>
                                 <BottomNavigation 
@@ -177,8 +178,7 @@ class Notifications extends Component {
                                     showLabels
                                     value={0}
                                 >
-                                    <BottomNavigationAction label="Ver todos" className="notification-footer-button" onClick={() => window.location.href = '/comments'} icon={<Icon color="secondary">more_horiz</Icon>} />
-                                    <BottomNavigationAction label="Fechar" onClick={() => this.closeMenuNotifications()} icon={<Icon>clear</Icon>} />
+                                    <BottomNavigationAction label="Visualizar Tickets" className="notification-footer-button" onClick={() => window.location.href = '/tickets'} icon={<Icon color="secondary">more_horiz</Icon>} />
                                 </BottomNavigation>
                             </Box>
                         </Menu>

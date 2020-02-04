@@ -3,7 +3,11 @@ import { Grid, TextField, Box, Icon, CircularProgress, Divider,
         FormControlLabel, Checkbox, LinearProgress} from '@material-ui/core'
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
-import { toast } from 'react-toastify'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { setToast } from '../../../redux/toastActions'
+import { success, error } from '../../../config/toasts'
 
 import CustomButton from '../../Button.jsx'
 
@@ -33,37 +37,37 @@ class ArticleConfig extends Component {
         
         const id = this.state.article._id
 
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
+        if(!id) this.props.setToast(error('Artigo não encontrado'))
         
         await this.toogleChangingState()
         
         const url = `${backendUrl}/articles/management/${id}`
-        await axios.delete(url).then(async () => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>removido</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+        await axios.delete(url).then(() => {
+            this.props.setToast(success('Artigo removido com sucesso'))
             setTimeout(() => window.location.href = '/articles', 3000)
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
-
+        
         this.toogleChangingState()
     }
-
+    
     publish = async () => {
         /* Usado para publicar artigos */
         const id = this.state.article._id
-
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
+        
+        if(!id) this.props.setToast(error('Artigo não encontrado'))
         
         await this.toogleChangingState()
 
         const url = `${backendUrl}/articles/management/${id}?op=publish`
-        await axios.patch(url).then(async (res) => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>publicado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+        await axios.patch(url).then( res => {
+            this.props.setToast(success('Artigo publicado com sucesso'))
             this.setState({article: res.data})
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleChangingState()
@@ -74,17 +78,17 @@ class ArticleConfig extends Component {
 
         const id = this.state.article._id
 
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
+        if(!id) this.props.setToast(error('Artigo não encontrado'))
         
         await this.toogleChangingState()
 
         const url = `${backendUrl}/articles/management/${id}?op=inactive`
-        await axios.patch(url).then(async (res) => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>inativado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+        await axios.patch(url).then( res => {
+            this.props.setToast(success('Artigo inativado com sucesso'))
             this.setState({article: res.data})
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleChangingState()
@@ -95,17 +99,17 @@ class ArticleConfig extends Component {
 
         const id = this.state.article._id
 
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
+        if(!id) this.props.setToast(error('Artigo não encontrado'))
         
         await this.toogleChangingState()
 
         const url = `${backendUrl}/articles/management/${id}?op=boost`
-        await axios.patch(url).then(async (res) => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>impulsionado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+        await axios.patch(url).then( res => {
+            this.props.setToast(success('Artigo impulsionado com sucesso'))
             this.setState({article: res.data})
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleChangingState()
@@ -116,17 +120,17 @@ class ArticleConfig extends Component {
 
         const id = this.state.article._id
 
-        if(!id) toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Artigo não encontrado</div>), {autoClose: 3000, closeOnClick: true})
+        if(!id) this.props.setToast(error('Artigo não encontrado'))
     
         await this.toogleChangingState()
 
         const url = `${backendUrl}/articles/management/${id}?op=active`
-        await axios.patch(url).then(async (res) => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Artigo&nbsp;<strong>reativado</strong>&nbsp;com sucesso</div>), {autoClose: 3000, closeOnClick: true})
+        await axios.patch(url).then( res => {
+            this.props.setToast(success('Artigo reativado com sucesso'))
             this.setState({article: res.data})
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleChangingState()
@@ -291,4 +295,7 @@ class ArticleConfig extends Component {
     }
 }
 
-export default ArticleConfig
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleConfig)

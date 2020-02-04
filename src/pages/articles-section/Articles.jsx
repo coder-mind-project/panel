@@ -61,7 +61,7 @@ export default class Articles extends Component {
                 (o setState abaixo) evitamos tal instruçao, já que a aplicação já trabalha por si só para
                 redirecionar para a tela de autenticação.
             */
-            if(error.response.status === 401) return // #1
+            if(error && error.response && error.response.status === 401) return // #1
             this.setState({
                 error: true,
                 loading: false

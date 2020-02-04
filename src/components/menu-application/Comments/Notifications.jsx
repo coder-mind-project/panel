@@ -5,7 +5,8 @@ import { backendUrl } from '../../../config/backend'
 import { Box, IconButton, Icon,
     CircularProgress, Badge, Fade,
     Divider, Menu, BottomNavigation, 
-    BottomNavigationAction } from '@material-ui/core'
+    BottomNavigationAction, Tooltip,
+    Typography } from '@material-ui/core'
 
 import NotificationItem from './NotificationItem.jsx'
 
@@ -82,9 +83,11 @@ class Notifications extends Component {
             <Box mr={3}>
                 { this.state.notifications.length === 0 && !this.state.loading &&
                     <Box>
-                        <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                            <Icon>mode_comment</Icon>
-                        </IconButton>
+                        <Tooltip title={(<Typography component="p" variant="body2">Comentários não lidos</Typography>)}>
+                            <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
+                                <Icon>mode_comment</Icon>
+                            </IconButton>
+                        </Tooltip>
                         <Menu
                             id="fade-menu"
                             anchorEl={this.menuRef.current}
@@ -121,7 +124,6 @@ class Notifications extends Component {
                                     value={0}
                                 >
                                     <BottomNavigationAction label="Ver todos" className="notification-footer-button" onClick={() => window.location.href = '/comments'} icon={<Icon color="secondary">more_horiz</Icon>} />
-                                    <BottomNavigationAction label="Fechar" onClick={() => this.closeMenuNotifications()} icon={<Icon>clear</Icon>} />
                                 </BottomNavigation>
                             </Box>
                         </Menu>
@@ -135,11 +137,13 @@ class Notifications extends Component {
                 { this.state.notifications.length > 0 && !this.state.loading &&
                     <Box>
                         <Box>
-                            <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                                <Badge badgeContent={this.state.notifications.length} max={99} color="secondary">
-                                    <Icon>comments</Icon>
-                                </Badge>
-                            </IconButton>
+                            <Tooltip title={(<Typography component="p" variant="body2">Comentários não lidos</Typography>)}>
+                                <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
+                                    <Badge badgeContent={this.state.notifications.length} max={99} color="secondary">
+                                        <Icon>comments</Icon>
+                                    </Badge>
+                                </IconButton>
+                            </Tooltip>
                         </Box>
                         <Menu
                             id="fade-menu"

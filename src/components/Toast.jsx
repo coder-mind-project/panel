@@ -15,21 +15,24 @@ export default props => {
     
 
     const anchorOrigin = {vertical: 'top', horizontal: matches ? 'center' : 'right'}
-    const autoHideDuration = props.hideTime || 5000
+    const autoHideDuration = props.hideTime || 3000
     const severity = props.color || 'success'
     const text = props.text || ''
+    const variant = 'filled'
 
     const closeToast = () => {
         props.closeToast()
     }
 
     return (
-        <Slide in={true} className={classes.toast}>
-            <Snackbar anchorOrigin={anchorOrigin} open={true} autoHideDuration={autoHideDuration} onClose={() => closeToast()}>
-                <Alert onClose={() => closeToast()} severity={severity} variant="filled">
-                    {text}
-                </Alert>
-            </Snackbar>
-        </Slide>
+        <div>
+            { props.show && <Slide in={true} className={classes.toast}>
+                <Snackbar anchorOrigin={anchorOrigin} open={true} autoHideDuration={autoHideDuration} onClose={() => closeToast()}>
+                    <Alert onClose={() => closeToast()} severity={severity} variant={variant}>
+                        {text}
+                    </Alert>
+                </Snackbar>
+            </Slide>}
+        </div>
     )
 }

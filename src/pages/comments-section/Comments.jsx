@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 import Header from '../../components/Header.jsx'
 
 import axios from 'axios'
-import { backendUrl } from '../../config/backend'
+import { backendUrl, defineErrorMsg } from '../../config/backend'
 
 import { Link } from 'react-router-dom'
 
-import { toast } from 'react-toastify'
-
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { success, error, info } from '../../config/toasts'
+import { setToast } from '../../redux/toastActions'
 
 import CustomChip from '../../components/Chip.jsx'
 import CustomIconButton from '../../components/IconButton.jsx'
@@ -101,20 +103,18 @@ class Comments extends Component {
 
     aproveComment(comment){
 
-        if(comment.confirmed) 
-            return toast.info((<div className="centerVertical"><Icon className="marginRight">clear</Icon>Este comentário já está aprovado</div>), {autoClose: 3000, closeOnClick: true})
+        if(comment.confirmed) this.props.setToast(info('Este comentário já está aprovado'))
 
         comment.confirmed = true
         comment.readed = true
 
         const url = `${backendUrl}/comments`
         axios.patch(url, comment).then(() => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon><span>Comentário aprovado com sucesso</span></div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success('Comentário aprovado com sucesso'))
             this.getComments()
-        }).catch(error => {
-            const msg = error.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'
-
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch(err => {
+            const msg = defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
     }
 
@@ -146,13 +146,12 @@ class Comments extends Component {
         const comment = this.state.comment
 
         await axios.patch(url, comment).then(() => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon><span>Operação realizada com sucesso</span></div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success('Operação realizada com sucesso'))
             this.getComments()
             this.setState({comment: INITIAL_COMMENT})
-        }).catch(error => {
-            const msg = error.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'
-
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch(err => {
+            const msg = defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleSavingChanges()
@@ -170,12 +169,11 @@ class Comments extends Component {
         await this.toogleSendingAnswer()
 
         await axios.post(url, body).then(res => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon><span>{res.data}</span></div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success(res.data))
             this.closeAnswerDialog()
-        }).catch(error => {
-            const msg = error.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'
-
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 3000, closeOnClick: true})
+        }).catch(err => {
+            const msg = defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleSendingAnswer()
@@ -482,4 +480,7 @@ class Comments extends Component {
     }
 }
 
-export default Comments
+const mapStateToProps = state => ({toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comments)

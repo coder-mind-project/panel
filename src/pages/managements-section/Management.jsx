@@ -3,7 +3,6 @@ import { Container, Grid, Paper, Box,
         Divider, Icon, Typography, Card,
         CardContent, CardActions } from '@material-ui/core'
 import { Link, Redirect } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { displayFullDate } from '../../config/masks'
 
 import Header from '../../components/Header.jsx'
@@ -17,6 +16,9 @@ import axios from 'axios'
 
 import {backendUrl, defineErrorMsg} from '../../config/backend'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { success, error } from '../../config/toasts'
+import { setToast } from '../../redux/toastActions'
 
 class Management extends Component {
 
@@ -37,9 +39,9 @@ class Management extends Component {
         
         axios(url).then(res => {
             this.setState({lastSincronization: displayFullDate(res.data.generatedAt)})
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon><span>{msg}</span></div>), {autoClose: 3000, closeOnClick: true})
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
     }
     
@@ -50,10 +52,10 @@ class Management extends Component {
         
         await axios.post(url).then(res => {
             this.setState({lastSincronization: displayFullDate(res.data.generatedAt)})
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon><span>Sincronização realizada com sucesso</span></div>), {autoClose: 3000, closeOnClick: true})
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon><span>{msg}</span></div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success('Sincronização realizada com sucesso'))
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(success(msg))
         })
         this.toogleSincronizing()
     }
@@ -274,6 +276,7 @@ class Management extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
 
 
-export default connect(mapStateToProps)(Management)
+export default connect(mapStateToProps, mapDispatchToProps)(Management)

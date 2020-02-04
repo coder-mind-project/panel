@@ -7,20 +7,17 @@ import Avatar from 'react-avatar'
 
 import { AppBar, Toolbar, useScrollTrigger, Slide,
     IconButton, Menu, MenuItem, Drawer, List, ListItem,
-    useMediaQuery, Icon, Box, Divider, Tooltip } from '@material-ui/core'
+    useMediaQuery, Icon, Box, Divider } from '@material-ui/core'
 
 import Logo from '../../assets/coder-mind-painelv1-branco.png'
 import LogoBlack from '../../assets/coder-mind-painelv1-preto.png'
 
-import Notifications from './Comments/Notifications.jsx'
-import MoreInfo from '../Dialogs/MoreInfo.jsx'
+import CommentsNotifications from './Comments/Notifications.jsx'
+import TicketsNotifications from './Tickets/Notifications.jsx'
+import AboutSystem from './AboutSystem.jsx'
 
 import { styles } from './styles/Menu'
 import { backendUrl } from '../../config/backend'
-
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBook, faCode } from '@fortawesome/free-solid-svg-icons'
 
 const HideOnScroll = props => {
     const {children, window} = props
@@ -39,22 +36,11 @@ const useStyles = makeStyles(styles)
 const MenuApp = props => {
     const classes = useStyles()
     // const matches350 = useMediaQuery('(min-width: 350px)')
-    const matches460 = useMediaQuery('(min-width: 460px)')
+    const matches560 = useMediaQuery('(min-width: 560px)')
 
     const [anchorEl, setAnchorEl] = React.useState(null)
     
-    const [dialog, setDialog] = React.useState(false)
-
     const open = Boolean(anchorEl)
-
-    const openDialog = () => {
-        closeMyAccountIcon()
-        setDialog(true)
-    }
-
-    const closeDialog = () => {
-        setDialog(false)
-    }
 
     const openMyAccountIcon = e => {
         setAnchorEl(e.currentTarget)
@@ -99,24 +85,16 @@ const MenuApp = props => {
                     <div>
                         { props.user && props.user.name ?
                             <Box display="flex" alignItems="center">
-                                { matches460 && 
-                                    <Notifications />
+                                { matches560 && 
+                                    <CommentsNotifications />
                                 }
-                                { props.user.tagAuthor && <Box mr={3}>
-                                    <Tooltip title={`Olá ${props.user.name}, seu nivel de acesso atual é: Autor`}>
-                                        <IconButton onClick={openDialog} >
-                                            <FontAwesomeIcon icon={faBook} color="#fff"/> 
-                                        </IconButton>
-                                    </Tooltip>
-                                </Box>}
-                                { props.user.tagAdmin && <Box mr={3}>
-                                    <Tooltip title={`Olá ${props.user.name}, seu nivel de acesso atual é: Administrador`}>
-                                        <IconButton onClick={openDialog} >
-                                            <FontAwesomeIcon icon={faCode} color="#fff"/> 
-                                        </IconButton>
-                                    </Tooltip>
-                                </Box>}
-                                { matches460 && 
+                                { matches560 && 
+                                    <TicketsNotifications />
+                                }
+                                { matches560 && 
+                                    <AboutSystem />
+                                }
+                                { matches560 && 
                                     <div className={classes.menuButton}>
                                         <Avatar onClick={openMyAccountIcon} 
                                             style={{cursor: 'pointer'}} color="#888"
@@ -173,9 +151,6 @@ const MenuApp = props => {
                     </div>
                 </AppBar>
             </HideOnScroll>
-
-            {/* Modal de mais informações */}
-            { dialog && <MoreInfo closeDialog={closeDialog} user={props.user} />}
 
             <Drawer open={state.drawerMenu} 
                 onClose={() => setState({drawerMenu: false})}

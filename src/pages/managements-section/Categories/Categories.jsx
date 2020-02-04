@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
-import { toast } from 'react-toastify'
+
 import { Redirect, Link } from 'react-router-dom'
+
 import { connect } from 'react-redux'
+import { bindActionCreators } from "redux"
+import { setToast } from "../../../redux/toastActions"
+import { success, error } from "../../../config/toasts"
 
 import { Container, Grid, Button, Table,
     TableRow, TableHead, TableBody, TableCell,
@@ -80,10 +84,10 @@ class Categories extends Component {
         const url = `${backendUrl}/categories/${id}`
 
         await axios.delete(url).then(() => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon><span>Operação realizada com sucesso</span></div>), {autoClose: 3000, closeOnClick: true})
-        }).catch( async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon><span>{msg}</span></div>), {autoClose: 3000, closeOnClick: true})
+            this.props.setToast(success('Operação realizada com sucesso'))
+        }).catch( async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
         this.setState({loadingOp: false, dialog: false})
         this.searchCategories()
@@ -325,5 +329,7 @@ class Categories extends Component {
 }
 
 
-const mapStateToProps = state => ({user: state.user})
-export default connect(mapStateToProps)(Categories)
+const mapStateToProps = state => ({user: state.user, toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Categories)

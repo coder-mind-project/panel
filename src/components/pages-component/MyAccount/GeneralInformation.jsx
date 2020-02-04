@@ -14,14 +14,12 @@ import CustomButton from '../../Button.jsx'
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
-import { toast } from 'react-toastify'
-
 import { connect } from 'react-redux'
 import { setUser } from '../../../redux/userActions'
-import { setToast } from '../../../redux/toastActions'
 import { bindActionCreators } from 'redux'
 
-import { success } from '../../../config/toasts'
+import { setToast } from '../../../redux/toastActions'
+import { success, error, info } from '../../../config/toasts'
 
 import ImgDefault from '../../../assets/img_not_found_512x512.png'
 
@@ -51,12 +49,7 @@ class GeneralInformation extends Component {
         saving: false,
         emailHelper: false,
         resendingEmail: false,
-        cancelingChangeEmail: false,
-        toast: {
-            msg: '',
-            type: '',
-            display: false
-        }
+        cancelingChangeEmail: false
     }
 
     async toogleToast(display = false, type = 'success', msg = ''){
@@ -111,8 +104,6 @@ class GeneralInformation extends Component {
         const user = await this.formatData() 
 
         await axios.put(url, user).then( response => {
-            //this.toogleToast(true, 'success', 'Informações salvas com sucesso')
-            //toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Informações salvas com sucesso</div>), {autoClose: 3000, closeOnClick: true})
             this.props.setToast(success('Informações salvas com sucesso'))
             if(response.data.confirmEmail){
                 this.setState({
@@ -124,10 +115,9 @@ class GeneralInformation extends Component {
                 })
             }
             this.props.setUser(user)
-        }).catch( async error => {
-            const msg = await defineErrorMsg(error)
-            this.toogleToast(true, 'error', msg)
-            //toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch( async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
 
         this.toogleSaving()
@@ -161,7 +151,7 @@ class GeneralInformation extends Component {
         const img = photo.target.files[0]
 
         if(!img) 
-        return toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon>Selecione uma imagem</div>), {autoClose: 2000, closeOnClick: true}) 
+        return this.props.setToast(info('Selecione uma imagem'))
 
         await this.setState({sendingPhoto: true})
         //Obtém se o ID do artigo e a imagem selecionada
@@ -190,7 +180,7 @@ class GeneralInformation extends Component {
         const url = `${backendUrl}/users/img/${id}`
         
         await axios.patch(url, formData, config).then( async res => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
+            this.props.setToast(success('Operação realizada com sucesso'))
             /*  Definição do diretório para visualização da imagem após exito
                 do envio e remoção da imagem do campo Input
             */
@@ -204,9 +194,9 @@ class GeneralInformation extends Component {
                 sendingPhoto: false
             })
 
-        }).catch( async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>))
+        }).catch( async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
             this.setState({sendingPhoto: false})
         })
 
@@ -221,7 +211,7 @@ class GeneralInformation extends Component {
 
         const url = `${backendUrl}/users/img/${id}`
         axios.delete(url).then(() => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Operação realizada com sucesso</div>), {autoClose: 2000, closeOnClick: true})
+            this.props.setToast(success('Operaçao realizada com sucesso'))
             this.setState({
                 user: {
                     ...this.state.user,
@@ -230,9 +220,9 @@ class GeneralInformation extends Component {
                 photo: ''
 
             })
-        }).catch(error => {
-            const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 10000, closeOnClick: true})
+        }).catch( async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
     }
 
@@ -263,10 +253,10 @@ class GeneralInformation extends Component {
 
         this.toogleResendingEmail()
         await axios.post(url, user).then( res => {
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>{res.data}</div>), {autoClose: 10000, closeOnClick: true})
-        }).catch( error => {
-            const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 5000, closeOnClick: true})
+            this.props.setToast(success(res.data))
+        }).catch( async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
         })
         
         this.toogleResendingEmail()
@@ -283,10 +273,10 @@ class GeneralInformation extends Component {
             const user = this.state.user
             delete user.confirmEmail
             this.setState({user})
-            toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>Solicitação de alteração de e-mail removida com sucesso!</div>), {autoClose: 3000, closeOnClick: true})
-        }).catch( error => {
-            const msg = defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 5000, closeOnClick: true})
+            this.props.setToast(success('Solicitação de alteração de e-mail removida com sucesso!'))
+        }).catch( async error => {
+            const msg = await defineErrorMsg(error)
+            this.props.setToast(error(msg))
         })
         
         this.toogleCancelingChangeEmail()
@@ -473,4 +463,4 @@ class GeneralInformation extends Component {
 const mapStateToProps = state => ({user: state.user, toast: state.config})
 const mapDispatchToProps = dispatch => bindActionCreators({setUser, setToast}, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(GeneralInformation);
+export default connect(mapStateToProps, mapDispatchToProps)(GeneralInformation)

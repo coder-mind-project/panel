@@ -16,8 +16,10 @@ import FloatingButton from '../../components/FloatingButton.jsx'
 import Searching from '../../assets/loading.gif'
 
 import axios from 'axios'
-import { toast } from 'react-toastify'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { success, error, info } from '../../config/toasts'
+import { setToast } from '../../redux/toastActions'
 
 import { backendUrl, defineErrorMsg } from '../../config/backend'
 import { formatCustomURL } from '../../config/masks'
@@ -72,15 +74,15 @@ class Article extends Component {
         await axios(url).then(async res => {
 
             if(this.props.user._id !== res.data._id && !this.props.user.tagAdmin){
-                toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon>Você não tem permissão para acessar este artigo!</div>), {autoClose: 2000, closeOnClick: true})
+                this.props.setToast(info('Você não tem permissão para acessar este artigo!'))
                 return setTimeout(() => this.setState({redirectTo: 'articles'}), 3000)
             }
 
             await this.storageArticle(res.data)
             this.toogleLoadingState()
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 2000, closeOnClick: true})
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
             
             this.toogleLoadingState()
 
@@ -139,16 +141,16 @@ class Article extends Component {
         const method = article._id ? 'put' : 'post'
 
         await axios[method](url, article).then(async (res) => {
-            await toast.success((<div className="centerVertical"><Icon className="marginRight">done</Icon>{method === 'post' ? 'Artigo cadastrado, por favor aguarde...' : 'Artigo atualizado com sucesso'}</div>), {autoClose: 2000, closeOnClick: true})
+            await this.props.setToast(success(method === 'post' ? 'Artigo cadastrado, por favor aguarde...' : 'Artigo atualizado com sucesso'))
             await this.changeSavingState()
             if(method === 'post'){
                 await setTimeout(() => window.location.href = `article/${res.data.customURL}`, 3000)
             }else{
                 this.storageArticle(res.data)
             }
-        }).catch(async error => {
-            const msg = await defineErrorMsg(error)
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon>{msg}</div>), {autoClose: 2000, closeOnClick: true})
+        }).catch(async err => {
+            const msg = await defineErrorMsg(err)
+            this.props.setToast(error(msg))
             this.changeSavingState()
         })
     }
@@ -287,10 +289,6 @@ class Article extends Component {
 
     changeCurrentTab = (currentTab) => {
         this.setState({currentTab})
-    }
-
-    componentWillMount(){
-        if(!this.props.match.params.id) return
     }
 
     componentDidMount(){
@@ -434,6 +432,7 @@ class Article extends Component {
     }
 }
 
-const mapStateToProps = state => ({user: state.user})
+const mapStateToProps = state => ({user: state.user, toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
 
-export default connect(mapStateToProps)(Article)
+export default connect(mapStateToProps, mapDispatchToProps)(Article)

@@ -11,7 +11,9 @@ import { faTrophy, faMedal, faThumbsUp, faUsers, faBookOpen} from '@fortawesome/
 
 import { connect } from 'react-redux'
 import { setUser } from '../../redux/userActions'
+import { setToast } from '../../redux/toastActions'
 import { bindActionCreators } from 'redux'
+import { error, info} from '../../config/toasts'
 
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
@@ -26,8 +28,6 @@ import { backendUrl } from '../../config/backend'
 
 import IpInfoStatsDialog from '../../components/Dialogs/Stats/IpInfoStats.jsx'
 import FloatingButton from '../../components/FloatingButton.jsx'
-
-import { toast } from 'react-toastify'
 
 import './css/Stats.css'
 
@@ -59,7 +59,7 @@ class Stats extends Component{
 
         dialogModal: false,
         ipSelected: '',
-        year: new Date().getFullYear(),
+        year: "",
         
         article: '',
         dateBegin: null,
@@ -78,8 +78,10 @@ class Stats extends Component{
             years.push(year)
         }
         years.sort((x, y) => y-x)
+        
+        const year = new Date().getFullYear()
 
-        this.setState({years})
+        this.setState({years, year})
     }
 
     toogleLoadingLikes(){
@@ -102,7 +104,7 @@ class Stats extends Component{
 
     filterSubmit(){
         if(!this.state.both && !this.state.onlyLikes && !this.state.onlyViews) 
-            return toast.info((<div className="centerVertical"><Icon className="marginRight">warning</Icon><span>Selecione pelos menos um tipo de busca</span></div>), {autoClose: 6000, closeOnClick: true})
+            return this.props.setToast(info('Selecione pelos menos um tipo de busca'))
 
         if(this.state.both){
             this.getLikes()
@@ -367,7 +369,7 @@ class Stats extends Component{
             localStorage.setItem('user', JSON.stringify({token: res.data.token}))
             this.getStats()
         }).catch( () => {
-            toast.error((<div className="centerVertical"><Icon className="marginRight">clear</Icon><span>Ocorreu um erro desconhecido, tente novamente</span></div>), {autoClose: 5000, closeOnClick: true})
+            this.props.setToast(error('Ocorreu um erro desconhecido, tente novamente'))
             this.setState({
                 platformStats: !payload.option
             })
@@ -879,7 +881,7 @@ class Stats extends Component{
     }
 }
 
-const mapStateToProps = state => ({user: state.user})
-const mapDispatchToProps = dispatch => bindActionCreators({setUser}, dispatch) 
+const mapStateToProps = state => ({user: state.user, toast: state.config})
+const mapDispatchToProps = dispatch => bindActionCreators({setUser, setToast}, dispatch) 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Stats)
