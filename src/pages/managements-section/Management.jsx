@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
-import { Container, Grid, Paper, Box,
+import { Container, Grid, Box,
         Divider, Icon, Typography, Card,
         CardContent, CardActions } from '@material-ui/core'
 import { Link, Redirect } from 'react-router-dom'
 import { displayFullDate } from '../../config/masks'
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faIdCard } from "@fortawesome/free-solid-svg-icons"
 import Header from '../../components/Header.jsx'
 
+import ShortcutSection from '../../components/pages-component/Management/ShortcutSection.jsx'
+import ThemesAndCategoriesSection from '../../components/pages-component/Management/ThemesAndCategoriesSection.jsx'
 import Button from '../../components/Button.jsx'
+import FloatingButton from "../../components/FloatingButton.jsx";
 
 import '../css/defaultPage.css'
 import './css/Management.css'
@@ -67,6 +72,7 @@ class Management extends Component {
     render() {
         return (
             <Container className="managements" id="component">
+                <FloatingButton icon="keyboard_arrow_up" action={() => document.documentElement.scrollTop = 0} />
                 {this.state.redirectTo && 
                     <Redirect to={this.state.redirectTo}/>
                 }
@@ -74,80 +80,12 @@ class Management extends Component {
                     description="Configure propriedades da aplicação: como temas e categorias de artigos, Sincronizador e outras configurações"
                     icon="settings"
                 />
-                <Grid container>
-                    <Grid item xs={12} md={6}>
-                        <Box ml={2} mr={2} mt={5} mb={3}>
-                            <Paper className="blockOption">
-                                <Grid item xs={12} className="centerInline">
-                                    <Icon className="superIcon">
-                                        bookmark
-                                    </Icon>
-                                    <h2>
-                                        Temas
-                                    </h2>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Divider/>
-                                </Grid>
-                                <Grid item xs={12} className="description">
-                                    <h4>
-                                        Crie, altere e remova temas.
-                                    </h4>
-                                    <h5>
-                                        Estes temas são relacionados aos artigos, 
-                                        isto é, configure os temas disponibilizados 
-                                        para a inclusão e edição de artigos.
-                                    </h5>
-                                </Grid>
-                                <Grid item xs={12} className="accessButton">
-                                    <Button color="default" fullWidth={true}
-                                        text="Acessar"
-                                        icon="exit_to_app" 
-                                        onClick={() => this.goTo('themes')}
-                                    />
-                                </Grid>
-                            </Paper>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Box ml={2} mr={2} mt={5} mb={3}>
-                            <Paper className="blockOption">
-                            <Grid item xs={12} className="centerInline">
-                                    <Icon className="superIcon">
-                                        category
-                                    </Icon>
-                                    <h2>
-                                        Categorias
-                                    </h2>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Divider/>
-                                </Grid>
-                                <Grid item xs={12} className="description">
-                                    <h4 component="p" variant="body2">
-                                        Crie, altere e remova categorias.
-                                    </h4>
-                                    <h5 component="p" variant="body2">
-                                        Estas categorias são relacionados aos artigos, 
-                                        isto é, configure as categorias disponibilizadas 
-                                        para a inclusão e edição de artigos.
-                                    </h5>
-                                </Grid>
-                                <Grid item xs={12} className="accessButton">
-                                    <Button color="default" fullWidth={true}
-                                        text="Acessar"
-                                        icon="exit_to_app"
-                                        onClick={() => this.goTo('categories')}
-                                    />
-                                </Grid>
-                            </Paper>
-                        </Box>
-                    </Grid>
-                </Grid>
-                { this.props.user.tagAdmin && <Grid item xs={12}><Divider/></Grid>}
-                
+                { this.props.user && this.props.user.tagAdmin && 
+                    <ShortcutSection />
+                }
+                <ThemesAndCategoriesSection user={this.props.user} />
                 { this.props.user.tagAdmin && <Grid item xs={12}>
-                    <Box width="100%" display="flex" alignItems="center">
+                    <Box id="sincronizer" width="100%" display="flex" alignItems="center">
                         <Box mr={1}>
                             <Icon>autorenew</Icon>
                         </Box>
@@ -209,7 +147,7 @@ class Management extends Component {
                         <Grid item xs={12} md={6}>
                             <Card className="card-management">
                                 <CardContent>
-                                    <Box display="flex" alignItems="center">
+                                    <Box id="users" display="flex" alignItems="center">
                                         <Box mr={1} display="flex" alignItems="center">
                                             <Icon>
                                                 person
@@ -240,11 +178,9 @@ class Management extends Component {
                         <Grid item xs={12} md={6}>
                             <Card className="card-management">
                                 <CardContent>
-                                    <Box display="flex" alignItems="center">
+                                    <Box id="tickets" display="flex" alignItems="center">
                                         <Box mr={1} display="flex" alignItems="center">
-                                            <Icon>
-                                                label
-                                            </Icon>
+                                            <FontAwesomeIcon icon={faIdCard} size="1x"/>
                                         </Box>
                                         <Box display="flex" alignItems="center">
                                             <h3>
@@ -253,7 +189,7 @@ class Management extends Component {
                                         </Box>
                                     </Box>
                                     <Typography>
-                                        Visualize e responda tickets de atendimento aos autores da plataforma
+                                        Visualize, responda, mantenha respostas e veja atividades relacionadas a tickets. Sendo o meio de comunicação entre os usuários e a plataforma Coder Mind.
                                     </Typography>
                                 </CardContent>
                                 <CardActions>

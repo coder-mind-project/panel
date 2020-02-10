@@ -88,7 +88,7 @@ const MenuApp = props => {
                                 { matches560 && 
                                     <CommentsNotifications />
                                 }
-                                { matches560 && 
+                                { matches560 && props.user.tagAdmin &&
                                     <TicketsNotifications />
                                 }
                                 { matches560 && 
@@ -139,6 +139,18 @@ const MenuApp = props => {
                                     </span>
                                 </MenuItem>
                             </Link>
+                            { props.user && props.user.tagAdmin &&
+                                <Link to="/management" onClick={() => closeMyAccountIcon()} className="linkRouterBlack">
+                                    <MenuItem>
+                                        <span className={classes.menuButtonContent}>
+                                            <Icon className={classes.iconButtonMenu}>
+                                                settings
+                                            </Icon>
+                                            Configurações
+                                        </span>
+                                    </MenuItem>
+                                </Link>
+                            }
                             <MenuItem onClick={logout}>
                                 <span className={classes.menuButtonContent}>
                                     <Icon className={classes.iconButtonMenu}>

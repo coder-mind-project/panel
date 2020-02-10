@@ -17,7 +17,8 @@ export const styles = theme => ({
     line: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'baseline'
+        justifyContent: 'baseline',
+        alignItems: 'center'
     },
     title: {
         color: 'rgb(50,50,50)',

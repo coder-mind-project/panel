@@ -13,7 +13,6 @@ class TicketResponses extends Component {
     }
 
     componentDidMount(){
-        console.log(this.props)
         this.setState({
             handleClose: this.props.onClose,
         })

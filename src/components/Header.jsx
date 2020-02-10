@@ -4,6 +4,7 @@ import { Divider, Icon, Grid } from '@material-ui/core'
 
 import { styles } from './styles/Header'
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const useStyles = makeStyles(styles)
 
@@ -21,7 +22,10 @@ export default (props) => {
             <[]> : '' (String vazia)
         description: String - Define a descrição do cabeçalho
             <[]> : '' (String vazia)
-
+        fontAwesomeIcon: Boolean - Define a utilização do fontawesome para os icons
+            <[true, false]> : false
+        faIcon: fontAwesomeIcon - Icone da lib do fontawesome
+            <[Consulte a lib @fortawesome/free-solid-svg-icons]>
         
     */
 
@@ -29,9 +33,14 @@ export default (props) => {
     return(
         <Grid container className={props.noMarginTop ? classes.containerNoMarginTop : classes.container}>
             <Grid item xs={12} className={classes.line}>
-                <Icon fontSize="large" className={classes.icon}>
-                    {props.icon}
-                </Icon>
+                { !props.fontAwesomeIcon &&
+                    <Icon fontSize="large" className={classes.icon}>
+                        {props.icon}
+                    </Icon>
+                }
+                { props.fontAwesomeIcon &&
+                    <FontAwesomeIcon icon={props.faIcon} size="2x" className={classes.icon}/>
+                }
                 <h1 className={classes.title}>
                     {props.title}
                 </h1>

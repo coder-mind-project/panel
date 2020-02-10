@@ -75,23 +75,18 @@ class Auth extends Component {
 
         const url = `${backendUrl}/auth`
         await axios.post(url, user).then( async res => {
-
-            await this.props.setUser(res.data)
-            await this.props.setMenu(true)
-
             localStorage.setItem('user', JSON.stringify({token: res.data.token}))
-            
-            this.setState({
-                redirect: true,
-                loading: false
-            })
-            
+            window.open('/', '_self')
         }).catch(async error => {
             const msg = await defineErrorMsg(error)
-            await this.setState({loading: false, reloadCaptcha: true, error: msg})
-            this.setState({reloadCaptcha: false})
+            this.reloadCaptcha()
+            this.setState({loading: false, error: msg})
         })
-        
+    }
+
+    async reloadCaptcha(){
+        await this.setState({ reloadCaptcha: true })
+        this.setState({ reloadCaptcha: false })
     }
 
     handleChange = attr => event => {

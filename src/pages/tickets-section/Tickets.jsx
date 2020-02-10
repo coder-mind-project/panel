@@ -16,6 +16,8 @@ import Header from '../../components/Header.jsx'
 import Searching from '../../assets/loading.gif'
 import Filter from '../../components/pages-component/Tickets/Filter.jsx'
 
+import { faIdCard } from "@fortawesome/free-solid-svg-icons"
+
 import axios from 'axios'
 import { backendUrl } from '../../config/backend'
 import { OPTIONS_LIMIT, DEFAULT_LIMIT, LIMIT_LABEL, DISPLAYED_ROWS } from '../../config/dataProperties'
@@ -211,7 +213,7 @@ class Tickets extends Component {
                     <Redirect to={this.state.redirectTo} />
                 }
                 <Header title="Tickets" description="Visualize e responda tickets de atendimento aos autores da plataforma"
-                    icon="label" 
+                    fontAwesomeIcon={true} faIcon={faIdCard}
                 />
                 <Container className="hudBar">
                     <Grid item className="hudBarChild">
