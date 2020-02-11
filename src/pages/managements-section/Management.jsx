@@ -43,7 +43,8 @@ class Management extends Component {
         const url = `${backendUrl}/stats/sincronization`
         
         axios(url).then(res => {
-            this.setState({lastSincronization: displayFullDate(res.data.generatedAt)})
+            if(res.data && res.data.generatedAt) 
+                this.setState({lastSincronization: displayFullDate(res.data.generatedAt)})
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
             this.props.setToast(error(msg))
