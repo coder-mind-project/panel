@@ -10,7 +10,7 @@ import {faCheckCircle, faTimesCircle} from '@fortawesome/free-solid-svg-icons'
 import { backendUrl, defineErrorMsg } from '../../config/backend' 
 import axios from 'axios'
 
-import './css/ConfirmEmail.css'
+import './css/RemoveAccount.css'
 import '../css/defaultPage.css'
 
 class RemoveAccount extends Component {

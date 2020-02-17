@@ -30,7 +30,7 @@ export const SIMPLE_ERROR_MSG = "Ocorreu um erro desconhecido, se persistir repo
 export const ERROR_MSG_CUSTOM = "Ops, parece que ocorreu um erro. Tente recarregar a página, se persistir tente novamente mais tarde"
 
 export const COLOR_APP = '#8a05be'
-export const COLOR_APP_HOVER = 'rgba(145, 34, 189,.3)'
+export const COLOR_APP_HOVER = 'rgba(145, 34, 189, .8)'
 
 export const CAPTCHA_SITE_KEY = process.env.REACT_APP_SITE_KEY_CAPTCHA
 /*  

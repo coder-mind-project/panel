@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
-import { Paper, Grid, TextField,
-        CircularProgress, FormControl,
-        InputLabel, Box, Fade, LinearProgress } from '@material-ui/core'
+import { Grid, TextField, Box, Fade, LinearProgress,
+        Button, InputAdornment, IconButton, Icon } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import { Redirect } from 'react-router-dom'
-import PasswordField from 'material-ui-password-field'
 
-import ButtonBase from '../../components/ButtonBase.jsx'
 import RedeemAccount from '../../components/RedeemAccount.jsx'
+import CustomButtonBase from '../../components/ButtonBase.jsx'
 
 import { setUser } from '../../redux/userActions'
 import { setMenu } from '../../redux/menuActions'
@@ -21,6 +19,7 @@ import { CAPTCHA_SITE_KEY } from '../../config/dataProperties'
 import Recaptcha from "react-google-invisible-recaptcha"
 
 import Logo from '../../assets/coder-mind-painelv1-preto.png'
+//import LogoWhite from '../../assets/coder-mind-painelv1-branco.png'
 
 import './css/Auth.css'
 import '../css/defaultPage.css'
@@ -42,8 +41,8 @@ class Auth extends Component {
         redirect: false,
         currentImg: 0,
 
-        reloadCaptcha: false,
-        error: null
+        error: null,
+        passwordVisibility: false
         
     }
 
@@ -51,19 +50,29 @@ class Auth extends Component {
         this.setState({rescuePassword: !this.state.rescuePassword})
     }
 
+    toogleLoading(){
+        this.setState({loading: !this.state.loading})
+    }
+
     resolve = (event) => {
         event.preventDefault()
-
-        // Caso ja esteja carregando não será possível mandar nova autenticação 
+        // Caso ja esteja carregando não será possível mandar nova autenticação para gerar o token do recaptcha
         if(this.state.loading) return
-
-        this.setState({loading: true})
-        
         this.recaptchaRef.execute()
+    }
+
+    captchaError(){
+        this.recaptchaRef.reset()
+        this.toogleLoading()
+        this.setState({
+            error: 'Ocorreu um erro no recaptcha, se persistir reporte'
+        })
     }
 
     signIn = async () => {
         /* Resposável por realizar a autenticação */
+        
+        this.toogleLoading()
 
         const response = await this.recaptchaRef.getResponse()
 
@@ -74,25 +83,29 @@ class Auth extends Component {
         }
 
         const url = `${backendUrl}/auth`
+
         await axios.post(url, user).then( async res => {
             localStorage.setItem('user', JSON.stringify({token: res.data.token}))
             window.open('/', '_self')
         }).catch(async error => {
             const msg = await defineErrorMsg(error)
-            this.reloadCaptcha()
-            this.setState({loading: false, error: msg})
+            this.setState({error: msg})
+            this.recaptchaRef.reset()
         })
-    }
 
-    async reloadCaptcha(){
-        await this.setState({ reloadCaptcha: true })
-        this.setState({ reloadCaptcha: false })
+        this.toogleLoading()
     }
 
     handleChange = attr => event => {
         const value = event.target.value
         this.setState({
             [attr]: value
+        })
+    }
+
+    tooglePasswordVisibility(){
+        this.setState({
+            passwordVisibility: !this.state.passwordVisibility
         })
     }
     
@@ -103,6 +116,11 @@ class Auth extends Component {
         const user = await localStorage.getItem('user')
         if(user) this.setState({redirect: true}) 
     }
+
+    authFormFocus(){
+        const input = document.querySelector('#cm-email')
+        if(input) input.focus()
+    }
     
     componentDidMount(){
         this.verifyUser()
@@ -110,53 +128,84 @@ class Auth extends Component {
 
     render() { 
         return (
-            <div className="container">
-                { !this.state.rescuePassword &&
-                    <Paper className="modal">
-                        { this.state.loading && <LinearProgress color="secondary" />}
-                        <Grid item xs={12} className="modalTitle">
-                            <img src={Logo} alt="Logo" width="180"/>
-                        </Grid>
-                        <form onSubmit={this.resolve}>
-                            <Grid item xs={12} className="modalForm">
-                                    <TextField label="E-mail" className="modalFormInput"
-                                        fullWidth onChange={this.handleChange('email')} 
-                                        inputProps={{ autoComplete: 'email' }}
-                                    />
-                                    <FormControl fullWidth>
-                                        <InputLabel htmlFor="password">Senha</InputLabel>
-                                        <PasswordField id="password" 
-                                            inputProps={{ autoComplete: 'current-password' }} 
-                                            fullWidth onChange={this.handleChange('password')}
-                                        />
-                                    </FormControl>
-                                <small className="fakeLink" onClick={() => this.toogleRescuePassword()}>Esqueceu seu e-mail/senha?</small>
-                                <Box className="captchaArea">
-                                    { !this.state.reloadCaptcha && 
-                                        <Recaptcha 
-                                            sitekey={CAPTCHA_SITE_KEY}
-                                            ref={ref => this.recaptchaRef = ref}
-                                            onResolved={this.signIn}
-                                        />
-                                    }
-                                </Box>
-                                { Boolean(this.state.error) && <Alert severity="warning">{this.state.error}</Alert>} 
-                            </Grid>
-                            <Grid item xs={12} className="button-area">
-                                <ButtonBase class="defaultMaxWidth" type="submit" disableIcon={true} text={this.state.loading ? <span className="centerInline"><CircularProgress size={20} color="inherit" /><span className="marginLeft">Entrando...</span></span> : 'Entrar'}/>
-                            </Grid>
-                        </form>
-                    </Paper>
-                }
-                { this.state.rescuePassword &&
-                    <Fade in={this.state.rescuePassword}>
-                        <RedeemAccount back={() => this.toogleRescuePassword()} />
-                    </Fade>
-                }
-                {this.state.redirect &&
-                    <Redirect to="/"/>
-                }
-            </div>
+            <Box display="flex" alignItems="center" flexWrap="wrap">
+                <Grid item xs={12} md={4} className="pretty-section">
+                    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+                        <h1>Painel da Coder Mind</h1>
+                        <h2>Aqui você poderá publicar seus artigos e acompanhar sua relevância.</h2>
+                        <Box display="flex" alignItems="center" flexDirection="column" mt={2} mb={2}>
+                            <Button color="inherit" variant="outlined" className="button" fullWidth={true}>Criar conta</Button>
+                            <Button onClick={this.authFormFocus} color="inherit" variant="outlined" className="button i-have-an-account" fullWidth={true}>Já tenho uma conta</Button>
+                        </Box>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} md={8}>
+                    <div className="container">
+                        { !this.state.rescuePassword &&
+                            <div className="auth-section">
+                                    { this.state.loading && <LinearProgress color="primary" />}
+                                    <div className="logo-area">
+                                        <img src={Logo} alt="Logo" width="200"/>
+                                    </div>
+                                    <div className="form-area">
+                                        { Boolean(this.state.error) &&
+                                            <Alert severity="warning" className="form-alert">
+                                                {this.state.error}
+                                            </Alert>
+                                        } 
+                                        <form onSubmit={this.resolve} className="form">
+                                                <TextField 
+                                                    label="E-mail"
+                                                    className="form-input"
+                                                    onChange={this.handleChange('email')} 
+                                                    inputProps={{ autoComplete: 'email', id: 'cm-email' }}
+                                                />
+                                                <TextField label="Senha" className="form-input"
+                                                    onChange={this.handleChange('password')} 
+                                                    type={this.state.passwordVisibility ? 'text' : 'password'}
+                                                    InputProps={{ 
+                                                        autoComplete: 'password',
+                                                        id: 'cm-password',
+                                                        endAdornment: <InputAdornment position="end">
+                                                            <IconButton onClick={() => this.tooglePasswordVisibility()}>
+                                                                <Icon>{this.state.passwordVisibility ? 'visibility_off' : 'visibility'}</Icon>
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    }}
+                                                />
+                                            <small 
+                                                className="forgot-password" 
+                                                onClick={() => this.toogleRescuePassword()}
+                                            >
+                                                Não consegue acessar sua conta?
+                                            </small>
+                                            <Recaptcha 
+                                                sitekey={CAPTCHA_SITE_KEY}
+                                                ref={ref => this.recaptchaRef = ref}
+                                                onResolved={this.signIn}
+                                                onError={() => this.captchaError()}
+                                                onExpired={() => this.captchaError()}
+                                                locale="pt-br"
+                                            />
+                                            <Grid item xs={12} className="form-button">
+                                                <CustomButtonBase type="submit" onClick={this.resolve} disabledIcon={true} class="defaultMaxWidth" loading={this.state.loading} text={this.state.loading ? 'Entrando...' : 'Entrar'}/>
+                                            </Grid>
+                                        </form>
+                                    </div>
+                            </div>
+                        }
+                        { this.state.rescuePassword &&
+                            <Fade in={this.state.rescuePassword}>
+                                <RedeemAccount back={() => this.toogleRescuePassword()} />
+                            </Fade>
+                        }
+                        {this.state.redirect &&
+                            <Redirect to="/"/>
+                        }
+                    </div>
+                </Grid>
+            </Box>
+            
         )
     }
 }

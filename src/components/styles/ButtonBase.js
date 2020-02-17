@@ -91,7 +91,7 @@ export const styles = theme => ({
     },
     icon: {
         marginRight: '5px'
-    },
+    }
 })
 
 export default {styles}

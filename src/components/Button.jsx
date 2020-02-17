@@ -50,7 +50,7 @@ export default (props) => {
                 onClick={props.onClick}
                 disabled={props.disabled || false}
         >
-            { Boolean(!props.disableIcon && !props.loading) &&
+            { Boolean(!props.disabledIcon && !props.loading) &&
                 <Icon fontSize={props.iconSize || 'default'} 
                     className={classes.icon}
                 >

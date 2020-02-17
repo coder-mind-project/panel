@@ -42,12 +42,12 @@ export default (props) => {
     const classes = useStyles()
 
     return (
-        <ButtonBase className={classes[props.class] || classes.default}
+        <ButtonBase className={ classes[props.class] || classes.default}
                 type={props.type || 'button'}
                 disabled={props.disabled ? true : false}
                 onClick={props.onClick}
                 >
-            { Boolean(!props.disableIcon && !props.loading) &&
+            { Boolean(!props.disabledIcon && !props.loading) &&
                 <Icon fontSize={props.iconSize || 'default'} 
                     className={classes.icon}
                 >
