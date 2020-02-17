@@ -132,47 +132,45 @@ class App extends Component {
               <Router>
                 {this.getPath() !== '/confirm-email' && <Menu/>}
                 <Toast show={this.props.toast.display} color={this.props.toast.type} text={this.props.toast.msg} closeToast={() => this.closeToast()} />
-                <div>
-                  {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
-                  {!user && this.validateRoutes() &&
-                    <Redirect to="/auth"/>
-                  }
-                  {/* Caso existe um erro é redirecionado para tela de erro */}
-                  {this.props.error && 
-                    <Redirect to="/error"/>
-                  }
-                  {/* Caso tente se acessar o diretório / é redirecionado para um determinado diretório */}
-                  {this.state.redirectTo && 
-                    <Redirect to={`/${this.state.redirectTo}`}/>
-                  }
-                  <Switch>
-                      <Route path="/" exact component={Articles}/>
-                      <Route path="/auth" exact component={Auth}/>
-                      <Route path="/redeem-account" exact component={RedeemAccount}/>
-                      <Route path="/remove-account" exact component={RemoveAccount}/>
-                      <Route path="/ticket" exact component={Ticket}/>
-                      <Route path="/tickets" exact component={Tickets}/>
-                      <Route path="/confirm-email" exact component={ConfirmEmail}/>
-                      <Route path="/user" exact component={User}/>
-                      <Route path="/user/:id" exact component={User}/>
-                      <Route path="/users" exact component={Users}/>
-                      <Route path="/article" exact component={Article}/>
-                      <Route path="/article/:id" exact component={Article}/>
-                      <Route path="/articles" exact component={Articles}/>
-                      <Route path="/management" exact component={Management}/>
-                      <Route path="/theme" exact component={Theme}/>
-                      <Route path="/theme/:id" exact component={Theme}/>
-                      <Route path="/themes" exact component={Themes}/>
-                      <Route path="/category" exact component={Category}/>
-                      <Route path="/category/:id" exact component={Category}/>
-                      <Route path="/categories" exact component={Categories}/>
-                      <Route path="/my-account" exact component={MyAccount}/>
-                      <Route path="/comments" exact component={Comments}/>
-                      <Route path="/comments/:id" exact component={Comment}/>
-                      <Route path="/error" exact component={Error}/>
-                      <Route path="/stats" exact component={Stats}/>
-                    </Switch>
-                </div>
+                {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
+                {!user && this.validateRoutes() &&
+                  <Redirect to="/auth"/>
+                }
+                {/* Caso existe um erro é redirecionado para tela de erro */}
+                {this.props.error && 
+                  <Redirect to="/error"/>
+                }
+                {/* Caso tente se acessar o diretório / é redirecionado para um determinado diretório */}
+                {this.state.redirectTo && 
+                  <Redirect to={`/${this.state.redirectTo}`}/>
+                }
+                <Switch>
+                    <Route path="/" exact component={Articles}/>
+                    <Route path="/auth" exact component={Auth}/>
+                    <Route path="/redeem-account" exact component={RedeemAccount}/>
+                    <Route path="/remove-account" exact component={RemoveAccount}/>
+                    <Route path="/ticket" exact component={Ticket}/>
+                    <Route path="/tickets" exact component={Tickets}/>
+                    <Route path="/confirm-email" exact component={ConfirmEmail}/>
+                    <Route path="/user" exact component={User}/>
+                    <Route path="/user/:id" exact component={User}/>
+                    <Route path="/users" exact component={Users}/>
+                    <Route path="/article" exact component={Article}/>
+                    <Route path="/article/:id" exact component={Article}/>
+                    <Route path="/articles" exact component={Articles}/>
+                    <Route path="/management" exact component={Management}/>
+                    <Route path="/theme" exact component={Theme}/>
+                    <Route path="/theme/:id" exact component={Theme}/>
+                    <Route path="/themes" exact component={Themes}/>
+                    <Route path="/category" exact component={Category}/>
+                    <Route path="/category/:id" exact component={Category}/>
+                    <Route path="/categories" exact component={Categories}/>
+                    <Route path="/my-account" exact component={MyAccount}/>
+                    <Route path="/comments" exact component={Comments}/>
+                    <Route path="/comments/:id" exact component={Comment}/>
+                    <Route path="/error" exact component={Error}/>
+                    <Route path="/stats" exact component={Stats}/>
+                  </Switch>
               </Router>
             </Fade>
           }

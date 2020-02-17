@@ -26,7 +26,7 @@ export const styles = theme => ({
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     default: {
         backgroundColor: COLOR_APP,
@@ -38,7 +38,7 @@ export const styles = theme => ({
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     defaultMaxWidth: {
         backgroundColor: COLOR_APP,
@@ -63,7 +63,7 @@ export const styles = theme => ({
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     warning: {
         backgroundColor: 'rgb(255,195,0)',
@@ -75,7 +75,7 @@ export const styles = theme => ({
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     none:{
         backgroundColor: 'transparent',
@@ -87,7 +87,7 @@ export const styles = theme => ({
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     icon: {
         marginRight: '5px'

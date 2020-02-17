@@ -2,9 +2,7 @@
     display: flex;
     justify-content: center !important;
     align-items: center !important;
-    height: 100vh;
-    margin: 0px;
-    padding: 0px;
+    background-color: rgb(255, 255, 255);
 }
 
 .pretty-section{
@@ -12,7 +10,7 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     color: #fff;
     font-weight: 700;
@@ -41,13 +39,12 @@
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    background-color: rgb(255, 255, 255);
-    height: 100%;
+    min-height: 100vh;
     width: 100%;
 }
 
 .logo-area{
-    height: 20%;
+    height: 160px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -75,7 +72,7 @@
     margin: 10px 0px;
 }
 
-.forgot-password{
+.forgot-password, .form-text{
     cursor: pointer;
     color: rgba(30, 30, 30, 1);
     text-decoration: underline;
@@ -84,13 +81,6 @@
 
 .i-have-an-account{
     display: none !important;
-}
-
-.background-image1{
-    background-image: url('../../../assets/background1.jpg');
-}
-.background-image2{
-    background-image: url('../../../assets/background2.jpg');
 }
 
 body{
@@ -133,7 +123,6 @@ body{
         display: flex;
         justify-content: center !important;
         align-items: center !important;
-        height: 100vh;
     }
 }
 

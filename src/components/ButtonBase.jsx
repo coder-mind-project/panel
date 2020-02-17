@@ -14,7 +14,7 @@ export default (props) => {
             options : default
 
         class: String - Define o modelo dentre os disponíveis
-            <['success', 'danger', 'default', 'gray', 'warning', 'none', 'noneNoPadding', 'defaultOutlined', 'noneOutlinedNoPadding']> : 'default'
+            <['success', 'danger', 'default', 'gray', 'warning', 'none', 'noneNoPadding', 'defaultOutlined', 'defaultMaxWidth', 'noneOutlinedNoPadding']> : 'default'
         type: String - Define o modelo de botão que será assumido
             <['submit', 'reset', 'button]> : 'button'
         disabled: Boolean - Se ativado disabilita o botão

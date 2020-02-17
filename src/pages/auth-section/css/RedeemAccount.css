@@ -6,3 +6,50 @@
     margin: 0px;
     padding: 0px;
 }
+
+.small-text{
+    font-size: 0.8rem;
+    color: rgba(40, 40, 40, 0.8)
+}
+
+.stepper-hud{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.redeem-account-section{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-bottom: 25px;
+}
+
+.redeem-account-area{
+    max-width: 700px !important;
+}
+
+.redeem-account-area > h2{
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.redeem-account-area > p{
+    text-align: center;
+    margin: 20px 0px;
+}
+
+@media(max-width: 565px){
+    .stepper-hud{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}

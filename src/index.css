@@ -8,6 +8,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: rgba(220, 220, 220, .8);
+  min-height: 100vh;
+}
+
+#root, .page {
+  min-height: 100vh;
 }
 
 #component{
@@ -56,10 +61,6 @@ div, input, button, label, p, li, table, td, th{
 th{
   font-size: 1rem !important;
   font-weight: 700 !important;
-}
-
-.page{
-  height: 100%;
 }
 
 code {
