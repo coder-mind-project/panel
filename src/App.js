@@ -73,7 +73,7 @@ class App extends Component {
       if(user){
         const url = `${backendUrl}/validate_token`
         await axios.post(url, user).then(async res => {
-          if(res.data.user._id){
+          if(res.data.user){
             this.props.setMenu(true)
             this.props.setUser(res.data)
           }else{
