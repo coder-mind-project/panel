@@ -12,7 +12,7 @@ const NotFound = (props) => {
 
     return (
         <Paper>
-            { !matches && 
+            { !matches &&
                 <Grid item xs={12} className={classes.notFoundArea}>
                     {/* <img src={TiredRobot} width="100%" alt="Nenhum artigo encontrado"/> */}
                     <h4>
@@ -26,7 +26,7 @@ const NotFound = (props) => {
                     </Box>
                 </Grid>
             }
-            { matches && 
+            { matches &&
                 <Grid item xs={12} className={classes.notFoundAreaXs}>
                     {/* <img src={TiredRobot} width="100%" alt="Nenhum artigo encontrado"/> */}
                     <Box>

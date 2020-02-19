@@ -1,38 +1,60 @@
-import React from 'react'
+import React from 'react';
 
-import { Snackbar, Slide, makeStyles, useMediaQuery } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import {
+  Snackbar,
+  Slide,
+  makeStyles,
+  useMediaQuery,
+} from '@material-ui/core';
 
-import { styles } from './styles/Toast'
+import { Alert } from '@material-ui/lab';
 
-const useStyles = makeStyles(styles)
+import { styles } from './styles/Toast';
 
-export default props => {
+const useStyles = makeStyles(styles);
 
-    const classes = useStyles()
+function Toast(props) {
+  const {
+    hideTime,
+    color,
+    text,
+    closeToast,
+    show,
+  } = { ...props };
 
-    const matches = useMediaQuery('(max-width: 565px)')
-    
+  const { toast } = useStyles();
 
-    const anchorOrigin = {vertical: 'top', horizontal: matches ? 'center' : 'right'}
-    const autoHideDuration = props.hideTime || 3000
-    const severity = props.color || 'success'
-    const text = props.text || ''
-    const variant = 'filled'
+  const matches = useMediaQuery('(max-width: 565px)');
 
-    const closeToast = () => {
-        props.closeToast()
-    }
+  const anchorOrigin = { vertical: 'top', horizontal: matches ? 'center' : 'right' };
+  const autoHideDuration = hideTime || 3000;
+  const severity = color || 'success';
+  const msg = text || '';
+  const variant = 'filled';
 
-    return (
-        <div>
-            { props.show && <Slide in={true} className={classes.toast}>
-                <Snackbar anchorOrigin={anchorOrigin} open={true} autoHideDuration={autoHideDuration} onClose={() => closeToast()}>
-                    <Alert onClose={() => closeToast()} severity={severity} variant={variant}>
-                        {text}
-                    </Alert>
-                </Snackbar>
-            </Slide>}
-        </div>
-    )
+  function close() {
+    closeToast();
+  }
+
+  return (
+    <div>
+      { show
+        && (
+          <Slide in className={toast}>
+            <Snackbar
+              anchorOrigin={anchorOrigin}
+              open
+              autoHideDuration={autoHideDuration}
+              onClose={close}
+            >
+              <Alert onClose={close} severity={severity} variant={variant}>
+                {msg}
+              </Alert>
+            </Snackbar>
+          </Slide>
+        )}
+    </div>
+  );
 }
+
+export default Toast;
