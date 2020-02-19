@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from 'react'
 
 import { Grid, Box, Button, Container, TextField,
         Dialog, DialogTitle, DialogActions,
-        DialogContent, FormControl, Select, InputLabel,
-        Stepper, Step, StepLabel, useMediaQuery } from '@material-ui/core'
+        DialogContent, FormControl, Select,
+        Stepper, Step, StepLabel, useMediaQuery,
+        Divider, Typography } from '@material-ui/core'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons"
@@ -31,18 +32,20 @@ import { CAPTCHA_SITE_KEY } from '../config/dataProperties'
 import { cpfMask, celphoneMask } from '../config/masks'
 
 import '../pages/css/defaultPage.css'
+import '../pages/css/forms.css'
 import '../pages/auth-section/css/RedeemAccount.css'
 
 function RescueAccount(props) {
 
     const {back, setToast} = {...props}
-    
+
     const [option, setOption] = useState('menu')
     const [cpf, setCpf] = useState('')
     const [email, setEmail] = useState('')
     const [celphone, setCelphone] = useState('')
-    const [publicAccess, setPublicAccess] = useState('imNotSure')
-    const [createDate, setCreateDate] = useState(null)
+    const [publicProfile, setPublicProfile] = useState('imNotSure')
+    const [dateBegin, setDateBegin] = useState(null)
+    const [msg, setMsg] = useState('')
     const [currentStep, setCurrentStep] = useState(0)
     const [dialog, setDialog] = useState(false)
     const [steps, setSteps] = useState([
@@ -51,35 +54,24 @@ function RescueAccount(props) {
         {label: 'Confirmação de dados', completed: false},
     ])
     const [response, setResponse] = useState(null)
-    const [recaptchaToken, setRecaptchaToken] = useState('')
-    const [type, setType] = useState('')
     const [waiting, setWaiting] = useState(false)
+    const [recaptchaToken, setRecaptchaToken] = useState('')
 
     const matches = useMediaQuery('(max-width: 565px)')
 
     const recaptchaRef = useRef(null)
 
-    function toogleOption(option){
-        if(option === 'menu'){
-            clearFormEmailAndPassword()
-        }
-
-        setOption(option)
-    }
-
-    function clearFormOnlyPassword(){
-        setEmail('')    
-    }
-
-    function clearFormEmailAndPassword(){
+    function clearForms(){
         setCpf('')
         setCelphone('')
-        setPublicAccess('')
-        setCreateDate(null)
+        setPublicProfile('')
+        setEmail('')
+        setDateBegin(null)
+        setOption('menu')
     }
 
-    function displayPublicAccess(){
-        switch(publicAccess){
+    function displayPublicProfile(){
+        switch(publicProfile){
             case 'yes':{
                 return 'Sim'
             }
@@ -113,7 +105,7 @@ function RescueAccount(props) {
         setSteps(steps)
         setCurrentStep(currentStep + 1)
     }
-    
+
     function previousStep(){
         const steps = setCompletedSteps(false, 'prev')
         const step = currentStep > 0 ? currentStep - 1 : 0
@@ -124,7 +116,7 @@ function RescueAccount(props) {
     function handleChangeMaskData(attr){
         return event => {
             if(typeof attr !== 'string') return
-            
+
             const value = event.target.value
             switch(attr){
                 case 'cpf':{
@@ -139,8 +131,28 @@ function RescueAccount(props) {
         }
     }
 
-    async function resolve(type) {
-        setType(type)
+    function toogleOption(opt){
+        if(opt === 'menu') clearForms()
+        setOption(opt)
+    }
+
+    async function redeemAccount(){
+        const url = `${backendUrl}/auth`
+        const data = option === 'onlyPassword' ? {email, response: recaptchaToken} : {email, cpf, celphone, response: recaptchaToken, msg, publicProfile, dateBegin}
+        const method = option === 'onlyPassword' ? 'patch' : 'put'
+
+        setWaiting(true)
+        await axios[method](url, data).then( res => {
+            setResponse(res.data)
+            clearForms()
+        }).catch(async err => {
+            const msg = defineErrorMsg(err)
+            setToast(toastError(msg))
+        })
+
+        recaptchaRef.current.reset()
+        setRecaptchaToken('')
+        setWaiting(false)
     }
 
     function handleChange(setAttr) {
@@ -155,55 +167,27 @@ function RescueAccount(props) {
     }
 
     function captchaError(){
-        setToast(toastError('Ocorreu um erro no recaptcha, se persistir reporte'))
+        setWaiting(false)
+        setRecaptchaToken('')
+        recaptchaRef.current.reset()
     }
 
-    useEffect(() => {
+    useEffect(()=> {
+        recaptchaRef.current.execute()
+    }, [recaptchaToken])
 
-        function toogleWaiting(){
-            setWaiting(!waiting)
-        }
-
-        async function redeemAccount(){
-            const url = `${backendUrl}/auth`
-            const data = type === 'onlyPassword' ? {email, response: recaptchaToken} : {cpf, celphone, response: recaptchaToken} 
-            const method = type === 'onlyPassword' ? 'patch' : 'put'
-            
-            setType('')
-            setRecaptchaToken('')
-            
-            toogleWaiting()
-            
-            await axios[method](url, data).then( res => {
-                setResponse(res.data)
-            }).catch(async err => {
-                method === 'patch' ? clearFormOnlyPassword() : clearFormEmailAndPassword()
-                
-                const msg = defineErrorMsg(err)
-                setToast(toastError(msg))
-            })
-            
-            toogleWaiting()
-        }
-
-        if(type && !recaptchaToken) recaptchaRef.current.execute()
-        
-        if(type && recaptchaToken) redeemAccount()
-
-    }, [type, recaptchaToken, waiting, response, email, cpf, celphone, setToast])
-    
-    return ( 
+    return (
         <Container className="redeem-account-section">
             <div className="logo-area">
                 <img src={Logo} alt="Logo" width="200"/>
             </div>
-            <Recaptcha 
+            <Recaptcha
                 sitekey={CAPTCHA_SITE_KEY}
                 ref={ref => recaptchaRef.current = ref}
                 onResolved={(token) => setRecaptchaToken(token)}
                 style={{zIndex: 1}}
-                onError={() => captchaError()}
-                onExpired={() => captchaError()}
+                onError={captchaError}
+                onExpired={captchaError}
                 locale="pt-br"
             />
             { option === 'menu' && !response &&
@@ -230,10 +214,10 @@ function RescueAccount(props) {
                     <h2>Esqueci minha senha</h2>
                     <p>Informe seu e-mail para prosseguir com a recuperação de senha, vamos lhe enviar um e-mail com mais instruções.</p>
                     <TextField label="E-mail" className="modalFormInput"
-                        fullWidth={true} onChange={handleChange(setEmail)} 
+                        fullWidth={true} onChange={handleChange(setEmail)}
                         inputProps={{ autoComplete: 'email' }}
                     />
-                    <CustomButton disabledIcon={true} fullWidth={true} disabled={waiting} onClick={() => resolve('onlyPassword')} text={waiting ? 'Verificando...' : 'Confirmar'}/>
+                    <CustomButton disabledIcon={true} fullWidth={true} disabled={waiting} onClick={redeemAccount} text={waiting ? 'Verificando...' : 'Confirmar'}/>
                     <Button fullWidth={true} color="secondary" variant="outlined" disabled={waiting} onClick={() => toogleOption('menu')}>Voltar</Button>
                 </Grid>
             }
@@ -248,9 +232,9 @@ function RescueAccount(props) {
                     </p>
                     <Stepper activeStep={currentStep} orientation={ matches ? "vertical" : "horizontal"}>
                         { steps.map((step, index) => {
-                            
+
                             const stepProps = {completed: step.completed}
-                            
+
                             return (
                                 <Step key={index} {...stepProps}>
                                     <StepLabel>{step.label}</StepLabel>
@@ -268,7 +252,7 @@ function RescueAccount(props) {
                                     {currentStep > 0 ? 'Voltar' : 'Sair'}
                                 </Button>
                             </Box>
-                            { currentStep < steps.length - 1 && 
+                            { currentStep < steps.length - 1 &&
                                 <Box>
                                     <Button color="secondary" variant="contained" onClick={() => nextStep()}>
                                         Próximo
@@ -281,7 +265,7 @@ function RescueAccount(props) {
                     { currentStep === 0 &&
                         <FormControl fullWidth>
                             <TextField label="Informe seu CPF" value={cpf}
-                                fullWidth onChange={handleChangeMaskData('cpf')} 
+                                fullWidth onChange={handleChangeMaskData('cpf')}
                                 inputProps={{ maxLength: 14 }}
                                 className="modalFormInput"
                             />
@@ -290,26 +274,25 @@ function RescueAccount(props) {
                                 inputProps={{ maxLength: 15 }}
                                 className="modalFormInput"
                             />
-                            <TextField label="E-mail de contato" value={celphone}
-                                fullWidth onChange={handleChangeMaskData('celphone')}
-                                inputProps={{ maxLength: 15 }}
+                            <TextField label="E-mail de contato" value={email}
+                                fullWidth onChange={handleChange(setEmail)}
                                 className="modalFormInput"
                                 helperText="Este e-mail será utilizado para nossa equipe entrar em contato em caso de necessidade de avaliação dos nossos administradores"
                             />
                         </FormControl>
                     }
-                    { currentStep === 1 && 
-                        <FormControl fullWidth>
-                            <FormControl fullWidth className="modalFormInput">
-                                <InputLabel htmlFor='public-access'>
+                    { currentStep === 1 &&
+                        <FormControl fullWidth className="formGroup">
+                            <FormControl fullWidth className="formGroup">
+                                <Typography component="p" variant="body2">
                                     Seu perfil tem acesso público no website para os leitores?
-                                </InputLabel>
+                                </Typography>
                                 <Select
                                     native
-                                    value={publicAccess}
-                                    onChange={handleChange(setPublicAccess)}
+                                    value={publicProfile}
+                                    onChange={handleChange(setPublicProfile)}
                                     inputProps={{
-                                        id: 'public-access'
+                                        id: 'public-profile'
                                     }}
                                 >
                                     <option value="imNotSure">Não tenho certeza</option>
@@ -317,43 +300,58 @@ function RescueAccount(props) {
                                     <option value="no">Não</option>
                                 </Select>
                             </FormControl>
-                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                                <KeyboardDatePicker label="Quando você começou a usar nossa plataforma?"
-                                    clearable 
-                                    cancelLabel="Cancelar"
-                                    clearLabel="Limpar"
-                                    value={createDate}
-                                    onChange={(date) => handleDate(setCreateDate, date)}
-                                    mask="__/__/____"
-                                    maxDate={new Date()}
-                                    maxDateMessage="Data acima do permitido"
-                                    minDateMessage="Data abaixo do permitido"
-                                    format="DD/MM/YYYY"
-                                    invalidDateMessage="Formato de data inválido"
-                                    helperText="Informe uma data aproximada, caso não tenha certeza"
-                                    fullWidth
-                                    className="modalFormInput" />
-                            </MuiPickersUtilsProvider>
+                            <FormControl fullWidth className="formGroup">
+                                <Typography component="p" variant="body2">
+                                    Quando você começou a usar nossa plataforma?
+                                </Typography>
+                                <MuiPickersUtilsProvider utils={MomentUtils}>
+                                    <KeyboardDatePicker
+                                        clearable
+                                        cancelLabel="Cancelar"
+                                        clearLabel="Limpar"
+                                        value={dateBegin}
+                                        onChange={(date) => handleDate(setDateBegin, date)}
+                                        mask="__/__/____"
+                                        maxDate={new Date()}
+                                        maxDateMessage="Data acima do permitido"
+                                        format="DD/MM/YYYY"
+                                        invalidDateMessage="Formato de data inválido"
+                                        helperText="Informe uma data aproximada, caso não tenha certeza"
+                                        fullWidth={true} />
+                                </MuiPickersUtilsProvider>
+                            </FormControl>
                         </FormControl>
                     }
-                    { currentStep === 2 && 
-                        <FormControl fullWidth>
+                    { currentStep === 2 &&
+                        <FormControl fullWidth className="formGroup">
                             <h3>Confirmar dados:</h3>
                             <span className="small-text">Ao confirmar, realizaremos uma análise das informações fornecidas. É importante ressaltar que enviar mais de uma soliticação de recuperação irá atrasar a análise de seu pedido de recuperação de senha, então, seja paciente que retornaremos um feedback já já, combinado? =D</span>
                             <Box mb={2}>
                                 <ul>
                                     <li>CPF: <strong>{cpf || 'Não informado'}</strong></li>
                                     <li>Telefone de contato: <strong>{celphone || 'Não informado'}</strong></li>
-                                    <li>Seu perfil tem acesso público no website para os leitores? <strong>{displayPublicAccess()}</strong></li>
-                                    <li>Quando você começou a usar nossa plataforma? <strong>{createDate ? createDate.format('DD/MM/YYYY') : 'Não informado'}</strong></li>
+                                    <li>Seu perfil tem acesso público no website para os leitores? <strong>{displayPublicProfile()}</strong></li>
+                                    <li>Quando você começou a usar nossa plataforma? <strong>{dateBegin ? dateBegin.format('DD/MM/YYYY') : 'Não informado'}</strong></li>
                                 </ul>
                             </Box>
-                            <Button color="secondary" disabled={waiting} variant="contained" fullWidth onClick={() => resolve('onlyEmail')}>{waiting ? 'Verificando...' : 'Confirmar'}</Button>
+                            <Divider className="separator" />
+                            <TextField
+                                label="Descreva seu problema (opcional)"
+                                value={msg}
+                                fullWidth onChange={handleChange(setMsg)}
+                                className="modalFormInput"
+                                variant="outlined"
+                                color="secondary"
+                                multiline={true}
+                                rows={6}
+                                helperText="É importante descrever bem sua situação, isto ajudará na análise de nossos administradores para a recuperação de sua conta."
+                            />
+                            <Button color="secondary" disabled={waiting} variant="contained" fullWidth onClick={redeemAccount}>{waiting ? 'Verificando...' : 'Confirmar'}</Button>
                         </FormControl>
                     }
                 </Grid>
             }
-            { Boolean(response) && 
+            { Boolean(response) &&
                 <Grid item xs={12} className="redeem-account-area">
                     <Box height="100%" display='flex' alignItems='center'>
                         <Box display='flex' justifyContent='center' alignItems='center' flexWrap='wrap'>

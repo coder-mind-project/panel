@@ -38,6 +38,7 @@ function Auth(props){
     const recaptchaRef = useRef(null)
 
     function toogleRescuePassword(){
+        setError('')
         setRescuePassword(!rescuePassword)    
     }
 
