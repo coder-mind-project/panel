@@ -7,7 +7,7 @@ import { Alert } from '@material-ui/lab'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import MomentUtils from '@date-io/moment'
 
-import { cpfMask, telphoneMask, celphoneMask } from '../../../config/masks'
+import { cpfMask, celphoneMask } from '../../../config/masks'
 
 import CustomButton from '../../Button.jsx'
 
@@ -36,7 +36,6 @@ class GeneralInformation extends Component {
             gender: '',
             profilePhoto: '',
             birthDate: null,
-            telphone: '',
             celphone: '',
             address: '',
             number: '',
@@ -73,12 +72,8 @@ class GeneralInformation extends Component {
                 this.setState({user: {...user, [attr]: cpfMask(value)}})
                 break
             }
-            case 'celphone':{
-                this.setState({user: {...user, [attr]: celphoneMask(value)}})
-                break
-            }
             default:{
-                this.setState({user: {...user, [attr]: telphoneMask(value)}})
+                this.setState({user: {...user, [attr]: celphoneMask(value)}})
                 break
             }
         }
@@ -408,13 +403,6 @@ class GeneralInformation extends Component {
                                 value={this.state.user.cpf}
                                 onChange={this.handleChangeMaskData('cpf')} 
                                 inputProps={{ maxLength: 14 }} 
-                            />
-                            <TextField label="Número de telefone *"
-                                className="formInput"
-                                placeholder="Ex: (xx)xxxx-xxxx"
-                                value={this.state.user.telphone}
-                                onChange={this.handleChangeMaskData('telphone')}
-                                inputProps={{ maxLength: 14 }}
                             />
                             <TextField label="Número de celular *"
                                 className="formInput"

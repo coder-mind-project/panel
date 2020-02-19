@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Grid, Box, Button, Container, TextField,
         Dialog, DialogTitle, DialogActions,
         DialogContent, FormControl, Select, InputLabel,
-        Stepper, Step, StepLabel } from '@material-ui/core'
+        Stepper, Step, StepLabel, useMediaQuery } from '@material-ui/core'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons"
@@ -54,6 +54,8 @@ function RescueAccount(props) {
     const [recaptchaToken, setRecaptchaToken] = useState('')
     const [type, setType] = useState('')
     const [waiting, setWaiting] = useState(false)
+
+    const matches = useMediaQuery('(max-width: 565px)')
 
     const recaptchaRef = useRef(null)
 
@@ -244,13 +246,13 @@ function RescueAccount(props) {
                     <p>
                         Tente preencher todos os campos com as informações mais recentes que você se lembra, isto ajuda numa análise mais apurada para recuperar sua conta.
                     </p>
-                    <Stepper activeStep={currentStep} orientation="horizontal">
+                    <Stepper activeStep={currentStep} orientation={ matches ? "vertical" : "horizontal"}>
                         { steps.map((step, index) => {
                             
                             const stepProps = {completed: step.completed}
                             
                             return (
-                                <Step key={index} {...stepProps} >
+                                <Step key={index} {...stepProps}>
                                     <StepLabel>{step.label}</StepLabel>
                                 </Step>
                             )

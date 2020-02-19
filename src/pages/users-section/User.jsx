@@ -16,7 +16,7 @@ import Searching from '../../assets/loading.gif'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../config/backend'
-import { cpfMask, telphoneMask, celphoneMask } from '../../config/masks'
+import { cpfMask, celphoneMask } from '../../config/masks'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -39,7 +39,6 @@ class User extends Component{
             cpf: '',
             gender: '',
             birthDate: null,
-            telphone: '',
             celphone: '',
             address: '',
             number: '',
@@ -79,12 +78,8 @@ class User extends Component{
                 this.setState({user: {...user, [attr]: cpfMask(value)}})
                 break
             }
-            case 'celphone':{
-                this.setState({user: {...user, [attr]: celphoneMask(value)}})
-                break
-            }
             default:{
-                this.setState({user: {...user, [attr]: telphoneMask(value)}})
+                this.setState({user: {...user, [attr]: celphoneMask(value)}})
                 break
             }
         }
@@ -106,7 +101,6 @@ class User extends Component{
             gender: this.state.user.gender,
             type: this.state.user.type,
             cpf: this.state.user.cpf,
-            telphone: this.state.user.telphone,
             celphone: this.state.user.celphone,
             birthDate: this.state.user.birthDate,
             address: this.state.user.address,
@@ -295,14 +289,6 @@ class User extends Component{
                                     value={this.state.user.cpf}
                                     onChange={this.handleChangeMaskData('cpf')} 
                                     inputProps={{ maxLength: 14 }} 
-                                />
-                                <TextField label="Número de telefone *"
-                                    className="formInput"
-                                    placeholder="Ex: (xx)xxxx-xxxx"
-                                    value={this.state.user.telphone}
-                                    helperText="Informe o telefone fixo"
-                                    onChange={this.handleChangeMaskData('telphone')}
-                                    inputProps={{ maxLength: 14 }}
                                 />
                                 <TextField label="Número de celular *"
                                     className="formInput"
