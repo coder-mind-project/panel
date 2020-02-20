@@ -9,6 +9,9 @@ import {Provider} from 'react-redux'
 import userReducer from './redux/userReducer'
 import errorReducer from './redux/errorReducer'
 import menuReducer from './redux/menuReducer'
+import toastReducer from './redux/toastReducer'
+
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 import './config/axios'
 
@@ -17,12 +20,31 @@ import './index.css'
 const reducers = combineReducers({
     user: userReducer,
     error: errorReducer,
-    menu: menuReducer
+    menu: menuReducer,
+    toast: toastReducer
+})
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#088FF6'
+        },
+        secondary: {
+            main: '#8a05be'
+        },
+        action:{
+            disabled: 'rgb(0,0,0)',
+            disabledBackground: 'rgb(190,190,190)'
+        }
+    }
 })
 
 
 
 ReactDOM.render(
     <Provider store={createStore(reducers)}>
-        <App />
-    </Provider>, document.getElementById('root'));
+        <MuiThemeProvider theme={theme}>
+            <App />
+        </MuiThemeProvider>
+    </Provider>
+    , document.getElementById('root'));

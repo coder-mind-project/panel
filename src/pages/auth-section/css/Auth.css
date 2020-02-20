@@ -1,0 +1,153 @@
+.container{
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    background-color: rgb(255, 255, 255);
+}
+
+.pretty-section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    min-height: 100vh;
+    width: 100vw;
+    color: #fff;
+    font-weight: 700;
+    background: #DA22FF;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #9733EE, #DA22FF);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #9733EE, #DA22FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    padding: 0px 15px;
+}
+
+.pretty-section h1{
+    text-align: center;
+}
+
+.pretty-section h2 {
+    font-size: 1.2rem;
+    text-align: center;
+    
+}
+
+.pretty-section .button{
+    margin: 10px;
+}
+
+.auth-section{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.logo-area{
+    height: 160px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-area{
+    height: 80%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-area > .form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+}
+
+.form-area > .form > .form-input, .form-button, .form-alert{
+    width: 60%;
+    margin: 10px 0px;
+}
+
+.forgot-password, .form-text{
+    cursor: pointer;
+    color: rgba(30, 30, 30, 1);
+    text-decoration: underline;
+    margin: 20px 0px;
+}
+
+.i-have-an-account{
+    display: none !important;
+}
+
+body{
+    margin-top: 0px;
+}
+
+.modalTitle h2{
+    margin: 0px;
+}
+
+.titleText{
+    font-size: 1.3rem;
+}
+
+.button-area{
+    padding: 25px;
+}
+
+.modalFormInput{
+    margin: 20px 0px !important;
+}
+
+.fakeLink{
+    padding: 10px;
+    font-weight: 600;
+    color: #8a05be;
+    text-decoration: underline;
+    cursor: pointer;
+    text-align: center;
+}
+
+@media(max-width: 960px){
+    .i-have-an-account{
+        display: flex !important;
+    }
+}
+
+@media(max-width: 768px){
+    .container{
+        display: flex;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+}
+
+@media(max-width: 565px){
+    .modal{
+        min-width: 90%;
+    }
+
+    .container{
+        display: flex;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .form-area > .form > .form-input, .form-button{
+        width: 100%;
+        margin: 10px 0px;
+    }
+
+    .form-alert{
+        width: 80%;
+    }
+
+    .button-area{
+        padding: 10px 25px;
+    }
+    
+}

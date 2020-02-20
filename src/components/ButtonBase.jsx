@@ -14,7 +14,7 @@ export default (props) => {
             options : default
 
         class: String - Define o modelo dentre os disponíveis
-            <['success', 'danger', 'default', 'gray', 'warning', 'none', 'noneNoPadding', 'defaultOutlined', 'noneOutlinedNoPadding']> : 'default'
+            <['success', 'danger', 'default', 'gray', 'warning', 'none', 'noneNoPadding', 'defaultOutlined', 'defaultMaxWidth', 'noneOutlinedNoPadding']> : 'default'
         type: String - Define o modelo de botão que será assumido
             <['submit', 'reset', 'button]> : 'button'
         disabled: Boolean - Se ativado disabilita o botão
@@ -42,12 +42,12 @@ export default (props) => {
     const classes = useStyles()
 
     return (
-        <ButtonBase className={classes[props.class] || classes.default}
+        <ButtonBase className={ classes[props.class] || classes.default}
                 type={props.type || 'button'}
                 disabled={props.disabled ? true : false}
                 onClick={props.onClick}
                 >
-            { Boolean(!props.disableIcon && !props.loading) &&
+            { Boolean(!props.disabledIcon && !props.loading) &&
                 <Icon fontSize={props.iconSize || 'default'} 
                     className={classes.icon}
                 >

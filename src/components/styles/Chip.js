@@ -1,3 +1,5 @@
+import { COLOR_APP, COLOR_APP_HOVER } from '../../config/dataProperties'
+
 export const styles = theme => ({
     success: {
         backgroundColor: 'rgb(30,178,15)',
@@ -14,10 +16,10 @@ export const styles = theme => ({
         },
     },
     default: {
-        backgroundColor: '#f50057',
+        backgroundColor: COLOR_APP,
         color: '#fff',
         '&:hover':{
-            backgroundColor: '#cc0249',
+            backgroundColor: COLOR_APP_HOVER,
         },
     },
     gray: {

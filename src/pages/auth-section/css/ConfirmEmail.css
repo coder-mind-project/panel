@@ -1,0 +1,5 @@
+.paper-container-confirm-email{
+    min-height: 90vh !important;
+    display: flex;
+    align-items: center;
+}

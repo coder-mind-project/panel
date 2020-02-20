@@ -1,3 +1,5 @@
+import { COLOR_APP, COLOR_APP_HOVER } from '../../config/dataProperties'
+
 const fontFamily = {
     fontFamily: 'Quicksand, sans-serif',
 }
@@ -26,10 +28,10 @@ export const styles = (theme) => ({
     },
     default: {
         ...fontFamily,
-        backgroundColor: '#f50057',
+        backgroundColor: COLOR_APP,
         color: '#fff',
         '&:hover':{
-            backgroundColor: '#cc0249',
+            backgroundColor: COLOR_APP_HOVER,
         },
         marginBottom: '10px',
         paddingLeft: '10px',
@@ -83,7 +85,7 @@ export const styles = (theme) => ({
         ...fontFamily,
         backgroundColor: 'transparent',
         border: '1px solid rgba(0,0,0,.23)',
-        color: '#f50057',
+        color: COLOR_APP,
         '&:hover':{
             backgroundColor: 'rgba(245, 0, 87, .15)',
         },

@@ -1,8 +1,10 @@
+import { COLOR_APP, COLOR_APP_HOVER } from '../../config/dataProperties'
+
 export const styles = theme => ({
     success: {
         backgroundColor: 'rgb(30,178,15)',
         color: '#fff',
-        '&:hover':{
+        '&:hover':{ 
             backgroundColor: 'rgb(15,150,7)',
         },
         marginBottom: '10px',
@@ -12,7 +14,7 @@ export const styles = theme => ({
         paddingBottom: 6,
         paddingLeft: 10,
         paddingRight: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     danger: {
         backgroundColor: 'rgb(215,49,12)',
@@ -24,25 +26,25 @@ export const styles = theme => ({
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     default: {
-        backgroundColor: '#f50057',
+        backgroundColor: COLOR_APP,
         color: '#fff',
         '&:hover':{
-            backgroundColor: '#cc0249',
+            backgroundColor: COLOR_APP_HOVER,
         },
         marginBottom: '10px',
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     defaultMaxWidth: {
-        backgroundColor: '#f50057',
+        backgroundColor: COLOR_APP,
         color: '#fff',
         '&:hover':{
-            backgroundColor: '#cc0249',
+            backgroundColor: COLOR_APP_HOVER,
         },
         marginBottom: '10px',
         fontSize: '1rem',
@@ -61,7 +63,7 @@ export const styles = theme => ({
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     warning: {
         backgroundColor: 'rgb(255,195,0)',
@@ -73,7 +75,7 @@ export const styles = theme => ({
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     none:{
         backgroundColor: 'transparent',
@@ -85,11 +87,11 @@ export const styles = theme => ({
         fontSize: '1rem',
         fontWeight: 100,
         padding: 10,
-        borderRadius: 4
+        borderRadius: 4,
     },
     icon: {
         marginRight: '5px'
-    },
+    }
 })
 
 export default {styles}

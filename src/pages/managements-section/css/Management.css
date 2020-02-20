@@ -1,0 +1,15 @@
+.superIcon{
+    font-size: 2rem !important;
+}
+
+.accessButton{
+    margin-top: 25px !important;
+}
+
+.card-management{
+    min-height: 230px;
+    margin: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

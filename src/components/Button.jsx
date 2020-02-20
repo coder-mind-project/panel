@@ -1,22 +1,22 @@
-import React from 'react'
-import { Button, Icon, makeStyles,
-    useMediaQuery, CircularProgress } from '@material-ui/core'
+import React from 'react';
+import {
+  Button, Icon, makeStyles,
+  useMediaQuery, CircularProgress,
+} from '@material-ui/core';
 
-import { styles } from './styles/Button'
+import { styles } from './styles/Button';
 
-const useStyles = makeStyles(styles)
+const useStyles = makeStyles(styles);
 export default (props) => {
-    const classes = useStyles()
-    const matches = useMediaQuery('(max-width: 690px)')
-
-    /*
+  /*
         Propriedades disponíveis
 
         prop: type - Description
             options : default
 
         color: String - Define o modelo dentre os disponíveis
-            <['success', 'danger', 'default', 'gray', 'warning', 'none', 'noneNoPadding', 'defaultOutlined', 'noneOutlinedNoPadding']> : 'default'
+            <['success', 'danger', 'default', 'gray', 'warning', 'none', 'noneNoPadding',
+            'defaultOutlined', 'noneOutlinedNoPadding']> : 'default'
         fullWidth: Boolean - Define se terá tamanho máximo. Referente ao componente pai
             <[true, false]> : false
         variant: String - Modelo de variant para ser usado, assim como no material UI
@@ -39,31 +39,52 @@ export default (props) => {
             <[]> : '' (String vazia)
         disabled: Boolean - Desabilita o botão
             <[true, false]> : false
-        
+
     */
 
+  const classes = useStyles();
+  const matches = useMediaQuery('(max-width: 690px)');
 
-    return (
-        <Button className={classes[props.color] || classes.default}
-                fullWidth={props.fullWidth || matches}
-                variant={props.variant || 'contained'}
-                onClick={props.onClick}
-                disabled={props.disabled || false}
-        >
-            { Boolean(!props.disableIcon && !props.loading) &&
-                <Icon fontSize={props.iconSize || 'default'} 
-                    className={classes.icon}
+  const {
+    color,
+    fullWidth,
+    variant,
+    onClick,
+    disabled,
+    disabledIcon,
+    loading,
+    icon,
+    iconSize,
+    circularProgressSize,
+    CircularProgressColor,
+    text,
+  } = { ...props };
+  return (
+    <Button
+      className={classes[color] || classes.default}
+      fullWidth={fullWidth || matches}
+      variant={variant || 'contained'}
+      onClick={onClick}
+      disabled={disabled || false}
+    >
+      { Boolean(!disabledIcon && !loading)
+                && (
+                <Icon
+                  fontSize={iconSize || 'default'}
+                  className={classes.icon}
                 >
-                    {props.icon}
+                  {icon}
                 </Icon>
-            }
-            { props.loading && 
-                <CircularProgress className={classes.icon}
-                    size={props.circularProgressSize || 15}
-                    color={props.CircularProgressColor || 'inherit'} 
+                )}
+      { loading
+                && (
+                <CircularProgress
+                  className={classes.icon}
+                  size={circularProgressSize || 15}
+                  color={CircularProgressColor || 'inherit'}
                 />
-            }
-            {props.text}
-        </Button>
-    )
-}
+                )}
+      {text}
+    </Button>
+  );
+};
