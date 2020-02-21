@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Container, Grid, Table,
     TableRow, TableHead, TableBody, TableCell,
     TableFooter, TablePagination, Paper, Box,
-    Button, Tooltip, Typography, IconButton, 
+    Button, Tooltip, Typography, IconButton,
     Badge, Icon } from '@material-ui/core'
 
 import { connect } from 'react-redux'
@@ -33,7 +33,7 @@ class Tickets extends Component {
         admin: {}
     }
 
-    state = { 
+    state = {
         tickets: [],
         loading: false,
         page: 1,
@@ -65,11 +65,11 @@ class Tickets extends Component {
     async get(filters = null){
         /* Responsável por realizar a busca de tickets */
         const url = filters ? `${backendUrl}/tickets?page=${this.state.page}&limit=${this.state.limit}&tid=${filters.tid}&type=${filters.type}&begin=${filters.begin}&end=${filters.end}&order=${filters.order}` : `${backendUrl}/tickets?page=${this.state.page}&limit=${this.state.limit}`
-        
+
         if(filters){
             this.setState({filters})
         }
-        
+
         if(this.state.tickets.length > 0) this.setState({tickets: []})
         this.toogleLoading()
         await axios(url).then(res => {
@@ -129,12 +129,12 @@ class Tickets extends Component {
 
     selectTheme = theme => event => {
         /*  Usado para selecionar o tema desejado para remover e também
-            habilitando o modal de confirmação de exclusão 
+            habilitando o modal de confirmação de exclusão
         */
 
         this.setState({
             ticketDialog: true,
-            ticketSelected: theme 
+            ticketSelected: theme
         })
     }
 
@@ -161,9 +161,9 @@ class Tickets extends Component {
         await this.setState({
             page: ++page
         })
-        
+
         const filters = this.state.filters
-        
+
         this.get(filters)
     }
 
@@ -206,10 +206,10 @@ class Tickets extends Component {
         this.get()
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Container id="component">
-                {this.state.redirectTo && 
+                {this.state.redirectTo &&
                     <Redirect to={this.state.redirectTo} />
                 }
                 <Header title="Tickets" description="Visualize e responda tickets de atendimento aos autores da plataforma"
@@ -233,7 +233,7 @@ class Tickets extends Component {
                     </Grid>
                 </Container>
                 <Filter showFilter={this.state.showFilter} emitSearchByFilters={(filters) => this.prepareForSearchWithFilters(filters)} isLoading={this.state.loading} closeFilter={() => this.toogleFilter()}/>
-                {this.state.loading && 
+                {this.state.loading &&
                     <Container className="center spinnerContainer">
                         <img src={Searching} alt="Procurando tickets" />
                         <h4>
@@ -324,7 +324,7 @@ class Tickets extends Component {
                                 {/* Footer da tabela */}
                                 <TableFooter>
                                     <TableRow>
-                                        <TablePagination 
+                                        <TablePagination
                                             rowsPerPageOptions={OPTIONS_LIMIT}
                                             colSpan={3}
                                             count={this.state.count}
@@ -336,7 +336,7 @@ class Tickets extends Component {
                                                 inputProps: {'aria-label': 'Limite'},
                                             }}
                                             onChangePage={this.changePage}
-                                            
+
                                             onChangeRowsPerPage={this.defineLimit}
                                         />
                                     </TableRow>
@@ -344,7 +344,7 @@ class Tickets extends Component {
                             </Table>
                             {/* Ticket's content ticketDialog */}
                             {this.state.ticketDialog && <ViewTicket ticket={this.state.ticketSelected} onClose={this.toogleTicketDialog} defineType={this.defineType} updateTicket={(ticket) => this.updateTicket(ticket)}/>}
-                            {this.state.responsesDialog && <TicketResponses ticket={this.state.ticketSelected} onClose={() => this.toogleResponsesDialog()} />}
+                            <TicketResponses opened={this.state.responsesDialog} ticket={this.state.ticketSelected} closeDialog={() => this.toogleResponsesDialog()} />
                         </Container>
                     </Paper>
                 }

@@ -60,7 +60,7 @@ class Stats extends Component{
         dialogModal: false,
         ipSelected: '',
         year: "",
-        
+
         article: '',
         dateBegin: null,
         dateEnd: null,
@@ -73,12 +73,12 @@ class Stats extends Component{
     defineYears(){
         const begin = 2019
         let years = this.state.years
-        
+
         for (let year = begin; year <= new Date().getFullYear(); year++) {
             years.push(year)
         }
         years.sort((x, y) => y-x)
-        
+
         const year = new Date().getFullYear()
 
         this.setState({years, year})
@@ -103,7 +103,7 @@ class Stats extends Component{
     }
 
     filterSubmit(){
-        if(!this.state.both && !this.state.onlyLikes && !this.state.onlyViews) 
+        if(!this.state.both && !this.state.onlyLikes && !this.state.onlyViews)
             return this.props.setToast(info('Selecione pelos menos um tipo de busca'))
 
         if(this.state.both){
@@ -122,7 +122,7 @@ class Stats extends Component{
         const dateBegin = this.state.dateBegin || ''
         const dateEnd = this.state.dateEnd || ''
         const article = this.state.article.title || ''
-    
+
         const url = `${backendUrl}/likes?db=${dateBegin}&de=${dateEnd}&art=${article}`
         await axios(url).then(res => {
             this.setState({lastLikes: res.data.likes})
@@ -132,7 +132,7 @@ class Stats extends Component{
 
     async getViews(){
         await this.toogleLoadingViews()
-        
+
         const dateBegin = this.state.dateBegin || ''
         const dateEnd = this.state.dateEnd || ''
         const article = this.state.article.title || ''
@@ -146,13 +146,13 @@ class Stats extends Component{
 
     async getStats(){
         const url = `${backendUrl}/stats?y=${this.state.year}`
-        
+
         if(this.props.user && this.props.user.platformStats) {
             this.setState({
                 platformStats: Boolean(this.props.user.platformStats)
             })
         }
-        
+
         this.toogleLoadingStats()
         await axios(url).then( res => {
             const chartData = {
@@ -259,12 +259,12 @@ class Stats extends Component{
             viewsTableDataByAuthor.sort((elem , secElem) => secElem.quantity - elem.quantity)
             likesTableDataByArticle.sort((elem , secElem) => secElem.quantity - elem.quantity)
             likesTableDataByAuthor.sort((elem , secElem) => secElem.quantity - elem.quantity)
-            
+
             const viewsChartData = this.defineChartByArticle(viewsByArticle)
             // const likesChartData = this.defineChartByArticle(likesByArticle)
 
             this.setState({viewsChartData, viewsTableDataByArticle, viewsTableDataByAuthor, likesTableDataByArticle, likesTableDataByAuthor})
-            
+
         })
 
         this.toogleLoadingArticleStats()
@@ -272,16 +272,16 @@ class Stats extends Component{
 
     defineChartByArticle = (byArticle) => {
         /**Define as propriedades para o grafico de views por artigo */
-        
+
         /** Definição de cores e cores ao passar o mouse para o grafico de visualizações por artigos */
         const colors = byArticle.views.map( _ => {
             return `rgb(${randomNumber(1,255)},${randomNumber(1,255)},${randomNumber(1,255)})`
         })
-        
+
         const hoverColors = colors.map( color => {
             return color.replace('rgb', 'rgba').replace(')', ',0.5)')
         })
-        
+
         return {
             labels: byArticle.articles,
             datasets: [{
@@ -294,7 +294,7 @@ class Stats extends Component{
 
     async toogleDialogModal(ipAddress){
         await this.setState({ipSelected: !this.state.dialogModal ? ipAddress : ''})
-        
+
         this.setState({
             dialogModal: !this.state.dialogModal
         })
@@ -379,7 +379,7 @@ class Stats extends Component{
 
     loadArticles = async (query) => {
         //Carrega os artigos condicionado pela busca digitada
-        
+
         if(query.length < 3) return
 
         const limit = 5
@@ -393,7 +393,7 @@ class Stats extends Component{
                 value: article.title,
             }
         }) || []
-    
+
         return articles
     }
 
@@ -417,7 +417,7 @@ class Stats extends Component{
                 <Header icon="assessment" title="Estatísticas" description="Acompanhe o desempenho de suas publicações"/>
                 { this.props.user.tagAdmin && <Box width="100%" display="flex" alignItems="center" justifyContent="flex-end">
                     <InputLabel>Estatísticas da plataforma?</InputLabel>
-                    <Switch 
+                    <Switch
                         checked={this.state.platformStats}
                         onChange={(evt) => this.tooglePlatformStats(evt)}
                         id="platform-stats"
@@ -434,7 +434,7 @@ class Stats extends Component{
                         <StatsBlock icon="comment" loading={this.state.loadingStats} title="Comentários por mês" loadingMsg="Obtendo comentários" data={this.state.comments} />
                     </Grid>
                 </Grid>
-                { !this.state.loadingStats && 
+                { !this.state.loadingStats &&
                     <form onSubmit={ (evt) => { evt.preventDefault(); this.getStats();} }>
                         <Box width="100%" display="flex" flexWrap="wrap" mt={7} mb={2} mr={2} ml={2} >
                             <Box mr={2} mb={2}>
@@ -445,7 +445,7 @@ class Stats extends Component{
                                         value={this.state.year}
                                         onChange={this.handleChange('year')}
                                     >
-                                    { 
+                                    {
                                         this.state.years.map( year => <MenuItem value={year} key={year}>{year}</MenuItem>)
                                     }
                                     </Select>
@@ -461,7 +461,7 @@ class Stats extends Component{
                     </Box>
                 }
                 { !this.state.loadingStats &&
-                    <Line data={this.state.chartData}  options={{title:{ display: `Visualizações ${this.props.user.platformStats && this.props.user.tagAdmin ? 'da plataforma' : `de ${this.props.user.name}`} - Ano ${this.state.year}`, text: `Visualizações ${this.props.user.platformStats && this.props.user.tagAdmin ? 'da plataforma' : `de ${this.props.user.name}`} - Ano ${this.state.year}` , fontSize: 20, padding: 15}}} 
+                    <Line data={this.state.chartData}  options={{title:{ display: `Visualizações ${this.props.user.platformStats && this.props.user.tagAdmin ? 'da plataforma' : `de ${this.props.user.name}`} - Ano ${this.state.year}`, text: `Visualizações ${this.props.user.platformStats && this.props.user.tagAdmin ? 'da plataforma' : `de ${this.props.user.name}`} - Ano ${this.state.year}` , fontSize: 20, padding: 15}}}
                 />}
                 <Paper className="paper-section">
                     <Box mt={3} display="flex" alignItems="center">
@@ -579,7 +579,7 @@ class Stats extends Component{
                                     <h4>Ops, nenhuma visualização encontrada.</h4>
                                 </Box>
                             }
-                            { this.state.loadingViews && 
+                            { this.state.loadingViews &&
                                 <Box display="flex" mt={5} alignItems="center" flexDirection="column" justifyContent="center" width="100%">
                                     <CircularProgress size={70} />
                                     <Box m={1}>
@@ -602,10 +602,10 @@ class Stats extends Component{
                                         {this.state.lastViews.map(view => (
                                         <TableRow key={view._id}>
                                             <TableCell scope="row">
-                                                {Boolean(view.article) && 
+                                                {Boolean(view.article) &&
                                                     <span>{view.article.title}</span>
                                                 }
-                                                {!Boolean(view.article) && 
+                                                {!Boolean(view.article) &&
                                                     <span>N/D</span>
                                                 }
                                             </TableCell>
@@ -644,7 +644,7 @@ class Stats extends Component{
                                     <h4>Ops, nenhuma avaliação encontrada.</h4>
                                 </Box>
                             }
-                            { this.state.loadingLikes && 
+                            { this.state.loadingLikes &&
                                 <Box display="flex" mt={5} alignItems="center" flexDirection="column" justifyContent="center" width="100%">
                                     <CircularProgress size={70} />
                                     <Box m={1}>
@@ -689,7 +689,7 @@ class Stats extends Component{
                                     </Box>
                                     <Box>
                                         <h3>Informações por artigo</h3>
-                                    </Box> 
+                                    </Box>
                                 </Box>
                                 <Box width="100%" mb={1}>
                                     <small className="section-description">Informações como visualizações gerais dos artigos, avaliações e mais comentários</small>
@@ -700,14 +700,14 @@ class Stats extends Component{
                                 </Grid>
                             </Box>
                         }
-                        { this.state.loadingArticleStats && 
+                        { this.state.loadingArticleStats &&
                             <Box width="100%" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                                 <img src={LoadingGraph} alt="Carregando"/>
                                 Carregando...
                             </Box>
                         }
                         <Box width="100%" display="flex" alignItems="flex-start" flexWrap="wrap" mt={3}>
-                            { this.state.viewsTableDataByArticle.length > 0 && 
+                            { this.state.viewsTableDataByArticle.length > 0 &&
                                 <Grid item xs={12} md={6}>
                                     <Paper className="stats-short-table">
                                         <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={1}>
@@ -748,7 +748,7 @@ class Stats extends Component{
                                     </Paper>
                                 </Grid>
                             }
-                            { this.state.viewsTableDataByAuthor.length > 0 && 
+                            { this.state.viewsTableDataByAuthor.length > 0 &&
                                 <Grid item xs={12} md={6}>
                                     <Paper className="stats-short-table">
                                         <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={1}>
@@ -789,7 +789,7 @@ class Stats extends Component{
                                     </Paper>
                                 </Grid>
                             }
-                            { this.state.likesTableDataByArticle.length > 0 && 
+                            { this.state.likesTableDataByArticle.length > 0 &&
                                 <Grid item xs={12} md={6}>
                                     <Paper className="stats-short-table">
                                         <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={1}>
@@ -830,7 +830,7 @@ class Stats extends Component{
                                     </Paper>
                                 </Grid>
                             }
-                            { this.state.likesTableDataByAuthor.length > 0 && 
+                            { this.state.likesTableDataByAuthor.length > 0 &&
                                 <Grid item xs={12} md={6}>
                                     <Paper className="stats-short-table">
                                         <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={1}>
@@ -873,7 +873,7 @@ class Stats extends Component{
                             }
                         </Box>
                     </Grid>
-                    { this.state.dialogModal && <IpInfoStatsDialog closeDialog={() => this.toogleDialogModal()} ipAddress={this.state.ipSelected}/> }
+                    <IpInfoStatsDialog opened={this.state.dialogModal} closeDialog={() => this.toogleDialogModal()} ipAddress={this.state.ipSelected}/>
                 </Box>
                 <FloatingButton action={() => document.documentElement.scrollTop = 0} />
             </Container>
@@ -882,6 +882,6 @@ class Stats extends Component{
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setUser, setToast}, dispatch) 
+const mapDispatchToProps = dispatch => bindActionCreators({setUser, setToast}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Stats)

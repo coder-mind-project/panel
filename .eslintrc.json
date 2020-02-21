@@ -23,5 +23,6 @@
         "react"
     ],
     "rules": {
+      "no-underscore-dangle": "off"
     }
 }

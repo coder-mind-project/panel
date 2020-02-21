@@ -1,69 +1,92 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react';
 
-import {Grid, Box, Divider, Dialog, DialogActions, DialogContent, DialogTitle, Button} from '@material-ui/core'
+import {
+  Grid, Box, Divider, Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography,
+} from '@material-ui/core';
 
-import {APP_VERSION, APP_BUILD} from '../../config/dataProperties'
+import { Redirect } from 'react-router-dom';
+import { APP_VERSION, APP_BUILD, APP_DEPENDENCIES } from '../../config/dataProperties';
 
-class MoreInfo extends Component {
+import Logo from '../../assets/coder-mind-painelv1-preto.png';
 
-    state = {
-        open: false
-    }
+function MoreInfo(props) {
+  const { opened, closeDialog, user } = { ...props };
 
-    closeDialog(){
-        this.setState({
-            open: false
-        })
+  const [open, setOpen] = useState(false);
+  const [route, setRouter] = useState('');
 
-        this.props.closeDialog()
-    }
+  function close() {
+    setOpen(false);
+    closeDialog();
+  }
 
-    componentDidUpdate(prevProps){
-        if(prevProps.opened !== this.props.opened && this.props.opened){
-            this.setState({
-                open: this.props.opened
-            })
-        }
-    }
+  function redirectTo(futureRoute) {
+    setRouter(`/${futureRoute}`);
+    close();
+  }
 
-    render(){
-        return (
-            <Dialog
-                open={this.state.open}
-                onClose={() => this.closeDialog()}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    Informações sobre o software
-                </DialogTitle>
-                <DialogContent>
-                    <Grid item xs={12}>
-                        <Box width="100%" display="flex" alignItems="center">
-                            <Box>
-                                <p>Usuário autenticado: {this.props.user.name}</p>
-                                <p>Perfil: {this.props.user.tagAdmin ? 'Administrador' : 'Autor'}</p>
-                            </Box>
-                        </Box>
-                        <Divider />
-                        <Box width="100%" display="flex" alignItems="center">
-                            <Box>
-                                <p>Versão da aplicação: {APP_VERSION}</p>
-                                <p>Build: {APP_BUILD}</p>
-                                <p>Desenvolvido por: Allan Wanderley Alves</p>
-                                <p>Copyright: Coder Mind</p>
-                            </Box>
-                        </Box>
-                    </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => this.closeDialog()} color="secondary" autoFocus>
-                        Fechar
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        )
-    }
+  useEffect(() => {
+    setOpen(opened);
+  }, [opened, open]);
+
+  return (
+    <Dialog
+      open={open}
+      onClose={close}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      { route && <Redirect to={route} /> }
+      <DialogTitle id="alert-dialog-title">
+        <Box width="100%" display="flex" justifyContent="center" alignItems="center">
+          <img src={Logo} width="225px" alt="Coder Mind" />
+        </Box>
+      </DialogTitle>
+      <Divider />
+      <DialogContent>
+        <Grid item xs={12}>
+          <Box mb={2} width="100%" display="flex" alignItems="center">
+            <Box>
+              <Typography variant="body1" component="p">
+                Usuário autenticado:&nbsp;
+                <strong>{user.name}</strong>
+              </Typography>
+              <Typography variant="body1" component="p">
+                Perfil do usuário:&nbsp;
+                <strong>{user.tagAdmin ? 'Administrador' : 'Autor'}</strong>
+              </Typography>
+            </Box>
+          </Box>
+          <Box width="100%" display="flex" alignItems="center">
+            <Box>
+              <Typography variant="body1" component="p">
+                Versão da aplicação:&nbsp;
+                <strong>{APP_VERSION}</strong>
+              </Typography>
+              <Typography variant="body1" component="p">
+                Build:&nbsp;
+                <strong>{APP_BUILD}</strong>
+              </Typography>
+              <Typography variant="body1" component="p">
+                Dependências:&nbsp;
+                <a href={APP_DEPENDENCIES} target="_blank" rel="noopener noreferrer" style={{ textWeigth: 800 }}>Visualizar dependências</a>
+              </Typography>
+            </Box>
+          </Box>
+          <Box mt={3} mb={1} width="100%" display="flex" justifyContent="center" alignItems="center">
+            <Button variant="contained" color="secondary" onClick={() => redirectTo('ticket')}>
+              Preciso de ajuda
+            </Button>
+          </Box>
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={close} color="secondary" autoFocus>
+          Fechar
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 
-export default MoreInfo
+export default MoreInfo;
