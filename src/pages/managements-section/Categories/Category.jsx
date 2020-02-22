@@ -19,7 +19,7 @@ import '../../css/forms.css'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setToast } from "../../../redux/toastActions"
+import { callToast } from "../../../redux/toastActions"
 import { success, error } from "../../../config/toasts"
 
 class Category extends Component{
@@ -49,7 +49,7 @@ class Category extends Component{
     }
 
     handleChangeSelect = value => {
-        /* 
+        /*
             Usado para definir o valor do tema
         */
 
@@ -60,21 +60,21 @@ class Category extends Component{
         /*  Responsável por realizar a busca dos temas conforme a palavra
             chave digitada pelo usuário.
             A busca será somente realizada após o terceiro digito
-            
+
             A propriedade loadOptions do AsyncSelect recebe uma promise.
             Assim foi adotado este tipo de retorno para verificar a quantidade
             caracteres digitados
         */
-    
+
         return new Promise(resolve => {
             setTimeout(() => {
                 resolve(value.length >= 3 ? this.loadThemes(value) : [])
             })
         }, 1000)
     }
-    
+
     loadThemes = async (query) => {
-        /* 
+        /*
             Responsável por buscar o tema pela palavra chave
         */
 
@@ -87,16 +87,16 @@ class Category extends Component{
                 value: theme._id,
             }
         }) || []
-    
+
         return themes
     }
 
     formatData = () => {
-        
+
         /* Formata a categoria de acordo com o registro na base de dados */
 
         const category = {
-            _id: this.state.category._id, 
+            _id: this.state.category._id,
             name: this.state.category.name,
             alias: this.state.category.alias,
             description: this.state.category.description,
@@ -125,13 +125,13 @@ class Category extends Component{
 
 
         axios[method](url, category).then(() => {
-            this.props.setToast(success('Operação realizada com sucesso'))
+            this.props.callToast(success('Operação realizada com sucesso'))
             setTimeout(() => {
                 this.goTo('categories')
             }, 2000)
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
     }
 
@@ -141,7 +141,7 @@ class Category extends Component{
 
     async getCategory(id){
         /* Realiza a busca da categoria para permitir a edição / visualização */
-        
+
         await this.toogleLoading()
         const url = `${backendUrl}/categories/${id}`
         await axios(url).then(res => {
@@ -160,14 +160,14 @@ class Category extends Component{
             })
         }).catch(err => {
             const msg = err && err.response && err.response.data ? err.response.data  : 'Ocorreu um erro desconhecido, se persistir reporte'
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
             if(err && err.response && err.response.status === 404){
                 setTimeout(() => {
                     this.setState({redirectTo: 'categories'})
                 }, 3000)
             }
         })
-        
+
         this.toogleLoading()
     }
 
@@ -180,7 +180,7 @@ class Category extends Component{
     render(){
         return(
             <Container id="component">
-                <Header title="Categoria" 
+                <Header title="Categoria"
                     description="Consulte, altere, crie e remova categorias do sistema"
                     icon="category"
                 />
@@ -197,30 +197,30 @@ class Category extends Component{
                         </strong>
                     </Breadcrumbs>
                 </Box>
-                { !this.state.loading && 
+                { !this.state.loading &&
                     <Paper className="form">
-                        {this.state.redirectTo && 
+                        {this.state.redirectTo &&
                             <Redirect to={`/${this.state.redirectTo}`} />
                         }
                         <Grid container>
                             <Grid item xs={12} md={6} className="formGroup">
-                                <TextField label="Categoria *" 
+                                <TextField label="Categoria *"
                                     error={Boolean(this.state.category.name.length >= 30)}
-                                    helperText={this.state.category.name.length >= 30 ? "Máximo permitido 30 caracteres" : ''} 
+                                    helperText={this.state.category.name.length >= 30 ? "Máximo permitido 30 caracteres" : ''}
                                     fullWidth className="formInput"
-                                    value={this.state.category.name} 
-                                    onChange={this.handleChange('name')} 
+                                    value={this.state.category.name}
+                                    onChange={this.handleChange('name')}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6} className="formGroup">
-                                <TextField label="Apelido" 
-                                    error={Boolean(this.state.category.alias && this.state.category.alias.length >= 30)} 
-                                    helperText={this.state.category.alias && this.state.category.alias.length >= 30 ? 
+                                <TextField label="Apelido"
+                                    error={Boolean(this.state.category.alias && this.state.category.alias.length >= 30)}
+                                    helperText={this.state.category.alias && this.state.category.alias.length >= 30 ?
                                         "Máximo permitido 30 caracteres" :
                                         'Informe um possível apelido para o tema, isto ajuda o sistema a encontrar este tema em pesquisas'}
-                                    className="formInput" value={this.state.category.alias} 
-                                    fullWidth 
-                                    onChange={this.handleChange('alias')} 
+                                    className="formInput" value={this.state.category.alias}
+                                    fullWidth
+                                    onChange={this.handleChange('alias')}
                                 />
                             </Grid>
                             <Grid item xs={12} className="formGroup">
@@ -228,26 +228,26 @@ class Category extends Component{
                                     <InputLabel className="margin_bottom_x1">
                                             Tema *
                                     </InputLabel>
-                                    <AsyncSelect cacheOptions 
-                                        value={this.state.themeSelected} 
+                                    <AsyncSelect cacheOptions
+                                        value={this.state.themeSelected}
                                         isClearable loadOptions={this.getThemes}
                                         onChange={(value) => this.handleChangeSelect(value)}
                                         noOptionsMessage={(event) => event.inputValue.length >= 3 ?
                                             'Nenhum resultado encontrado' :
                                             'Faça uma busca com pelo menos 3 caracteres'}
                                         loadingMessage={() => "Carregando..."}
-                                        placeholder="Informe o tema desta categoria" 
+                                        placeholder="Informe o tema desta categoria"
                                     />
                                 </FormGroup>
                             </Grid>
                             <Grid item xs={12} className="formGroup">
-                                <TextField label="Descrição" 
+                                <TextField label="Descrição"
                                     error={Boolean(this.state.category.description && this.state.category.description.length >= 100)}
                                     helperText={this.state.category.description && this.state.category.description.length >= 100 ?
                                     "Máximo permitido 100 caracteres" :
                                     'Descreva do que se trata este tema. (Campo opcional)'}
                                     className="formInput"
-                                    fullWidth value={this.state.category.description} 
+                                    fullWidth value={this.state.category.description}
                                     onChange={this.handleChange('description')}
                                 />
                             </Grid>
@@ -258,7 +258,7 @@ class Category extends Component{
                         <Grid item xs={12} className="footList">
                             <CustomButton className="buttonFootList"
                                 text="Voltar" color="gray" icon="logout"
-                                onClick={() => this.goTo('categories')} 
+                                onClick={() => this.goTo('categories')}
                             />
                             <CustomButton className="buttonFootList"
                                 text="Salvar" color="success" icon="done"
@@ -267,7 +267,7 @@ class Category extends Component{
                         </Grid>
                     </Paper>
                 }
-                {this.state.loading && 
+                {this.state.loading &&
                     <Container className="center spinnerContainer">
                         <img src={Searching} alt="Procurando categorias..."/>
                         <h4>
@@ -281,6 +281,6 @@ class Category extends Component{
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category)

@@ -16,7 +16,7 @@ import CustomButton from '../../Button.jsx'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 import { success, error, info } from '../../../config/toasts'
 
 import { DEFAULT_LIMIT } from '../../../config/dataProperties'
@@ -34,7 +34,7 @@ const INITIAL_COMMENT = {
 }
 
 class ArticleStats extends Component {
-    state = { 
+    state = {
         loading: false,
         countViews: 0,
         countComments: 0,
@@ -61,7 +61,7 @@ class ArticleStats extends Component {
         await this.setState({
             pageComments: ++page
         })
-        
+
         //this.searchUsers()
     }
 
@@ -73,23 +73,23 @@ class ArticleStats extends Component {
     }
 
     aproveComment(comment){
-        if(comment.confirmed) 
-            return this.props.setToast(info('Este comentário já está aprovado'))
+        if(comment.confirmed)
+            return this.props.callToast(info('Este comentário já está aprovado'))
 
         comment.confirmed = true
 
         const url = `${backendUrl}/comments`
         axios.patch(url, comment).then(() => {
-            this.props.setToast(success('Comentário aprovado com sucesso'))
+            this.props.callToast(success('Comentário aprovado com sucesso'))
             this.getComments()
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
     }
 
     getComments(){
-        if(!this.props.article) return this.props.setToast(error('Ocorreu um erro ao encontrar o artigo, se persistir reporte!'))
+        if(!this.props.article) return this.props.callToast(error('Ocorreu um erro ao encontrar o artigo, se persistir reporte!'))
         const page = this.state.pageComments
         const limit = this.state.limitComments
 
@@ -107,9 +107,9 @@ class ArticleStats extends Component {
             _id: comment._id,
             readed: true
         }
-    
+
         const url = `${backendUrl}/comments`
-    
+
         axios.patch(url, readed)
     }
 
@@ -132,11 +132,11 @@ class ArticleStats extends Component {
         await this.toogleSendingAnswer()
 
         await axios.post(url, body).then(res => {
-            this.props.setToast(success(res.data))
+            this.props.callToast(success(res.data))
             this.closeAnswerDialog()
         }).catch( async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleSendingAnswer()
@@ -169,8 +169,8 @@ class ArticleStats extends Component {
         this.getStats()
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Grid item xs={12}>
                 { this.state.loading &&
                     <Box display="flex" alignItems="center" flexDirection="column" m={5} p={5}>
@@ -205,7 +205,7 @@ class ArticleStats extends Component {
                                 </Grid>
                             </Grid>
                         </Box>
-                        { this.state.comments.length > 0 && !this.state.loading && 
+                        { this.state.comments.length > 0 && !this.state.loading &&
                             <Box>
                                 <Box pl={5} pr={5}>
                                     <Box display="flex" alignItems="center" width="100%">
@@ -271,13 +271,13 @@ class ArticleStats extends Component {
                                                         {comment.userEmail}
                                                     </TableCell>
                                                     <TableCell scope="tagAdmin">
-                                                        {comment.confirmed ? 
+                                                        {comment.confirmed ?
                                                             <CustomChip size="small"
                                                                 className="chipTypeUser"
                                                                 color="success"
                                                                 sizeIcon="small"
                                                                 icon="done"
-                                                                text="Aprovado"/> : 
+                                                                text="Aprovado"/> :
                                                             <CustomChip size="small"
                                                                 className="chipTypeUser"
                                                                 color="gray"
@@ -288,14 +288,14 @@ class ArticleStats extends Component {
                                                         }
                                                     </TableCell>
                                                     <TableCell scope="_id">
-                                                        { comment.confirmed && 
+                                                        { comment.confirmed &&
                                                             <CustomIconButton icon="more_horiz"
                                                                 aria-label="Answer" color="default"
                                                                 tooltip="Responder comentário"
                                                                 onClick={() => this.openComment(comment)}
                                                             />
                                                         }
-                                                        { !comment.confirmed && 
+                                                        { !comment.confirmed &&
                                                             <CustomIconButton icon="done"
                                                                 aria-label="Aprove" color="default"
                                                                 tooltip="Aprovar comentário"
@@ -309,7 +309,7 @@ class ArticleStats extends Component {
                                             {/* Footer da tabela */}
                                             {/*<TableFooter>
                                                 <TableRow>
-                                                    <TablePagination 
+                                                    <TablePagination
                                                         rowsPerPageOptions={OPTIONS_LIMIT}
                                                         colSpan={4}
                                                         count={this.state.countComments}
@@ -319,7 +319,7 @@ class ArticleStats extends Component {
                                                         page={this.state.pageComments - 1}
                                                         SelectProps={{ inputProps: {'aria-label': 'Limite'} }}
                                                         onChangePage={this.changePage}
-                                                        
+
                                                         onChangeRowsPerPage={this.defineLimit}
                                                     />
                                                 </TableRow>
@@ -330,7 +330,7 @@ class ArticleStats extends Component {
                         </Box>}
                     </Grid>
                 }
-                { this.state.error && 
+                { this.state.error &&
                     <ErrorBlock />
                 }
                 <Dialog open={this.state.dialogAnswer} onClose={() => this.setState({dialogAnswer: false})} aria-labelledby="form-dialog-title">
@@ -352,13 +352,13 @@ class ArticleStats extends Component {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <CustomButton 
+                        <CustomButton
                             text="Cancelar"
                             onClick={() => {
                                 const op = window.confirm('Tem certeza que deseja sair?')
                                 if(op)
                                     this.closeAnswerDialog()
-                            }} 
+                            }}
                             color="danger"
                             variant="contained"
                             icon="clear"
@@ -380,6 +380,6 @@ class ArticleStats extends Component {
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({ setToast }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticleStats)

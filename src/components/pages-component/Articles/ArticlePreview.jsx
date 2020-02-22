@@ -5,17 +5,17 @@ import Avatar from 'react-avatar'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 import { error } from '../../../config/toasts'
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 import { Grid, Icon, Box, Divider } from '@material-ui/core'
-    
+
 import './css/ArticlePreview.css'
 
 class ArticlePreview extends Component {
-    
+
     state = {
         article: {},
         loading: false,
@@ -32,7 +32,7 @@ class ArticlePreview extends Component {
         const aux = date.split('T')
         let dayMonthYear = aux[0].split('-')
         dayMonthYear = `${dayMonthYear[2]}/${dayMonthYear[1]}/${dayMonthYear[0]}`
-        
+
         let hours = aux[1].split('.')[0]
 
         return `${dayMonthYear} - ${hours}`
@@ -50,7 +50,7 @@ class ArticlePreview extends Component {
                 loading: false
             })
         }
-        
+
         const url = `${backendUrl}/articles/management/${id}`
 
         axios(url).then(res => {
@@ -61,19 +61,19 @@ class ArticlePreview extends Component {
         }).catch( async err => {
             this.setState({error: true})
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleLoading()
     }
 
 
-    render() { 
+    render() {
         return (
             <Grid className="article-wrapper">
                 { this.state.article && !this.state.loading &&
                     <Grid item xs={12} className="article-content">
-                        { this.state.article.bigImg && 
+                        { this.state.article.bigImg &&
                             <Grid item xs={12} className="article-header">
                                 <img src={`${backendUrl}/${this.state.article.bigImg}`} alt={this.state.article.longDescription}/>
                             </Grid>
@@ -113,7 +113,7 @@ class ArticlePreview extends Component {
                         </Grid>
                         </Grid>
                     }
-                <Divider className="divider" />  
+                <Divider className="divider" />
                 <Grid item xs={12} id="article-content"></Grid>
             </Grid>
         )
@@ -121,6 +121,6 @@ class ArticlePreview extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticlePreview)

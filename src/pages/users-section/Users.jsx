@@ -11,7 +11,7 @@ import SearchBar from 'material-ui-search-bar'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { setToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toastActions'
 import { success, error, info } from '../../config/toasts'
 
 import axios from 'axios'
@@ -29,7 +29,7 @@ import '../css/defaultPage.css'
 import './css/Users.css'
 
 class Users extends Component {
-    
+
     state = {
         users: [],
         page: 1,
@@ -109,9 +109,9 @@ class Users extends Component {
                 errorOp: false,
                 dialog: false
             })
-            
+
             this.searchUsers()
-            this.props.setToast(success('Usuário removido com sucesso'))
+            this.props.callToast(success('Usuário removido com sucesso'))
         }).catch(async err => {
             this.setState({
                 loadingOp: false,
@@ -119,9 +119,9 @@ class Users extends Component {
                 dialog: false
             })
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
-        
+
     }
 
     goTo = (path) => event => {
@@ -132,16 +132,16 @@ class Users extends Component {
 
     selectUser = user => event => {
         /*  Usado para selecionar o usuario desejado para remover e também
-            habilitando o modal de confirmação de exclusão 
+            habilitando o modal de confirmação de exclusão
         */
-        
+
         if(this.props.user._id === user._id){
-            return this.props.setToast(info("Para remover sua conta acesse a opção 'Meus dados'"))
+            return this.props.callToast(info("Para remover sua conta acesse a opção 'Meus dados'"))
         }
 
         this.setState({
             dialog: true,
-            userSelected: user 
+            userSelected: user
         })
     }
 
@@ -176,7 +176,7 @@ class Users extends Component {
         await this.setState({
             page: ++page
         })
-        
+
         this.searchUsers()
     }
 
@@ -211,7 +211,7 @@ class Users extends Component {
         this.toogleValidatingPass()
 
         const url = `${backendUrl}/auth/logged`
-        
+
         const payload = {
             password: this.state.password
         }
@@ -227,21 +227,21 @@ class Users extends Component {
 
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
-        
+
         this.toogleValidatingPass()
     }
-    
+
     componentDidMount(){
         this.searchUsers()
         this.addEventListener()
     }
-    
+
     render(){
         return (
             <Container id="component">
-                {this.state.redirectTo && 
+                {this.state.redirectTo &&
                     <Redirect to={this.state.redirectTo}/>
                 }
                 <Header title="Usuários"
@@ -340,13 +340,13 @@ class Users extends Component {
                                             {user.email}
                                         </TableCell>
                                         <TableCell scope="tagAdmin">
-                                            {user.tagAdmin ? 
+                                            {user.tagAdmin ?
                                                 <CustomChip size="small"
                                                     className="chipTypeUser"
                                                     color="default"
                                                     sizeIcon="small"
                                                     icon="supervisor_account"
-                                                    text="Administrador"/> : 
+                                                    text="Administrador"/> :
                                                 <CustomChip size="small"
                                                     className="chipTypeUser"
                                                     color="gray"
@@ -374,7 +374,7 @@ class Users extends Component {
                                 {/* Footer da tabela */}
                                 <TableFooter>
                                     <TableRow>
-                                        <TablePagination 
+                                        <TablePagination
                                             rowsPerPageOptions={OPTIONS_LIMIT}
                                             colSpan={4}
                                             count={this.state.count}
@@ -384,7 +384,7 @@ class Users extends Component {
                                             page={this.state.page - 1}
                                             SelectProps={{ inputProps: {'aria-label': 'Limite'} }}
                                             onChangePage={this.changePage}
-                                            
+
                                             onChangeRowsPerPage={this.defineLimit}
                                         />
                                     </TableRow>
@@ -413,15 +413,15 @@ class Users extends Component {
                                     </Container>
                                 </DialogContent>
                                 <DialogActions>
-                                    { !this.state.loadingOp && 
-                                        <Button color="primary" 
+                                    { !this.state.loadingOp &&
+                                        <Button color="primary"
                                             onClick={() => this.toogleDialog(false)}
                                         >
                                             Fechar
                                         </Button>
                                     }
-                                    {!this.state.loadingOp && 
-                                        <Button color="secondary" 
+                                    {!this.state.loadingOp &&
+                                        <Button color="secondary"
                                             onClick={() => this.remove(this.state.userSelected)}
                                         >
                                                 Sim, pode excluir
@@ -429,7 +429,7 @@ class Users extends Component {
                                     }
                                 </DialogActions>
                             </Dialog>
-                            
+
                             {/* RequestPassword dialog */}
                             <Dialog
                                 open={this.state.dialogRequestPassword}
@@ -445,8 +445,8 @@ class Users extends Component {
                                         <form onSubmit={(evt) => this.validatePassword(evt)}>
                                             <FormControl fullWidth>
                                                 <InputLabel htmlFor="password">Senha</InputLabel>
-                                                <PasswordField id="password" 
-                                                    inputProps={{ autoComplete: 'current-password' }} 
+                                                <PasswordField id="password"
+                                                    inputProps={{ autoComplete: 'current-password' }}
                                                     fullWidth onChange={this.handleChange('password')}
                                                     autoFocus={true}
                                                 />
@@ -455,16 +455,16 @@ class Users extends Component {
                                     </Container>
                                 </DialogContent>
                                 <DialogActions>
-                                    { !this.state.loadingOp && 
-                                        <Button color="primary" 
+                                    { !this.state.loadingOp &&
+                                        <Button color="primary"
                                             onClick={() => this.toogleDialogRequestPassword(false)}
                                             disabled={this.state.validatingPass}
                                         >
                                             Fechar
                                         </Button>
                                     }
-                                    {!this.state.loadingOp && 
-                                        <Button color="secondary" 
+                                    {!this.state.loadingOp &&
+                                        <Button color="secondary"
                                             onClick={() => this.validatePassword()}
                                             disabled={this.state.validatingPass}
                                         >
@@ -483,6 +483,6 @@ class Users extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users)

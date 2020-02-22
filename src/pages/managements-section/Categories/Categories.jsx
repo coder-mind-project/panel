@@ -4,7 +4,7 @@ import { Redirect, Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux"
-import { setToast } from "../../../redux/toastActions"
+import { callToast } from "../../../redux/toastActions"
 import { success, error } from "../../../config/toasts"
 
 import { Container, Grid, Button, Table,
@@ -24,9 +24,9 @@ import { backendUrl, defineErrorMsg } from '../../../config/backend'
 import { OPTIONS_LIMIT, DEFAULT_LIMIT, LIMIT_LABEL, DISPLAYED_ROWS } from '../../../config/dataProperties'
 
 class Categories extends Component {
-    
-    
-    state = { 
+
+
+    state = {
         categories: [],
         loading: false,
         query: '',
@@ -45,7 +45,7 @@ class Categories extends Component {
 
     async changeQueryValue(query){
         /* Realiza a busca de categorias por palavra chave */
-        
+
         await this.setState({
             query,
             page: 1
@@ -59,7 +59,7 @@ class Categories extends Component {
 
         const url = `${backendUrl}/categories?page=${this.state.page}&query=${this.state.query}&limit=${this.state.limit}`
         if(this.state.categories.length > 0) this.setState({categories: []})
-        
+
         await this.toogleLoading()
         await axios(url).then(res => {
             this.setState({
@@ -84,10 +84,10 @@ class Categories extends Component {
         const url = `${backendUrl}/categories/${id}`
 
         await axios.delete(url).then(() => {
-            this.props.setToast(success('Operação realizada com sucesso'))
+            this.props.callToast(success('Operação realizada com sucesso'))
         }).catch( async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
         this.setState({loadingOp: false, dialog: false})
         this.searchCategories()
@@ -101,12 +101,12 @@ class Categories extends Component {
 
     selectCategory = theme => event => {
         /*  Usado para selecionar a categoria desejada para remover e também
-            habilitando o modal de confirmação de exclusão 
+            habilitando o modal de confirmação de exclusão
         */
 
         this.setState({
             dialog: true,
-            categorySelected: theme 
+            categorySelected: theme
         })
     }
 
@@ -124,7 +124,7 @@ class Categories extends Component {
         await this.setState({
             page: ++page
         })
-        
+
         this.searchCategories()
     }
 
@@ -144,16 +144,16 @@ class Categories extends Component {
         this.searchCategories()
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Container id="component">
-                {this.state.redirectTo && 
+                {this.state.redirectTo &&
                     <Redirect to={this.state.redirectTo} />
                 }
                 <Header title="Categorias" description="Categorias para artigos" icon="category"></Header>
                 <Container className="hudBar">
                     <Grid item className="hudBarChild">
-                        { this.props.user.tagAdmin && 
+                        { this.props.user.tagAdmin &&
                             <Box mr={1} className="linkButton">
                                 <Link to="/category" className="linkRouter linkButton">
                                     <CustomButton color="default" text="Nova Categoria"
@@ -171,11 +171,11 @@ class Categories extends Component {
                     <Grid item className="hudBarChild">
                         <SearchBar id="search_field" className="searchTextField"
                             placeholder="Pesquisar" value={this.state.query}
-                            onChange={(query) => this.changeQueryValue(query)} 
+                            onChange={(query) => this.changeQueryValue(query)}
                             onCancelSearch={() => this.changeQueryValue('')} />
                     </Grid>
                 </Container>
-                {this.state.loading && 
+                {this.state.loading &&
                     <Container className="center spinnerContainer">
                         <img src={Searching} alt="Procurando categorias..."/>
                         <h4>
@@ -190,7 +190,7 @@ class Categories extends Component {
                         </p>
                     </Container>
                 }
-                {this.state.categories.length > 0 && !this.state.loading && 
+                {this.state.categories.length > 0 && !this.state.loading &&
                     <Paper>
                         <Container className="wrapper">
                             <Table className="defaultTable">
@@ -221,7 +221,7 @@ class Categories extends Component {
                                                 Tema
                                             </span>
                                         </TableCell>
-                                        { this.props.user.tagAdmin && 
+                                        { this.props.user.tagAdmin &&
                                             <TableCell>
                                                 <span className="centerVertical">
                                                     <Icon fontSize="small" className="marginRight">
@@ -246,7 +246,7 @@ class Categories extends Component {
                                         <TableCell scope="theme">
                                             {category.theme.name || 'Sem categoria'}
                                         </TableCell>
-                                        { this.props.user.tagAdmin && 
+                                        { this.props.user.tagAdmin &&
                                             <TableCell scope="_id">
                                                 <CustomIconButton icon="edit" color="default"
                                                     aria-label="Editar" tooltip="Editar"
@@ -264,7 +264,7 @@ class Categories extends Component {
                                 {/* Footer da tabela */}
                                 <TableFooter>
                                     <TableRow>
-                                        <TablePagination 
+                                        <TablePagination
                                             rowsPerPageOptions={OPTIONS_LIMIT}
                                             colSpan={4}
                                             count={this.state.count}
@@ -296,7 +296,7 @@ class Categories extends Component {
                                                 Tem certeza que deseja remover este tema?
                                             </DialogContentText>
                                         }
-                                        {this.state.loadingOp && 
+                                        {this.state.loadingOp &&
                                             <DialogContentText id="description">
                                                 Removendo tema, por favor aguarde...
                                             </DialogContentText>
@@ -304,15 +304,15 @@ class Categories extends Component {
                                     </Container>
                                 </DialogContent>
                                 <DialogActions>
-                                    { !this.state.loadingOp && 
-                                        <Button color="secondary" 
+                                    { !this.state.loadingOp &&
+                                        <Button color="secondary"
                                             onClick={() => this.toogleDialog(false)}
                                         >
                                             Fechar
                                         </Button>
                                     }
-                                    {!this.state.loadingOp && 
-                                        <Button color="secondary" 
+                                    {!this.state.loadingOp &&
+                                        <Button color="secondary"
                                             onClick={() => this.remove(this.state.categorySelected)}
                                         >
                                             Sim, pode excluir
@@ -330,6 +330,6 @@ class Categories extends Component {
 
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Categories)

@@ -23,7 +23,7 @@ import {backendUrl, defineErrorMsg} from '../../config/backend'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { success, error } from '../../config/toasts'
-import { setToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toastActions'
 
 class Management extends Component {
 
@@ -41,27 +41,27 @@ class Management extends Component {
 
     getLastSincronization(){
         const url = `${backendUrl}/stats/sincronization`
-        
+
         axios(url).then(res => {
-            if(res.data && res.data.generatedAt) 
+            if(res.data && res.data.generatedAt)
                 this.setState({lastSincronization: displayFullDate(res.data.generatedAt)})
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
     }
-    
+
     async sincronize(){
         this.toogleSincronizing()
 
         const url = `${backendUrl}/stats/sincronization`
-        
+
         await axios.post(url).then(res => {
             this.setState({lastSincronization: displayFullDate(res.data.generatedAt)})
-            this.props.setToast(success('Sincronização realizada com sucesso'))
+            this.props.callToast(success('Sincronização realizada com sucesso'))
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(success(msg))
+            this.props.callToast(success(msg))
         })
         this.toogleSincronizing()
     }
@@ -74,14 +74,14 @@ class Management extends Component {
         return (
             <Container className="managements" id="component">
                 <FloatingButton icon="keyboard_arrow_up" action={() => document.documentElement.scrollTop = 0} />
-                {this.state.redirectTo && 
+                {this.state.redirectTo &&
                     <Redirect to={this.state.redirectTo}/>
                 }
-                <Header title="Configurações" 
+                <Header title="Configurações"
                     description="Configure propriedades da aplicação: como temas e categorias de artigos, Sincronizador e outras configurações"
                     icon="settings"
                 />
-                { this.props.user && this.props.user.tagAdmin && 
+                { this.props.user && this.props.user.tagAdmin &&
                     <ShortcutSection />
                 }
                 <ThemesAndCategoriesSection user={this.props.user} />
@@ -119,7 +119,7 @@ class Management extends Component {
                                 <Box width="100%" ml={2} mr={2}>
                                     <Button color="default"
                                             text={this.state.sincronizing ? 'Sincronizando...' : 'Sincronizar'}
-                                            icon="done" 
+                                            icon="done"
                                             onClick={() => this.sincronize()}
                                             loading={this.state.sincronizing}
                                             disabled={this.state.sincronizing}
@@ -129,9 +129,9 @@ class Management extends Component {
                         </Card>
                     </Box>
                 </Grid>}
-                
+
                 { this.props.user.tagAdmin && <Grid item xs={12}><Divider/></Grid>}
-                
+
                 { this.props.user.tagAdmin && <Grid item xs={12}>
                     <Box mb={3}>
                         <Box width="100%" display="flex" alignItems="center">
@@ -213,7 +213,7 @@ class Management extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Management)

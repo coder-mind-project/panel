@@ -10,7 +10,7 @@ import CustomButton from '../../Button.jsx'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setToast } from "../../../redux/toastActions"
+import { callToast } from "../../../redux/toastActions"
 import { error } from "../../../config/toasts"
 
 import axios from 'axios'
@@ -63,7 +63,7 @@ class BugReport extends Component {
             this.setState({success: true})
         }).catch( err =>{
             const msg = defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleIsSending()
@@ -76,7 +76,7 @@ class BugReport extends Component {
             delete data.browser
             delete data.anotherBrowser
         }
-        
+
         if(data.browser && data.browser !== 'other') delete data.anotherBrowser
 
         data.emailUser = this.props.user.email
@@ -143,7 +143,7 @@ class BugReport extends Component {
                                             maxDateMessage="Data acima do permitido"
                                             minDateMessage="Data abaixo do permitido"
                                             format="DD/MM/YYYY HH:mm:ss"
-                                            invalidDateMessage="Formato de data inválido" 
+                                            invalidDateMessage="Formato de data inválido"
                                             fullWidth={true}
                                         />
                                     </MuiPickersUtilsProvider>
@@ -178,9 +178,9 @@ class BugReport extends Component {
                                         </FormControl>
                                     </Grid>
                                 }
-                                { this.state.ticket.browser === 'other' && 
+                                { this.state.ticket.browser === 'other' &&
                                     <Grid item xs={12} md={5} className="formInput">
-                                        <TextField 
+                                        <TextField
                                             fullWidth={true}
                                             label="Especifique o browser *"
                                             value={this.state.ticket.anotherBrowser}
@@ -189,7 +189,7 @@ class BugReport extends Component {
                                     </Grid>
                                 }
                             </Box>
-                            <TextField 
+                            <TextField
                                 className="formInput"
                                 fullWidth={true}
                                 multiline={true}
@@ -203,7 +203,7 @@ class BugReport extends Component {
                             </Box>
                         </Box>
                     }
-                    { this.state.success && !Boolean(this.state.error) && 
+                    { this.state.success && !Boolean(this.state.error) &&
                         <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" p={5} m={3}>
                             <Box display="flex" alignItems="center" mr={2}>
                                 <FontAwesomeIcon icon={faCheckCircle} size="5x" color="#28a745"/>
@@ -212,7 +212,7 @@ class BugReport extends Component {
                                 <h3>Ticket enviado com sucesso, agora é só aguardar. Já já retornaremos contato ;).</h3>
                             </Box>
                         </Box>
-                    }   
+                    }
                 </Grid>
             </Grow>
         )
@@ -220,6 +220,6 @@ class BugReport extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(BugReport)

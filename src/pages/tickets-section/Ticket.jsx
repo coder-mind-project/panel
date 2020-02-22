@@ -11,7 +11,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { setToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toastActions'
 import { error } from '../../config/toasts'
 import axios from 'axios'
 
@@ -95,15 +95,15 @@ class Ticket extends Component {
         let s = search.replace('?', '')
 
         s = s.split('&')
-        
+
         let params = {}
-        
+
         for (let i = 0; i < s.length; i++) {
             const keyValue = s[i].split('=')
             const key = keyValue[0]
             const value = keyValue[1] || null
 
-            params[key] = value    
+            params[key] = value
         }
 
         return params
@@ -115,7 +115,7 @@ class Ticket extends Component {
         const data = this.state.accountChanged
 
         data.type = this.state.type
-        
+
         const url = `${backendUrl}/tickets/not-authenticated`
         await axios.post(url, data).then( () => {
             this.setState({
@@ -123,7 +123,7 @@ class Ticket extends Component {
             })
             if(!this.state.authenticated){
                 setInterval(() => {
-                    if(this.state.timeToCloseWindow === 0){ 
+                    if(this.state.timeToCloseWindow === 0){
                         window.location.href = 'https://codermind.com.br'
                     }else{
                         this.setState({
@@ -134,7 +134,7 @@ class Ticket extends Component {
             }
         }).catch( err => {
             const msg = defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleSendingTicket()
@@ -170,7 +170,7 @@ class Ticket extends Component {
     render(){
         return (
             <Container id="component">
-                <Header 
+                <Header
                     title="Ticket"
                     description={this.state.authenticated ? "Reporte um problema, bug ou sugira melhorias" : "Reporte uma ocorrência, problema ou informações referêntes entre você e a plataforma Coder Mind."}
                     icon="feedback"
@@ -179,7 +179,7 @@ class Ticket extends Component {
                 { this.state.whatIsTicketFlag && <WhatIsTicketDialog closeDialog={() => this.dispatchDialog('what-is-ticket', true)} />}
                 <Paper className={this.state.success ? "paper-container-success-area" : "paper-container"}>
                     <Grid item xs={12}>
-                        { this.state.success && 
+                        { this.state.success &&
                             <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" p={2}>
                                 <Box display="flex" alignItems="center" mr={2}>
                                     <FontAwesomeIcon icon={faCheckCircle} size="5x" color="#28a745"/>
@@ -189,7 +189,7 @@ class Ticket extends Component {
                                     <span className="text-explication">Redirectionando em {this.state.timeToCloseWindow} ...</span>
                                 </Box>
                             </Box>
-                        }  
+                        }
                         {!this.state.authenticated && this.state.type === "account-changed" && !this.state.success &&
                             <Box display="flex" flexDirection="column" pl={4} pr={4} pt={1}>
                                 <Box>
@@ -218,7 +218,7 @@ class Ticket extends Component {
                         }
                         { this.state.type === 'account-changed' && !this.state.authenticated && !this.state.success &&
                             <Box p={3} pt={0} display="flex" alignItems="center" flexWrap="wrap">
-                                <TextField 
+                                <TextField
                                     className="container-text-field"
                                     label="Primeiro Código"
                                     value={this.state.accountChanged.firstCode}
@@ -242,7 +242,7 @@ class Ticket extends Component {
                                     }}
                                     disabled={true}
                                 />
-                                <TextField 
+                                <TextField
                                     className="container-text-field"
                                     label="E-mail de contato"
                                     value={this.state.accountChanged.emailUser}
@@ -254,7 +254,7 @@ class Ticket extends Component {
                                         className: "text-field"
                                     }}
                                 />
-                                <TextField 
+                                <TextField
                                     className="container-text-field"
                                     label="Data da ocorrência"
                                     value={this.state.accountChanged.date}
@@ -266,7 +266,7 @@ class Ticket extends Component {
                                         className: "text-field"
                                     }}
                                 />
-                                <TextField 
+                                <TextField
                                     className="container-text-field"
                                     label="Descreva aqui o seu problema"
                                     multiline={true}
@@ -285,7 +285,7 @@ class Ticket extends Component {
                                     <p className="form-explication">Seu ticket será respondido através do e-mail de contato fornecido, é importante descrever o máximo possível de informações. Você receberá uma mensagem automática que recebemos o seu ticket após o envio, assim entraremos em contato o mais breve possível com a análise já realizada ou solicitando mais informações.</p>
                                 </Box>
                                 <Box width="100%" mt={4} mb={4}>
-                                    <CustomButton 
+                                    <CustomButton
                                         color="default"
                                         loading={this.state.sendingTicket}
                                         disabled={this.state.sendingTicket}
@@ -345,13 +345,13 @@ class Ticket extends Component {
                                 </Box>
                             </Box>
                         }
-                        { this.state.authenticated && this.state.type === 'account-problem' && 
+                        { this.state.authenticated && this.state.type === 'account-problem' &&
                             <AccountProblem goBack={() => this.defineTicketType('menu')}/>
                         }
-                        { this.state.authenticated && this.state.type === 'bug-report' && 
+                        { this.state.authenticated && this.state.type === 'bug-report' &&
                             <BugReport goBack={() => this.defineTicketType('menu')}/>
                         }
-                        { this.state.authenticated && this.state.type === 'improvement-suggestion' && 
+                        { this.state.authenticated && this.state.type === 'improvement-suggestion' &&
                             <ImprovementSuggestion goBack={() => this.defineTicketType('menu')} changeType={(type) => this.defineTicketType(type)}/>
                         }
                     </Grid>
@@ -359,9 +359,9 @@ class Ticket extends Component {
             </Container>
         )
     }
-}  
+}
 
 const mapStateToProps = state => ({user: state.user, menu: state.menu})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ticket)

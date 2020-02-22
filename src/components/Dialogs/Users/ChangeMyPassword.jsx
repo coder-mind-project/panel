@@ -11,7 +11,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 import { success, error } from '../../../config/toasts'
 
 class ChangeMyPassword extends Component {
@@ -51,7 +51,7 @@ class ChangeMyPassword extends Component {
     toogleAuthorizing(){
         this.setState({authorizing: !this.state.authorizing})
     }
-    
+
     toogleSaving(){
         this.setState({saving: !this.state.saving})
     }
@@ -73,27 +73,27 @@ class ChangeMyPassword extends Component {
         await axios.put(url, payload).then( res => {
             this.setState({authorized: true})
         }).catch(err => {
-            const msg = defineErrorMsg(err) 
-            this.props.setToast(error(msg))
+            const msg = defineErrorMsg(err)
+            this.props.callToast(error(msg))
         })
-        
+
         this.toogleAuthorizing()
     }
-    
+
     changePassword(){
         const payload = this.state.newPass
-        
+
         const url = `${backendUrl}/users/${this.props.user._id}`
-        
+
         this.toogleSaving()
-        
+
         axios.post(url, payload).then(res => {
-            this.props.setToast(success('Senha alterada com sucesso'))
+            this.props.callToast(success('Senha alterada com sucesso'))
             this.state.handleClose()
         }).catch(err => {
             this.toogleSaving()
             const msg = defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
     }
 
@@ -123,22 +123,22 @@ class ChangeMyPassword extends Component {
                             <form onSubmit={(evt) => this.submit(evt)}>
                                 <FormControl fullWidth>
                                     <InputLabel htmlFor="current-password">Informe sua senha atual</InputLabel>
-                                    <PasswordField id="current-password" 
-                                        inputProps={{ autoComplete: 'current-password' }} 
+                                    <PasswordField id="current-password"
+                                        inputProps={{ autoComplete: 'current-password' }}
                                         fullWidth onChange={this.handleChange('password')}
                                         autoFocus={true}
                                     />
                                 </FormControl>
                             </form>
                         }
-                        { this.state.authorized && 
+                        { this.state.authorized &&
                             <Slide direction="right" in={this.state.authorized} mountOnEnter unmountOnExit>
                                 <Box width="100%">
                                     <FormControl fullWidth>
                                         <form onSubmit={(evt) => this.submit(evt)}>
                                             <InputLabel htmlFor="new-password">Informe a nova senha</InputLabel>
-                                            <PasswordField id="new-password" 
-                                                inputProps={{ autoComplete: 'new-password' }} 
+                                            <PasswordField id="new-password"
+                                                inputProps={{ autoComplete: 'new-password' }}
                                                 fullWidth onChange={this.handlePassword('firstField')}
                                                 autoFocus={true}
                                             />
@@ -147,8 +147,8 @@ class ChangeMyPassword extends Component {
                                     <FormControl fullWidth>
                                         <form onSubmit={(evt) => this.submit(evt)}>
                                             <InputLabel htmlFor="confirm-password">Confirme a senha</InputLabel>
-                                            <PasswordField id="confirm-password" 
-                                                inputProps={{ autoComplete: 'new-password' }} 
+                                            <PasswordField id="confirm-password"
+                                                inputProps={{ autoComplete: 'new-password' }}
                                                 fullWidth onChange={this.handlePassword('secondField')}
                                             />
                                         </form>
@@ -159,14 +159,14 @@ class ChangeMyPassword extends Component {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button 
+                    <Button
                         onClick={this.state.handleClose}
                         disabled={this.state.authorizing || this.state.saving}
                     >
                         Fechar
                     </Button>
-                    <Button 
-                        onClick={() => this.submit()} 
+                    <Button
+                        onClick={() => this.submit()}
                         color="secondary"
                         disabled={this.state.authorizing || this.state.saving}
                     >
@@ -179,6 +179,6 @@ class ChangeMyPassword extends Component {
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChangeMyPassword)

@@ -18,7 +18,7 @@ import { connect } from 'react-redux'
 import { setUser } from '../../../redux/userActions'
 import { bindActionCreators } from 'redux'
 
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 import { success, error, info } from '../../../config/toasts'
 
 import ImgDefault from '../../../assets/img_not_found_512x512.png'
@@ -27,7 +27,7 @@ import '../../../pages/css/defaultPage.css'
 import './css/MyAccountGeneralInformation.css'
 
 class GeneralInformation extends Component {
-    state = { 
+    state = {
         user: {
             _id: null,
             name: '',
@@ -96,23 +96,23 @@ class GeneralInformation extends Component {
 
         const url = `${backendUrl}/users/${this.state.user._id}`
 
-        const user = await this.formatData() 
+        const user = await this.formatData()
 
         await axios.put(url, user).then( response => {
-            this.props.setToast(success('Informações salvas com sucesso'))
+            this.props.callToast(success('Informações salvas com sucesso'))
             if(response.data.confirmEmail){
                 this.setState({
                     user: {
                         ...this.state.user,
                         confirmEmail: response.data.confirmEmail,
                         confirmEmailToken: response.data.confirmEmailToken
-                    } 
+                    }
                 })
             }
             this.props.setUser(user)
         }).catch( async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleSaving()
@@ -122,7 +122,7 @@ class GeneralInformation extends Component {
         const data = {
             ...this.state.user,
         }
-        
+
         if(this.props.user.email !== data.email) {
             data.confirmEmail = data.email
             delete data.email
@@ -134,10 +134,10 @@ class GeneralInformation extends Component {
     addPhoto = async (photo) => {
         /* Realiza o envio da imagem */
 
-        /* 
+        /*
             - Ocorre a verificação do tipo de imagem a ser enviada
             - Após verifica se há imagem a enviar
-            - Com isso é criado um form data e também e configurado o header 
+            - Com isso é criado um form data e também e configurado o header
             necessario para o êxito do envio da imagem
             - Assim a imagem é enviada
         */
@@ -145,8 +145,8 @@ class GeneralInformation extends Component {
 
         const img = photo.target.files[0]
 
-        if(!img) 
-        return this.props.setToast(info('Selecione uma imagem'))
+        if(!img)
+        return this.props.callToast(info('Selecione uma imagem'))
 
         await this.setState({sendingPhoto: true})
         //Obtém se o ID do artigo e a imagem selecionada
@@ -158,24 +158,24 @@ class GeneralInformation extends Component {
             'name' da tag <img>
         */
         const formData = new FormData()
-        await formData.append('profilePhoto', img) 
+        await formData.append('profilePhoto', img)
         await formData.append('idUser', id)
 
         /*
-            Configuração do header para a requisição. 
+            Configuração do header para a requisição.
             (Pré requisito do multer[API backend para envio de arquivos])
         */
 
         const config = {
             headers: {
-                'content-type': 'multipart/form-data' 
+                'content-type': 'multipart/form-data'
             }
         }
-    
+
         const url = `${backendUrl}/users/img/${id}`
-        
+
         await axios.patch(url, formData, config).then( async res => {
-            this.props.setToast(success('Operação realizada com sucesso'))
+            this.props.callToast(success('Operação realizada com sucesso'))
             /*  Definição do diretório para visualização da imagem após exito
                 do envio e remoção da imagem do campo Input
             */
@@ -191,7 +191,7 @@ class GeneralInformation extends Component {
 
         }).catch( async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
             this.setState({sendingPhoto: false})
         })
 
@@ -206,7 +206,7 @@ class GeneralInformation extends Component {
 
         const url = `${backendUrl}/users/img/${id}`
         axios.delete(url).then(() => {
-            this.props.setToast(success('Operaçao realizada com sucesso'))
+            this.props.callToast(success('Operaçao realizada com sucesso'))
             this.setState({
                 user: {
                     ...this.state.user,
@@ -217,7 +217,7 @@ class GeneralInformation extends Component {
             })
         }).catch( async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
     }
 
@@ -241,25 +241,25 @@ class GeneralInformation extends Component {
 
     async resendEmail(){
         if(this.state.resendingEmail) return
-        
+
         const id = this.state.user._id
         const url = `${backendUrl}/users/emails/${id}`
         const user = this.state.user
 
         this.toogleResendingEmail()
         await axios.post(url, user).then( res => {
-            this.props.setToast(success(res.data))
+            this.props.callToast(success(res.data))
         }).catch( async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
-        
+
         this.toogleResendingEmail()
     }
 
     async cancelChangeEmail(){
         if(this.state.cancelingChangeEmail) return
-        
+
         const id = this.state.user._id
         const url = `${backendUrl}/users/emails/${id}`
 
@@ -268,15 +268,15 @@ class GeneralInformation extends Component {
             const user = this.state.user
             delete user.confirmEmail
             this.setState({user})
-            this.props.setToast(success('Solicitação de alteração de e-mail removida com sucesso!'))
+            this.props.callToast(success('Solicitação de alteração de e-mail removida com sucesso!'))
         }).catch( async error => {
             const msg = await defineErrorMsg(error)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
-        
+
         this.toogleCancelingChangeEmail()
     }
-    
+
     async componentDidMount(){
         const user = this.props.user
         if(user){
@@ -293,13 +293,13 @@ class GeneralInformation extends Component {
         }
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Container>
                     <Box display="flex" justifyContent="center"
                         alignItems="center" flexWrap="wrap"
                     >
-                        { this.state.user.confirmEmail && 
+                        { this.state.user.confirmEmail &&
                             <Box width="100%">
                                 <Alert severity="warning">
                                     <div>
@@ -307,7 +307,7 @@ class GeneralInformation extends Component {
                                     </div>
                                     <Box width="100%" display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" mt={2}>
                                         <Box>
-                                            { !this.state.resendingEmail && <strong  onClick={() => this.resendEmail()}  className='alert-link'>Reenviar e-mail</strong>} 
+                                            { !this.state.resendingEmail && <strong  onClick={() => this.resendEmail()}  className='alert-link'>Reenviar e-mail</strong>}
                                             { this.state.resendingEmail && <strong>Reenviando e-mail...</strong>}
 
                                         </Box>
@@ -321,19 +321,19 @@ class GeneralInformation extends Component {
                         }
                         <Grid item xs={12} lg={3} className="formGroup">
                             <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                                <Tooltip title={this.state.user.profilePhoto ? "Remover Imagem" : "Imagem de perfil não definida"} 
+                                <Tooltip title={this.state.user.profilePhoto ? "Remover Imagem" : "Imagem de perfil não definida"}
                                     placement="top"
                                 >
                                     <figure onClick={this.removePhoto}>
-                                        { !this.state.sendingPhoto ? 
-                                            <img className={this.state.user.profilePhoto ? "profile_photo" : "profile_photo_not_found"} 
+                                        { !this.state.sendingPhoto ?
+                                            <img className={this.state.user.profilePhoto ? "profile_photo" : "profile_photo_not_found"}
                                                 src={this.state.user.profilePhoto ? `${backendUrl}/${this.state.user.profilePhoto}` : ImgDefault}
                                                 alt="Foto de perfil" /> : <CircularProgress color="secondary" />
                                             }
                                     </figure>
                                 </Tooltip>
 
-                                    {this.state.photo ? 
+                                    {this.state.photo ?
                                             <Box display="flex" justifyContent="center"
                                                 alignItems="center" mb={2}
                                             >
@@ -378,7 +378,7 @@ class GeneralInformation extends Component {
                             <TextField label="Nome *"
                                 className="formInput"
                                 error={Boolean(this.state.user.name.length > 50)}
-                                helperText={this.state.user.name.length > 50 ? 
+                                helperText={this.state.user.name.length > 50 ?
                                     "Máximo permitido 50 caracteres" : ""}
                                 value={this.state.user.name}
                                 onChange={this.handleChange('name')}
@@ -401,8 +401,8 @@ class GeneralInformation extends Component {
 
                             <TextField label="CPF *" className="formInput"
                                 value={this.state.user.cpf}
-                                onChange={this.handleChangeMaskData('cpf')} 
-                                inputProps={{ maxLength: 14 }} 
+                                onChange={this.handleChangeMaskData('cpf')}
+                                inputProps={{ maxLength: 14 }}
                             />
                             <TextField label="Número de celular *"
                                 className="formInput"
@@ -411,7 +411,7 @@ class GeneralInformation extends Component {
                                 onChange={this.handleChangeMaskData('celphone')}
                                 inputProps={{ maxLength: 15 }}
                             />
-                            
+
                             <MuiPickersUtilsProvider utils={MomentUtils}>
                                 <KeyboardDatePicker label="Data de nascimento"
                                     clearable cancelLabel="Cancelar"
@@ -437,7 +437,7 @@ class GeneralInformation extends Component {
                             />
                         </Grid>
                     </Box>
-                    
+
                     <Box width="100%" display="flex" alignItems="center" justifyContent='flex-end'>
                         <CustomButton color="success" icon="done" iconSize="small"
                             text={this.state.saving ? 'Salvando...' : 'Salvar' } onClick={this.save} loading={this.state.saving}
@@ -449,6 +449,6 @@ class GeneralInformation extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setUser, setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({setUser, callToast}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(GeneralInformation)

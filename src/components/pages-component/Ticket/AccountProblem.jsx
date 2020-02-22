@@ -1,5 +1,5 @@
 import React , { Component } from 'react'
-import { Grid, Box, Icon, Divider, Button, TextField, Grow } from '@material-ui/core' 
+import { Grid, Box, Icon, Divider, Button, TextField, Grow } from '@material-ui/core'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
@@ -8,8 +8,8 @@ import CustomButton from '../../Button.jsx'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setToast } from '../../../redux/toastActions'
-import { error } from "../../../config/toasts" 
+import { callToast } from '../../../redux/toastActions'
+import { error } from "../../../config/toasts"
 
 import axios from 'axios'
 import {backendUrl, defineErrorMsg} from '../../../config/backend'
@@ -60,7 +60,7 @@ class AccountProblem extends Component {
             this.setState({success: true})
         }).catch( async err =>{
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleIsSending()
@@ -100,7 +100,7 @@ class AccountProblem extends Component {
                         <Box padding="25px">
                             <Box display="flex" flexWrap="wrap" alignItems="flex-start">
                                 <Grid item xs={12} md={5} className="formInput">
-                                    <TextField 
+                                    <TextField
                                         fullWidth={true}
                                         label="Código *"
                                         value={this.state.ticket.code}
@@ -121,13 +121,13 @@ class AccountProblem extends Component {
                                             maxDateMessage="Data acima do permitido"
                                             minDateMessage="Data abaixo do permitido"
                                             format="DD/MM/YYYY HH:mm:ss"
-                                            invalidDateMessage="Formato de data inválido" 
+                                            invalidDateMessage="Formato de data inválido"
                                             fullWidth={true}
                                         />
                                     </MuiPickersUtilsProvider>
                                 </Grid>
                             </Box>
-                            <TextField 
+                            <TextField
                                 className="formInput"
                                 fullWidth={true}
                                 multiline={true}
@@ -141,7 +141,7 @@ class AccountProblem extends Component {
                             </Box>
                         </Box>
                     }
-                    { this.state.success && !Boolean(this.state.error) && 
+                    { this.state.success && !Boolean(this.state.error) &&
                         <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" p={5} m={3}>
                             <Box display="flex" alignItems="center" mr={2}>
                                 <FontAwesomeIcon icon={faCheckCircle} size="5x" color="#28a745"/>
@@ -150,7 +150,7 @@ class AccountProblem extends Component {
                                 <h3>Ticket enviado com sucesso, agora é só aguardar. Já já retornaremos contato ;).</h3>
                             </Box>
                         </Box>
-                    }   
+                    }
                 </Grid>
             </Grow>
         )
@@ -158,6 +158,6 @@ class AccountProblem extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountProblem)

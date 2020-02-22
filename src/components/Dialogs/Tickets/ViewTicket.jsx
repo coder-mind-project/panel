@@ -1,14 +1,14 @@
 import React , { Component } from 'react'
 import { Box, Button, TextField,
         Dialog, DialogTitle, DialogContent, Container,
-        DialogActions, Grow, Switch, LinearProgress } from '@material-ui/core' 
+        DialogActions, Grow, Switch, LinearProgress } from '@material-ui/core'
 
 import { displayFullDate } from '../../../config/masks'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { success, error } from '../../../config/toasts'
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 
 import axios from 'axios'
 import {backendUrl, defineErrorMsg} from '../../../config/backend'
@@ -59,7 +59,7 @@ class ViewTicket extends Component {
             }
         }
     }
-    
+
     defineSoftware(software){
         switch(software){
             case 'site':{
@@ -107,7 +107,7 @@ class ViewTicket extends Component {
     }
 
     close(){
-        if(this.state.sendingResponse) return 
+        if(this.state.sendingResponse) return
 
         this.props.onClose()
     }
@@ -123,12 +123,12 @@ class ViewTicket extends Component {
         }
 
         this.toogleSendingResponse()
-        
+
         await axios.put(url, data).then( () => {
-            this.props.setToast(success('Resposta enviada com sucesso!'))
+            this.props.callToast(success('Resposta enviada com sucesso!'))
         }).catch(err => {
             const msg = defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
         this.toogleSendingResponse()
     }
@@ -176,7 +176,7 @@ class ViewTicket extends Component {
                 <DialogContent>
                     <Container>
                         <Box width="100%" display="flex" alignItems="center" flexWrap="wrap">
-                            <TextField 
+                            <TextField
                                 label="Ticket"
                                 className="formInput"
                                 value={this.state.ticket.content._id}
@@ -188,7 +188,7 @@ class ViewTicket extends Component {
                                 }}
                                 disabled={true}
                             />
-                            <TextField 
+                            <TextField
                                 label="Tipo de ticket"
                                 className="formInput"
                                 value={this.props.defineType(this.state.ticket.content.type)}
@@ -200,7 +200,7 @@ class ViewTicket extends Component {
                                 }}
                                 disabled={true}
                             />
-                            <TextField 
+                            <TextField
                                 label="E-mail de solicitação"
                                 className="formInput"
                                 value={this.state.ticket.content.email}
@@ -212,8 +212,8 @@ class ViewTicket extends Component {
                                 }}
                                 disabled={true}
                             />
-                            { this.state.ticket.content.type !== 'account-changed' && this.state.ticket.content.type !== 'simple-account-problem' && 
-                                <TextField 
+                            { this.state.ticket.content.type !== 'account-changed' && this.state.ticket.content.type !== 'simple-account-problem' &&
+                                <TextField
                                     label="Nome do usuário"
                                     className="formInput"
                                     value={this.state.ticket.user.name}
@@ -226,8 +226,8 @@ class ViewTicket extends Component {
                                     disabled={true}
                                 />
                             }
-                            { Boolean(this.state.ticket.content.type === 'account-changed' || this.state.ticket.content.type === 'simple-account-problem') && 
-                                <TextField 
+                            { Boolean(this.state.ticket.content.type === 'account-changed' || this.state.ticket.content.type === 'simple-account-problem') &&
+                                <TextField
                                     label="Código do usuário"
                                     className="formInput"
                                     value={this.state.ticket.user._id}
@@ -240,8 +240,8 @@ class ViewTicket extends Component {
                                     disabled={true}
                                 />
                             }
-                            { Boolean(this.state.ticket.content.type === 'account-changed' || this.state.ticket.content.type === 'simple-account-problem') && 
-                                <TextField 
+                            { Boolean(this.state.ticket.content.type === 'account-changed' || this.state.ticket.content.type === 'simple-account-problem') &&
+                                <TextField
                                     label="Código do administrador"
                                     className="formInput"
                                     value={this.state.ticket.admin ? this.state.ticket.admin._id : 'Administrador não localizado'}
@@ -254,8 +254,8 @@ class ViewTicket extends Component {
                                     disabled={true}
                                 />
                             }
-                            {this.state.ticket.content.dateOccurrence && 
-                                <TextField 
+                            {this.state.ticket.content.dateOccurrence &&
+                                <TextField
                                     label="Data de ocorrência"
                                     className="formInput"
                                     value={this.state.ticket.content.dateOccurrence ? displayFullDate(this.state.ticket.content.dateOccurrence) : ''}
@@ -269,7 +269,7 @@ class ViewTicket extends Component {
                                     helperText={(<span className="helperText">Referênte ao momento do acontecimento</span>)}
                                 />
                             }
-                            <TextField 
+                            <TextField
                                 label="Data de envio"
                                 className="formInput"
                                 value={this.state.ticket.content.createdAt ? displayFullDate(this.state.ticket.content.createdAt) : ''}
@@ -283,10 +283,10 @@ class ViewTicket extends Component {
                                 helperText={(<span className="helperText">Momento que o ticket foi enviado</span>)}
                             />
                         </Box>
-                        { this.state.ticket.content.type === 'bug-report' && 
+                        { this.state.ticket.content.type === 'bug-report' &&
                             <Box width="100%">
                                 <Box width="100%">
-                                    <TextField 
+                                    <TextField
                                         label="Software"
                                         className="formInput"
                                         value={this.defineSoftware(this.state.ticket.content.software)}
@@ -300,7 +300,7 @@ class ViewTicket extends Component {
                                         fullWidth={true}
                                     />
                                 </Box>
-                                <TextField 
+                                <TextField
                                     label="Dispositivo"
                                     className="formInput"
                                     value={this.defineDevice(this.state.ticket.content.device)}
@@ -312,8 +312,8 @@ class ViewTicket extends Component {
                                     }}
                                     disabled={true}
                                 />
-                                { Boolean(this.state.ticket.content.device === 'computer' || this.state.ticket.content.device === 'celphone - webapp') && 
-                                    <TextField 
+                                { Boolean(this.state.ticket.content.device === 'computer' || this.state.ticket.content.device === 'celphone - webapp') &&
+                                    <TextField
                                         label="Navegador"
                                         className="formInput"
                                         value={this.defineBrowser(this.state.ticket.content.browser)}
@@ -326,8 +326,8 @@ class ViewTicket extends Component {
                                         disabled={true}
                                     />
                                 }
-                                { Boolean(this.state.ticket.content.device === 'computer' || this.state.ticket.content.device === 'celphone - webapp') && this.state.ticket.content.browser === 'other' && 
-                                    <TextField 
+                                { Boolean(this.state.ticket.content.device === 'computer' || this.state.ticket.content.device === 'celphone - webapp') && this.state.ticket.content.browser === 'other' &&
+                                    <TextField
                                         label="Outro navegador"
                                         className="formInput"
                                         value={this.state.ticket.content.anotherBrowser}
@@ -345,7 +345,7 @@ class ViewTicket extends Component {
                         }
                         <Box display='flex' alignItems="flex-start" flexWrap="wrap">
                             <Box className={this.state.showResponseField ? 'description-response-area' : 'description-area'}>
-                                <TextField 
+                                <TextField
                                     label="Descrição"
                                     value={this.state.ticket.content.msg}
                                     InputLabelProps={{
@@ -360,10 +360,10 @@ class ViewTicket extends Component {
                                     fullWidth={true}
                                 />
                             </Box>
-                            { this.state.showResponseField && 
+                            { this.state.showResponseField &&
                                 <Grow in={true}>
                                     <Box className="description-response-area">
-                                        <TextField 
+                                        <TextField
                                             label="Escreva a resposta aqui..."
                                             value={this.state.toogleResponse}
                                             onChange={this.handleChange('response')}
@@ -382,13 +382,13 @@ class ViewTicket extends Component {
                     </Container>
                 </DialogContent>
                 <DialogActions>
-                    <Button color="secondary" 
+                    <Button color="secondary"
                         onClick={() => this.close()}
                     >
                         Fechar
                     </Button>
                     { this.state.showResponseField &&
-                        <Button color="secondary" 
+                        <Button color="secondary"
                             onClick={() => this.sendResponse()}
                         >
                             {this.state.sendingResponse ? 'Enviando...' : 'Enviar resposta'}
@@ -401,6 +401,6 @@ class ViewTicket extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewTicket)

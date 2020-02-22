@@ -24,9 +24,9 @@ import './css/RedeemAccount.css'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { success } from '../../config/toasts'
-import { setToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toastActions'
 class RedeemAccount extends Component {
-    
+
     _isMounted = false
 
     state = {
@@ -71,16 +71,16 @@ class RedeemAccount extends Component {
 
     async collectToken(){
         if(!this.props.location.search) return false
-        
+
         let search = this.props.location.search.replace('?', '')
         const match = search.match(/token/)
-        
+
         if(!match) return false
 
         search = search.replace('&','=').split('=')
 
         const payload = {}
-        
+
         await search.forEach((elem, index) => {
             if(elem === 'token') {
                 payload.token = search[index+1]
@@ -113,12 +113,12 @@ class RedeemAccount extends Component {
 
         const url = `${backendUrl}/redeem-password`
         const data = this.state.passwords
-        
+
         this.toogleConfirming()
 
         await axios.patch(url, data).then( res => {
             const msg = res.data
-            this.props.setToast(success(msg))
+            this.props.callToast(success(msg))
             setTimeout(() => {
                 window.location.href = "/auth"
             },3000)
@@ -162,15 +162,15 @@ class RedeemAccount extends Component {
                             </Box>
                             <FormControl fullWidth>
                                 <InputLabel htmlFor="new-password">Insira sua senha</InputLabel>
-                                <PasswordField id="new-password" 
-                                    inputProps={{ autoComplete: 'current-password' }} 
+                                <PasswordField id="new-password"
+                                    inputProps={{ autoComplete: 'current-password' }}
                                     fullWidth onChange={(evt) => this.handleChange(evt, 'firstField')}
                                 />
                             </FormControl>
                             <FormControl fullWidth>
                                 <InputLabel htmlFor="confirm-password">Confirme sua senha</InputLabel>
-                                <PasswordField id="confirm-password" 
-                                    inputProps={{ autoComplete: 'current-password' }} 
+                                <PasswordField id="confirm-password"
+                                    inputProps={{ autoComplete: 'current-password' }}
                                     fullWidth onChange={(evt) => this.handleChange(evt, 'secondField')}
                                 />
                             </FormControl>
@@ -182,7 +182,7 @@ class RedeemAccount extends Component {
                             <ButtonBase class="defaultMaxWidth" type="submit" disableIcon={true} text={this.state.confirming ? <span className="centerInline"><CircularProgress size={20} color="inherit" /><span className="marginLeft">Por favor aguarde... </span></span> : 'Confirmar'}/>
                         </Grid>
                     </form>}
-                    { this.state.loading && 
+                    { this.state.loading &&
                         <Box width="100%" display="flex" flexDirection="column" alignItems="center" justifyContent="center"  mt={2} mb={5}>
                             <Box width="100%" display="flex" alignItems="center" justifyContent="center" mb={2}>
                                 <img src={Loading} alt="Loading" width="30%"/>
@@ -190,7 +190,7 @@ class RedeemAccount extends Component {
                             <span>Por favor, aguarde...</span>
                         </Box>
                     }
-                    { this.state.tokenError && 
+                    { this.state.tokenError &&
                         <Box p={2} >
                             <Box width="100%" display="flex" justifyContent="center" flexWrap="wrap" alignItems="center">
                                 <Box m={2}>
@@ -213,6 +213,6 @@ class RedeemAccount extends Component {
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(RedeemAccount)

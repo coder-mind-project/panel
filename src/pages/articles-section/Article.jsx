@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { Container, Divider, Grid, TextField,
-    FormGroup, InputLabel, Paper, Box, Icon, 
+    FormGroup, InputLabel, Paper, Box, Icon,
     Tabs, Tab, Breadcrumbs, InputAdornment } from '@material-ui/core'
 import { FaYoutube, FaGithub } from 'react-icons/fa'
 import AsyncSelect from 'react-select/async'
 
-import Header from '../../components/Header' 
+import Header from '../../components/Header'
 import CustomButton from '../../components/Button.jsx'
 import ArticleImages from '../../components/pages-component/Articles/ArticleImages.jsx'
 import ArticlePreview from '../../components/pages-component/Articles/ArticlePreview'
@@ -19,7 +19,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { success, error, info } from '../../config/toasts'
-import { setToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toastActions'
 
 import { backendUrl, defineErrorMsg } from '../../config/backend'
 import { formatCustomURL } from '../../config/masks'
@@ -51,10 +51,10 @@ class Article extends Component {
             created_at: '',
             publishAt: '',
             updatedAt: '',
-            published : true, 
-            boosted : false, 
-            deleted : false, 
-            inactivated : false, 
+            published : true,
+            boosted : false,
+            deleted : false,
+            inactivated : false,
 
         },
         categories: [],
@@ -74,7 +74,7 @@ class Article extends Component {
         await axios(url).then(async res => {
 
             if(this.props.user._id !== res.data._id && !this.props.user.tagAdmin){
-                this.props.setToast(info('Você não tem permissão para acessar este artigo!'))
+                this.props.callToast(info('Você não tem permissão para acessar este artigo!'))
                 return setTimeout(() => this.setState({redirectTo: 'articles'}), 3000)
             }
 
@@ -82,8 +82,8 @@ class Article extends Component {
             this.toogleLoadingState()
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
-            
+            this.props.callToast(error(msg))
+
             this.toogleLoadingState()
 
             setTimeout(this.goTo('articles'), 3000)
@@ -98,18 +98,18 @@ class Article extends Component {
     }
 
     handleChangeSelect = (value, attr) => {
-        /* 
+        /*
             Usado para definir os valores de theme e
             category (dos campos selects).
         */
         this.setState({article: {...this.state.article,[attr]: value || null}})
-        
+
         /*
             Caso o attr desejado seja o tema, será feito uma busca de categorias
             com base no tema selecionado
         */
         if(attr === 'theme' && value){
-            const url = `${backendUrl}/categories/theme/${value._id}` 
+            const url = `${backendUrl}/categories/theme/${value._id}`
             axios(url).then(res => this.setState({categories: res.data}))
         }
 
@@ -132,7 +132,7 @@ class Article extends Component {
     }
 
     save = (author) => async event => {
-        //Função para salvar o artigo 
+        //Função para salvar o artigo
         event.preventDefault()
 
         const article = await this.formatData(author)
@@ -141,7 +141,7 @@ class Article extends Component {
         const method = article._id ? 'put' : 'post'
 
         await axios[method](url, article).then(async (res) => {
-            await this.props.setToast(success(method === 'post' ? 'Artigo cadastrado, por favor aguarde...' : 'Artigo atualizado com sucesso'))
+            await this.props.callToast(success(method === 'post' ? 'Artigo cadastrado, por favor aguarde...' : 'Artigo atualizado com sucesso'))
             await this.changeSavingState()
             if(method === 'post'){
                 await setTimeout(() => window.location.href = `article/${res.data.customURL}`, 3000)
@@ -150,7 +150,7 @@ class Article extends Component {
             }
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
             this.changeSavingState()
         })
     }
@@ -163,14 +163,14 @@ class Article extends Component {
                 title: article.title,
                 author: article.author,
                 /*
-                    Os campos 'label' e 'value' são necessários para o componente 
+                    Os campos 'label' e 'value' são necessários para o componente
                     Select mostrar as informações do registro
                     selecionado
                 */
                 theme: {
                     ...article.theme,
                     label: article.theme ? article.theme.name : '',
-                    value: article.theme ? article.theme._id : '' 
+                    value: article.theme ? article.theme._id : ''
                 } || null,
                 category: {
                     ...article.category,
@@ -189,10 +189,10 @@ class Article extends Component {
                 created_at: article.created_at,
                 publishAt: article.publishAt,
                 updatedAt: article.updatedAt,
-                published : article.published, 
-                boosted : article.boosted, 
-                deleted : article.deleted, 
-                inactivated : article.inactivated, 
+                published : article.published,
+                boosted : article.boosted,
+                deleted : article.deleted,
+                inactivated : article.inactivated,
 
             },
         })
@@ -200,7 +200,7 @@ class Article extends Component {
 
     formatData = (author) => {
         //Usado para formatar o registro para salvar no banco
-        
+
         return {
             _id: this.state.article._id,
             title: this.state.article.title,
@@ -243,7 +243,7 @@ class Article extends Component {
                 value: theme._id,
             }
         }) || []
-    
+
         return themes
     }
 
@@ -252,12 +252,12 @@ class Article extends Component {
             Com as categorias carregadas, ao usuário digitar a opção desejada
             será realizado um filtro dentro de um array
         */
-        
+
         if(categories.length === 0) return []
 
         let filteredCategories =  await categories.map((category) => {
             /*
-                Os campos 'label' e 'value' são necessários para o componente 
+                Os campos 'label' e 'value' são necessários para o componente
                 Select mostrar as informações do registro
                 selecionado
             */
@@ -268,7 +268,7 @@ class Article extends Component {
             }
 
             return category.name.toLowerCase().includes(query.toLowerCase()) ? _category : null
-        }) 
+        })
 
         await filteredCategories.forEach( (elem, index) => {
             if(!elem) delete filteredCategories[index]
@@ -302,7 +302,7 @@ class Article extends Component {
         return(
             <Container id="component">
                 <FloatingButton action={() => document.documentElement.scrollTop = 0}/>
-                { this.state.redirectTo && 
+                { this.state.redirectTo &&
                     <Redirect to={`/${this.state.redirectTo}`} />
                 }
                 <Header title="Artigo" description="Crie um novo artigo" icon="note_add"/>
@@ -316,7 +316,7 @@ class Article extends Component {
                         </strong>
                     </Breadcrumbs>
                 </Box>
-                { !this.state.loading && 
+                { !this.state.loading &&
                     <Paper>
                         <Tabs value={this.state.currentTab} indicatorColor="secondary" onChange={(evt, value) => this.changeCurrentTab(value)} variant="scrollable" scrollButtons="on">
                             <Tab label={(<span className="centerInline"><Icon>description</Icon>Informações principais</span>)} />
@@ -325,7 +325,7 @@ class Article extends Component {
                             <Tab label={(<span className="centerInline"><Icon>bar_chart</Icon>Estatísticas</span>)} disabled={!this.state.article._id}/>
                             <Tab label={(<span className="centerInline"><Icon>settings</Icon>Configurações</span>)} disabled={!this.state.article._id}/>
                         </Tabs>
-                        { this.state.currentTab === 0 && 
+                        { this.state.currentTab === 0 &&
                             <Box p={2}>
                                 <Grid container>
                                     <Grid item xs={12} className="formGroupBetween">
@@ -360,7 +360,7 @@ class Article extends Component {
                                             value={this.state.article.youtube || ''}
                                             onChange={this.handleChange('youtube')}
                                             margin="normal" error={this.state.article.youtube.trim().length > 300}
-                                            helperText={this.state.article.youtube.trim().length > 300 ? 
+                                            helperText={this.state.article.youtube.trim().length > 300 ?
                                                 "Máximo permitido são 300 caracteres" : "Caso possua copie o link do video aqui"}
                                                 InputProps={{
                                                     startAdornment: (
@@ -392,11 +392,11 @@ class Article extends Component {
                                     </Grid>
                                     <Grid item xs={12} className="textArticle formGroup">
                                         <p className="p">Escreva o artigo abaixo</p>
-                                        <ReactQuill 
+                                        <ReactQuill
                                             value={this.state.article.textArticle}
                                             onChange={this.editorChange}
                                             modules={modules}
-                                        />                                    
+                                        />
                                     </Grid>
                                     <Grid item xs={12} className="footList formGroup">
                                         <Link to="/articles" className="linkRouter linkButton"><CustomButton color="gray" text="Voltar" icon="exit_to_app" /></Link>
@@ -405,21 +405,21 @@ class Article extends Component {
                                 </Grid>
                             </Box>
                         }
-                        {this.state.currentTab === 1 && 
+                        {this.state.currentTab === 1 &&
                             <ArticlePreview article={this.state.article}/>
                         }
-                        {this.state.currentTab === 2 && 
+                        {this.state.currentTab === 2 &&
                             <ArticleImages article={this.state.article}/>
                         }
-                        {this.state.currentTab === 3 && 
+                        {this.state.currentTab === 3 &&
                             <ArticleStats article={this.state.article}/>
                         }
-                        {this.state.currentTab === 4 && this.state.article._id && 
+                        {this.state.currentTab === 4 && this.state.article._id &&
                             <ArticleConfig article={this.state.article}/>
                         }
                     </Paper>
                 }
-                {this.state.loading && 
+                {this.state.loading &&
                     <Box display="flex" alignItems="center" flexDirection="column" m={5} p={5}>
                         <Box display="flex" justifyContent="center" alignItems="center" mb={1}>
                             <img src={Searching} alt="Carregando artigo"/>
@@ -433,6 +433,6 @@ class Article extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Article)

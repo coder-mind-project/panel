@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 import { success, error, info } from '../../../config/toasts'
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
@@ -21,7 +21,7 @@ import CustomButton from '../../Button.jsx'
 import './css/ArticleImages.css'
 
 class ArticleImages extends Component {
-    
+
     state = {
         smallImgDirectory: '',
         mediumImg: null,
@@ -40,23 +40,23 @@ class ArticleImages extends Component {
 
         /* Realiza o envio da imagem */
 
-        /* 
+        /*
             - Ocorre a verificação do tipo de imagem a ser enviada
             - Após verifica se há imagem a enviar
-            - Com isso é criado um form data e também e configurado o header 
+            - Com isso é criado um form data e também e configurado o header
             necessario para o êxito do envio da imagem
             - Assim a imagem é enviada
         */
-        
+
         const img = photo.target.files[0]
-        
+
         //Verifica o tipo de imagem, aceitando apenas bigImg ou smallImg
-        if(path !== 'bigImg' && path !== 'smallImg' && path !== 'mediumImg') 
-        return this.props.setToast(error('Ocorreu um erro desconhecido, se persistir reporte'))
+        if(path !== 'bigImg' && path !== 'smallImg' && path !== 'mediumImg')
+        return this.props.callToast(error('Ocorreu um erro desconhecido, se persistir reporte'))
 
         //Verifica se há imagem
-        if(!img) 
-        return this.props.setToast(info('Selecione uma imagem'))
+        if(!img)
+        return this.props.callToast(info('Selecione uma imagem'))
 
         //Obtém se o ID do artigo e a imagem selecionada
         const id = this.props.article._id
@@ -67,10 +67,10 @@ class ArticleImages extends Component {
             'name' da tag <img>
         */
         const formData = new FormData()
-        await formData.append(path, img) 
+        await formData.append(path, img)
         await formData.append('idArticle', id)
-        
-        /*  Definição do campo de diretorio 
+
+        /*  Definição do campo de diretorio
             (Este campo é referido da URL pública que será pego a
             imagem do backend para visualização) a ser persistido a imagem
             e o método de requisição. [post para smallImg e put para bigImg]
@@ -104,21 +104,21 @@ class ArticleImages extends Component {
             [1080p para bigImg e 512p para smallImg]
         */
         const size = path === 'smallImg' ? 512 : 1080
-        
+
         /*
-            Configuração do header para a requisição. 
+            Configuração do header para a requisição.
             (Pré requisito do multer[API backend para envio de arquivos])
         */
         const config = {
             headers: {
-                'content-type': 'multipart/form-data' 
+                'content-type': 'multipart/form-data'
             }
         }
-        
+
         const url = `${backendUrl}/articles/img/${id}?path=${path}&size=${size}`
         await this.toogleSending()
         await axios[method](url, formData, config).then( res => {
-            this.props.setToast(success('Operação realizada com sucesso'))
+            this.props.callToast(success('Operação realizada com sucesso'))
             /*  Definição do diretório para visualização da imagem após exito
                 do envio e remoção da imagem do campo Input
             */
@@ -128,7 +128,7 @@ class ArticleImages extends Component {
 
         }).catch( async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleSending()
@@ -144,46 +144,46 @@ class ArticleImages extends Component {
         if(!state.smallImgDirectory && path === 'smallImg') return
         if(!state.mediumImgDirectory && path === 'mediumImg') return
         if(!state.bigImgDirectory && path === 'bigImg') return
-        
+
         const option = window.confirm('Tem certeza que deseja remover esta imagem?')
 
         if(option){
             const id = this.props.article._id
             const url = `${backendUrl}/articles/img/${id}?path=${path}`
             axios.delete(url).then(() => {
-                this.props.setToast(success('Operação realizada com sucesso'))
-                /*  Definição do campo de diretorio 
+                this.props.callToast(success('Operação realizada com sucesso'))
+                /*  Definição do campo de diretorio
                     (Este campo é referido da URL pública que será pego a
-                    imagem do backend para visualização) e retirada de visualização 
-                    da imagem. 
+                    imagem do backend para visualização) e retirada de visualização
+                    da imagem.
                 */
 
                 const directory = `${path}Directory`
-                
+
                 this.setState({
                     [directory]: ''
                 })
             }).catch(async err => {
                 const msg = await defineErrorMsg(err)
-                this.props.setToast(error(msg))
+                this.props.callToast(error(msg))
             })
         }
     }
 
     changeFile = (img, path) => {
-        /*  Altera a imagem a cada confirmação de escolha dentro 
-            do input tipo file 
+        /*  Altera a imagem a cada confirmação de escolha dentro
+            do input tipo file
         */
-        if(path !== 'smallImg' && path !== 'bigImg' && path !== 'mediumImg') 
-        return this.props.setToast(info('Ocorreu um erro ao selecionar a imagem, se persistir reporte'))
-        
+        if(path !== 'smallImg' && path !== 'bigImg' && path !== 'mediumImg')
+        return this.props.callToast(info('Ocorreu um erro ao selecionar a imagem, se persistir reporte'))
+
         this.setState({[path]: img.target.files[0]})
     }
 
     async componentDidMount(){
         const article = this.props.article
-        if(!article) return this.props.setToast(error('Ocorreu um erro ao recuperar as informações do artigo, se persistir reporte'))
-        
+        if(!article) return this.props.callToast(error('Ocorreu um erro ao recuperar as informações do artigo, se persistir reporte'))
+
         /* Disponibiliza as imagens definidas do artigo caso estejam definidas */
         await this.setState({
             smallImgDirectory: article.smallImg ? `${backendUrl}/${article.smallImg}` : '',
@@ -194,8 +194,8 @@ class ArticleImages extends Component {
     }
 
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Container>
                 { this.props.article._id && <Container className="content">
                     <Box mb={3} mt={3} display="flex" flexDirection="column">
@@ -299,7 +299,7 @@ class ArticleImages extends Component {
                         <Link to="/articles" className="linkRouter linkButton"><CustomButton color="gray" text="Voltar" icon="exit_to_app" /></Link>
                     </Grid>
                 </Container>}
-                {!this.props.article._id && 
+                {!this.props.article._id &&
                     <Container>
                         <Grid item xs={12}>
                             <Box m={5} p={5} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
@@ -319,6 +319,6 @@ class ArticleImages extends Component {
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticleImages)

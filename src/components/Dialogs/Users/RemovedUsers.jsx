@@ -20,7 +20,7 @@ import './css/RemovedUsers.css'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 import { success, error, info } from '../../../config/toasts'
 
 class RemovedUsers extends Component {
@@ -70,7 +70,7 @@ class RemovedUsers extends Component {
         await this.setState({
             page: ++page
         })
-        
+
         this.searchUsers()
     }
 
@@ -85,11 +85,11 @@ class RemovedUsers extends Component {
 
         this.searchUsers()
     }
-    
+
     toogleLoading(){
         this.setState({loading: !this.state.loading})
     }
-    
+
     toogleRestoring(){
         this.setState({restoring: !this.state.restoring})
     }
@@ -97,30 +97,30 @@ class RemovedUsers extends Component {
     async restore(user){
 
         const option = window.confirm(`Tem certeza que deseja restaurar o usuário ${user.name} - ${user.email} ?`)
-        
+
         if(!option) return
 
         await this.setState({userSelected: user})
 
         const _id = user._id
-        
-        if(!_id) this.props.setToast(info('Usuário não encontrado')) 
-        
+
+        if(!_id) this.props.callToast(info('Usuário não encontrado'))
+
         this.toogleRestoring()
 
         const url = `${backendUrl}/users/configs/${_id}`
 
         await axios.patch(url).then( res => {
             this.searchUsers()
-            this.props.setToast(success('Usuário restaurado com sucesso'))
+            this.props.callToast(success('Usuário restaurado com sucesso'))
         }).catch( err => {
             const msg = defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleRestoring()
     }
-    
+
     componentDidMount(){
         this.setState({
             handleClose: this.props.closeDialog,
@@ -208,13 +208,13 @@ class RemovedUsers extends Component {
                                         {user.email}
                                     </TableCell>
                                     <TableCell scope="tagAdmin">
-                                        {user.tagAdmin ? 
+                                        {user.tagAdmin ?
                                             <CustomChip size="small"
                                                 className="chipTypeUser"
                                                 color="default"
                                                 sizeIcon="small"
                                                 icon="supervisor_account"
-                                                text="Administrador"/> : 
+                                                text="Administrador"/> :
                                             <CustomChip size="small"
                                                 className="chipTypeUser"
                                                 color="gray"
@@ -226,7 +226,7 @@ class RemovedUsers extends Component {
                                     </TableCell>
                                     <TableCell scope="_id">
                                         <Box width="100" display="flex" justifyContent="center" alignItems="center">
-                                            { (!Boolean(user === this.state.userSelected) || !this.state.restoring) && 
+                                            { (!Boolean(user === this.state.userSelected) || !this.state.restoring) &&
                                                 <CustomIconButton icon="restore_from_trash"
                                                 aria-label="Restore" color="primary"
                                                 tooltip="Restaurar"
@@ -245,7 +245,7 @@ class RemovedUsers extends Component {
                             {/* Footer da tabela */}
                             <TableFooter>
                                 <TableRow>
-                                    <TablePagination 
+                                    <TablePagination
                                         rowsPerPageOptions={OPTIONS_LIMIT}
                                         colSpan={4}
                                         count={this.state.count}
@@ -255,7 +255,7 @@ class RemovedUsers extends Component {
                                         page={this.state.page - 1}
                                         SelectProps={{ inputProps: {'aria-label': 'Limite'} }}
                                         onChangePage={this.changePage}
-                                        
+
                                         onChangeRowsPerPage={this.defineLimit}
                                     />
                                 </TableRow>
@@ -274,6 +274,6 @@ class RemovedUsers extends Component {
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(RemovedUsers)

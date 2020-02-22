@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { setUser } from '../../../redux/userActions'
 import { bindActionCreators } from 'redux'
 
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 import { success, error } from '../../../config/toasts'
 
 import {formatCustomURL} from '../../../config/masks'
@@ -25,7 +25,7 @@ import '../../../pages/css/defaultPage.css'
 import './css/MyAccountExtraInformation.css'
 
 class ExtraInformation extends Component {
-    state = { 
+    state = {
         user: {
             _id: null,
             instagram: '',
@@ -63,10 +63,10 @@ class ExtraInformation extends Component {
         const url = `${backendUrl}/users/${this.state.user._id}`
 
         await axios.patch(url, this.state.user).then( () => {
-            this.props.setToast(success('Informações salvas com sucesso'))
+            this.props.callToast(success('Informações salvas com sucesso'))
         }).catch( async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleSaving()
@@ -95,8 +95,8 @@ class ExtraInformation extends Component {
         }
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Grid item xs={12} className="extra_information_content">
                 <Grid item xs={12} sm={6} md={3} className="formGroup">
                     <TextField label="Url Personalizada"
@@ -199,9 +199,9 @@ class ExtraInformation extends Component {
                 <Grid item xs={12} sm={6}>
                     <Box m={1}>
                         <p className="p">Especialidade</p>
-                        <ReactQuill value={this.state.user.especiality} 
+                        <ReactQuill value={this.state.user.especiality}
                             onChange={(value) => this.editorChange(value, 'especiality')}
-                            className="occupation" 
+                            className="occupation"
                         />
                         <small>Informe suas especialidades, técnicas e profissionais.</small>
                     </Box>
@@ -217,6 +217,6 @@ class ExtraInformation extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.toast})
-const mapDispatchToProps = dispatch => bindActionCreators({setUser, setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({setUser, callToast}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExtraInformation)

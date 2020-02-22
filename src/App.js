@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { setUser } from './redux/userActions'
 import { setError } from './redux/errorActions'
 import { setMenu } from './redux/menuActions'
-import { setToast } from './redux/toastActions'
+import { callToast } from './redux/toastActions'
 import { bindActionCreators } from 'redux'
 
 //Components imports
@@ -52,7 +52,7 @@ class App extends Component {
 
     constructor(props){
       super(props)
-      
+
       this.state = {
         redirectTo: '',
         validatingToken: true,
@@ -115,7 +115,7 @@ class App extends Component {
         display: false
       }
 
-      this.props.setToast(toast)
+      this.props.callToast(toast)
     }
 
     componentDidMount(){
@@ -127,7 +127,7 @@ class App extends Component {
     render(){
       return (
         <div className="page">
-          { !this.state.validatingToken && 
+          { !this.state.validatingToken &&
             <Fade in={!this.state.validatingToken}>
               <Router>
                 {this.getPath() !== '/confirm-email' && <Menu/>}
@@ -137,11 +137,11 @@ class App extends Component {
                   <Redirect to="/auth"/>
                 }
                 {/* Caso existe um erro é redirecionado para tela de erro */}
-                {this.props.error && 
+                {this.props.error &&
                   <Redirect to="/error"/>
                 }
                 {/* Caso tente se acessar o diretório / é redirecionado para um determinado diretório */}
-                {this.state.redirectTo && 
+                {this.state.redirectTo &&
                   <Redirect to={`/${this.state.redirectTo}`}/>
                 }
                 <Switch>
@@ -188,7 +188,7 @@ class App extends Component {
 
 
 const mapStateToProps = state => ({user: state.user, error: state.error, menu: state.menu, toast: state.toast})
-const mapDispatchToProps = dispatch => bindActionCreators({setUser, setError, setMenu, setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({setUser, setError, setMenu, callToast}, dispatch)
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

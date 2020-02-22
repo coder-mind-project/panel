@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { success, error, info } from '../../config/toasts'
-import { setToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toastActions'
 
 import CustomChip from '../../components/Chip.jsx'
 import CustomIconButton from '../../components/IconButton.jsx'
@@ -17,9 +17,9 @@ import CustomButton from '../../components/Button.jsx'
 import Searching from '../../assets/loading.gif'
 import NotFound from '../../components/NotFound.jsx'
 
-import { Grid, Table, TableHead, TableRow, 
+import { Grid, Table, TableHead, TableRow,
         TableCell, Icon, TableBody, TableFooter,
-        TablePagination, TextField, Box, Checkbox, 
+        TablePagination, TextField, Box, Checkbox,
         Grow, Paper, Container, Dialog, DialogContent,
         DialogContentText, DialogActions, DialogTitle} from '@material-ui/core'
 
@@ -41,7 +41,7 @@ const INITIAL_COMMENT = {
 }
 
 class Comments extends Component {
-    state = { 
+    state = {
         comments: [],
         page: 1,
         count: 0,
@@ -88,7 +88,7 @@ class Comments extends Component {
         await this.setState({
             page: ++page
         })
-        
+
         this.getComments()
     }
 
@@ -103,32 +103,32 @@ class Comments extends Component {
 
     aproveComment(comment){
 
-        if(comment.confirmed) this.props.setToast(info('Este comentário já está aprovado'))
+        if(comment.confirmed) this.props.callToast(info('Este comentário já está aprovado'))
 
         comment.confirmed = true
         comment.readed = true
 
         const url = `${backendUrl}/comments`
         axios.patch(url, comment).then(() => {
-            this.props.setToast(success('Comentário aprovado com sucesso'))
+            this.props.callToast(success('Comentário aprovado com sucesso'))
             this.getComments()
         }).catch(err => {
             const msg = defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
     }
 
     readComment(comment){
 
-        
+
         this.setState({comment: {
             ...comment,
             readed: true
         }})
-        
+
         document.documentElement.scrollTop = 0
         if(comment.readed) return
-        
+
         const change = {
             _id: comment._id,
             readed: true
@@ -146,16 +146,16 @@ class Comments extends Component {
         const comment = this.state.comment
 
         await axios.patch(url, comment).then(() => {
-            this.props.setToast(success('Operação realizada com sucesso'))
+            this.props.callToast(success('Operação realizada com sucesso'))
             this.getComments()
             this.setState({comment: INITIAL_COMMENT})
         }).catch(err => {
             const msg = defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleSavingChanges()
-        
+
     }
 
     async sendAnswer(){
@@ -169,16 +169,16 @@ class Comments extends Component {
         await this.toogleSendingAnswer()
 
         await axios.post(url, body).then(res => {
-            this.props.setToast(success(res.data))
+            this.props.callToast(success(res.data))
             this.closeAnswerDialog()
         }).catch(err => {
             const msg = defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleSendingAnswer()
     }
-    
+
     closeAnswerDialog(){
         this.setState({dialogAnswer: false, answer: ''})
     }
@@ -187,17 +187,17 @@ class Comments extends Component {
         this.getComments()
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Container id="component">
                 <Header title="Comentários" description="Interaja com seus leitores" icon="comments"/>
-                { this.state.comment._id && 
+                { this.state.comment._id &&
                     <Grow in={Boolean(this.state.comment._id)}>
                         <Paper className="form-comment">
                             <Grid item xs={12}>
                                 <Box p={3}>
                                     <Box display="flex" justifyContent="flex-end" alignItems="center" width="100%">
-                                        <CustomIconButton 
+                                        <CustomIconButton
                                             icon="clear"
                                             onClick={() => {
                                                 this.setState({comment: INITIAL_COMMENT})
@@ -205,11 +205,11 @@ class Comments extends Component {
                                         />
                                     </Box>
                                     <Box width="100%" mt={1} mb={1}>
-                                        <TextField 
+                                        <TextField
                                             className="form-input"
                                             label="Usuário"
                                             value={this.state.comment.userName}
-                                            onChange={(event) => this.handleChange(event, 'userName')} 
+                                            onChange={(event) => this.handleChange(event, 'userName')}
                                             fullWidth
                                             disabled
                                         />
@@ -219,24 +219,24 @@ class Comments extends Component {
                                             className="form-input"
                                             label="E-mail de contato"
                                             value={this.state.comment.userEmail}
-                                            onChange={(event) => this.handleChange(event, 'userEmail')} 
+                                            onChange={(event) => this.handleChange(event, 'userEmail')}
                                             fullWidth
                                             disabled
                                         />
                                     </Box>
                                     <Box width="100%" mt={1} mb={1}>
-                                        <TextField 
+                                        <TextField
                                             className="form-input"
                                             label="Comentário"
                                             multiline
                                             value={this.state.comment.comment}
-                                            onChange={(event) => this.handleChange(event, 'comment')} 
+                                            onChange={(event) => this.handleChange(event, 'comment')}
                                             fullWidth
                                             disabled
                                         />
                                     </Box>
                                     <Box width="100%" mt={1} mb={1}>
-                                        <TextField 
+                                        <TextField
                                             className="form-input"
                                             label="Comentado em"
                                             multiline
@@ -247,14 +247,14 @@ class Comments extends Component {
                                     </Box>
                                     <Box className="form-hud-options" mt={1}>
                                             <Link to={`/comments/${this.state.comment._id}`} className="linkRouterBlack">
-                                                <CustomButton 
+                                                <CustomButton
                                                     color="none"
                                                     variant="text"
                                                     text="Histórico"
                                                     icon="history"
                                                 />
                                             </Link>
-                                            <CustomButton 
+                                            <CustomButton
                                                 className="link-button"
                                                 color="none"
                                                 variant="text"
@@ -265,8 +265,8 @@ class Comments extends Component {
                                     </Box>
                                     <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" mb={3} mt={3}>
                                         <Grid item xs={12} md={6} className="form-footer-left">
-                                            <Checkbox 
-                                                checked={Boolean(this.state.comment.confirmed)} 
+                                            <Checkbox
+                                                checked={Boolean(this.state.comment.confirmed)}
                                                 color="secondary"
                                                 onChange={(evt) => this.setState({
                                                     comment: {
@@ -278,8 +278,8 @@ class Comments extends Component {
                                             Confirmado?
                                         </Grid>
                                         <Grid item xs={12} md={6} className="form-footer-right">
-                                            <Checkbox 
-                                                checked={Boolean(this.state.comment.readed)} 
+                                            <Checkbox
+                                                checked={Boolean(this.state.comment.readed)}
                                                 color="secondary"
                                                 disabled
                                                 />
@@ -288,7 +288,7 @@ class Comments extends Component {
                                     </Box>
                                     <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
                                         <Grid item xs={12} md={6} className="form-footer-left">
-                                            <CustomButton 
+                                            <CustomButton
                                                 color="success"
                                                 variant="contained"
                                                 text={this.state.saving ? "Salvando..." : "Salvar"}
@@ -298,10 +298,10 @@ class Comments extends Component {
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={6} className="form-footer-right">
-                                            <CustomButton 
+                                            <CustomButton
                                                 color="none"
                                                 variant="contained"
-                                                text="Voltar à tabela" 
+                                                text="Voltar à tabela"
                                                 icon="keyboard_arrow_down"
                                                 onClick={() => {
                                                     this.setState({comment: INITIAL_COMMENT})
@@ -334,13 +334,13 @@ class Comments extends Component {
                         />
                     </DialogContent>
                     <DialogActions>
-                        <CustomButton 
+                        <CustomButton
                             text="Cancelar"
                             onClick={() => {
                                 const op = window.confirm('Tem certeza que deseja sair?')
                                 if(op)
                                     this.closeAnswerDialog()
-                            }} 
+                            }}
                             color="danger"
                             variant="contained"
                             icon="clear"
@@ -411,13 +411,13 @@ class Comments extends Component {
                                             {comment.userEmail}
                                         </TableCell>
                                         <TableCell scope="tagAdmin">
-                                            {comment.confirmed ? 
+                                            {comment.confirmed ?
                                                 <CustomChip size="small"
                                                     className="chipTypeUser"
                                                     color="success"
                                                     sizeIcon="small"
                                                     icon="done"
-                                                    text="Aprovado"/> : 
+                                                    text="Aprovado"/> :
                                                 <CustomChip size="small"
                                                     className="chipTypeUser"
                                                     color="gray"
@@ -445,7 +445,7 @@ class Comments extends Component {
                                 {/* Footer da tabela */}
                                 <TableFooter>
                                     <TableRow>
-                                        <TablePagination 
+                                        <TablePagination
                                             rowsPerPageOptions={OPTIONS_LIMIT}
                                             colSpan={4}
                                             count={this.state.count}
@@ -455,7 +455,7 @@ class Comments extends Component {
                                             page={this.state.page - 1}
                                             SelectProps={{ inputProps: {'aria-label': 'Limite'} }}
                                             onChangePage={this.changePage}
-                                            
+
                                             onChangeRowsPerPage={this.defineLimit}
                                         />
                                     </TableRow>
@@ -481,6 +481,6 @@ class Comments extends Component {
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments)

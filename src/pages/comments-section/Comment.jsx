@@ -10,7 +10,7 @@ import { Grid, Box, TextField,
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { info } from '../../config/toasts'
-import { setToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toastActions'
 
 import CustomIconButton from '../../components/IconButton.jsx'
 import CustomButton from '../../components/Button.jsx'
@@ -41,7 +41,7 @@ const INITIAL_COMMENT = {
 
 
 class Comment extends Component {
-    state = { 
+    state = {
         loading: false,
         loadingMore: false,
         existMore: true,
@@ -50,7 +50,7 @@ class Comment extends Component {
         count: 0,
         page: 1,
         limit: DEFAULT_LIMIT,
-        
+
         error: false,
 
         dialogAnswer: false,
@@ -87,7 +87,7 @@ class Comment extends Component {
         const page = this.state.page + 1
         await this.setState({page})
         await this.toogleLoadingMore()
-        
+
         const _id = this.state.comment._id
         const url = `${backendUrl}/comments/history/${_id}?page=${this.state.page}&limit=${this.state.limit}`
 
@@ -95,7 +95,7 @@ class Comment extends Component {
             let answers = this.state.answers
             if(res.data.answers.length === 0){
                 this.setState({existMore: false})
-                this.props.setToast(info('Não existem mais respostas a este comentário'))
+                this.props.callToast(info('Não existem mais respostas a este comentário'))
             }else{
                 const count = this.state.count + res.data.count
                 answers.push(...res.data.answers)
@@ -109,7 +109,7 @@ class Comment extends Component {
         })
 
         this.toogleLoadingMore()
-        
+
     }
 
     closeAnswerDialog(){
@@ -120,8 +120,8 @@ class Comment extends Component {
         this.getHistory()
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Container id="component">
                 <Header icon="history" title="Histórico de comentários" description={`Visualize o histórico do comentário abaixo`} />
                 <Box mb={3}>
@@ -129,7 +129,7 @@ class Comment extends Component {
                         <Link to="/comments" className="defaultFontColor">
                             <strong>Comentarios</strong>
                         </Link>
-                        { this.state.comment._id && 
+                        { this.state.comment._id &&
                             <strong>
                             Comentário de <u>{this.state.comment.userName}</u>
                             </strong>
@@ -175,7 +175,7 @@ class Comment extends Component {
                                 </Grid>
                             </Grid>
                             <Grid item xs={12} className="form-container">
-                                <TextField 
+                                <TextField
                                     className="form-input"
                                     label="Comentário"
                                     value={this.state.comment.comment}
@@ -257,7 +257,7 @@ class Comment extends Component {
                                                 <TableFooter>
                                                     <TableRow>
                                                         <TableCell>
-                                                            <CustomButton 
+                                                            <CustomButton
                                                                 text="Ver mais"
                                                                 icon="expand_more"
                                                                 onClick={() => this.includeMoreComments()}
@@ -295,11 +295,11 @@ class Comment extends Component {
                                     />
                                 </DialogContent>
                                 <DialogActions>
-                                    <CustomButton 
+                                    <CustomButton
                                         text="Fechar"
                                         onClick={() => {
                                             this.closeAnswerDialog()
-                                        }} 
+                                        }}
                                         color="default"
                                         variant="contained"
                                         icon="clear"
@@ -316,7 +316,7 @@ class Comment extends Component {
                         </Grid>
                     </Paper>
                 }
-                { this.state.loading && 
+                { this.state.loading &&
                     <Grid item xs={12} className="comment-content">
                         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%">
                             <img src={Searching} alt="Carregando comentário" />
@@ -324,15 +324,15 @@ class Comment extends Component {
                         </Box>
                     </Grid>
                 }
-                { this.state.error && 
+                { this.state.error &&
                     <ErrorBlock />
                 }
-            </Container> 
+            </Container>
         )
     }
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comment)

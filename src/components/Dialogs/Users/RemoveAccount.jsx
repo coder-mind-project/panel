@@ -11,7 +11,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 import { success, error } from '../../../config/toasts'
 
 class RemoveAccount extends Component {
@@ -45,14 +45,14 @@ class RemoveAccount extends Component {
         }
 
         await axios.put(url, payload).then( () => {
-            this.props.setToast(success('Conta removida com sucesso, aguarde alguns segundos... Estamos lhe redirecionando'))
+            this.props.callToast(success('Conta removida com sucesso, aguarde alguns segundos... Estamos lhe redirecionando'))
             setTimeout(async () => {
                 await localStorage.removeItem('user')
                 window.location.href = '/'
             }, 5000)
         }).catch( async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleRemoving()
@@ -85,8 +85,8 @@ class RemoveAccount extends Component {
                     <form onSubmit={(evt) => this.remove(evt)}>
                         <FormControl fullWidth>
                             <InputLabel htmlFor="current-password">Senha</InputLabel>
-                            <PasswordField id="current-password" 
-                                inputProps={{ autoComplete: 'current-password' }} 
+                            <PasswordField id="current-password"
+                                inputProps={{ autoComplete: 'current-password' }}
                                 fullWidth onChange={this.handleChange('password')}
                                 autoFocus={true}
                             />
@@ -94,14 +94,14 @@ class RemoveAccount extends Component {
                     </form>
                 </DialogContent>
                 <DialogActions>
-                    <Button 
+                    <Button
                         onClick={this.state.handleClose}
                         disabled={this.state.removing}
                     >
                         Fechar
                     </Button>
-                    <Button 
-                        onClick={() => this.remove()} 
+                    <Button
+                        onClick={() => this.remove()}
                         color="secondary"
                         disabled={this.state.removing}
                     >
@@ -114,5 +114,5 @@ class RemoveAccount extends Component {
 }
 
 const mapStateToProps = state => ({toast: state.toast})
-const mapDispatchToProps = dispatch => bindActionCreators({ setToast }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ callToast }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(RemoveAccount)

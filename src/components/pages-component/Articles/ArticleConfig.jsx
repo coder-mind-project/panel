@@ -6,7 +6,7 @@ import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toastActions'
 import { success, error } from '../../../config/toasts'
 
 import CustomButton from '../../Button.jsx'
@@ -17,7 +17,7 @@ import { displayFullDate } from '../../../config/masks'
 import './css/ArticleConfig.css'
 class ArticleConfig extends Component {
 
-    state = { 
+    state = {
         article: null,
         changing: false,
     }
@@ -34,40 +34,40 @@ class ArticleConfig extends Component {
         const op = window.confirm('Tem certeza que deseja remover este artigo?')
 
         if(!op) return
-        
+
         const id = this.state.article._id
 
-        if(!id) this.props.setToast(error('Artigo não encontrado'))
-        
+        if(!id) this.props.callToast(error('Artigo não encontrado'))
+
         await this.toogleChangingState()
-        
+
         const url = `${backendUrl}/articles/management/${id}`
         await axios.delete(url).then(() => {
-            this.props.setToast(success('Artigo removido com sucesso'))
+            this.props.callToast(success('Artigo removido com sucesso'))
             setTimeout(() => window.location.href = '/articles', 3000)
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
-        
+
         this.toogleChangingState()
     }
-    
+
     publish = async () => {
         /* Usado para publicar artigos */
         const id = this.state.article._id
-        
-        if(!id) this.props.setToast(error('Artigo não encontrado'))
-        
+
+        if(!id) this.props.callToast(error('Artigo não encontrado'))
+
         await this.toogleChangingState()
 
         const url = `${backendUrl}/articles/management/${id}?op=publish`
         await axios.patch(url).then( res => {
-            this.props.setToast(success('Artigo publicado com sucesso'))
+            this.props.callToast(success('Artigo publicado com sucesso'))
             this.setState({article: res.data})
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleChangingState()
@@ -78,72 +78,72 @@ class ArticleConfig extends Component {
 
         const id = this.state.article._id
 
-        if(!id) this.props.setToast(error('Artigo não encontrado'))
-        
+        if(!id) this.props.callToast(error('Artigo não encontrado'))
+
         await this.toogleChangingState()
 
         const url = `${backendUrl}/articles/management/${id}?op=inactive`
         await axios.patch(url).then( res => {
-            this.props.setToast(success('Artigo inativado com sucesso'))
+            this.props.callToast(success('Artigo inativado com sucesso'))
             this.setState({article: res.data})
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleChangingState()
     }
-    
+
     boost = async () => {
         /* Usado para impulsionar artigos */
 
         const id = this.state.article._id
 
-        if(!id) this.props.setToast(error('Artigo não encontrado'))
-        
+        if(!id) this.props.callToast(error('Artigo não encontrado'))
+
         await this.toogleChangingState()
 
         const url = `${backendUrl}/articles/management/${id}?op=boost`
         await axios.patch(url).then( res => {
-            this.props.setToast(success('Artigo impulsionado com sucesso'))
+            this.props.callToast(success('Artigo impulsionado com sucesso'))
             this.setState({article: res.data})
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleChangingState()
     }
-    
+
     active = async () => {
         /* Usado para reativar artigos */
 
         const id = this.state.article._id
 
-        if(!id) this.props.setToast(error('Artigo não encontrado'))
-    
+        if(!id) this.props.callToast(error('Artigo não encontrado'))
+
         await this.toogleChangingState()
 
         const url = `${backendUrl}/articles/management/${id}?op=active`
         await axios.patch(url).then( res => {
-            this.props.setToast(success('Artigo reativado com sucesso'))
+            this.props.callToast(success('Artigo reativado com sucesso'))
             this.setState({article: res.data})
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleChangingState()
     }
 
     componentDidMount(){
-        this.setState({article: this.props.article})  
+        this.setState({article: this.props.article})
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Grid item xs={12} className="config-container">
-                { this.state.article && 
+                { this.state.article &&
                     <Grid item xs={12}>
                         <Grid item xs={12}>
                             <TextField label="Identificação do artigo" margin="dense" fullWidth value={this.state.article._id} disabled/>
@@ -153,16 +153,16 @@ class ArticleConfig extends Component {
                         </Grid>
                         <Box display="flex" flexWrap="wrap">
                             <Grid item xs={12} md={4}>
-                                <TextField label="Autor" margin="dense" value={this.state.article.author.name} disabled /> 
+                                <TextField label="Autor" margin="dense" value={this.state.article.author.name} disabled />
                             </Grid>
                             <Grid item xs={12} md={4}>
-                                <TextField label="Criado em" margin="dense" value={displayFullDate(this.state.article.created_at)} disabled /> 
+                                <TextField label="Criado em" margin="dense" value={displayFullDate(this.state.article.created_at)} disabled />
                             </Grid>
                             <Grid item xs={12} md={4}>
-                                <TextField label="Publicado em" margin="dense" value={this.state.article.publishAt ? displayFullDate(this.state.article.publishAt) : 'Não publicado'} disabled /> 
+                                <TextField label="Publicado em" margin="dense" value={this.state.article.publishAt ? displayFullDate(this.state.article.publishAt) : 'Não publicado'} disabled />
                             </Grid>
                             <Grid item xs={12} md={4}>
-                                <TextField label="Ultima atualização" margin="dense" value={ this.state.article.updatedAt ? displayFullDate(this.state.article.updatedAt) : 'Nunca atualizado'} disabled /> 
+                                <TextField label="Ultima atualização" margin="dense" value={ this.state.article.updatedAt ? displayFullDate(this.state.article.updatedAt) : 'Nunca atualizado'} disabled />
                             </Grid>
                             <Grid item xs={12}>
                                 <Box display="flex" alignItems="center" width="100%">
@@ -246,7 +246,7 @@ class ArticleConfig extends Component {
                         <Box width="100%" mt={3}>
                             <Divider />
                         </Box>
-                        { this.state.changing && 
+                        { this.state.changing &&
                             <LinearProgress />
                         }
                         <Grid item xs={12} className="config-bar-actions">
@@ -262,23 +262,23 @@ class ArticleConfig extends Component {
                                 <Grid item xs={12} md={3}>
                                     <CustomButton text="Publicar" disabled={this.state.changing} icon="publish" color="success" onClick={this.publish}/>
                                 </Grid>
-                            } 
-                            { this.state.article.published && !this.state.article.inactivated && 
+                            }
+                            { this.state.article.published && !this.state.article.inactivated &&
                                 <Grid item xs={12} md={3}>
                                     <CustomButton text="Inativar" disabled={this.state.changing} icon="block" color="gray" onClick={this.inactive}/>
                                 </Grid>
                             }
-                            { this.state.article.published && this.state.article.inactivated &&  
+                            { this.state.article.published && this.state.article.inactivated &&
                                 <Grid item xs={12} md={3}>
                                     <CustomButton text="Reativar" disabled={this.state.changing} icon="restore" color="warning" onClick={this.active}/>
                                 </Grid>
                             }
                             <Grid item xs={12} md={3}>
                                 <CustomButton text="Impulsionar" disabled={this.state.changing} icon="share" color="default" onClick={this.boost}/>
-                            </Grid> 
+                            </Grid>
                             <Grid item xs={12} md={3}>
                                 <CustomButton text="Remover" disabled={this.state.changing} icon="delete_forever" color="danger" onClick={this.remove}/>
-                            </Grid> 
+                            </Grid>
                         </Grid>
                     </Grid>
                 }
@@ -288,7 +288,7 @@ class ArticleConfig extends Component {
                             <CircularProgress />
                             <p>Carregando, por favor aguarde...</p>
                         </Box>
-                    </Grid>  
+                    </Grid>
                 }
             </Grid>
         )
@@ -296,6 +296,6 @@ class ArticleConfig extends Component {
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticleConfig)

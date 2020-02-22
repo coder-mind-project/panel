@@ -10,7 +10,7 @@ import CustomButton from '../../Button.jsx'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { setToast } from "../../../redux/toastActions"
+import { callToast } from "../../../redux/toastActions"
 import { error } from "../../../config/toasts"
 
 import axios from 'axios'
@@ -54,14 +54,14 @@ class ImprovementSuggestion extends Component {
         const data = this.state.ticket
 
         data.emailUser = this.props.user.email
-        
+
         const url = `${backendUrl}/tickets`
 
         await axios.post(url, data).then( () => {
             this.setState({success: true})
         }).catch( async err =>{
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         this.toogleIsSending()
@@ -108,7 +108,7 @@ class ImprovementSuggestion extends Component {
                                     </FormControl>
                                 </Grid>
                             </Box>
-                            <TextField 
+                            <TextField
                                 className="formInput"
                                 fullWidth={true}
                                 multiline={true}
@@ -122,7 +122,7 @@ class ImprovementSuggestion extends Component {
                             </Box>
                         </Box>
                     }
-                    { this.state.success && !Boolean(this.state.error) && 
+                    { this.state.success && !Boolean(this.state.error) &&
                         <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" p={5} m={3}>
                             <Box display="flex" alignItems="center" mr={2}>
                                 <FontAwesomeIcon icon={faCheckCircle} size="5x" color="#28a745"/>
@@ -131,7 +131,7 @@ class ImprovementSuggestion extends Component {
                                 <h3>Ticket enviado com sucesso, agora é só aguardar. Já já retornaremos contato ;).</h3>
                             </Box>
                         </Box>
-                    }   
+                    }
                 </Grid>
             </Grow>
         )
@@ -139,6 +139,6 @@ class ImprovementSuggestion extends Component {
 }
 
 const mapStateToProps = state => ({user: state.user, toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImprovementSuggestion)

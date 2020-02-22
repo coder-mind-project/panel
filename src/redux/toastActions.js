@@ -1,6 +1,6 @@
-export function setToast(config) {
-    return {
-        type: 'TOAST',
-        config
-    }
+export function callToast(config) {
+  return {
+    type: 'TOAST',
+    config,
+  };
 }

@@ -21,7 +21,7 @@ import { cpfMask, celphoneMask } from '../../config/masks'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { setToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toastActions'
 import { success, error } from '../../config/toasts'
 
 import '../css/defaultPage.css'
@@ -95,7 +95,7 @@ class User extends Component{
     formatData = () => {
         /* Formata o usuario de acordo com o registro na base de dados */
         return {
-            _id: this.state.user._id, 
+            _id: this.state.user._id,
             name: this.state.user.name,
             email: this.state.user.email,
             gender: this.state.user.gender,
@@ -121,47 +121,47 @@ class User extends Component{
 
         const method = user._id ? 'put' : 'post'
         const url =  method === 'post' ? `${backendUrl}/users` : `${backendUrl}/users/${user._id}`
-        
+
         this.toogleSaving()
 
         await axios[method](url, user).then(() => {
-            this.props.setToast(success('Informações salvas com sucesso'))
+            this.props.callToast(success('Informações salvas com sucesso'))
             setTimeout(() => {
                 this.goTo("users")
             }, 3000)
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
-        
+
         this.toogleSaving()
     }
-    
+
     toogleDialog = openDialog => event => {
         //false to close Dialog
         //true to open Dialog
         const user = this.state.user
         this.setState({openDialog, user: {...user, password: ''}})
     }
-    
+
     changePassword = async (evt) => {
         /* Responśavel por alterar a senha do usuário */
         evt.preventDefault()
-        
+
         this.setState({loadingOp: true})
         const url = `${backendUrl}/users`
-        
+
         const payload = {
             _id: this.state.user._id,
             password: this.state.user.password
         }
-        
+
         await axios.patch(url, payload).then( () => {
-            this.props.setToast(success('Senha alterada com sucesso!'))
+            this.props.callToast(success('Senha alterada com sucesso!'))
             this.setState({openDialog: false})
         }).catch(async err => {
             const msg = await defineErrorMsg(err)
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
         })
 
         const user = this.state.user
@@ -177,21 +177,21 @@ class User extends Component{
 
     getUser = async (id) => {
         /* Realiza a busca do usuário para permitir a edição / visualização */
-        
+
         const url = `${backendUrl}/users/${id}`
         await this.toogleLoading()
         await axios(url).then(res => {
             this.setState({ user: {
                 ...res.data,
                 oldEmail: res.data.email,
-                address: res.data.address || '', 
-                number: res.data.number || '', 
+                address: res.data.address || '',
+                number: res.data.number || '',
                 type: res.data.tagAdmin ? 'admin':'author'
             }})
         }).catch(err => {
             const msg = err.response.data || 'Ocorreu um erro desconhecido, se persistir reporte'
 
-            this.props.setToast(error(msg))
+            this.props.callToast(error(msg))
             if(err.response.status === 404){
                 setTimeout(() => {
                     this.setState({redirectTo: 'users'})
@@ -211,7 +211,7 @@ class User extends Component{
     render(){
         return(
             <Container id="component">
-                <Header title="Usuário" 
+                <Header title="Usuário"
                     description="Consulte, altere, crie e remova usuários do sistema"
                     icon="person_add"
                 />
@@ -228,10 +228,10 @@ class User extends Component{
                         </strong>
                     </Breadcrumbs>
                 </Box>
-                {this.state.redirectTo && 
+                {this.state.redirectTo &&
                     <Redirect to={`/${this.state.redirectTo}`}/>
                 }
-                { !this.state.loading && 
+                { !this.state.loading &&
                     <Paper className="form">
                         <Grid container>
                             <Grid item xs={12}>
@@ -287,8 +287,8 @@ class User extends Component{
                             <Grid item xs={12} className="formGroup">
                                 <TextField label="CPF *" className="formInput"
                                     value={this.state.user.cpf}
-                                    onChange={this.handleChangeMaskData('cpf')} 
-                                    inputProps={{ maxLength: 14 }} 
+                                    onChange={this.handleChangeMaskData('cpf')}
+                                    inputProps={{ maxLength: 14 }}
                                 />
                                 <TextField label="Número de celular *"
                                     className="formInput"
@@ -363,7 +363,7 @@ class User extends Component{
                                             Senha *
                                         </InputLabel>
                                         <PasswordField onChange={this.handleChange('password')}
-                                            id="password" 
+                                            id="password"
                                             inputProps={{ autoComplete: "new-password" }}
                                         />
                                     </FormControl>
@@ -387,7 +387,7 @@ class User extends Component{
                                 </Box>
                             </Grid>
                         }
-                        { this.state.user._id && 
+                        { this.state.user._id &&
                             <Grid item xs={12} className="formGroup">
                                 <TextField label="Usuário criado em"
                                     className="formInput"
@@ -426,7 +426,7 @@ class User extends Component{
                             { this.state.user._id &&
                                 <CustomButton color="default"
                                     text="Alterar senha" iconSize="small"
-                                    icon="lock" 
+                                    icon="lock"
                                     onClick={this.toogleDialog(true)}
                                     disabled={this.state.saving}
                                 />
@@ -454,7 +454,7 @@ class User extends Component{
                                             Alterando senha, por favor aguarde...
                                         </DialogContentText>
                                     }
-                                    { !this.state.loadingOp && 
+                                    { !this.state.loadingOp &&
                                         <form onSubmit={this.changePassword}>
                                             <FormControl fullWidth>
                                                 <InputLabel htmlFor="changePassword">
@@ -518,6 +518,6 @@ class User extends Component{
 }
 
 const mapStateToProps = state => ({toast: state.config})
-const mapDispatchToProps = dispatch => bindActionCreators({setToast}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({callToast: callToast }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
