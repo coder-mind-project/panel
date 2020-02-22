@@ -23,6 +23,7 @@ import { success, error as toastError } from '../../../config/toasts';
 
 function Theme(props) {
   const { callToast, match } = { ...props };
+  const { params } = { ...match };
 
   const [theme, setTheme] = useState({});
   const [loading, setLoading] = useState(false);
@@ -76,12 +77,12 @@ function Theme(props) {
     }
 
     if (!loading && !theme._id && !error.code) {
-      if (!match.params.id) setRedirectTo('/themes');
-      const { id } = { ...match.params };
+      if (!params.id) setRedirectTo('/themes');
+      const { id } = { ...params };
 
       getTheme(id);
     }
-  }, [theme, loading, error, redirectTo]);
+  }, [theme, loading, error, redirectTo, params]);
 
   return (
     <Container id="component">
