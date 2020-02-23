@@ -68,7 +68,6 @@ class ArticleImages extends Component {
         */
         const formData = new FormData()
         await formData.append(path, img)
-        await formData.append('idArticle', id)
 
         /*  Definição do campo de diretorio
             (Este campo é referido da URL pública que será pego a
