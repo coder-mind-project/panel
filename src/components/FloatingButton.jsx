@@ -1,28 +1,27 @@
-import React, { Component } from 'react'
-import { Slide, Fab, Icon, useScrollTrigger, Box } from '@material-ui/core'
+import React from 'react';
+import {
+  Slide, Fab, Icon, useScrollTrigger,
+} from '@material-ui/core';
 
-import '../pages/css/defaultPage.css'
+import '../pages/css/defaultPage.css';
 
-const Float = (props) => {
+function FloatingButton(props) {
+  const { window, action, icon } = { ...props };
 
-    const {window, action} = props
+  const params = { target: window ? window() : undefined, disableHysteresis: true };
+  const trigger = useScrollTrigger(params);
 
-    const trigger = useScrollTrigger({target: window ? window() : undefined, disableHysteresis: true})
-    
-    return trigger ? (
-        <Slide direction="up" in={true} mountOnEnter unmountOnExit>
-            <Fab color="secondary" className={"floatingButton"} 
-                onClick={action}>
-                <Icon>{props.icon || 'keyboard_arrow_up'}</Icon>
-            </Fab>
-        </Slide>
-    ) : null
+  return trigger ? (
+    <Slide direction="up" in mountOnEnter unmountOnExit>
+      <Fab
+        color="secondary"
+        className="floatingButton"
+        onClick={action}
+      >
+        <Icon>{icon || 'keyboard_arrow_up'}</Icon>
+      </Fab>
+    </Slide>
+  ) : null;
 }
 
-class FloatingButton extends Component {
-    render() { 
-        return ( <Box><Float action={this.props.action} icon={this.props.icon} /></Box> )
-    }
-}
-
-export default FloatingButton
+export default FloatingButton;
