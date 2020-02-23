@@ -22,26 +22,32 @@
 export const OPTIONS_LIMIT = [10, 25, 50];
 export const DEFAULT_LIMIT = 10;
 
-export const SIMPLE_LOADING_MSG = "Carregando...";
-export const SAUDATION_LOADING_MSG = "Carregando, por favor aguarde...";
+export const SIMPLE_LOADING_MSG = 'Carregando...';
+export const SAUDATION_LOADING_MSG = 'Carregando, por favor aguarde...';
 
-export const SIMPLE_ERROR_MSG =
-  "Ocorreu um erro desconhecido, se persistir reporte";
-export const ERROR_MSG_CUSTOM =
-  "Ops, parece que ocorreu um erro. Tente recarregar a página, se persistir tente novamente mais tarde";
+export const SIMPLE_ERROR_MSG = 'Ocorreu um erro desconhecido, se persistir reporte';
+export const ERROR_MSG_CUSTOM = 'Ops, parece que ocorreu um erro. Tente recarregar a página, se persistir tente novamente mais tarde';
 
-export const COLOR_APP = "#8a05be";
-export const COLOR_APP_HOVER = "rgba(145, 34, 189, .8)";
+export const COLOR_APP = '#8a05be';
+export const COLOR_APP_HOVER = 'rgba(145, 34, 189, .8)';
 
 export const CAPTCHA_SITE_KEY = process.env.REACT_APP_SITE_KEY_CAPTCHA;
 /*
     [EN] - Only Tables from Material UI
     [PT-BR] - Apenas para tabelas do Material UI
 */
-export const LIMIT_LABEL = "Limite: ";
-export const DISPLAYED_ROWS = value =>
+export const LIMIT_LABEL = 'Limite: ';
+export const DISPLAYED_ROWS = (value) =>
   `${value.from}-${value.to} de ${value.count}`;
 
-export const APP_VERSION = "1.1.0";
-export const APP_BUILD = "Development";
-export const APP_DEPENDENCIES = "https://google.com.br";
+export const APP_VERSION = '1.1.0';
+export const APP_BUILD = 'Development';
+export const APP_DEPENDENCIES = 'https://google.com.br';
+
+export const WHITE_LIST_ROUTES = [
+  '/auth',
+  '/redeem-account',
+  '/ticket',
+  '/confirm-email',
+  '/remove-account',
+];
