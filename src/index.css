@@ -4,10 +4,9 @@
 
 body {
   margin: 0;
-  font-family: 'Quicksand', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgba(220, 220, 220, .8);
+  background-color: rgba(245, 245, 245, .8);
   min-height: 100vh;
 }
 
@@ -16,7 +15,7 @@ body {
 }
 
 #component{
-  padding: 20px;
+  padding: 8px;
 }
 
 label.Mui-focused{
