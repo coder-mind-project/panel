@@ -37,7 +37,7 @@ import '../pages/css/forms.css';
 import '../pages/auth-section/css/RedeemAccount.css';
 
 function RescueAccount(props) {
-  const { back, callToast } = { ...props };
+  const { back, setToast } = { ...props };
   const [option, setOption] = useState('menu');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
@@ -162,7 +162,7 @@ function RescueAccount(props) {
       clearForms();
     }).catch(async (err) => {
       const errorMessage = defineErrorMsg(err);
-      callToast(toastError(errorMessage));
+      setToast(toastError(errorMessage));
     });
 
     recaptchaRef.current.reset();
@@ -463,6 +463,6 @@ function RescueAccount(props) {
 }
 
 const mapStateToProps = (state) => ({ toast: state.config });
-const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: callToast }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ setToast: callToast }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RescueAccount);
