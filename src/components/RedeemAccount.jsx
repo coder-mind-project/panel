@@ -20,7 +20,7 @@ import axios from 'axios';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { callToast } from '../redux/toastActions';
+import { callToast as toastEmitter } from '../redux/toastActions';
 import { error as toastError } from '../config/toasts';
 
 import Logo from '../assets/coder-mind-painelv1-preto.png';
@@ -37,7 +37,7 @@ import '../pages/css/forms.css';
 import '../pages/auth-section/css/RedeemAccount.css';
 
 function RescueAccount(props) {
-  const { back, setToast } = { ...props };
+  const { back, callToast } = { ...props };
   const [option, setOption] = useState('menu');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
@@ -162,7 +162,7 @@ function RescueAccount(props) {
       clearForms();
     }).catch(async (err) => {
       const errorMessage = defineErrorMsg(err);
-      setToast(toastError(errorMessage));
+      callToast(toastError(errorMessage));
     });
 
     recaptchaRef.current.reset();
@@ -463,6 +463,6 @@ function RescueAccount(props) {
 }
 
 const mapStateToProps = (state) => ({ toast: state.config });
-const mapDispatchToProps = (dispatch) => bindActionCreators({ setToast: callToast }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RescueAccount);
