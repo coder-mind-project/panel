@@ -76,10 +76,8 @@ function Theme(props) {
       setLoading(false);
     }
 
-    if (!loading && !theme._id && !error.code) {
-      if (!params.id) setRedirectTo('/themes');
+    if (!loading && !theme._id && !error.code && params.id) {
       const { id } = { ...params };
-
       getTheme(id);
     }
   }, [theme, loading, error, redirectTo, params]);
