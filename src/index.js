@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import App from './App';
 
 // Redux imports
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 import userReducer from './redux/userReducer';
 import errorReducer from './redux/errorReducer';
 import menuReducer from './redux/menuReducer';
 import toastReducer from './redux/toastReducer';
 
+import App from './App';
 
 import './config/axios';
 
