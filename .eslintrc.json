@@ -21,6 +21,7 @@
     "implicit-arrow-linebreak": "off",
     "no-plusplus": "off",
     "react/jsx-curly-newline": "off",
-    "react/jsx-filename-extension": "off"
+    "react/jsx-filename-extension": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }
