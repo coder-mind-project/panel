@@ -25,6 +25,7 @@ import Toast from './components/Toast';
 
 // Pages imports
 import Themes from './components/Themes/Themes';
+import Management from './components/Management/Management';
 import Error from './pages/error-presentation/Error';
 import Auth from './pages/auth-section/Auth';
 import Users from './pages/users-section/Users';
@@ -32,7 +33,6 @@ import User from './pages/users-section/User';
 import Articles from './pages/articles-section/Articles';
 import Article from './pages/articles-section/Article';
 import Stats from './pages/statistics-section/Stats';
-import Management from './pages/managements-section/Management';
 import Categories from './pages/managements-section/Categories/Categories';
 import Category from './pages/managements-section/Categories/Category';
 import MyAccount from './pages/users-section/MyAccount';
