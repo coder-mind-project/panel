@@ -41,6 +41,7 @@ import Comment from './pages/comments-section/Comment';
 import RedeemAccount from './pages/auth-section/RedeemAccount';
 import ConfirmEmail from './pages/auth-section/ConfirmEmail';
 import RemoveAccount from './pages/auth-section/RemoveAccount';
+import Ticket from './pages/tickets-section/Ticket';
 import Tickets from './pages/tickets-section/Tickets';
 
 
@@ -147,6 +148,7 @@ function App(props) {
                   <Route path="/auth" exact component={Auth} />
                   <Route path="/redeem-account" exact component={RedeemAccount} />
                   <Route path="/remove-account" exact component={RemoveAccount} />
+                  <Route path="/ticket" exact component={Ticket} />
                   <Route path="/tickets" exact component={Tickets} />
                   <Route path="/confirm-email" exact component={ConfirmEmail} />
                   <Route path="/user" exact component={User} />
