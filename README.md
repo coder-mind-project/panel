@@ -1,16 +1,28 @@
-# Painel Coder Mind
+
+# App Coder Mind
+
+### Versão: 2.0.0
+
+**Desenvolvido por:** Coder Mind
+**Contato:** allan.codermind@gmail.com
+
+---
 
 #### Descrição:
-Prover acesso a configurações e atividades administrativas provenientes ao serviço proposto pela [Coder Mind](https://codermind.com.br).
+Mais que um painel de controle, o **App da Coder Mind** fornece uma experiência confortável aos seus utilizadores.
+Um software desenvolvido nas melhores práticas de programação do mundo [React.js](https://reactjs.org/docs/getting-started.html) sendo inteiramente responsivo para funcionar aonde você precisar!
+Experimente nosso App como um **web app** nativo em seu dispositivo, não sabe como fazer?
+
+ [Clique aqui](https://support.google.com/chrome_webstore/answer/3060053?hl=pt-BR)
+
+
+Atualmente provendo suporte a criação de artigos e gerenciamento de estatísticas sobre os mesmos.
+
 #### Suporte:
-Atualmente suportado pelos principais navegadores do mercado, como Mozilla Firefox, Google Chrome, Safari e derivados do Chrome.
-#### Acesso:
-Disponível clicando [aqui](https://painel.codermind.com.br) ou acesso diretamente pelo link [https://painel.codermind.com.br](https://painel.codermind.com.br).
+Atualmente roda na maioria dos navegadores modernos, mas tendo a possibilidade utilize navegadores como o Google Chrome ou derivados.
+O app é feito com React.js, isto é, você pode utilizá-lo como um web app =D
 
-![Painel versão web](https://cm-gestao-v1.allanalves23.top/public/imgs/1566624735977.webp)
+#### Documentação:
+A documentação está disponibilizada no link abaixo: 
 
-![Painel versão mobile](https://cm-gestao-v1.allanalves23.top/public/imgs/1566625278846.webp)
-
-#### Licença:
-Este software tem caráter de auto financiamento, sendo desenvolvido para fins pessoais do próprio desenvolvedor, passível de comercialização ou liberação para uso livre posteriormente.
-Qualquer Uso indevido, ou seja, sem a autorização via formalização mediante o utilizador e o dono ou companhia responsável pelo software será passível de penalização cível ou maior. 
+[Documentação App Coder Mind](https://google.com.br)
