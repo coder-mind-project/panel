@@ -1,5 +1,5 @@
 {
-  "short_name": "Painel Coder Mind",
+  "short_name": "Coder Mind",
   "name": "Painel Coder Mind",
   "icons": [
     {
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#f50057"
+  "theme_color": "#8a05be",
+  "background_color": "#8a05be"
 }
