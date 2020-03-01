@@ -29,6 +29,7 @@ import Management from './components/Management/Management';
 import Error from './pages/error-presentation/Error';
 import Auth from './pages/auth-section/Auth';
 import Ticket from './components/Tickets/SendTickets/Ticket';
+import Tickets from './components/Tickets/ManageTickets/Tickets';
 import Users from './pages/users-section/Users';
 import User from './pages/users-section/User';
 import Articles from './pages/articles-section/Articles';
@@ -42,7 +43,6 @@ import Comment from './pages/comments-section/Comment';
 import RedeemAccount from './pages/auth-section/RedeemAccount';
 import ConfirmEmail from './pages/auth-section/ConfirmEmail';
 import RemoveAccount from './pages/auth-section/RemoveAccount';
-import Tickets from './pages/tickets-section/Tickets';
 
 
 // Css imports
