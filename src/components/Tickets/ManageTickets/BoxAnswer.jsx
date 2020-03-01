@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 
 import axios from 'axios';
-import { defineErrorMsg, backendUrl } from '../../../config/backend';
+import { defineErrorMsg, backendUrl } from '@/config/backend';
 
 import { CustomInputBase, BoxFieldAnswer } from './styles';
 

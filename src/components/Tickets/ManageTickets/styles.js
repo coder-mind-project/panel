@@ -8,7 +8,7 @@ import {
   Icon,
 } from '@material-ui/core';
 
-import { devices } from '../../../config/devices';
+import { devices } from '@/config/devices';
 
 export const CustomGrid = styled(Grid)({
   display: 'flex',

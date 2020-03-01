@@ -26,15 +26,17 @@ import { Redirect, Link } from 'react-router-dom';
 
 import { faIdCard } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { backendUrl } from '@/config/backend';
+
+import CustomButton from '@/components/Button.jsx';
+import CustomIconButton from '@/components/IconButton.jsx';
+import Header from '@/components/Header.jsx';
+
 import ViewTicket from './ViewTicket';
 import TicketResponses from './TicketResponses';
-import CustomButton from '../../Button';
-import CustomIconButton from '../../IconButton';
-import Header from '../../Header';
 import Filter from './Filter';
 
 
-import { backendUrl } from '../../../config/backend';
 import {
   OPTIONS_LIMIT,
   DEFAULT_LIMIT,

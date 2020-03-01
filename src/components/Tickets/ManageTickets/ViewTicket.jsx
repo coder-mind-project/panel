@@ -14,11 +14,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios';
-import { backendUrl } from '../../../config/backend';
+import { backendUrl } from '@/config/backend';
 
-import { displayFullDate } from '../../../config/masks';
+import { displayFullDate } from '@/config/masks';
 
-import { callToast as toastEmitter } from '../../../redux/toastActions';
+import { callToast as toastEmitter } from '@/redux/toastActions';
 
 import TicketAnswers from './TicketAnswers';
 

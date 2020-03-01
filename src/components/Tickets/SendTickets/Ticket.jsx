@@ -16,9 +16,9 @@ import { connect } from 'react-redux';
 
 import { Redirect } from 'react-router-dom';
 
-import { scrollToTop } from '../../../config/ScrollToTop';
-
-import Header from '../../Header';
+import Header from '@/components/Header.jsx';
+import { devices } from '@/config/devices';
+import { scrollToTop } from '@/config/ScrollToTop';
 
 
 import WhatIsTicketDialog from './WhatIsTicketDialog';
@@ -27,7 +27,6 @@ import BugReport from './BugReport';
 import ImprovementSuggestion from './ImprovementSuggestion';
 import AccountRecuperation from './AccountRecuperation';
 
-import { devices } from '../../../config/devices';
 
 import { CustomCard, CustomCardActions, CustomPaper } from './styles';
 

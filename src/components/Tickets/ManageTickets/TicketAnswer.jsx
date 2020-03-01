@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import { displayFullDate } from '../../../config/masks';
+import { displayFullDate } from '@/config/masks';
 
 import { BoxMessageAdmin, BoxMessageIcon } from './styles';
 

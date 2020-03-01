@@ -7,15 +7,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios';
-import { backendUrl } from '../../../config/backend';
+import { backendUrl } from '@/config/backend';
+
+import { callToast as toastEmitter } from '@/redux/toastActions';
+import { error as toastError } from '@/config/toasts';
 
 import { BoxAnswers as CustomBox } from './styles';
 
 import TicketAnswer from './TicketAnswer';
-
-
-import { error as toastError } from '../../../config/toasts';
-import { callToast as toastEmitter } from '../../../redux/toastActions';
 
 function BoxAnswers(props) {
   const {
