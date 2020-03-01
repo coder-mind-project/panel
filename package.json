@@ -1,11 +1,12 @@
 {
-  "name": "coder-mind-panel-react-app",
-  "version": "1.1.0",
-  "description": "Control panel Coder Mind",
+  "name": "app-coder-mind",
+  "version": "2.0.0",
+  "description": "App Coder Mind",
   "author": "Allan Wanderley Alves",
   "license": "GPL-3.0-or-later",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^5.6.3",
     "@date-io/moment": "^1.3.7",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
@@ -35,9 +36,9 @@
     "redux": "^4.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -58,6 +59,7 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
+    "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.18.3",
