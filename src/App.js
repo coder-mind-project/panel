@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  BrowserRouter as Router, Route, Redirect, Switch,
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
 } from 'react-router-dom';
-import { Grid, Fade } from '@material-ui/core';
+import { Grid, Fade, CircularProgress } from '@material-ui/core';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -11,8 +14,6 @@ import { bindActionCreators } from 'redux';
 // Error Boundary
 import ErrorBoundary from '@/components/Errors/ErrorBoundary.jsx';
 
-
-import Loading from './assets/loading.gif';
 
 import { WHITE_LIST_ROUTES } from './config/dataProperties';
 // Requests imports
@@ -33,7 +34,7 @@ import Toast from './components/Toast';
 import Themes from './components/Themes/Themes';
 import Management from './components/Management/Management';
 import Error from './components/Errors/Error';
-import Auth from './pages/auth-section/Auth';
+import Auth from './components/Authentications/Auth';
 import Ticket from './components/Tickets/SendTickets/Ticket';
 import Tickets from './components/Tickets/ManageTickets/Tickets';
 import Users from './pages/users-section/Users';
@@ -67,7 +68,6 @@ function App(props) {
 
   const [validatingToken, setValidatingToken] = useState(true);
   const [path, setPath] = useState('');
-  const [redirectTo, setRedirectTo] = useState('');
 
   function validateRoutes() {
     let top = 0;
@@ -109,7 +109,7 @@ function App(props) {
             setMenu(false);
           }
         }).catch(() => {
-          setRedirectTo('/auth');
+          setError(true);
         });
       }
 
@@ -135,18 +135,13 @@ function App(props) {
                     closeToast={closeToast}
                   />
                   { !user._id && validateRoutes()
-                  && (
-                    <Redirect to="/auth" />
-                  )
-                }
-                  { redirectTo
                     && (
-                      <Redirect to={redirectTo} />
+                      <Redirect to="/auth" />
                     )
-                }
+                  }
                   { error
-                  && <Redirect to="/error" />
-                }
+                    && <Redirect to="/error" />
+                  }
                   <Switch>
                     <Route path="/" exact component={Articles} />
                     <Route path="/auth" exact component={Auth} />
@@ -180,7 +175,7 @@ function App(props) {
             && (
             <Fade in={validatingToken}>
               <Grid item xs={12} className="loading-app-area">
-                <img src={Loading} alt="Carregando..." />
+                <CircularProgress size={70} />
               </Grid>
             </Fade>
             )
