@@ -27,10 +27,10 @@ const reducers = combineReducers({
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#088FF6',
+      main: '#8a05be',
     },
     secondary: {
-      main: '#8a05be',
+      main: '#088FF6',
     },
     action: {
       disabled: 'rgb(0,0,0)',
