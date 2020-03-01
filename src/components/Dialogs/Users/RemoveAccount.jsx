@@ -74,7 +74,7 @@ class RemoveAccount extends Component {
                 disableBackdropClick={this.state.removing}
                 disableEscapeKeyDown={this.state.removing}
             >
-                { this.state.removing && <LinearProgress color="secondary" />}
+                { this.state.removing && <LinearProgress color="primary" />}
                 <DialogTitle id="alert-dialog-title">
                     Remover conta
                 </DialogTitle>
@@ -102,7 +102,7 @@ class RemoveAccount extends Component {
                     </Button>
                     <Button
                         onClick={() => this.remove()}
-                        color="secondary"
+                        color="primary"
                         disabled={this.state.removing}
                     >
                         {this.state.removing ? 'Removendo...' : 'Confirmar'}

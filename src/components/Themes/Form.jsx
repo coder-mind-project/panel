@@ -86,7 +86,7 @@ function ThemeForm(props) {
       onEscapeKeyDown={() => close()}
       onBackdropClick={() => close()}
     >
-      {loading && <LinearProgress color="secondary" /> }
+      {loading && <LinearProgress color="primary" /> }
       <Box mb={3} p={2}>
         <Box display="flex" alignItems="center">
           <Icon style={{ marginRight: 3, color: '#444' }}>bookmark</Icon>
@@ -142,7 +142,7 @@ function ThemeForm(props) {
         <Button variant="contained" onClick={() => close()}>
           Fechar
         </Button>
-        <Button variant="contained" color="secondary" onClick={save}>
+        <Button variant="contained" color="primary" onClick={save}>
           Salvar
         </Button>
       </DialogActions>

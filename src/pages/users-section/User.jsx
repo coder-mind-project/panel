@@ -471,12 +471,12 @@ class User extends Component{
                             </DialogContent>
                             <DialogActions>
                                 { !this.state.loadingOp &&
-                                    <Button color="secondary"
+                                    <Button color="primary"
                                         onClick={this.toogleDialog(false)}>
                                             Fechar
                                     </Button>}
                                 { !this.state.loadingOp &&
-                                    <Button color="secondary"
+                                    <Button color="primary"
                                         onClick={this.changePassword}>
                                             Confirmar
                                     </Button>

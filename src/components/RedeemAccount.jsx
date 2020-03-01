@@ -215,13 +215,13 @@ function RescueAccount(props) {
               <p>Selecione a opção que mais adequa ao seu problema</p>
             </Box>
             <Box width="100%" mb={2}>
-              <Button color="secondary" variant="contained" fullWidth onClick={() => toogleOption('emailAndPassword')}>Não sei meu e-mail</Button>
+              <Button color="primary" variant="contained" fullWidth onClick={() => toogleOption('emailAndPassword')}>Não sei meu e-mail</Button>
             </Box>
             <Box width="100%" mb={2}>
-              <Button color="secondary" variant="contained" fullWidth onClick={() => toogleOption('onlyPassword')}>Não sei minha senha</Button>
+              <Button color="primary" variant="contained" fullWidth onClick={() => toogleOption('onlyPassword')}>Não sei minha senha</Button>
             </Box>
             <Box width="100%" mt={2} mb={2}>
-              <Button color="secondary" variant="text" fullWidth onClick={back}>Voltar</Button>
+              <Button color="primary" variant="text" fullWidth onClick={back}>Voltar</Button>
             </Box>
           </Grid>
         )}
@@ -249,7 +249,7 @@ function RescueAccount(props) {
             />
             <Button
               fullWidth
-              color="secondary"
+              color="primary"
               variant="outlined"
               disabled={waiting}
               onClick={() => toogleOption('menu')}
@@ -290,14 +290,14 @@ function RescueAccount(props) {
                 </Box>
                 <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap">
                   <Box mr={2}>
-                    <Button color="secondary" variant="contained" onClick={currentStep > 0 ? () => previousStep() : () => toogleOption('menu')}>
+                    <Button color="primary" variant="contained" onClick={currentStep > 0 ? () => previousStep() : () => toogleOption('menu')}>
                       {currentStep > 0 ? 'Voltar' : 'Sair'}
                     </Button>
                   </Box>
                   { currentStep < steps.length - 1
                     && (
                       <Box>
-                        <Button color="secondary" variant="contained" onClick={() => nextStep()}>
+                        <Button color="primary" variant="contained" onClick={() => nextStep()}>
                           Próximo
                         </Button>
                       </Box>
@@ -410,12 +410,12 @@ function RescueAccount(props) {
                       onChange={handleChange(setMsg)}
                       className="modalFormInput"
                       variant="outlined"
-                      color="secondary"
+                      color="primary"
                       multiline
                       rows={6}
                       helperText="É importante descrever bem sua situação, isto ajudará na análise de nossos administradores para a recuperação de sua conta."
                     />
-                    <Button color="secondary" disabled={waiting} variant="contained" fullWidth onClick={redeemAccount}>{waiting ? 'Verificando...' : 'Confirmar'}</Button>
+                    <Button color="primary" disabled={waiting} variant="contained" fullWidth onClick={redeemAccount}>{waiting ? 'Verificando...' : 'Confirmar'}</Button>
                   </FormControl>
                 )}
             </Grid>
@@ -431,7 +431,7 @@ function RescueAccount(props) {
                   <Box mb={5}>
                     {response}
                   </Box>
-                  <Button variant="outlined" color="secondary" onClick={back}>Ir para a tela de autenticação</Button>
+                  <Button variant="outlined" color="primary" onClick={back}>Ir para a tela de autenticação</Button>
                 </Box>
               </Box>
             </Grid>
@@ -453,7 +453,7 @@ function RescueAccount(props) {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialog(false)} color="secondary">
+          <Button onClick={() => setDialog(false)} color="primary">
             Entendi
           </Button>
         </DialogActions>

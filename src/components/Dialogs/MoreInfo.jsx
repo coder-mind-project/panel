@@ -74,14 +74,14 @@ function MoreInfo(props) {
             </Box>
           </Box>
           <Box mt={3} mb={1} width="100%" display="flex" justifyContent="center" alignItems="center">
-            <Button variant="contained" color="secondary" onClick={() => redirectTo('ticket')}>
+            <Button variant="contained" color="primary" onClick={() => redirectTo('ticket')}>
               Preciso de ajuda
             </Button>
           </Box>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={close} color="secondary" autoFocus>
+        <Button onClick={close} color="primary" autoFocus>
           Fechar
         </Button>
       </DialogActions>

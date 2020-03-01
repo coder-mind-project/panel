@@ -182,7 +182,7 @@ function Themes(props) {
       </Container>
       {loading && themes.length === 0 && (
         <Container className="center spinnerContainer">
-          <CircularProgress color="secondary" size={80} />
+          <CircularProgress color="primary" size={80} />
         </Container>
       )}
       {!loading && themes.length === 0 && (
@@ -191,7 +191,7 @@ function Themes(props) {
         </Container>
       )}
       <Paper>
-        {loading && themes.length > 0 && <LinearProgress color="secondary" />}
+        {loading && themes.length > 0 && <LinearProgress color="primary" />}
         {themes.length > 0 && (
         <Container className="wrapper">
           <Table className="defaultTable">

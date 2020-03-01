@@ -4,7 +4,7 @@ import { backendUrl } from '../../../config/backend'
 
 import { Box, IconButton, Icon,
     CircularProgress, Badge, Fade,
-    Divider, Menu, BottomNavigation, 
+    Divider, Menu, BottomNavigation,
     BottomNavigationAction, Tooltip,
     Typography } from '@material-ui/core'
 
@@ -24,7 +24,7 @@ class Notifications extends Component {
         this.menuRef = React.createRef()
     }
 
-    state = { 
+    state = {
         notifications: [],
         openNotifications: false,
         loading: false,
@@ -49,7 +49,7 @@ class Notifications extends Component {
     async getNotifications(){
         await this.toogleLoading()
         const url = `${backendUrl}/tickets?nr=true&fn=true`
-        
+
         await axios(url).then( res => {
             this.setState({notifications: res.data.tickets})
         })
@@ -73,7 +73,7 @@ class Notifications extends Component {
             notifications: newNotifications,
             openNotifications: newNotifications.length === 0 ? false : true
         })
-        
+
     }
 
     componentDidMount(){
@@ -81,8 +81,8 @@ class Notifications extends Component {
     }
 
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Box mr={3}>
                 { this.state.notifications.length === 0 && !this.state.loading &&
                     <Box>
@@ -113,17 +113,17 @@ class Notifications extends Component {
                                 </div>
                                 <Divider/>
                                 <Box p={1} mb={2} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                                    <span>Ops, não há nenhum</span> 
+                                    <span>Ops, não há nenhum</span>
                                     <span>ticket novo recebido</span>
                                 </Box>
-                                <BottomNavigation 
+                                <BottomNavigation
                                     onChange={(event, bottomNavigationValue) => {
                                         this.setState({bottomNavigationValue})
                                     }}
                                     showLabels
                                     value={0}
                                 >
-                                    <BottomNavigationAction label="Visualizar Tickets" className="notification-footer-button" onClick={() => window.location.href = '/tickets'} icon={<Icon color="secondary">more_horiz</Icon>} />
+                                    <BottomNavigationAction label="Visualizar Tickets" className="notification-footer-button" onClick={() => window.location.href = '/tickets'} icon={<Icon color="primary">more_horiz</Icon>} />
                                 </BottomNavigation>
                             </Box>
                         </Menu>
@@ -139,7 +139,7 @@ class Notifications extends Component {
                         <Box>
                             <Tooltip title={(<Typography component="p" variant="body2">Tickets não visualizados</Typography>)}>
                                 <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                                    <Badge badgeContent={this.state.notifications.length} max={99} color="secondary">
+                                    <Badge badgeContent={this.state.notifications.length} max={99} color="primary">
                                         <FontAwesomeIcon icon={faIdCard} />
                                     </Badge>
                                 </IconButton>
@@ -174,14 +174,14 @@ class Notifications extends Component {
                                         <NotificationItem key={notification._id} notification={notification.content} reloadComments={this.removeNotification.bind(this, notification)} close={this.closeMenuNotifications.bind(this)}/>
                                     ))}
                                 </Box>
-                                <BottomNavigation 
+                                <BottomNavigation
                                     onChange={(event, bottomNavigationValue) => {
                                         this.setState({bottomNavigationValue})
                                     }}
                                     showLabels
                                     value={0}
                                 >
-                                    <BottomNavigationAction label="Visualizar Tickets" className="notification-footer-button" onClick={() => window.location.href = '/tickets'} icon={<Icon color="secondary">more_horiz</Icon>} />
+                                    <BottomNavigationAction label="Visualizar Tickets" className="notification-footer-button" onClick={() => window.location.href = '/tickets'} icon={<Icon color="primary">more_horiz</Icon>} />
                                 </BottomNavigation>
                             </Box>
                         </Menu>

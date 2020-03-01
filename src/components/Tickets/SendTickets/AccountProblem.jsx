@@ -16,13 +16,15 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
+
 import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
+
+import axios from 'axios';
+import { backendUrl, defineErrorMsg } from '../../../config/backend';
+
 import { callToast as toastEmitter } from '../../../redux/toastActions';
 import { error as toastError } from '../../../config/toasts';
-
-import { backendUrl, defineErrorMsg } from '../../../config/backend';
 
 import CustomButton from '../../Button';
 
@@ -79,7 +81,7 @@ function AccountProblem(props) {
     <Grow in>
       <Grid item xs={12}>
         <Box width="100%" marginLeft="25px" marginRight="25px" marginTop="15px">
-          <Button variant="outlined" color="secondary" onClick={goOut}>Voltar</Button>
+          <Button variant="outlined" color="primary" onClick={goOut}>Voltar</Button>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center" margin="25px">
           <Box width="100%" display="flex" alignItems="center">

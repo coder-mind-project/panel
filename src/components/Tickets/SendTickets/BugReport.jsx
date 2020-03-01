@@ -101,7 +101,7 @@ function BugReport(props) {
     <Grow in>
       <Grid item xs={12}>
         <Box width="100%" marginLeft="25px" marginRight="25px" marginTop="15px">
-          <Button variant="outlined" color="secondary" onClick={goOut}>Voltar</Button>
+          <Button variant="outlined" color="primary" onClick={goOut}>Voltar</Button>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center" margin="25px">
           <Box width="100%" display="flex" alignItems="center">

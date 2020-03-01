@@ -202,7 +202,7 @@ class RedeemAccount extends Component {
                                 </Box>
                             </Box>
                             <Box width="100%" display="flex" justifyContent="center" alignItems="center" mb={3} mt={2}>
-                                <Button color="secondary" variant="contained" onClick={() => this.goTo('/auth')}>Ir para o Login</Button>
+                                <Button color="primary" variant="contained" onClick={() => this.goTo('/auth')}>Ir para o Login</Button>
                             </Box>
                         </Box>
                     }

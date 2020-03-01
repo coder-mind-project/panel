@@ -547,7 +547,7 @@ class Stats extends Component{
                     </Box>
                     <Box width="100%" display="flex" justifyContent="center" alignItems="center" flexWrap="wrap" className="filter-hud">
                         <Box mr={2} mb={2}>
-                            <Button color="secondary" variant="contained" onClick={() => this.filterSubmit()}>Confirmar</Button>
+                            <Button color="primary" variant="contained" onClick={() => this.filterSubmit()}>Confirmar</Button>
                         </Box>
                         <Box mr={2} mb={2}>
                             <Button color="primary" variant="contained" onClick={() => this.clearFilters()}>Limpar</Button>
@@ -609,7 +609,7 @@ class Stats extends Component{
                                                     <span>N/D</span>
                                                 }
                                             </TableCell>
-                                            <TableCell align="right"><Button size="small" variant="text" color="secondary" onClick={() => this.toogleDialogModal(view.reader)} className="">{view.reader}</Button></TableCell>
+                                            <TableCell align="right"><Button size="small" variant="text" color="primary" onClick={() => this.toogleDialogModal(view.reader)} className="">{view.reader}</Button></TableCell>
                                             <TableCell align="right">{displayFullDate(view.startRead)}</TableCell>
                                             <TableCell align="right">{view.viewsQuantity}</TableCell>
                                         </TableRow>
@@ -669,7 +669,7 @@ class Stats extends Component{
                                             <TableCell scope="row">
                                                 {like.article.title}
                                             </TableCell>
-                                            <TableCell align="right"><Button size="small" variant="text" color="secondary" onClick={() => this.toogleDialogModal(like.reader)} className="">{like.reader}</Button></TableCell>
+                                            <TableCell align="right"><Button size="small" variant="text" color="primary" onClick={() => this.toogleDialogModal(like.reader)} className="">{like.reader}</Button></TableCell>
                                             <TableCell align="right">{displayFullDate(like.created_at)}</TableCell>
                                             <TableCell align="right">{like.confirmed ? 'Sim' : 'Não'}</TableCell>
                                         </TableRow>

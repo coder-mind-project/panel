@@ -328,7 +328,7 @@ class GeneralInformation extends Component {
                                         { !this.state.sendingPhoto ?
                                             <img className={this.state.user.profilePhoto ? "profile_photo" : "profile_photo_not_found"}
                                                 src={this.state.user.profilePhoto ? `${backendUrl}/${this.state.user.profilePhoto}` : ImgDefault}
-                                                alt="Foto de perfil" /> : <CircularProgress color="secondary" />
+                                                alt="Foto de perfil" /> : <CircularProgress color="primary" />
                                             }
                                     </figure>
                                 </Tooltip>
@@ -365,7 +365,7 @@ class GeneralInformation extends Component {
                                     InputProps={this.state.user.confirmEmail ? {
                                         startAdornment: (
                                             <InputAdornment position="start">
-                                                <Icon fontSize="small" color="secondary">
+                                                <Icon fontSize="small" color="primary">
                                                     warning
                                                 </Icon>
                                             </InputAdornment>

@@ -35,7 +35,7 @@ function WhatIsTicketDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDialog} color="secondary" autoFocus>
+        <Button onClick={closeDialog} color="primary" autoFocus>
           Entendi
         </Button>
       </DialogActions>

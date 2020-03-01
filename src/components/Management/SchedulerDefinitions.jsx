@@ -80,7 +80,7 @@ function SchedulerDefinitions(props) {
       <Box mt={3} mb={3} display="flex" flexWrap="wrap" alignItems="center">
         <Card>
           {sincronizing
-            && <LinearProgress color="secondary" />
+            && <LinearProgress color="primary" />
           }
           <CardContent>
             <Box display="flex" alignItems="center">
@@ -106,7 +106,7 @@ function SchedulerDefinitions(props) {
           <CardActions>
             <Box m={1}>
               <Button
-                color="secondary"
+                color="primary"
                 variant="contained"
                 onClick={sincronize}
               >

@@ -14,7 +14,7 @@ function FloatingButton(props) {
   return trigger ? (
     <Slide direction="up" in mountOnEnter unmountOnExit>
       <Fab
-        color="secondary"
+        color="primary"
         className="floatingButton"
         onClick={action}
       >

@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   Box,
-  Paper,
   Divider,
   CardContent,
+  CardHeader,
   Button,
   Grid,
   Icon,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 
 import { connect } from 'react-redux';
@@ -26,15 +27,17 @@ import BugReport from './BugReport';
 import ImprovementSuggestion from './ImprovementSuggestion';
 import AccountRecuperation from './AccountRecuperation';
 
-import { CustomCard, CustomCardActions } from './styles';
+import { devices } from '../../../config/devices';
 
-// import './css/Ticket.css';
+import { CustomCard, CustomCardActions, CustomPaper } from './styles';
 
 function Ticket(props) {
   const {
     location,
     user,
   } = { ...props };
+
+  const matches = useMediaQuery(devices.mobileMedium);
 
   const [authenticated, setAutenticated] = useState(false);
   const [type, setType] = useState('menu');
@@ -62,7 +65,6 @@ function Ticket(props) {
 
   function toogleDialogs(dialog = null, close = false) {
     if (!dialog) {
-      /** Close all dialogs */
       setWhatIsTicketFlag(false);
     }
 
@@ -106,11 +108,11 @@ function Ticket(props) {
       { whatIsTicketFlag
         && <WhatIsTicketDialog closeDialog={() => toogleDialogs('what-is-ticket', true)} />
       }
-      <Paper>
+      <CustomPaper>
         { authenticated && type === 'menu'
           && (
             <Grid item xs={12}>
-              <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" pl={2} pr={2} pt={3}>
+              <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap">
                 <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap">
                   <Box display="flex" flexDirection="column">
                     <Typography component="span" variant="body1">
@@ -128,54 +130,71 @@ function Ticket(props) {
                   </Box>
                 </Box>
                 <Box mt={2}>
-                  <Button color="secondary" size="small" variant="text" onClick={() => toogleDialogs('what-is-ticket')}>
+                  <Button color="primary" size="small" variant="text" onClick={() => toogleDialogs('what-is-ticket')}>
                     <Typography component="span" variant="button">O que é ticket?</Typography>
                   </Button>
                 </Box>
               </Box>
               <Box p={3}>
                 <Divider />
-                <Box width="100%" display="flex" alignItems="center">
-                  <Box display="flex" alignItems="center" mr={1}>
-                    <Icon>label</Icon>
-                  </Box>
+                <Box width="100%" display="flex" alignItems="center" mt={2} mb={2}>
+                  {!matches && (
+                    <Box display="flex" alignItems="center" mr={1}>
+                      <Icon fontSize="large">label</Icon>
+                    </Box>
+                  )}
                   <Box display="flex" alignItems="center">
-                    <h4>Selecione o tipo de ticket que deseja enviar</h4>
+                    <Typography component="h4" variant="h6">Selecione o tipo de ticket que deseja enviar</Typography>
                   </Box>
                 </Box>
                 <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap">
-                  <CustomCard variant="outlined">
+                  <CustomCard>
+                    <CardHeader
+                      avatar={!matches ? (<Icon fontSize="large">lock_open</Icon>) : null}
+                      title="Alteraram os dados da minha conta!"
+                      titleTypographyProps={{ component: 'h4', variant: 'h6' }}
+                    />
                     <CardContent>
-                      <h4>Alteraram os dados da minha conta!</h4>
-                      <span className="text-explication">
+                      <Typography component="span" variant="body2">
                         Problemas relacionados a configurações da sua conta
                         na Coder Mind por terceiros.
-                      </span>
+                      </Typography>
                     </CardContent>
-                    <CustomCardActions className="card-actions">
-                      <Button size="small" color="secondary" variant="outlined" onClick={() => defineTicketType('account-problem')}>Abrir Ticket</Button>
+                    <CustomCardActions>
+                      <Button color="primary" variant="contained" onClick={() => defineTicketType('account-problem')}>Abrir Ticket</Button>
                     </CustomCardActions>
                   </CustomCard>
-                  <CustomCard variant="outlined">
+                  <CustomCard>
+                    <CardHeader
+                      avatar={!matches ? (<Icon fontSize="large">bug_report</Icon>) : null}
+                      title="Reporte de bugs/erros"
+                      titleTypographyProps={{ component: 'h4', variant: 'h6' }}
+                    />
                     <CardContent>
-                      <h4>Reporte de bugs</h4>
-                      <span className="text-explication">
-                        Encontrou algum bug no painel ou em nosso website? reporte!
-                      </span>
+                      <Typography component="span" variant="body2">
+                        Encontrou algum bug no painel ou em nosso blog?
+                        {' '}
+                        <br />
+                        Reporte-nos!
+                      </Typography>
                     </CardContent>
-                    <CustomCardActions className="card-actions">
-                      <Button size="small" color="secondary" variant="outlined" onClick={() => defineTicketType('bug-report')}>Abrir Ticket</Button>
+                    <CustomCardActions>
+                      <Button color="primary" variant="contained" onClick={() => defineTicketType('bug-report')}>Abrir Ticket</Button>
                     </CustomCardActions>
                   </CustomCard>
-                  <CustomCard variant="outlined">
+                  <CustomCard>
+                    <CardHeader
+                      avatar={!matches ? (<Icon fontSize="large">extension</Icon>) : null}
+                      title="Sugestão de melhorias"
+                      titleTypographyProps={{ component: 'h4', variant: 'h6' }}
+                    />
                     <CardContent>
-                      <h4>Sugestão de melhorias</h4>
-                      <span className="text-explication">
+                      <Typography component="span" variant="body2">
                         Encontrou algo que pode ficar melhor? por favor nos conte =D
-                      </span>
+                      </Typography>
                     </CardContent>
-                    <CustomCardActions className="card-actions">
-                      <Button size="small" color="secondary" variant="outlined" onClick={() => defineTicketType('improvement-suggestion')}>Abrir Ticket</Button>
+                    <CustomCardActions>
+                      <Button color="primary" variant="contained" onClick={() => defineTicketType('improvement-suggestion')}>Abrir Ticket</Button>
                     </CustomCardActions>
                   </CustomCard>
                 </Box>
@@ -195,7 +214,7 @@ function Ticket(props) {
         { !authenticated && type === 'account-changed'
           && <AccountRecuperation params={params} />
         }
-      </Paper>
+      </CustomPaper>
     </Container>
   );
 }

@@ -158,7 +158,7 @@ class RemovedUsers extends Component {
                 <DialogContent>
                 {this.state.users.length > 0 && !this.state.loading &&
                     <Container className="wrapper">
-                        { this.state.restoring && <LinearProgress size={20} color="secondary" />}
+                        { this.state.restoring && <LinearProgress size={20} color="primary" />}
                         <Table className="defaultTable">
                             {/* Header da tabela */}
                             <TableHead>
@@ -235,7 +235,7 @@ class RemovedUsers extends Component {
                                                 />
                                             }
                                             { Boolean(user === this.state.userSelected) && this.state.restoring &&
-                                                <CircularProgress size={20} color="secondary"/>
+                                                <CircularProgress size={20} color="primary"/>
                                             }
                                         </Box>
                                     </TableCell>
@@ -264,7 +264,7 @@ class RemovedUsers extends Component {
                     </Container>}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.state.handleClose} color="secondary" autoFocus>
+                    <Button onClick={this.state.handleClose} color="primary" autoFocus>
                         Fechar
                     </Button>
                 </DialogActions>

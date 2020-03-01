@@ -305,14 +305,14 @@ class Categories extends Component {
                                 </DialogContent>
                                 <DialogActions>
                                     { !this.state.loadingOp &&
-                                        <Button color="secondary"
+                                        <Button color="primary"
                                             onClick={() => this.toogleDialog(false)}
                                         >
                                             Fechar
                                         </Button>
                                     }
                                     {!this.state.loadingOp &&
-                                        <Button color="secondary"
+                                        <Button color="primary"
                                             onClick={() => this.remove(this.state.categorySelected)}
                                         >
                                             Sim, pode excluir

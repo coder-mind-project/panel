@@ -421,7 +421,7 @@ class Users extends Component {
                                         </Button>
                                     }
                                     {!this.state.loadingOp &&
-                                        <Button color="secondary"
+                                        <Button color="primary"
                                             onClick={() => this.remove(this.state.userSelected)}
                                         >
                                                 Sim, pode excluir
@@ -464,7 +464,7 @@ class Users extends Component {
                                         </Button>
                                     }
                                     {!this.state.loadingOp &&
-                                        <Button color="secondary"
+                                        <Button color="primary"
                                             onClick={() => this.validatePassword()}
                                             disabled={this.state.validatingPass}
                                         >

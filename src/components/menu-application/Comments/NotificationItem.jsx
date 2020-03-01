@@ -24,7 +24,7 @@ const NotificationItem = props => {
         <Box className="notification">
             <Grid item xs={2} className="notification-aside">
                 <Icon fontSize="large">info</Icon>
-                <Button color="secondary" variant="text" onClick={() => checkNotification(props)}>
+                <Button color="primary" variant="text" onClick={() => checkNotification(props)}>
                     Lido
                 </Button>
             </Grid>

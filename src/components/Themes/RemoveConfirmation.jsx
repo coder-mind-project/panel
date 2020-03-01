@@ -80,12 +80,12 @@ function RemoveConfirmation(props) {
       </DialogContent>
       <DialogActions>
         {!loading && (
-          <Button color="secondary" onClick={close}>
+          <Button color="primary" onClick={close}>
             Fechar
           </Button>
         )}
         {!loading && (
-        <Button color="secondary" onClick={remove}>
+        <Button color="primary" onClick={remove}>
           Sim, pode excluir
         </Button>
         )}

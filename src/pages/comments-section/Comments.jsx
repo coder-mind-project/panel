@@ -267,7 +267,7 @@ class Comments extends Component {
                                         <Grid item xs={12} md={6} className="form-footer-left">
                                             <Checkbox
                                                 checked={Boolean(this.state.comment.confirmed)}
-                                                color="secondary"
+                                                color="primary"
                                                 onChange={(evt) => this.setState({
                                                     comment: {
                                                         ...this.state.comment,
@@ -280,7 +280,7 @@ class Comments extends Component {
                                         <Grid item xs={12} md={6} className="form-footer-right">
                                             <Checkbox
                                                 checked={Boolean(this.state.comment.readed)}
-                                                color="secondary"
+                                                color="primary"
                                                 disabled
                                                 />
                                             Lido?

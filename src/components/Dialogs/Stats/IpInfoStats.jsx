@@ -51,7 +51,7 @@ function GeoModal(props) {
         { searching
           && (
             <Box p={2} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-              <CircularProgress color="secondary" />
+              <CircularProgress color="primary" />
               <Box mt={1} mb={1}>
                 <span>Carregando informações, por favor aguarde...</span>
               </Box>
@@ -76,7 +76,7 @@ function GeoModal(props) {
         {!searching && error
           && (
             <Box p={1} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-              <Icon fontSize="large" color="secondary">clear</Icon>
+              <Icon fontSize="large" color="primary">clear</Icon>
               <Box mt={1} mb={1} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
                 <span>Ops! Ocorreu um erro ao obter as informações...</span>
                 <Box p={1}>
@@ -87,7 +87,7 @@ function GeoModal(props) {
           )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDialog} color="secondary" autoFocus>
+        <Button onClick={closeDialog} color="primary" autoFocus>
           Fechar
         </Button>
       </DialogActions>

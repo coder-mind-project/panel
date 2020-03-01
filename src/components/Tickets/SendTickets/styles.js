@@ -4,6 +4,7 @@ import {
   CardActions,
   TextField,
   Box,
+  Paper,
 } from '@material-ui/core';
 
 import { devices } from '../../../config/devices';
@@ -11,7 +12,7 @@ import { devices } from '../../../config/devices';
 
 export const CustomCard = styled(Card)({
   maxWidth: '25%',
-  minHeight: '230px',
+  minHeight: '250px',
   margin: '10px',
   display: 'flex',
   flexDirection: 'column',
@@ -64,6 +65,9 @@ export const IconBox = styled(Box)({
   },
 });
 
+export const CustomPaper = styled(Paper)({
+  padding: '1.3rem',
+});
 
 export default {
   CustomCard,
@@ -71,4 +75,5 @@ export default {
   CustomTextField,
   CustomBox,
   IconBox,
+  CustomPaper,
 };

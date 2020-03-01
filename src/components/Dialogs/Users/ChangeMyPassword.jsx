@@ -113,7 +113,7 @@ class ChangeMyPassword extends Component {
                 disableBackdropClick={this.state.authorizing || this.state.saving}
                 disableEscapeKeyDown={this.state.authorizing || this.state.saving}
             >
-                { (this.state.authorizing || this.state.saving) && <LinearProgress color="secondary" />}
+                { (this.state.authorizing || this.state.saving) && <LinearProgress color="primary" />}
                 <DialogTitle id="alert-dialog-title">
                     Alterar senha
                 </DialogTitle>
@@ -167,7 +167,7 @@ class ChangeMyPassword extends Component {
                     </Button>
                     <Button
                         onClick={() => this.submit()}
-                        color="secondary"
+                        color="primary"
                         disabled={this.state.authorizing || this.state.saving}
                     >
                         {this.state.authorizing ? 'Validando...' : this.state.saving ? 'Salvando...' : 'Confirmar'}

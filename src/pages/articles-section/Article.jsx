@@ -318,7 +318,7 @@ class Article extends Component {
                 </Box>
                 { !this.state.loading &&
                     <Paper>
-                        <Tabs value={this.state.currentTab} indicatorColor="secondary" onChange={(evt, value) => this.changeCurrentTab(value)} variant="scrollable" scrollButtons="on">
+                        <Tabs value={this.state.currentTab} indicatorcolor="primary" onChange={(evt, value) => this.changeCurrentTab(value)} variant="scrollable" scrollButtons="on">
                             <Tab label={(<span className="centerInline"><Icon>description</Icon>Informações principais</span>)} />
                             <Tab label={(<span className="centerInline"><Icon>visibility</Icon>Visualizar</span>)}/>
                             <Tab label={(<span className="centerInline"><Icon>images</Icon>Imagens</span>)}/>
