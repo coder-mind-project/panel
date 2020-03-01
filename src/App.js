@@ -7,11 +7,17 @@ import { Grid, Fade } from '@material-ui/core';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+// Error Boundary
+import ErrorBoundary from '@/components/Errors/ErrorBoundary.jsx';
+
+
 import Loading from './assets/loading.gif';
 
 import { WHITE_LIST_ROUTES } from './config/dataProperties';
 // Requests imports
 import { backendUrl } from './config/backend';
+
 
 // Redux imports
 import { setUser as defineUser } from './redux/userActions';
@@ -26,7 +32,7 @@ import Toast from './components/Toast';
 // Pages imports
 import Themes from './components/Themes/Themes';
 import Management from './components/Management/Management';
-import Error from './pages/error-presentation/Error';
+import Error from './components/Errors/Error';
 import Auth from './pages/auth-section/Auth';
 import Ticket from './components/Tickets/SendTickets/Ticket';
 import Tickets from './components/Tickets/ManageTickets/Tickets';
@@ -119,55 +125,55 @@ function App(props) {
     <div className="page">
       { !validatingToken
             && (
-            <Fade in={!validatingToken}>
               <Router>
-                {getPath() !== '/confirm-email' && <Menu />}
-                <Toast
-                  show={toast.display}
-                  color={toast.type}
-                  text={toast.msg}
-                  closeToast={closeToast}
-                />
-                { !user._id && validateRoutes()
+                <ErrorBoundary>
+                  {getPath() !== '/confirm-email' && <Menu />}
+                  <Toast
+                    show={toast.display}
+                    color={toast.type}
+                    text={toast.msg}
+                    closeToast={closeToast}
+                  />
+                  { !user._id && validateRoutes()
                   && (
                     <Redirect to="/auth" />
                   )
                 }
-                { redirectTo
+                  { redirectTo
                     && (
                       <Redirect to={redirectTo} />
                     )
                 }
-                { error
+                  { error
                   && <Redirect to="/error" />
                 }
-                <Switch>
-                  <Route path="/" exact component={Articles} />
-                  <Route path="/auth" exact component={Auth} />
-                  <Route path="/redeem-account" exact component={RedeemAccount} />
-                  <Route path="/remove-account" exact component={RemoveAccount} />
-                  <Route path="/ticket" exact component={Ticket} />
-                  <Route path="/tickets" exact component={Tickets} />
-                  <Route path="/confirm-email" exact component={ConfirmEmail} />
-                  <Route path="/user" exact component={User} />
-                  <Route path="/user/:id" exact component={User} />
-                  <Route path="/users" exact component={Users} />
-                  <Route path="/article" exact component={Article} />
-                  <Route path="/article/:id" exact component={Article} />
-                  <Route path="/articles" exact component={Articles} />
-                  <Route path="/management" exact component={Management} />
-                  <Route path="/themes" exact component={Themes} />
-                  <Route path="/category" exact component={Category} />
-                  <Route path="/category/:id" exact component={Category} />
-                  <Route path="/categories" exact component={Categories} />
-                  <Route path="/my-account" exact component={MyAccount} />
-                  <Route path="/comments" exact component={Comments} />
-                  <Route path="/comments/:id" exact component={Comment} />
-                  <Route path="/error" exact component={Error} />
-                  <Route path="/stats" exact component={Stats} />
-                </Switch>
+                  <Switch>
+                    <Route path="/" exact component={Articles} />
+                    <Route path="/auth" exact component={Auth} />
+                    <Route path="/redeem-account" exact component={RedeemAccount} />
+                    <Route path="/remove-account" exact component={RemoveAccount} />
+                    <Route path="/ticket" exact component={Ticket} />
+                    <Route path="/tickets" exact component={Tickets} />
+                    <Route path="/confirm-email" exact component={ConfirmEmail} />
+                    <Route path="/user" exact component={User} />
+                    <Route path="/user/:id" exact component={User} />
+                    <Route path="/users" exact component={Users} />
+                    <Route path="/article" exact component={Article} />
+                    <Route path="/article/:id" exact component={Article} />
+                    <Route path="/articles" exact component={Articles} />
+                    <Route path="/management" exact component={Management} />
+                    <Route path="/themes" exact component={Themes} />
+                    <Route path="/category" exact component={Category} />
+                    <Route path="/category/:id" exact component={Category} />
+                    <Route path="/categories" exact component={Categories} />
+                    <Route path="/my-account" exact component={MyAccount} />
+                    <Route path="/comments" exact component={Comments} />
+                    <Route path="/comments/:id" exact component={Comment} />
+                    <Route path="/error" exact component={Error} />
+                    <Route path="/stats" exact component={Stats} />
+                  </Switch>
+                </ErrorBoundary>
               </Router>
-            </Fade>
             )
           }
       { validatingToken
