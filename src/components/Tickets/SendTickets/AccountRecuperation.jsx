@@ -54,7 +54,7 @@ function AccountRecuperation(props) {
   async function sendTicket() {
     setSendingTicket(true);
 
-    const url = `${backendUrl}/tickets/not-authenticated`;
+    const url = `${backendUrl}/tickets/unauthenticated`;
     await axios.post(url, accountChanged).then(() => {
       setSuccess(true);
 
