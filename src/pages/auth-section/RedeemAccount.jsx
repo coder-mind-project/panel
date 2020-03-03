@@ -50,7 +50,7 @@ class RedeemAccount extends Component {
 
         if(!payload) return this.setState({tokenInvalid: true})
 
-        const url = `${backendUrl}/redeem-password`
+        const url = `${backendUrl}/auth/rescue`
         if(this._isMounted){
             await axios.post(url, payload).then( async res => {
                     this.setState({
@@ -111,7 +111,7 @@ class RedeemAccount extends Component {
     async changePassword(evt){
         evt.preventDefault()
 
-        const url = `${backendUrl}/redeem-password`
+        const url = `${backendUrl}/auth/rescue`
         const data = this.state.passwords
 
         this.toogleConfirming()
