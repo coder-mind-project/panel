@@ -98,7 +98,7 @@ function App(props) {
       const token = await JSON.parse(localStorage.getItem('user'));
 
       if (token) {
-        const url = `${backendUrl}/validate_token`;
+        const url = `${backendUrl}/auth/logged`;
         await axios.post(url, token).then((res) => {
           if (res.data.user) {
             setUser(res.data);
