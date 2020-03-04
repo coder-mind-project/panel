@@ -6,6 +6,8 @@ import {
   Box,
   InputBase,
   Icon,
+  Typography,
+  Button,
 } from '@material-ui/core';
 
 import { devices } from '@/config/devices';
@@ -70,6 +72,25 @@ export const BoxFieldAnswer = styled(Box)({
   padding: '1rem 0',
 });
 
+export const BoxAnswerIdentifier = styled(Typography)({
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  fontSize: '0.875rem',
+  fontWeight: '400',
+  lineHeight: '1.43',
+});
+
+export const BoxAnswerButton = styled(Button)({
+  padding: 0,
+  '& .MuiButton-label': {
+    width: '100%',
+    display: 'inherit',
+    alignItems: 'inherit',
+    justifyContent: 'flex-end',
+  },
+});
+
 export const CustomInputBase = styled(InputBase)({
   backgroundColor: '#FFF',
   borderRadius: '10rem',
@@ -94,15 +115,3 @@ export const BoxMessageIcon = styled(Icon)({
   fontSize: '1rem',
   margin: '0.3rem',
 });
-
-export default {
-  CustomGrid,
-  CustomGridForButton,
-  CustomTextField,
-  CustomFormControl,
-  BoxAnswers,
-  BoxFieldAnswer,
-  CustomInputBase,
-  BoxMessageAdmin,
-  BoxMessageIcon,
-};
