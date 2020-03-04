@@ -27,13 +27,14 @@ import { Redirect, Link } from 'react-router-dom';
 import { faIdCard } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { backendUrl } from '@/config/backend';
+import { scrollToTop } from '@/config/ScrollToTop';
 
+import FloatingButton from '@/components/FloatingButton.jsx';
 import CustomButton from '@/components/Button.jsx';
 import CustomIconButton from '@/components/IconButton.jsx';
 import Header from '@/components/Header.jsx';
 
 import ViewTicket from './ViewTicket';
-import TicketResponses from './TicketResponses';
 import Filter from './Filter';
 
 
@@ -55,8 +56,8 @@ function Tickets(props) {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(DEFAULT_LIMIT);
   const [error, setError] = useState(false);
-  const [responsesDialog, setResponsesDialog] = useState(false);
   const [ticketDialog, setTicketDialog] = useState(false);
+  const [showAnswers, setShowAnswers] = useState(false);
   const [ticketSelected, setTicketSelected] = useState({
     content: {},
     user: {},
@@ -103,22 +104,15 @@ function Tickets(props) {
     }
   }
 
-  function toogleTicketDialog(option = false, ticket) {
+  function toogleTicketDialog(option = false, ticket, toAnswer = false) {
     setTicketDialog(Boolean(option));
     setTicketSelected(option ? ticket : {
       content: {},
       user: {},
       admin: {},
     });
-  }
 
-  function toogleResponsesDialog(option = false, ticket) {
-    setResponsesDialog(Boolean(option));
-    setTicketSelected(option ? ticket : {
-      content: {},
-      user: {},
-      admin: {},
-    });
+    setShowAnswers(Boolean(toAnswer));
   }
 
   async function changePage(event, newPage) {
@@ -192,6 +186,7 @@ function Tickets(props) {
         fontAwesomeIcon
         faIcon={faIdCard}
       />
+      <FloatingButton action={scrollToTop} />
       <Container className="hudBar">
         <Grid item className="hudBarChild">
           <Box mr={1} className="linkButton">
@@ -303,7 +298,7 @@ function Tickets(props) {
                           color="primary"
                           onClick={() => toogleTicketDialog(true, ticket)}
                         >
-                          {ticket.content._id}
+                          {ticket._id}
                         </Button>
                       </Tooltip>
                     </TableCell>
@@ -311,9 +306,9 @@ function Tickets(props) {
                       {ticket.content.email}
                     </TableCell>
                     <TableCell scope="responses">
-                      <Tooltip title={(<Typography component="p" variant="body2">Quantidade de respostas</Typography>)}>
-                        <IconButton color="inherit" onClick={() => toogleResponsesDialog(true, ticket)}>
-                          <Badge badgeContent={ticket.content.responses.length} max={99} color="primary">
+                      <Tooltip title={(<Typography component="p" variant="body2">Responder</Typography>)}>
+                        <IconButton color="inherit" onClick={() => toogleTicketDialog(true, ticket, true)}>
+                          <Badge badgeContent={ticket.responses ? ticket.responses.length : 0} max={99} color="primary">
                             <Icon>comment</Icon>
                           </Badge>
                         </IconButton>
@@ -349,14 +344,10 @@ function Tickets(props) {
                   onClose={toogleTicketDialog}
                   defineType={defineType}
                   updateTicket={(ticket) => updateTicket(ticket)}
+                  showAnswers={showAnswers}
                 />
                 )
             }
-            <TicketResponses
-              opened={responsesDialog}
-              ticket={ticketSelected}
-              closeDialog={() => toogleResponsesDialog()}
-            />
           </Container>
         </Paper>
         )
