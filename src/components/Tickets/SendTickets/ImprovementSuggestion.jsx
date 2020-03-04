@@ -36,7 +36,6 @@ function ImprovementSuggestion(props) {
   } = { ...props };
 
   const [ticket, setTicket] = useState({
-    date: null,
     emailUser: '',
     msg: '',
     type: 'improvement-suggestion',
