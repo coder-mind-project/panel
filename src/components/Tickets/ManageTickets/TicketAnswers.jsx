@@ -68,7 +68,7 @@ function TicketAnswers(props) {
       setSendEmail(autoEmail);
     }
     getConfigs();
-  }, [answers, sendEmail, ticket]);
+  }, [sendEmail, ticket]);
 
   return (
     <Drawer
@@ -127,7 +127,7 @@ function TicketAnswers(props) {
         />
         <BoxAnswer
           emitAnswers={catchUpdatedAnswers}
-          ticketId={ticket.content._id}
+          ticketId={ticket._id}
           sendEmail={sendEmail}
           sendedAnswer={catchLatestAnswer}
           emitError={setError}
