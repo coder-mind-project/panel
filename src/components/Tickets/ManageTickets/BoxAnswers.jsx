@@ -37,7 +37,6 @@ function BoxAnswers(props) {
 
         const res = await axios(url);
         const responses = res && res.data && res.data.responses ? res.data.responses : [];
-
         setloaded(true);
         setAnswers(responses);
       } else if (latestAnswer && !hasError) {
