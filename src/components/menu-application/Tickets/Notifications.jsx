@@ -26,6 +26,7 @@ class Notifications extends Component {
 
     state = {
         notifications: [],
+        count: 0,
         openNotifications: false,
         loading: false,
 
@@ -48,10 +49,10 @@ class Notifications extends Component {
 
     async getNotifications(){
         await this.toogleLoading()
-        const url = `${backendUrl}/tickets?nr=true&fn=true`
+        const url = `${backendUrl}/tickets/notifications`
 
         await axios(url).then( res => {
-            this.setState({notifications: res.data.tickets})
+            this.setState({notifications: res.data.tickets, count: res.data.count})
         })
 
         this.toogleLoading()
@@ -139,7 +140,7 @@ class Notifications extends Component {
                         <Box>
                             <Tooltip title={(<Typography component="p" variant="body2">Tickets não visualizados</Typography>)}>
                                 <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                                    <Badge badgeContent={this.state.notifications.length} max={99} color="primary">
+                                    <Badge badgeContent={this.state.count} max={10} color="primary">
                                         <FontAwesomeIcon icon={faIdCard} />
                                     </Badge>
                                 </IconButton>
