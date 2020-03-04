@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  Slide, Fab, Icon, useScrollTrigger,
+  Slide, Icon, useScrollTrigger,
 } from '@material-ui/core';
 
-import '../pages/css/defaultPage.css';
+import { CustomFab } from '@/components/Buttons/styles';
 
 function FloatingButton(props) {
   const { window, action, icon } = { ...props };
@@ -13,13 +13,12 @@ function FloatingButton(props) {
 
   return trigger ? (
     <Slide direction="up" in mountOnEnter unmountOnExit>
-      <Fab
+      <CustomFab
         color="primary"
-        className="floatingButton"
         onClick={action}
       >
         <Icon>{icon || 'keyboard_arrow_up'}</Icon>
-      </Fab>
+      </CustomFab>
     </Slide>
   ) : null;
 }
