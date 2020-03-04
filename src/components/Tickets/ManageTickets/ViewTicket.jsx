@@ -30,6 +30,7 @@ function ViewTicket(props) {
     ticket,
     defineType,
     updateTicket,
+    showAnswers,
   } = { ...props };
 
   const [showResponseField, setShowResponseField] = useState(false);
@@ -111,6 +112,14 @@ function ViewTicket(props) {
     if (!readed) readTicket();
   }, [ticket, updateTicket, readed]);
 
+  useEffect(() => {
+    function displayAnswers() {
+      setShowResponseField(showAnswers);
+    }
+
+    displayAnswers();
+  }, [showAnswers]);
+
   return (
     <Dialog
       open
@@ -131,7 +140,7 @@ function ViewTicket(props) {
           <Typography component="h1" variant="h6">
             Detalhes do ticket
             {' '}
-            {ticket.content._id}
+            {ticket._id}
           </Typography>
           <Box display="flex" alignItems="center" justifyContent="center">
             <Button variant="text" color="primary" onClick={toogleResponse}>
@@ -145,7 +154,7 @@ function ViewTicket(props) {
           <Box width="100%" display="flex" alignItems="center" flexWrap="wrap">
             <CustomTextField
               label="Ticket"
-              value={ticket.content._id}
+              value={ticket._id}
               disabled
               inputProps={{
                 className: 'disabled-text-field',
