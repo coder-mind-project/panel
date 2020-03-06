@@ -14,10 +14,6 @@ body {
   min-height: 100vh;
 }
 
-#component{
-  padding: 8px;
-}
-
 label.Mui-focused{
   color: #8a05be !important;
 }
