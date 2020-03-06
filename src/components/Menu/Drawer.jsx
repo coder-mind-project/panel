@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -7,60 +7,42 @@ import { userType } from '@/types';
 import { connect } from 'react-redux';
 
 import {
-  Drawer,
   List,
   Divider,
   Box,
+  Typography,
+  Icon,
 } from '@material-ui/core';
-
-import LogoBlack from '../../assets/coder-mind-painelv1-preto.png';
 
 import {
   DrawerList,
   CustomLink,
   CustomListItem,
   IconMenuItem,
+  CustomDrawer,
 } from './styles';
 
 function DrawerMenu(props) {
   const {
-    isOpen,
-    close,
     user,
     logout,
   } = props;
 
-  const [display, setDisplay] = useState(false);
-
-  function hideDrawer() {
-    setDisplay(false);
-    close();
-  }
-
-  useEffect(() => {
-    if (isOpen !== display) {
-      setDisplay(isOpen);
-    }
-  }, [isOpen, display]);
-
   return (
-    <Drawer
-      open={display}
-      onClose={hideDrawer}
+    <CustomDrawer
+      open
+      variant="permanent"
     >
-      <Link to="/" onClick={hideDrawer}>
-        <img
-          src={LogoBlack}
-          width="180"
-          alt="Painel Coder Mind"
-        />
-      </Link>
+      <Box display="flex" alignItems="center" justifyContent="center" mt={2} mb={1}>
+        <Link to="/">
+          <Icon color="primary" fontSize="large">code</Icon>
+        </Link>
+      </Box>
       <Divider />
       <DrawerList>
         <List>
           <CustomLink
             to="/articles"
-            onClick={hideDrawer}
           >
             <CustomListItem
               button
@@ -69,13 +51,14 @@ function DrawerMenu(props) {
                 <IconMenuItem>
                   library_books
                 </IconMenuItem>
-                Artigos
+                <Typography component="span" variant="body2">
+                  Artigos
+                </Typography>
               </Box>
             </CustomListItem>
           </CustomLink>
           <CustomLink
             to="/stats"
-            onClick={hideDrawer}
           >
             <CustomListItem
               button
@@ -84,13 +67,14 @@ function DrawerMenu(props) {
                 <IconMenuItem>
                   assessment
                 </IconMenuItem>
-                Estatísticas
+                <Typography component="span" variant="body2">
+                  Estatísticas
+                </Typography>
               </Box>
             </CustomListItem>
           </CustomLink>
           <CustomLink
             to="/comments"
-            onClick={hideDrawer}
           >
             <CustomListItem
               button
@@ -99,47 +83,50 @@ function DrawerMenu(props) {
                 <IconMenuItem>
                   question_answer
                 </IconMenuItem>
-                Comentários
+                <Typography component="span" variant="body2">
+                  Comentários
+                </Typography>
               </Box>
             </CustomListItem>
           </CustomLink>
           { user.tagAuthor && (
-          <CustomLink
-            to="/themes"
-            onClick={hideDrawer}
-          >
-            <CustomListItem
-              button
+            <CustomLink
+              to="/themes"
             >
-              <Box display="flex" alignItems="center">
-                <IconMenuItem>
-                  bookmark
-                </IconMenuItem>
-                Temas
-              </Box>
-            </CustomListItem>
-          </CustomLink>
+              <CustomListItem
+                button
+              >
+                <Box display="flex" alignItems="center">
+                  <IconMenuItem>
+                    bookmark
+                  </IconMenuItem>
+                  <Typography component="span" variant="body2">
+                    Temas
+                  </Typography>
+                </Box>
+              </CustomListItem>
+            </CustomLink>
           )}
           {user.tagAuthor && (
-          <CustomLink
-            to="/categories"
-            onClick={hideDrawer}
-          >
-            <CustomListItem
-              button
+            <CustomLink
+              to="/categories"
             >
-              <Box display="flex" alignItems="center">
-                <IconMenuItem>
-                  category
-                </IconMenuItem>
-                Categorias
-              </Box>
-            </CustomListItem>
-          </CustomLink>
+              <CustomListItem
+                button
+              >
+                <Box display="flex" alignItems="center">
+                  <IconMenuItem>
+                    category
+                  </IconMenuItem>
+                  <Typography component="span" variant="body2">
+                    Categorias
+                  </Typography>
+                </Box>
+              </CustomListItem>
+            </CustomLink>
           )}
           <CustomLink
             to="/my-account"
-            onClick={hideDrawer}
           >
             <CustomListItem
               button
@@ -148,48 +135,53 @@ function DrawerMenu(props) {
                 <IconMenuItem>
                   person_outline
                 </IconMenuItem>
-                Meus dados
+                <Typography component="span" variant="body2">
+                  Meus dados
+                </Typography>
               </Box>
             </CustomListItem>
           </CustomLink>
           { user.tagAdmin && (
-          <CustomLink
-            to="/management"
-            onClick={hideDrawer}
-          >
-            <CustomListItem
-              button
+            <CustomLink
+              to="/management"
             >
-              <Box display="flex" alignItems="center">
-                <IconMenuItem>
-                  settings
-                </IconMenuItem>
-                Configurações
-              </Box>
-            </CustomListItem>
-          </CustomLink>
+              <CustomListItem
+                button
+              >
+                <Box display="flex" alignItems="center">
+                  <IconMenuItem>
+                    settings
+                  </IconMenuItem>
+                  <Typography component="span" variant="body2">
+                    Configurações
+                  </Typography>
+                </Box>
+              </CustomListItem>
+            </CustomLink>
           )}
         </List>
         <List>
           <CustomListItem
             onClick={logout}
+            button
+            id="logout-button"
           >
             <Box display="flex" alignItems="center">
               <IconMenuItem>
                 exit_to_app
               </IconMenuItem>
-              Sair
+              <Typography component="span" variant="body2">
+                Sair
+              </Typography>
             </Box>
           </CustomListItem>
         </List>
       </DrawerList>
-    </Drawer>
+    </CustomDrawer>
   );
 }
 
 DrawerMenu.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
   user: userType.isRequired,
   logout: PropTypes.func.isRequired,
 };
