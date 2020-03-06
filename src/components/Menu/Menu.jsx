@@ -1,26 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
 import Drawer from './Drawer';
 import AppBar from './AppBar';
+import AppBarMobile from './AppBarMobile';
 
 import { MenuRoot } from './styles';
 
 
 function Menu(props) {
   const { menu } = props;
-  const [showingDrawer, setShowingDrawer] = useState(false);
-
-  function showDrawer() {
-    setShowingDrawer(true);
-  }
-
-  function hideDrawer() {
-    setShowingDrawer(false);
-  }
-
 
   function logout() {
     localStorage.removeItem('user');
@@ -29,8 +20,9 @@ function Menu(props) {
 
   return (
     <MenuRoot display={menu ? 'true' : ''}>
-      <AppBar displayDrawer={showDrawer} logout={logout} />
-      <Drawer isOpen={showingDrawer} close={hideDrawer} logout={logout} />
+      <AppBar logout={logout} />
+      <Drawer logout={logout} />
+      <AppBarMobile />
     </MenuRoot>
   );
 }
