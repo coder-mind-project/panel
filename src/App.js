@@ -26,11 +26,9 @@ import { setError as dispatchError } from './redux/errorActions';
 import { setMenu as callMenu } from './redux/menuActions';
 import { callToast as toastEmitter } from './redux/toastActions';
 
-// Components imports
-import Menu from './components/menu-application/Menu';
+import Menu from './components/Menu/Menu';
 import Toast from './components/Toast';
 
-// Pages imports
 import Themes from './components/Themes/Themes';
 import Management from './components/Management/Management';
 import Error from './components/Errors/Error';
