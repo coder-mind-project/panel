@@ -10,7 +10,6 @@ import {
   Toolbar,
   Menu,
   MenuItem,
-  Icon,
   Box,
   Typography,
 } from '@material-ui/core';
@@ -24,7 +23,6 @@ import Logo from '../../assets/coder-mind-painelv1-branco.png';
 
 import {
   CustomAppBar,
-  CustomIconButton,
   CustomAvatar,
   AppBarItems,
   IconMenuItem,
@@ -34,7 +32,6 @@ import { backendUrl } from '../../config/backend';
 
 function AppBar(props) {
   const {
-    displayDrawer,
     user,
     logout,
   } = props;
@@ -53,14 +50,6 @@ function AppBar(props) {
     <HideOnScroll>
       <CustomAppBar>
         <Toolbar>
-          <CustomIconButton
-            onClick={displayDrawer}
-            edge="start"
-            color="inherit"
-            aria-label="Menu"
-          >
-            <Icon>menu</Icon>
-          </CustomIconButton>
           <Link to="/">
             <img
               src={Logo}
@@ -162,7 +151,6 @@ function AppBar(props) {
   );
 }
 AppBar.propTypes = {
-  displayDrawer: PropTypes.func,
   user: userType.isRequired,
   logout: PropTypes.func.isRequired,
 };
