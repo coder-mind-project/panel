@@ -141,7 +141,7 @@ function Themes(props) {
   }, [page, query, limit, loading, error, themes, reload]);
 
   return (
-    <Box id="component">
+    <Container id="component">
       <Header title="Temas" description="Temas para artigos" icon="bookmark" />
       <Form
         open={openForm}
@@ -261,7 +261,7 @@ function Themes(props) {
         </Container>
         )}
       </Paper>
-    </Box>
+    </Container>
   );
 }
 
