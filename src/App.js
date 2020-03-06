@@ -52,6 +52,7 @@ import RemoveAccount from './pages/auth-section/RemoveAccount';
 
 // Css imports
 import './index.css';
+import { AppContent } from './styles'
 
 function App(props) {
   const {
@@ -140,31 +141,33 @@ function App(props) {
                   { error
                     && <Redirect to="/error" />
                   }
-                  <Switch>
-                    <Route path="/" exact component={Articles} />
-                    <Route path="/auth" exact component={Auth} />
-                    <Route path="/redeem-account" exact component={RedeemAccount} />
-                    <Route path="/remove-account" exact component={RemoveAccount} />
-                    <Route path="/ticket" exact component={Ticket} />
-                    <Route path="/tickets" exact component={Tickets} />
-                    <Route path="/confirm-email" exact component={ConfirmEmail} />
-                    <Route path="/user" exact component={User} />
-                    <Route path="/user/:id" exact component={User} />
-                    <Route path="/users" exact component={Users} />
-                    <Route path="/article" exact component={Article} />
-                    <Route path="/article/:id" exact component={Article} />
-                    <Route path="/articles" exact component={Articles} />
-                    <Route path="/management" exact component={Management} />
-                    <Route path="/themes" exact component={Themes} />
-                    <Route path="/category" exact component={Category} />
-                    <Route path="/category/:id" exact component={Category} />
-                    <Route path="/categories" exact component={Categories} />
-                    <Route path="/my-account" exact component={MyAccount} />
-                    <Route path="/comments" exact component={Comments} />
-                    <Route path="/comments/:id" exact component={Comment} />
-                    <Route path="/error" exact component={Error} />
-                    <Route path="/stats" exact component={Stats} />
-                  </Switch>
+                  <AppContent user={user} isvalidating={validatingToken ? 'true' : ''}>
+                    <Switch>
+                      <Route path="/" exact component={Articles} />
+                      <Route path="/auth" exact component={Auth} />
+                      <Route path="/redeem-account" exact component={RedeemAccount} />
+                      <Route path="/remove-account" exact component={RemoveAccount} />
+                      <Route path="/ticket" exact component={Ticket} />
+                      <Route path="/tickets" exact component={Tickets} />
+                      <Route path="/confirm-email" exact component={ConfirmEmail} />
+                      <Route path="/user" exact component={User} />
+                      <Route path="/user/:id" exact component={User} />
+                      <Route path="/users" exact component={Users} />
+                      <Route path="/article" exact component={Article} />
+                      <Route path="/article/:id" exact component={Article} />
+                      <Route path="/articles" exact component={Articles} />
+                      <Route path="/management" exact component={Management} />
+                      <Route path="/themes" exact component={Themes} />
+                      <Route path="/category" exact component={Category} />
+                      <Route path="/category/:id" exact component={Category} />
+                      <Route path="/categories" exact component={Categories} />
+                      <Route path="/my-account" exact component={MyAccount} />
+                      <Route path="/comments" exact component={Comments} />
+                      <Route path="/comments/:id" exact component={Comment} />
+                      <Route path="/error" exact component={Error} />
+                      <Route path="/stats" exact component={Stats} />
+                    </Switch>
+                  </AppContent>
                 </ErrorBoundary>
               </Router>
             )
