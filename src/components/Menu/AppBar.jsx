@@ -16,7 +16,7 @@ import {
 import HideOnScroll from '@/components/HideOnScroll.jsx';
 import AboutSystem from '@/components/AboutSystem.jsx';
 import CommentsNotifications from '@/components/Comments/UnreadComments.jsx';
-import TicketsNotifications from '@/components/menu-application/Tickets/Notifications.jsx';
+import TicketsNotifications from '@/components/Tickets/ManageTickets/UnreadedTickets.jsx';
 
 import Logo from '../../assets/coder-mind-painelv1-branco.png';
 

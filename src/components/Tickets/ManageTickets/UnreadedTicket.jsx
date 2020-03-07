@@ -8,7 +8,7 @@ import { ticketNotificationType } from '@/types';
 
 import { displayFullDate } from '@/config/masks';
 
-import { CustomGrid, BoxMessage } from './styles';
+import { CustomGridMenu, BoxMessage } from './styles';
 
 const UnreadedTickets = (props) => {
   const {
@@ -41,7 +41,7 @@ const UnreadedTickets = (props) => {
       justifyContent="center"
       alignItems="center"
     >
-      <CustomGrid item xs={12}>
+      <CustomGridMenu item xs={12}>
         <Typography component="p" variant="button">
           {defineType(notification.type)}
         </Typography>
@@ -60,7 +60,7 @@ const UnreadedTickets = (props) => {
         <Box mt={2}>
           <Divider />
         </Box>
-      </CustomGrid>
+      </CustomGridMenu>
     </Box>
   );
 };
