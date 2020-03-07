@@ -6,6 +6,7 @@ import {
   Icon,
   ListItem,
   Drawer,
+  Menu,
 } from '@material-ui/core';
 
 import Avatar from 'react-avatar';
@@ -122,4 +123,11 @@ export const AppBarBottom = styled(AppBar)({
 
 export const AppBarIconButton = styled(IconButton)({
   width: '25%',
+});
+
+export const CustomMenu = styled(Menu)({
+  marginTop: '.5rem',
+  '& .MuiTypography-root': {
+    marginLeft: '.6rem',
+  },
 });

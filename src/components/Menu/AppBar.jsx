@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 
 import {
   Toolbar,
-  Menu,
   MenuItem,
   Box,
   Typography,
@@ -26,6 +25,7 @@ import {
   CustomAvatar,
   AppBarItems,
   IconMenuItem,
+  CustomMenu,
 } from './styles';
 
 import { backendUrl } from '../../config/backend';
@@ -79,7 +79,7 @@ function AppBar(props) {
                 </AppBarItems>
               )
             }
-          <Menu
+          <CustomMenu
             anchorEl={anchorMenu}
             getContentAnchorEl={null}
             anchorOrigin={{
@@ -144,7 +144,7 @@ function AppBar(props) {
                 </Typography>
               </Box>
             </MenuItem>
-          </Menu>
+          </CustomMenu>
         </Box>
       </CustomAppBar>
     </HideOnScroll>
