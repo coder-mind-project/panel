@@ -9,7 +9,7 @@ import { faCode, faBook } from '@fortawesome/free-solid-svg-icons';
 
 import { connect } from 'react-redux';
 
-import MoreInfo from './Dialogs/MoreInfo';
+import MoreInfo from './MoreInfo';
 
 function AboutSystem(props) {
   const { user } = props;
