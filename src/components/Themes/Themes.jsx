@@ -232,8 +232,20 @@ function Themes(props) {
                   <TableCell scope="alias">{theme.alias}</TableCell>
                   {user.tagAdmin && (
                   <TableCell scope="_id">
-                    <CustomIconButton icon="edit" color="default" aria-label="Editar" tooltip="Editar" onClick={selectTheme(theme, 'edit')} />
-                    <CustomIconButton icon="delete_forever" color="danger" aria-label="Delete" tooltip="Remover" onClick={selectTheme(theme, 'remove')} />
+                    <CustomIconButton
+                      icon="edit"
+                      color="primary"
+                      aria-label="Editar"
+                      tooltip="Editar"
+                      onClick={selectTheme(theme, 'edit')}
+                    />
+                    <CustomIconButton
+                      icon="delete_forever"
+                      color="secondary"
+                      aria-label="Delete"
+                      tooltip="Remover"
+                      onClick={selectTheme(theme, 'remove')}
+                    />
                   </TableCell>
                   )}
                 </TableRow>
