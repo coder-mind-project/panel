@@ -1,4 +1,8 @@
-import { styled, Box } from '@material-ui/core';
+import {
+  styled,
+  Box,
+  Slide,
+} from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
 import { devices } from '@/config/devices';
@@ -20,4 +24,8 @@ export const NotFoundBox = styled(Box)({
   '& img': {
     maxWidth: '300px',
   },
+});
+
+export const CustomToast = styled(Slide)({
+  marginTop: 50,
 });
