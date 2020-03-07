@@ -53,6 +53,25 @@ export const articleType = shape({
   _id: string,
 });
 
+export const ticketNotificationType = shape({
+  _id: string,
+  content: shape({
+    readed: bool,
+    type: string,
+    userId: string,
+    email: string,
+    msg: string,
+    createdAt: oneOfType([
+      Date,
+      string,
+    ]),
+    updatedAt: oneOfType([
+      Date,
+      string,
+    ]),
+  }),
+});
+
 export const ticketType = shape({
   _id: string,
 });
