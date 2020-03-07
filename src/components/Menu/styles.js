@@ -88,8 +88,11 @@ export const CustomDrawer = styled(Drawer)({
     transitionProperty: 'width',
     overflowX: 'hidden',
     width: drawerWidth,
-    '& .MuiTypography-root': {
+    '& .MuiTypography-root, #coder-mind-logo': {
       display: 'none',
+    },
+    '& #coder-mind-logo': {
+      width: 120,
     },
     '&:hover': {
       '& .MuiButtonBase-root': {
@@ -98,7 +101,7 @@ export const CustomDrawer = styled(Drawer)({
       '& #logout-button': {
         justifyContent: 'center',
       },
-      '& .MuiTypography-root': {
+      '& .MuiTypography-root, #coder-mind-logo': {
         display: 'block',
         marginLeft: '.6rem',
       },

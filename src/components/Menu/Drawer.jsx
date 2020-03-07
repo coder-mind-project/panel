@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { userType } from '@/types';
 
@@ -13,6 +12,8 @@ import {
   Typography,
   Icon,
 } from '@material-ui/core';
+
+import CoderMindLogo from '@/assets/coder-mind-painelv1-preto.png';
 
 import {
   DrawerList,
@@ -33,11 +34,12 @@ function DrawerMenu(props) {
       open
       variant="permanent"
     >
-      <Box display="flex" alignItems="center" justifyContent="center" mt={2} mb={1}>
-        <Link to="/">
+      <CustomLink to="/">
+        <Box display="flex" alignItems="flex-start" justifyContent="center" mt={2} mb={1}>
           <Icon color="primary" fontSize="large">code</Icon>
-        </Link>
-      </Box>
+          <img id="coder-mind-logo" src={CoderMindLogo} alt="Coder Mind" />
+        </Box>
+      </CustomLink>
       <Divider />
       <DrawerList>
         <List>
