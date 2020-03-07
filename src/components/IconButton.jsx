@@ -1,25 +1,56 @@
-import React from 'react'
-import { IconButton, makeStyles, Icon, Tooltip } from '@material-ui/core'
+import React from 'react';
+import PropTypes from 'prop-types';
+import {
+  IconButton,
+  Icon,
+  Tooltip,
+} from '@material-ui/core';
 
-import { styles } from './styles/IconButton'
+function CustomIconButton(props) {
+  const {
+    tooltip,
+    color,
+    onClick,
+    disabled,
+    size,
+    icon,
+  } = props;
 
-const useStyles = makeStyles(styles)
-
-export default (props) => {
-
-    const classes = useStyles()
-
-    return (
-        <Tooltip title={props.tooltip || ''}>
-            <IconButton className={classes[props.color] || classes.default}
-                    onClick={props.onClick}
-                    disabled={props.disabled || false}
-                    size={props.size || 'medium'}
-                >
-                <Icon>
-                    {props.icon}
-                </Icon>
-            </IconButton>
-        </Tooltip>
-    )
+  return (
+    <Tooltip title={tooltip}>
+      <IconButton
+        color={color}
+        onClick={onClick}
+        disabled={disabled}
+        size={size}
+      >
+        <Icon>
+          {icon}
+        </Icon>
+      </IconButton>
+    </Tooltip>
+  );
 }
+
+CustomIconButton.propTypes = {
+  tooltip: PropTypes.string,
+  color: PropTypes.oneOf([
+    'primary',
+    'secondary',
+    'inherit',
+    'default',
+  ]),
+  onClick: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  size: PropTypes.string,
+  icon: PropTypes.string.isRequired,
+};
+
+CustomIconButton.defaultProps = {
+  tooltip: '',
+  color: 'default',
+  disabled: false,
+  size: 'medium',
+};
+
+export default CustomIconButton;
