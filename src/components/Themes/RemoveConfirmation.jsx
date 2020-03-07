@@ -64,7 +64,7 @@ function RemoveConfirmation(props) {
       aria-describedby="are_you_sure"
     >
       <DialogTitle id="title">
-        {loading ? 'Removendo' : 'Excluir usuário'}
+        {loading ? 'Removendo' : 'Excluir tema'}
       </DialogTitle>
       <DialogContent>
         <Container>
