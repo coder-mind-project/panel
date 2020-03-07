@@ -1,47 +1,55 @@
-import React from 'react'
-import { Grid, Paper, Box, useMediaQuery } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import {styles} from './styles/NotFound'
-import TiredRobot from '../assets/tired_robot_by_vonholdt.jpg'
+import React from 'react';
+import {
+  Paper,
+  Box,
+  Typography,
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-const useStyles = makeStyles(styles)
+import TiredRobot from '@/assets/tired_robot_by_vonholdt.jpg';
+
+import { NotFoundBox } from './styles';
 
 const NotFound = (props) => {
-    const classes = useStyles()
-    const matches = useMediaQuery('(max-width: 850px)')
+  const {
+    msg,
+    alt,
+  } = props;
 
-    return (
-        <Paper>
-            { !matches &&
-                <Grid item xs={12} className={classes.notFoundArea}>
-                    {/* <img src={TiredRobot} width="100%" alt="Nenhum artigo encontrado"/> */}
-                    <h4>
-                        {props.msg}
-                    </h4>
-                    <Box>
-                        <figure>
-                            <img src={TiredRobot} className={classes.tiredRobot} alt="Nenhum artigo encontrado"/>
-                            <figcaption style={{textAlign: 'center', fontSize: '0.8rem'}}>Tired Robot by Vonholdt</figcaption>
-                        </figure>
-                    </Box>
-                </Grid>
-            }
-            { matches &&
-                <Grid item xs={12} className={classes.notFoundAreaXs}>
-                    {/* <img src={TiredRobot} width="100%" alt="Nenhum artigo encontrado"/> */}
-                    <Box>
-                        <figure>
-                            <img src={TiredRobot} className={classes.tiredRobotXs} alt="Nenhum artigo encontrado"/>
-                            <figcaption style={{textAlign: 'center', fontSize: '0.8rem'}}>Tired Robot by Vonholdt</figcaption>
-                        </figure>
-                    </Box>
-                    <h4 className={classes.notFoundMsg}>
-                        {props.msg}
-                    </h4>
-                </Grid>
-            }
-        </Paper>
-    )
-}
+  return (
+    <Paper>
+      <NotFoundBox>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          ml={4}
+          mr={4}
+          mb={3}
+        >
+          <img
+            src={TiredRobot}
+            alt={alt}
+          />
+          <Typography component="figcaption" variant="body2">
+            Tired Robot by Vonholdt
+          </Typography>
+        </Box>
+        <Typography component="h4" variant="h6">
+          {msg}
+        </Typography>
+      </NotFoundBox>
+    </Paper>
+  );
+};
 
-export default NotFound
+NotFound.propTypes = {
+  msg: PropTypes.string.isRequired,
+  alt: PropTypes.string,
+};
+
+NotFound.defaultProps = {
+  alt: 'Resource not found',
+};
+
+export default NotFound;
