@@ -1,17 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Snackbar,
-  Slide,
-  makeStyles,
   useMediaQuery,
 } from '@material-ui/core';
 
 import { Alert } from '@material-ui/lab';
 
-import { styles } from './styles/Toast';
-
-const useStyles = makeStyles(styles);
+import { CustomToast } from './styles';
 
 function Toast(props) {
   const {
@@ -20,17 +17,11 @@ function Toast(props) {
     text,
     closeToast,
     show,
-  } = { ...props };
-
-  const { toast } = useStyles();
+  } = props;
 
   const matches = useMediaQuery('(max-width: 565px)');
 
   const anchorOrigin = { vertical: 'top', horizontal: matches ? 'center' : 'right' };
-  const autoHideDuration = hideTime || 3000;
-  const severity = color || 'success';
-  const msg = text || '';
-  const variant = 'filled';
 
   function close() {
     closeToast();
@@ -40,21 +31,44 @@ function Toast(props) {
     <div>
       { show
         && (
-          <Slide in className={toast}>
+          <CustomToast in>
             <Snackbar
               anchorOrigin={anchorOrigin}
               open
-              autoHideDuration={autoHideDuration}
+              autoHideDuration={hideTime}
               onClose={close}
             >
-              <Alert onClose={close} severity={severity} variant={variant}>
-                {msg}
+              <Alert
+                onClose={close}
+                severity={color}
+                variant="filled"
+              >
+                {text}
               </Alert>
             </Snackbar>
-          </Slide>
+          </CustomToast>
         )}
     </div>
   );
 }
+
+Toast.propTypes = {
+  hideTime: PropTypes.number,
+  color: PropTypes.oneOf([
+    'success',
+    'warning',
+    'info',
+    'error',
+  ]),
+  text: PropTypes.string.isRequired,
+  closeToast: PropTypes.func.isRequired,
+  show: PropTypes.bool,
+};
+
+Toast.defaultProps = {
+  hideTime: 3000,
+  color: 'success',
+  show: false,
+};
 
 export default Toast;
