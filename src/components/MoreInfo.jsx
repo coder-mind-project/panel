@@ -1,28 +1,34 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { userType } from '@/types';
 
 import {
-  Grid, Box, Divider, Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography,
+  Grid,
+  Box,
+  Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Typography,
 } from '@material-ui/core';
 
-import { Redirect } from 'react-router-dom';
-import { APP_VERSION, APP_BUILD, APP_DEPENDENCIES } from '../../config/dataProperties';
+import { Link } from 'react-router-dom';
+import { APP_VERSION, APP_BUILD, APP_DEPENDENCIES } from '@/config/dataProperties';
 
-import Logo from '../../assets/coder-mind-painelv1-preto.png';
+import Logo from '@/assets/coder-mind-painelv1-preto.png';
+
+import { CustomLink } from './styles';
 
 function MoreInfo(props) {
-  const { opened, closeDialog, user } = { ...props };
+  const { opened, closeDialog, user } = props;
 
   const [open, setOpen] = useState(false);
-  const [route, setRouter] = useState('');
 
   function close() {
     setOpen(false);
     closeDialog();
-  }
-
-  function redirectTo(futureRoute) {
-    setRouter(`/${futureRoute}`);
-    close();
   }
 
   useEffect(() => {
@@ -36,7 +42,6 @@ function MoreInfo(props) {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      { route && <Redirect to={route} /> }
       <DialogTitle id="alert-dialog-title">
         <Box width="100%" display="flex" justifyContent="center" alignItems="center">
           <img src={Logo} width="225px" alt="Coder Mind" />
@@ -74,11 +79,29 @@ function MoreInfo(props) {
             </Box>
           </Box>
           <Box mt={3} mb={1} width="100%" display="flex" justifyContent="center" alignItems="center">
-            <Button variant="contained" color="primary" onClick={() => redirectTo('ticket')}>
-              Preciso de ajuda
-            </Button>
+            <CustomLink to="/ticket">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={close}
+              >
+                Preciso de ajuda
+              </Button>
+            </CustomLink>
           </Box>
         </Grid>
+        <Box width="100%" display="flex" flexDirection="column" alignItems="center">
+          <Typography component="p" variant="body2" align="center">
+            &copy; Coder Mind &#38; Colaboradores | Licenciado sobre a licença BSD 3
+          </Typography>
+          <Link
+            to="https://opensource.org/licenses/BSD-3-Clause"
+          >
+            <Typography component="p" variant="body2" align="center">
+              https://opensource.org/licenses/BSD-3-Clause
+            </Typography>
+          </Link>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={close} color="primary" autoFocus>
@@ -88,5 +111,15 @@ function MoreInfo(props) {
     </Dialog>
   );
 }
+
+MoreInfo.propTypes = {
+  opened: PropTypes.bool,
+  closeDialog: PropTypes.func.isRequired,
+  user: userType.isRequired,
+};
+
+MoreInfo.defaultProps = {
+  opened: false,
+};
 
 export default MoreInfo;
