@@ -1,197 +1,203 @@
-import React, { Component } from 'react'
-import axios from 'axios'
-import { backendUrl } from '../../../config/backend'
+import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
+import {
+  Box,
+  IconButton,
+  Icon,
+  CircularProgress,
+  Fade,
+  Divider,
+  Tooltip,
+  Typography,
+  Badge,
+  Button,
+} from '@material-ui/core';
+import { connect } from 'react-redux';
+import { backendUrl } from '../../../config/backend';
 
-import { Box, IconButton, Icon,
-    CircularProgress, Badge, Fade,
-    Divider, Menu, BottomNavigation,
-    BottomNavigationAction, Tooltip,
-    Typography } from '@material-ui/core'
 
-import NotificationItem from './NotificationItem.jsx'
+import NotificationItem from './NotificationItem';
 
-import { connect } from 'react-redux'
+import { CustomMenu, CustomIcon, CustomLink } from './styles';
 
-import './css/Notifications.css'
+function CommentsNotifications() {
+  const menuRef = useRef(null);
 
-class Notifications extends Component {
+  const [comments, setComments] = useState([]);
+  const [count, setCount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-    constructor(props){
-        super(props)
-        this.menuRef = React.createRef()
+  function openMenuNotifications() {
+    setOpen(true);
+  }
+
+  function closeMenuNotifications() {
+    setOpen(false);
+  }
+
+  async function removeNotification(comment) {
+    const currentComments = comments;
+
+    const newComments = [];
+
+    currentComments.map((elem) => {
+      if (elem._id !== comment._id) {
+        newComments.push(elem);
+      }
+
+      return elem;
+    });
+
+    setComments(newComments);
+
+    if (currentComments.length - newComments.length === 1) {
+      setCount(count - 1);
     }
 
-    state = {
-        notifications: [],
-        openNotifications: false,
-        loading: false,
+    const willBeOpen = newComments.length > 0;
+    setOpen(willBeOpen);
+  }
 
-        bottomNavigationValue: 0,
-        selected: 0
+  useEffect(() => {
+    async function getNotifications() {
+      setLoading(true);
+      const url = `${backendUrl}/comments?type=not-readed&limit=10`;
 
+      await axios(url).then((res) => {
+        const newComments = res.data.comments || [];
+        const newCount = res.data.count || 0;
+        setComments(newComments);
+        setCount(newCount);
+      });
+
+      setLoading(false);
     }
 
-    toogleLoading(){
-        this.setState({loading: !this.state.loading})
+    if (!load) {
+      setLoad(true);
+      getNotifications();
     }
+  }, [loading, load, comments]);
 
-    openMenuNotifications(){
-        this.setState({openNotifications: true})
-    }
-
-    closeMenuNotifications(){
-        this.setState({openNotifications: false})
-    }
-
-    async getNotifications(){
-        await this.toogleLoading()
-        const url = `${backendUrl}/comments?type=not-readed`
-
-        await axios(url).then( res => {
-            this.setState({notifications: res.data.comments})
-        })
-
-        this.toogleLoading()
-    }
-
-    async removeNotification(notification){
-        const notifications = this.state.notifications
-
-        const newNotifications = []
-
-        notifications.map( elem => {
-            if(elem._id !== notification._id)
-                newNotifications.push(elem)
-
-            return elem
-        })
-
-        this.setState({
-            notifications: newNotifications,
-            openNotifications: newNotifications.length === 0 ? false : true
-        })
-
-    }
-
-    componentDidMount(){
-        this.getNotifications()
-    }
-
-
-    render() {
-        return (
-            <Box mr={3}>
-                { this.state.notifications.length === 0 && !this.state.loading &&
-                    <Box>
-                        <Tooltip title={(<Typography component="p" variant="body2">Comentários não lidos</Typography>)}>
-                            <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                                <Icon>mode_comment</Icon>
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            id="fade-menu"
-                            anchorEl={this.menuRef.current}
-                            keepMounted
-                            open={this.state.openNotifications}
-                            onClose={() => this.closeMenuNotifications()}
-                            TransitionComponent={Fade}
-                        >
-                            <Box pl={1.3} pr={1.3}>
-                                <div className="header-menu">
-                                    <Box display="flex" alignItems="center">
-                                        <Box mr={1}>
-                                            <Icon>comment</Icon>
-                                        </Box>
-                                        <Box>
-                                            <h4>Comentários</h4>
-                                            <small>Comentários dos leitores</small>
-                                        </Box>
-                                    </Box>
-                                    <IconButton onClick={() => this.closeMenuNotifications()}>
-                                        <Icon>clear</Icon>
-                                    </IconButton>
-                                </div>
-                                <Divider/>
-                                <Box p={1} mb={2} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                                    <span>Parabéns, você está em dia</span>
-                                    <span>com seus leitores</span>
-                                </Box>
-                                <BottomNavigation
-                                    onChange={(event, bottomNavigationValue) => {
-                                        this.setState({bottomNavigationValue})
-                                    }}
-                                    showLabels
-                                    value={0}
-                                >
-                                    <BottomNavigationAction label="Ver todos" className="notification-footer-button" onClick={() => window.location.href = '/comments'} icon={<Icon color="primary">more_horiz</Icon>} />
-                                </BottomNavigation>
-                            </Box>
-                        </Menu>
-                    </Box>
-                }
-                { this.state.loading &&
-                    <Box p={2}>
-                        <CircularProgress color="inherit" size={20} />
-                    </Box>
-                }
-                { this.state.notifications.length > 0 && !this.state.loading &&
-                    <Box>
-                        <Box>
-                            <Tooltip title={(<Typography component="p" variant="body2">Comentários não lidos</Typography>)}>
-                                <IconButton color="inherit" onClick={() => this.openMenuNotifications()} aria-controls="fade-menu" aria-haspopup="true" ref={this.menuRef}>
-                                    <Badge badgeContent={this.state.notifications.length} max={99} color="primary">
-                                        <Icon>comments</Icon>
-                                    </Badge>
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                        <Menu
-                            id="fade-menu"
-                            anchorEl={this.menuRef.current}
-                            keepMounted
-                            open={this.state.openNotifications}
-                            onClose={() => this.closeMenuNotifications()}
-                            TransitionComponent={Fade}
-                        >
-                            <Box pl={1.3} pr={1.3}>
-                                <div className="header-menu">
-                                    <Box display="flex" alignItems="center">
-                                        <Box mr={1}>
-                                            <Icon>comments</Icon>
-                                        </Box>
-                                        <Box>
-                                            <h4>Comentários</h4>
-                                            <small>Comentários dos leitores</small>
-                                        </Box>
-                                    </Box>
-                                    <IconButton onClick={() => this.closeMenuNotifications()}>
-                                        <Icon>clear</Icon>
-                                    </IconButton>
-                                </div>
-                                <Divider/>
-                                <Box p={1} mb={2}>
-                                    {this.state.notifications.map(notification => (
-                                        <NotificationItem key={notification._id} notification={notification} reloadComments={this.removeNotification.bind(this, notification)} close={this.closeMenuNotifications.bind(this)}/>
-                                    ))}
-                                </Box>
-                                <BottomNavigation
-                                    onChange={(event, bottomNavigationValue) => {
-                                        this.setState({bottomNavigationValue})
-                                    }}
-                                    showLabels
-                                    value={0}
-                                >
-                                    <BottomNavigationAction label="Ver todos" className="notification-footer-button" onClick={() => window.location.href = '/comments'} icon={<Icon color="primary">more_horiz</Icon>} />
-                                    <BottomNavigationAction label="Fechar" onClick={() => this.closeMenuNotifications()} icon={<Icon>clear</Icon>} />
-                                </BottomNavigation>
-                            </Box>
-                        </Menu>
-                    </Box>
-                }
+  return (
+    <Box mr={3}>
+      <Box>
+        <Tooltip
+          title={(
+            <Typography component="p" variant="body2">
+              Comentários não lidos
+            </Typography>
+              )}
+        >
+          <IconButton
+            color="inherit"
+            onClick={openMenuNotifications}
+            ref={menuRef}
+          >
+            <Badge
+              invisible={!count}
+              badgeContent={count}
+              color={open ? 'default' : 'primary'}
+              variant="dot"
+            >
+              <Icon color={open ? 'primary' : 'inherit'}>
+                mode_comment
+              </Icon>
+            </Badge>
+          </IconButton>
+        </Tooltip>
+        <CustomMenu
+          anchorEl={menuRef.current}
+          keepMounted
+          open={open}
+          onClose={closeMenuNotifications}
+          TransitionComponent={Fade}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <Box pl={1.3} pr={1.3}>
+            <Box width="100%" display="flex" justifyContent="space-between">
+              <Box display="flex" alignItems="center">
+                <Box mr={1} display="flex" alignItems="center">
+                  <CustomIcon fontSize="small">
+                    mode_comment
+                  </CustomIcon>
+                </Box>
+                <Box display="flex" alignItems="center">
+                  <Typography component="h3" variant="body1">
+                    Comentários não lidos
+                  </Typography>
+                </Box>
+              </Box>
+              <IconButton onClick={closeMenuNotifications}>
+                <Icon>
+                  clear
+                </Icon>
+              </IconButton>
             </Box>
-        )
-    }
+            <Divider />
+            { count === 0 && !loading
+              && (
+                <Box
+                  p={1}
+                  mb={count ? 2 : 0}
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Typography component="h3" variant="body2">
+                    Parabéns!! Você está em dia com seus leitores.
+                  </Typography>
+                  <CustomLink to="/comments">
+                    <Button
+                      variant="text"
+                      color="primary"
+                      size="small"
+                      onClick={closeMenuNotifications}
+                    >
+                      Ir para comentários
+                    </Button>
+                  </CustomLink>
+                </Box>
+              )
+            }
+            { loading
+              && (
+              <Box p={2}>
+                <CircularProgress color="inherit" size={20} />
+              </Box>
+              )
+            }
+            { count > 0 && !loading
+              && (
+                <Box>
+                  {comments.map((notification) => (
+                    <NotificationItem
+                      key={notification._id}
+                      notification={notification}
+                      reloadComments={(comment) => removeNotification(comment)}
+                      close={closeMenuNotifications}
+                    />
+                  ))}
+                </Box>
+              )
+            }
+          </Box>
+        </CustomMenu>
+      </Box>
+    </Box>
+  );
 }
 
-const mapStateToProps = state => ({user: state.user})
-export default connect(mapStateToProps)(Notifications)
+const mapStateToProps = (state) => ({ user: state.user });
+export default connect(mapStateToProps)(CommentsNotifications);
