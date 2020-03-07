@@ -48,3 +48,30 @@ export const themeType = shape({
   description: string,
   state: string,
 });
+
+export const articleType = shape({
+  _id: string,
+});
+
+export const ticketType = shape({
+  _id: string,
+});
+
+export const commentType = shape({
+  _id: string,
+  confirmed: bool,
+  readed: bool,
+  answerOf: ticketType,
+  userName: string,
+  userEmail: string,
+  comment: string,
+  article: articleType,
+  created_at: oneOfType([
+    Date,
+    string,
+  ]),
+  updatedAt: oneOfType([
+    Date,
+    string,
+  ]),
+});
