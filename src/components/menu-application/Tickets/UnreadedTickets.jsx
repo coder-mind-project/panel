@@ -13,6 +13,7 @@ import {
   Tooltip,
   Typography,
   Button,
+  Icon,
 } from '@material-ui/core';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +23,6 @@ import { connect } from 'react-redux';
 import NotificationItem from './UnreadedTicket';
 
 import { CustomMenu, CustomLink } from './styles';
-import './css/Notifications.css';
 
 function UnreadedTickets(props) {
   const {
@@ -94,7 +94,9 @@ function UnreadedTickets(props) {
               color={open ? 'default' : 'primary'}
               variant="dot"
             >
-              <FontAwesomeIcon icon={faIdCard} size="sm" />
+              <Icon color={open ? 'primary' : 'inherit'}>
+                {open ? 'drafts' : 'mail'}
+              </Icon>
             </Badge>
           </IconButton>
         </Tooltip>
@@ -136,7 +138,7 @@ function UnreadedTickets(props) {
               justifyContent="center"
             >
               <CustomLink to="/tickets">
-                <Button onClick={closeMenu} color="primary">
+                <Button onClick={closeMenu} color="primary" size="small">
                   Visualizar tickets
                 </Button>
               </CustomLink>
