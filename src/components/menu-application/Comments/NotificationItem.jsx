@@ -1,42 +1,81 @@
-import React from 'react'
-import axios from 'axios'
-import { backendUrl } from '../../../config/backend'
-import { Box, Grid, Icon, Button } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { commentType } from '@/types';
 
-import './css/NotificationItem.css'
+import axios from 'axios';
+import {
+  Box,
+  Grid,
+  Icon,
+  IconButton,
+  Typography,
+  Divider,
+  Tooltip,
+} from '@material-ui/core';
+import { backendUrl } from '@/config/backend';
 
-const checkNotification = (props) => {
+import { CustomLink } from './styles';
+
+const CommentItem = (props) => {
+  const {
+    notification,
+    reloadComments,
+    close,
+  } = props;
+
+  function checkNotification() {
     const readed = {
-        _id: props.notification._id,
-        readed: true
-    }
+      _id: notification._id,
+      readed: true,
+    };
 
-    const url = `${backendUrl}/comments`
+    const url = `${backendUrl}/comments`;
 
-    axios.patch(url, readed).then( () => {
-        props.reloadComments()
-    })
-}
+    axios.patch(url, readed).then(() => {
+      reloadComments(readed);
+    });
+  }
 
-const NotificationItem = props => {
-    return (
-        <Box className="notification">
-            <Grid item xs={2} className="notification-aside">
-                <Icon fontSize="large">info</Icon>
-                <Button color="primary" variant="text" onClick={() => checkNotification(props)}>
-                    Lido
-                </Button>
-            </Grid>
-            <Grid item xs={10} className="notification-content">
-                <h4 className="title"><strong>{props.notification.userName}</strong> fez um novo comentário</h4>
-                <small className="description">Artigo <Link to={`/article/${props.notification.article.customURL}`} onClick={() => props.close()}><strong>{props.notification.article.title}</strong></Link></small>
-                <Box className="message">
-                    { props.notification.comment.length > 40 ? `${props.notification.comment.slice(0, 37)} ...` : props.notification.comment}
-                </Box>
-            </Grid>
-        </Box>
-    )
-}
+  return (
+    <Grid item xs={12}>
+      <Box display="flex" mb={1} mt={1}>
+        <Grid item xs={10}>
+          <CustomLink to="/comments" onClick={close}>
+            <Typography component="p" variant="button">
+              {notification.article.title}
+            </Typography>
+            <Box>
+              <Typography component="span" variant="body2">{notification.userName}</Typography>
+              {' '}
+              <Typography component="span" variant="body2">fez um novo comentário</Typography>
+            </Box>
+          </CustomLink>
+        </Grid>
+        <Grid item xs={2}>
+          <Tooltip
+            title={(
+              <Typography component="span" variant="body2">
+                Marcar como lido
+              </Typography>
+            )}
+          >
+            <IconButton color="primary" onClick={checkNotification}>
+              <Icon>
+                done
+              </Icon>
+            </IconButton>
+          </Tooltip>
+        </Grid>
+      </Box>
+      <Divider />
+    </Grid>
+  );
+};
 
-export default NotificationItem
+CommentItem.propTypes = {
+  notification: commentType.isRequired,
+  reloadComments: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
+};
+
+export default CommentItem;
