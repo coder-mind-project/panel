@@ -26,7 +26,7 @@ import { displayFullDate, randomNumber } from '../../config/masks'
 import axios from 'axios'
 import { backendUrl } from '../../config/backend'
 
-import IpInfoStatsDialog from '../../components/Dialogs/Stats/IpInfoStats.jsx'
+import IpInfoStatsDialog from '../../components/Statistics/IpInfoStats'
 import FloatingButton from '../../components/Buttons/FloatingButton'
 
 import './css/Stats.css'
