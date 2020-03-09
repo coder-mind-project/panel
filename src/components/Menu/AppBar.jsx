@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { userType } from '@/types';
 
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { toogleTheme as changeTheme } from '@/redux/theme/themeActions';
 
 import {
   Toolbar,
@@ -10,6 +12,7 @@ import {
   Box,
   Typography,
   Icon,
+  useMediaQuery,
 } from '@material-ui/core';
 
 import HideOnScroll from '@/components/HideOnScroll.jsx';
@@ -17,7 +20,8 @@ import AboutSystem from '@/components/AboutSystem.jsx';
 import CommentsNotifications from '@/components/Comments/UnreadComments.jsx';
 import TicketsNotifications from '@/components/Tickets/ManageTickets/UnreadedTickets.jsx';
 
-import Logo from '../../assets/coder-mind-painelv1-branco.png';
+import LogoBlack from '../../assets/coder-mind-painelv1-preto.png';
+import LogoWhite from '../../assets/coder-mind-painelv1-branco.png';
 
 import {
   CustomAppBar,
@@ -33,9 +37,13 @@ function AppBar(props) {
   const {
     user,
     logout,
+    theme,
+    swapTheme,
   } = props;
 
   const [anchorMenu, setAnchorMenu] = useState(null);
+
+  const isLightTheme = useMediaQuery(`(prefers-color-scheme: ${theme})`);
 
   function openMenu(event) {
     setAnchorMenu(event.currentTarget);
@@ -45,13 +53,18 @@ function AppBar(props) {
     setAnchorMenu(null);
   }
 
+  function setTheme() {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    swapTheme(newTheme);
+  }
+
   return (
     <HideOnScroll>
       <CustomAppBar color="inherit">
         <Toolbar>
           <CustomLink to="/">
             <img
-              src={Logo}
+              src={isLightTheme ? LogoBlack : LogoWhite}
               width="130"
               alt="Coder Mind"
             />
@@ -71,7 +84,7 @@ function AppBar(props) {
                     style={{ cursor: 'pointer' }}
                     color="#888"
                     name={user.name}
-                    size="50"
+                    size="35"
                     round="30px"
                     src={`${backendUrl}/${user.profilePhoto}`}
                   />
@@ -117,6 +130,18 @@ function AppBar(props) {
                 </Box>
               </MenuItem>
             </CustomLink>
+            <MenuItem onClick={setTheme}>
+              <Box display="flex" alignItems="center">
+                <Icon color="action">
+                  {theme === 'light' ? 'brightness_medium' : 'brightness_low'}
+                </Icon>
+                <Typography component="span" variant="body2">
+                  Modo escuro:
+                  {' '}
+                  {theme === 'light' ? 'desativado' : 'ativado'}
+                </Typography>
+              </Box>
+            </MenuItem>
             { user && user.tagAdmin
                 && (
                   <CustomLink to="/management" onClick={closeMenu}>
@@ -152,8 +177,14 @@ function AppBar(props) {
 AppBar.propTypes = {
   user: userType.isRequired,
   logout: PropTypes.func.isRequired,
+  theme: PropTypes.oneOf([
+    'light',
+    'dark',
+  ]).isRequired,
+  swapTheme: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ user: state.user, theme: state.theme });
+const mapDispatchToProps = (dispatch) => bindActionCreators({ swapTheme: changeTheme }, dispatch);
 
-export default connect(mapStateToProps)(AppBar);
+export default connect(mapStateToProps, mapDispatchToProps)(AppBar);
