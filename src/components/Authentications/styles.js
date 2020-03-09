@@ -5,6 +5,7 @@ import {
   TextField,
   Button,
   ButtonBase,
+  Paper,
 } from '@material-ui/core';
 
 import { Alert } from '@material-ui/lab';
@@ -17,7 +18,7 @@ export const GridPresentation = styled(Grid)({
   alignItems: 'center',
   justifyContent: 'center',
   flexWrap: 'wrap',
-  minHeight: '100vh',
+  minHeight: '100%',
   width: '100vw',
   color: '#fff',
   fontWeight: 700,
@@ -40,14 +41,13 @@ export const GridPresentation = styled(Grid)({
   },
 });
 
-export const AuthSection = styled(Box)({
+export const AuthSection = styled(Paper)({
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',
   flexDirection: 'column',
-  minHeight: '100vh',
   width: '100%',
-  backgroundColor: '#fff',
+  height: '100vh',
 });
 
 export const LogoArea = styled(Box)({
