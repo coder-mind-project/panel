@@ -94,7 +94,7 @@ function UnreadedTickets(props) {
               color={open ? 'default' : 'primary'}
               variant="dot"
             >
-              <Icon color={open ? 'primary' : 'inherit'}>
+              <Icon color={open ? 'primary' : 'action'}>
                 {open ? 'drafts' : 'mail'}
               </Icon>
             </Badge>

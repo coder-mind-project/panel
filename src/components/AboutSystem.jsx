@@ -2,7 +2,10 @@ import React from 'react';
 import { userType } from '@/types';
 
 import {
-  Box, Typography, Tooltip, IconButton,
+  Box,
+  Typography,
+  Tooltip,
+  IconButton,
 } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faBook } from '@fortawesome/free-solid-svg-icons';
@@ -34,7 +37,7 @@ function AboutSystem(props) {
         )}
       >
         <IconButton onClick={openDialog}>
-          <FontAwesomeIcon icon={user.tagAdmin ? faCode : faBook} color="#fff" />
+          <FontAwesomeIcon icon={user.tagAdmin ? faCode : faBook} />
         </IconButton>
       </Tooltip>
       <MoreInfo opened={dialog} user={user} closeDialog={closeDialog} />

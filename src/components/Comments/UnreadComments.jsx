@@ -102,7 +102,7 @@ function UnreadComments() {
               color={open ? 'default' : 'primary'}
               variant="dot"
             >
-              <Icon color={open ? 'primary' : 'inherit'}>
+              <Icon color={open ? 'primary' : 'action'}>
                 mode_comment
               </Icon>
             </Badge>
