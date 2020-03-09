@@ -4,10 +4,12 @@ import {
   Box,
   TextField,
   Button,
+  ButtonBase,
 } from '@material-ui/core';
 
 import { Alert } from '@material-ui/lab';
 
+import { COLOR_APP, COLOR_APP_HOVER } from '@/config/dataProperties';
 import { devices } from '@/config/devices';
 
 export const GridPresentation = styled(Grid)({
@@ -100,5 +102,25 @@ export const CustomAlert = styled(Alert)({
   margin: '0.8rem 0',
   [devices.tablet]: {
     width: '80%',
+  },
+});
+
+export const CustomButtonBase = styled(ButtonBase)({
+  backgroundColor: COLOR_APP,
+  color: '#fff',
+  '&:hover': {
+    backgroundColor: COLOR_APP_HOVER,
+  },
+  marginBottom: '10px',
+  fontSize: '1rem',
+  fontWeight: 100,
+  padding: 10,
+  borderRadius: 4,
+  width: (props) => (props.fullwidth === 'true' ? '100%' : 'auto'),
+  '& .MuiCircularProgress-root': {
+    marginRight: '5px',
+  },
+  '& .MuiIcon-root': {
+    marginRight: '5px',
   },
 });

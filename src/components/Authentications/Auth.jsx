@@ -23,7 +23,7 @@ import { CAPTCHA_SITE_KEY } from '@/config/dataProperties';
 
 import { devices } from '@/config/devices';
 import RedeemAccount from '@/components/RedeemAccount.jsx';
-import CustomButtonBase from '@/components/ButtonBase.jsx';
+import CustomButtonBase from '@/components/Authentications/AuthButton.jsx';
 
 import { backendUrl, defineErrorMsg } from '@/config/backend';
 
@@ -168,12 +168,12 @@ function Auth(props) {
                 </LogoArea>
                 <FormArea>
                   { Boolean(error)
-                          && (
-                          <CustomAlert severity="warning">
-                            {error}
-                          </CustomAlert>
-                          )
-                      }
+                      && (
+                      <CustomAlert severity="warning">
+                        {error}
+                      </CustomAlert>
+                      )
+                  }
                   <form onSubmit={resolve}>
                     <CustomTextField
                       label="E-mail"
@@ -216,7 +216,15 @@ function Auth(props) {
                       locale="pt-br"
                     />
                     <SubmitArea item xs={12}>
-                      <CustomButtonBase type="submit" onClick={resolve} disabledIcon class="defaultMaxWidth" loading={loading} text={loading ? 'Entrando...' : 'Entrar'} />
+                      <CustomButtonBase
+                        type="submit"
+                        onClick={resolve}
+                        fullWidth
+                        disabledIcon
+                        severity="primary"
+                        loading={loading}
+                        text={loading ? 'Entrando...' : 'Entrar'}
+                      />
                     </SubmitArea>
                   </form>
                 </FormArea>
