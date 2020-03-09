@@ -12,7 +12,7 @@ import ArticleImages from '../../components/pages-component/Articles/ArticleImag
 import ArticlePreview from '../../components/pages-component/Articles/ArticlePreview'
 import ArticleConfig from '../../components/pages-component/Articles/ArticleConfig.jsx'
 import ArticleStats from '../../components/pages-component/Articles/ArticleStats'
-import FloatingButton from '../../components/FloatingButton.jsx'
+import FloatingButton from '../../components/Buttons/FloatingButton'
 import Searching from '../../assets/loading.gif'
 
 import axios from 'axios'

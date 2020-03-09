@@ -14,7 +14,7 @@ import ShortcutSection from './ShortcutSection';
 import ThemesAndCategories from './ThemesAndCategories';
 import SchedulerDefinitions from './SchedulerDefinitions';
 import Settings from './Settings';
-import FloatingButton from '../FloatingButton';
+import FloatingButton from '../Buttons/FloatingButton';
 
 function Management(props) {
   const { user } = { ...props };

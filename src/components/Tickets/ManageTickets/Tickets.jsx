@@ -29,7 +29,7 @@ import axios from 'axios';
 import { backendUrl } from '@/config/backend';
 import { scrollToTop } from '@/config/ScrollToTop';
 
-import FloatingButton from '@/components/FloatingButton.jsx';
+import FloatingButton from '@/components/Buttons/FloatingButton.jsx';
 import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/IconButton.jsx';
 import Header from '@/components/Header.jsx';

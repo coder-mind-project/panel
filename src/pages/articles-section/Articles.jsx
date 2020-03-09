@@ -8,7 +8,7 @@ import SearchBar from 'material-ui-search-bar'
 import CustomButton from '../../components/Buttons/Button'
 import Header from '../../components/Header.jsx'
 import ArticleBlock from '../../components/pages-component/Articles/ArticleBlock.jsx'
-import FloatingButton from '../../components/FloatingButton'
+import FloatingButton from '../../components/Buttons/FloatingButton'
 import Searching from '../../assets/loading.gif'
 import NotFound from '../../components/NotFound.jsx'
 

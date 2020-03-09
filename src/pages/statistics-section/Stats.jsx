@@ -27,7 +27,7 @@ import axios from 'axios'
 import { backendUrl } from '../../config/backend'
 
 import IpInfoStatsDialog from '../../components/Dialogs/Stats/IpInfoStats.jsx'
-import FloatingButton from '../../components/FloatingButton.jsx'
+import FloatingButton from '../../components/Buttons/FloatingButton'
 
 import './css/Stats.css'
 
