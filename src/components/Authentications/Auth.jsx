@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import {
   Grid,
   Box,
@@ -27,7 +28,8 @@ import CustomButtonBase from '@/components/Authentications/AuthButton.jsx';
 
 import { backendUrl, defineErrorMsg } from '@/config/backend';
 
-import Logo from '@/assets/coder-mind-painelv1-preto.png';
+import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
+import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
 import LogoClean from '@/assets/Logo-coder-mind.png';
 
 import {
@@ -45,7 +47,10 @@ import '@/pages/css/defaultPage.css';
 
 
 function Auth(props) {
-  const { appError } = { ...props };
+  const {
+    appError,
+    theme,
+  } = props;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -57,6 +62,7 @@ function Auth(props) {
   const [recaptchaToken, setRecaptchaToken] = useState('');
 
   const matches = useMediaQuery(devices.mobileLarge);
+  const isLightTheme = useMediaQuery(`(prefers-color-scheme: ${theme})`);
   const recaptchaRef = useRef(null);
 
   function toogleRescuePassword() {
@@ -164,7 +170,7 @@ function Auth(props) {
               <AuthSection>
                 { loading && <LinearProgress color="primary" />}
                 <LogoArea>
-                  <img src={Logo} alt="Logo" width="200" />
+                  <img src={isLightTheme ? LogoBlack : LogoWhite} alt="Logo" width="200" />
                 </LogoArea>
                 <FormArea>
                   { Boolean(error)
@@ -244,6 +250,18 @@ function Auth(props) {
   );
 }
 
-const mapStateToProps = (state) => ({ appError: state.error });
+Auth.propTypes = {
+  appError: PropTypes.bool,
+  theme: PropTypes.oneOf([
+    'light',
+    'dark',
+  ]).isRequired,
+};
+
+Auth.defaultProps = {
+  appError: false,
+};
+
+const mapStateToProps = (state) => ({ appError: state.error, theme: state.theme });
 
 export default connect(mapStateToProps)(Auth);
