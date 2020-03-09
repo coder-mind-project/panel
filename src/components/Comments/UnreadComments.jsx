@@ -18,7 +18,7 @@ import { backendUrl } from '../../config/backend';
 
 import NotificationItem from './UnreadComment';
 
-import { CustomMenu, CustomIcon, CustomLink } from './styles';
+import { CustomMenu, CustomLink } from './styles';
 
 function UnreadComments() {
   const menuRef = useRef(null);
@@ -128,9 +128,9 @@ function UnreadComments() {
             <Box width="100%" display="flex" justifyContent="space-between">
               <Box display="flex" alignItems="center">
                 <Box mr={1} display="flex" alignItems="center">
-                  <CustomIcon fontSize="small">
+                  <Icon fontSize="small" color="action">
                     mode_comment
-                  </CustomIcon>
+                  </Icon>
                 </Box>
                 <Box display="flex" alignItems="center">
                   <Typography component="h3" variant="body1">
