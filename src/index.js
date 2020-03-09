@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { standard } from '@/config/themes';
 
 // Redux imports
 import { createStore, combineReducers } from 'redux';
@@ -24,31 +25,9 @@ const reducers = combineReducers({
   toast: toastReducer,
 });
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#8a05be',
-    },
-    secondary: {
-      main: '#f44336',
-    },
-    action: {
-      disabled: 'rgb(0,0,0)',
-      disabledBackground: 'rgb(190,190,190)',
-    },
-  },
-  typography: {
-    fontFamily: [
-      'Quicksand',
-      'sans-serif',
-    ].join(','),
-  },
-});
-
-
 ReactDOM.render(
   <Provider store={createStore(reducers)}>
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider theme={standard}>
       <App />
     </MuiThemeProvider>
   </Provider>,
