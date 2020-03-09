@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { userType } from '@/types';
 
-import { Link } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 
 import {
@@ -11,6 +9,7 @@ import {
   MenuItem,
   Box,
   Typography,
+  Icon,
 } from '@material-ui/core';
 
 import HideOnScroll from '@/components/HideOnScroll.jsx';
@@ -24,8 +23,8 @@ import {
   CustomAppBar,
   CustomAvatar,
   AppBarItems,
-  IconMenuItem,
   CustomMenu,
+  CustomLink,
 } from './styles';
 
 import { backendUrl } from '../../config/backend';
@@ -50,13 +49,13 @@ function AppBar(props) {
     <HideOnScroll>
       <CustomAppBar>
         <Toolbar>
-          <Link to="/">
+          <CustomLink to="/">
             <img
               src={Logo}
               width="130"
               alt="Coder Mind"
             />
-          </Link>
+          </CustomLink>
         </Toolbar>
         <Box>
           { user && user.name
@@ -94,51 +93,51 @@ function AppBar(props) {
             open={Boolean(anchorMenu)}
             onClose={closeMenu}
           >
-            <Link to="/my-account" onClick={closeMenu} className="linkRouterBlack">
+            <CustomLink to="/my-account" onClick={closeMenu}>
               <MenuItem>
                 <Box display="flex" alignItems="center">
-                  <IconMenuItem>
+                  <Icon color="action">
                     person_outline
-                  </IconMenuItem>
+                  </Icon>
                   <Typography component="span" variant="body2">
                     Meus dados
                   </Typography>
                 </Box>
               </MenuItem>
-            </Link>
-            <Link to="/ticket" onClick={closeMenu} className="linkRouterBlack">
+            </CustomLink>
+            <CustomLink to="/ticket" onClick={closeMenu}>
               <MenuItem>
                 <Box display="flex" alignItems="center">
-                  <IconMenuItem>
+                  <Icon color="action">
                     feedback
-                  </IconMenuItem>
+                  </Icon>
                   <Typography component="span" variant="body2">
                     Fale conosco
                   </Typography>
                 </Box>
               </MenuItem>
-            </Link>
+            </CustomLink>
             { user && user.tagAdmin
                 && (
-                  <Link to="/management" onClick={closeMenu} className="linkRouterBlack">
+                  <CustomLink to="/management" onClick={closeMenu}>
                     <MenuItem>
                       <Box display="flex" alignItems="center">
-                        <IconMenuItem>
+                        <Icon color="action">
                           settings
-                        </IconMenuItem>
+                        </Icon>
                         <Typography component="span" variant="body2">
                           Configurações
                         </Typography>
                       </Box>
                     </MenuItem>
-                  </Link>
+                  </CustomLink>
                 )
               }
             <MenuItem onClick={logout}>
               <Box display="flex" alignItems="center">
-                <IconMenuItem>
+                <Icon color="action">
                   exit_to_app
-                </IconMenuItem>
+                </Icon>
                 <Typography component="span" variant="body2">
                   Sair
                 </Typography>

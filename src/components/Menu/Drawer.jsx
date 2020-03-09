@@ -19,7 +19,6 @@ import {
   DrawerList,
   CustomLink,
   CustomListItem,
-  IconMenuItem,
   CustomDrawer,
 } from './styles';
 
@@ -50,9 +49,9 @@ function DrawerMenu(props) {
               button
             >
               <Box display="flex" alignItems="center">
-                <IconMenuItem>
+                <Icon color="action">
                   library_books
-                </IconMenuItem>
+                </Icon>
                 <Typography component="span" variant="body2">
                   Artigos
                 </Typography>
@@ -66,9 +65,9 @@ function DrawerMenu(props) {
               button
             >
               <Box display="flex" alignItems="center">
-                <IconMenuItem>
+                <Icon color="action">
                   assessment
-                </IconMenuItem>
+                </Icon>
                 <Typography component="span" variant="body2">
                   Estatísticas
                 </Typography>
@@ -82,9 +81,9 @@ function DrawerMenu(props) {
               button
             >
               <Box display="flex" alignItems="center">
-                <IconMenuItem>
+                <Icon color="action">
                   question_answer
-                </IconMenuItem>
+                </Icon>
                 <Typography component="span" variant="body2">
                   Comentários
                 </Typography>
@@ -99,9 +98,9 @@ function DrawerMenu(props) {
                 button
               >
                 <Box display="flex" alignItems="center">
-                  <IconMenuItem>
+                  <Icon color="action">
                     bookmark
-                  </IconMenuItem>
+                  </Icon>
                   <Typography component="span" variant="body2">
                     Temas
                   </Typography>
@@ -117,9 +116,9 @@ function DrawerMenu(props) {
                 button
               >
                 <Box display="flex" alignItems="center">
-                  <IconMenuItem>
+                  <Icon color="action">
                     category
-                  </IconMenuItem>
+                  </Icon>
                   <Typography component="span" variant="body2">
                     Categorias
                   </Typography>
@@ -134,9 +133,9 @@ function DrawerMenu(props) {
               button
             >
               <Box display="flex" alignItems="center">
-                <IconMenuItem>
+                <Icon color="action">
                   person_outline
-                </IconMenuItem>
+                </Icon>
                 <Typography component="span" variant="body2">
                   Meus dados
                 </Typography>
@@ -151,9 +150,9 @@ function DrawerMenu(props) {
                 button
               >
                 <Box display="flex" alignItems="center">
-                  <IconMenuItem>
+                  <Icon color="action">
                     settings
-                  </IconMenuItem>
+                  </Icon>
                   <Typography component="span" variant="body2">
                     Configurações
                   </Typography>
@@ -169,9 +168,9 @@ function DrawerMenu(props) {
             id="logout-button"
           >
             <Box display="flex" alignItems="center">
-              <IconMenuItem>
+              <Icon color="action">
                 exit_to_app
-              </IconMenuItem>
+              </Icon>
               <Typography component="span" variant="body2">
                 Sair
               </Typography>

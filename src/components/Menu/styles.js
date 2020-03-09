@@ -3,7 +3,6 @@ import {
   Box,
   AppBar,
   IconButton,
-  Icon,
   ListItem,
   Drawer,
   Menu,
@@ -49,10 +48,6 @@ export const CustomAvatar = styled(Avatar)({
   [devices.mobileLarge]: {
     display: 'none',
   },
-});
-
-export const IconMenuItem = styled(Icon)({
-  color: '#666',
 });
 
 export const DrawerList = styled(Box)({
