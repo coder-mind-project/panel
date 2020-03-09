@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
-  Dialog, DialogTitle, DialogContent,
-  DialogContentText, DialogActions, Button,
-  CircularProgress, TextField, Box, Divider, Icon,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  CircularProgress,
+  TextField,
+  Box,
+  Divider,
+  Icon,
 } from '@material-ui/core';
 import axios from 'axios';
-import { ipinfo, ipinfoToken } from '../../../config/backend';
+import { ipinfo, ipinfoToken } from '../../config/backend';
 
-function GeoModal(props) {
-  const { ipAddress, closeDialog, opened } = { ...props };
+function IpInfoDialog(props) {
+  const {
+    ipAddress,
+    closeDialog,
+    opened,
+  } = props;
 
   const [searching, setSearching] = useState(false);
   const [error, setError] = useState(false);
@@ -95,4 +108,14 @@ function GeoModal(props) {
   );
 }
 
-export default GeoModal;
+IpInfoDialog.propTypes = {
+  ipAddress: PropTypes.string.isRequired,
+  closeDialog: PropTypes.func.isRequired,
+  opened: PropTypes.bool,
+};
+
+IpInfoDialog.defaultProps = {
+  opened: false,
+};
+
+export default IpInfoDialog;
