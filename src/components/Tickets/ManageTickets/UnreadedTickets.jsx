@@ -16,9 +16,6 @@ import {
   Icon,
 } from '@material-ui/core';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIdCard } from '@fortawesome/free-solid-svg-icons';
-
 import { connect } from 'react-redux';
 import NotificationItem from './UnreadedTicket';
 
@@ -123,7 +120,9 @@ function UnreadedTickets(props) {
               alignItems="center"
             >
               <Box mr={1}>
-                <FontAwesomeIcon icon={faIdCard} color="#666" />
+                <Icon fontSize="small" color="action">
+                  email
+                </Icon>
               </Box>
               <Box>
                 <Typography component="h3" variant="body1">
