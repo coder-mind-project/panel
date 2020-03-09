@@ -9,7 +9,7 @@ import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 import Searching from '../../../assets/loading.gif'
 import ErrorBlock from '../../ErrorBlock.jsx'
-import StatsBlock from '../Stats/StatsBlock.jsx'
+import StatsBlock from '../../Statistics/StatsBlock.jsx'
 import CustomChip from '../../Chip.jsx'
 import CustomIconButton from '../../IconButton.jsx'
 import CustomButton from '../../Button.jsx'
