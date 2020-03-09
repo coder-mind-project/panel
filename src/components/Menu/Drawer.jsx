@@ -11,9 +11,11 @@ import {
   Box,
   Typography,
   Icon,
+  useMediaQuery,
 } from '@material-ui/core';
 
-import CoderMindLogo from '@/assets/coder-mind-painelv1-preto.png';
+import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
+import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
 
 import {
   DrawerList,
@@ -26,7 +28,10 @@ function DrawerMenu(props) {
   const {
     user,
     logout,
+    theme,
   } = props;
+
+  const isLightTheme = useMediaQuery(`(prefers-color-scheme: ${theme})`);
 
   return (
     <CustomDrawer
@@ -36,7 +41,11 @@ function DrawerMenu(props) {
       <CustomLink to="/">
         <Box display="flex" alignItems="flex-start" justifyContent="center" mt={2} mb={1}>
           <Icon color="primary" fontSize="large">code</Icon>
-          <img id="coder-mind-logo" src={CoderMindLogo} alt="Coder Mind" />
+          <img
+            id="coder-mind-logo"
+            src={isLightTheme ? LogoBlack : LogoWhite}
+            alt="Coder Mind"
+          />
         </Box>
       </CustomLink>
       <Divider />
@@ -185,8 +194,12 @@ function DrawerMenu(props) {
 DrawerMenu.propTypes = {
   user: userType.isRequired,
   logout: PropTypes.func.isRequired,
+  theme: PropTypes.oneOf([
+    'light',
+    'dark',
+  ]).isRequired,
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ user: state.user, theme: state.theme });
 
 export default connect(mapStateToProps)(DrawerMenu);
