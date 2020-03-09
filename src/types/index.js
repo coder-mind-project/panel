@@ -94,3 +94,15 @@ export const commentType = shape({
     string,
   ]),
 });
+
+export const statType = shape({
+  id: number,
+  month: number,
+  count: number,
+  generated_at: oneOfType([
+    Date,
+    string,
+  ]),
+  year: number,
+  reference: string,
+});
