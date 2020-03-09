@@ -4,7 +4,7 @@ import { Box, Typography } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Button from '@/components/Button.jsx';
+import Button from '@/components/Buttons/Button.jsx';
 import BrokenRobot from '@/assets/broken-robot-extra-small.png';
 
 import {

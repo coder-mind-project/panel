@@ -10,7 +10,7 @@ import AsyncSelect from 'react-select/async'
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
-import CustomButton from '../../../components/Button.jsx'
+import CustomButton from '../../../components/Buttons/Button'
 import Header from '../../../components/Header'
 import Searching from '../../../assets/loading.gif'
 
@@ -257,11 +257,11 @@ class Category extends Component{
                         </Grid>
                         <Grid item xs={12} className="footList">
                             <CustomButton className="buttonFootList"
-                                text="Voltar" color="gray" icon="logout"
+                                text="Voltar" color="default" icon="logout"
                                 onClick={() => this.goTo('categories')}
                             />
                             <CustomButton className="buttonFootList"
-                                text="Salvar" color="success" icon="done"
+                                text="Salvar" color="primary" icon="done"
                                 onClick={this.save}
                             />
                         </Grid>

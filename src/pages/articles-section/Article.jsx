@@ -7,7 +7,7 @@ import { FaYoutube, FaGithub } from 'react-icons/fa'
 import AsyncSelect from 'react-select/async'
 
 import Header from '../../components/Header'
-import CustomButton from '../../components/Button.jsx'
+import CustomButton from '../../components/Buttons/Button'
 import ArticleImages from '../../components/pages-component/Articles/ArticleImages.jsx'
 import ArticlePreview from '../../components/pages-component/Articles/ArticlePreview'
 import ArticleConfig from '../../components/pages-component/Articles/ArticleConfig.jsx'
@@ -399,8 +399,8 @@ class Article extends Component {
                                         />
                                     </Grid>
                                     <Grid item xs={12} className="footList formGroup">
-                                        <Link to="/articles" className="linkRouter linkButton"><CustomButton color="gray" text="Voltar" icon="exit_to_app" /></Link>
-                                        <CustomButton color="success" text={this.state.saving ? "Salvando..." : "Salvar"} icon="done" loading={this.state.saving} onClick={this.save(this.props.user)} />
+                                        <Link to="/articles" className="linkRouter linkButton"><CustomButton color="default" text="Voltar" icon="exit_to_app" /></Link>
+                                        <CustomButton color="primary" text={this.state.saving ? "Salvando..." : "Salvar"} icon="done" loading={this.state.saving} onClick={this.save(this.props.user)} />
                                     </Grid>
                                 </Grid>
                             </Box>

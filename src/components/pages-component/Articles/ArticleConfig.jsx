@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux'
 import { callToast } from '../../../redux/toast/toastActions'
 import { success, error } from '../../../config/toasts'
 
-import CustomButton from '../../Button.jsx'
+import CustomButton from '../../Buttons/Button'
 
 
 import { displayFullDate } from '../../../config/masks'
@@ -260,12 +260,12 @@ class ArticleConfig extends Component {
                             </Box>
                             { !this.state.article.published &&
                                 <Grid item xs={12} md={3}>
-                                    <CustomButton text="Publicar" disabled={this.state.changing} icon="publish" color="success" onClick={this.publish}/>
+                                    <CustomButton text="Publicar" disabled={this.state.changing} icon="publish" color="primary" onClick={this.publish}/>
                                 </Grid>
                             }
                             { this.state.article.published && !this.state.article.inactivated &&
                                 <Grid item xs={12} md={3}>
-                                    <CustomButton text="Inativar" disabled={this.state.changing} icon="block" color="gray" onClick={this.inactive}/>
+                                    <CustomButton text="Inativar" disabled={this.state.changing} icon="block" color="default" onClick={this.inactive}/>
                                 </Grid>
                             }
                             { this.state.article.published && this.state.article.inactivated &&
@@ -277,7 +277,7 @@ class ArticleConfig extends Component {
                                 <CustomButton text="Impulsionar" disabled={this.state.changing} icon="share" color="default" onClick={this.boost}/>
                             </Grid>
                             <Grid item xs={12} md={3}>
-                                <CustomButton text="Remover" disabled={this.state.changing} icon="delete_forever" color="danger" onClick={this.remove}/>
+                                <CustomButton text="Remover" disabled={this.state.changing} icon="delete_forever" color="secondary" onClick={this.remove}/>
                             </Grid>
                         </Grid>
                     </Grid>

@@ -11,7 +11,7 @@ import {
 
 import { Link } from 'react-router-dom';
 
-import Button from '../Button';
+import Button from '../Buttons/Button';
 
 import { CustomGrid, CustomCard } from './styles';
 

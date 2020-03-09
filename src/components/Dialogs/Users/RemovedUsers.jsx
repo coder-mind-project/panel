@@ -217,7 +217,7 @@ class RemovedUsers extends Component {
                                                 text="Administrador"/> :
                                             <CustomChip size="small"
                                                 className="chipTypeUser"
-                                                color="gray"
+                                                color="default"
                                                 sizeIcon="small"
                                                 icon="person"
                                                 text="Autor"

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Box } from '@material-ui/core'
 
-import CustomButton from '../../Button.jsx'
+import CustomButton from '../../Buttons/Button'
 
 import { connect } from 'react-redux'
 import { setUser } from '../../../redux/user/userActions'
@@ -61,7 +61,7 @@ class Configurations extends Component {
                         <small>Remova sua conta para acesso a plataforma.</small>
                     </Box>
                     <Box m={1} mt={3}>
-                        <CustomButton color="danger" variant="outlined" icon="delete_forever"
+                        <CustomButton color="secondary" variant="outlined" icon="delete_forever"
                             iconSize="small" text="Excluir"
                             onClick={() => this.toogleRemoveAccount()}
                         />

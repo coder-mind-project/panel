@@ -19,7 +19,7 @@ import {
 import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
 
 import MomentUtils from '@date-io/moment';
-import CustomButton from '@/components/Button.jsx';
+import CustomButton from '@/components/Buttons/Button.jsx';
 
 import {
   CustomGrid,

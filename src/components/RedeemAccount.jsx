@@ -24,7 +24,7 @@ import { callToast as toastEmitter } from '../redux/toast/toastActions';
 import { error as toastError } from '../config/toasts';
 
 import Logo from '../assets/coder-mind-painelv1-preto.png';
-import CustomButton from './Button';
+import CustomButton from './Buttons/Button';
 
 import { backendUrl, defineErrorMsg } from '../config/backend';
 

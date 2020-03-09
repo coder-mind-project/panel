@@ -5,7 +5,7 @@ import { Container, Grid, Select,
     Input, FormControl, InputLabel, MenuItem, Box } from '@material-ui/core'
 import SearchBar from 'material-ui-search-bar'
 
-import CustomButton from '../../components/Button.jsx'
+import CustomButton from '../../components/Buttons/Button'
 import Header from '../../components/Header.jsx'
 import ArticleBlock from '../../components/pages-component/Articles/ArticleBlock.jsx'
 import FloatingButton from '../../components/FloatingButton'
@@ -19,7 +19,7 @@ import { OPTIONS_LIMIT , DEFAULT_LIMIT, ERROR_MSG_CUSTOM, SAUDATION_LOADING_MSG 
 import '../css/defaultPage.css'
 
 export default class Articles extends Component {
-    
+
     state = {
         loading: true,
         error: false,
@@ -27,11 +27,11 @@ export default class Articles extends Component {
         query: '',
         page: 1,
         limit: DEFAULT_LIMIT,
-        count: 0, 
+        count: 0,
         redirectTo: ''
     }
 
-    
+
     async changeQueryValue(query){
         /* Realiza a busca de artigo por palavra chave */
         await this.setState({
@@ -40,7 +40,7 @@ export default class Articles extends Component {
         })
         this.searchArticles()
     }
-    
+
     async searchArticles(){
         /* Responsável por realizar a busca de artigos */
 
@@ -83,9 +83,9 @@ export default class Articles extends Component {
 
     changePage = action => async event => {
         /* Responsável por alterar a página de visualização de artigos */
-        
+
         if(action !== 'next' && action !== 'back') return
-        
+
         let currentPage = this.state.page
         await this.setState({
             page: action === 'next' ? ++currentPage : --currentPage
@@ -101,22 +101,30 @@ export default class Articles extends Component {
     render (){
         return (
             <Container id="component">
-                <Header 
-                    title="Artigos" 
-                    description="Consulte, altere e crie novos artigos" 
+                <Header
+                    title="Artigos"
+                    description="Consulte, altere e crie novos artigos"
                     icon="description"
                 />
-                {this.state.redirectTo && 
+                {this.state.redirectTo &&
                     <Redirect to={`/${this.state.redirectTo}`} />
                 }
                 <Container className="hudBar">
                     <Grid item className="hudBarChild">
-                        <Link to="/article" className="linkRouter linkButton"><CustomButton text="Novo artigo" icon="add_circle_outline" color="default" /></Link>
+                        <Link
+                          to="/article"
+                          className="linkRouter linkButton">
+                          <CustomButton
+                            text="Novo artigo"
+                            icon="add_circle_outline"
+                            color="default"
+                          />
+                        </Link>
                     </Grid>
                     <Grid item className="hudBarChild">
                         <FormControl className="limitInput">
                             <InputLabel htmlFor="limit">Limite</InputLabel>
-                            <Select input={<Input name="limit" id="limit"></Input>} 
+                            <Select input={<Input name="limit" id="limit"></Input>}
                                 value={this.state.limit}
                                 onChange={this.handleChange('limit')}
                             >
@@ -134,7 +142,7 @@ export default class Articles extends Component {
                 </Container>
                 <Container>
                     <FloatingButton icon="add" action={this.goTo('article')} />
-                    {this.state.loading && 
+                    {this.state.loading &&
                         <Container className="center spinnerContainer">
                             <img src={Searching} alt={SAUDATION_LOADING_MSG} />
                             <h4>
@@ -142,8 +150,8 @@ export default class Articles extends Component {
                             </h4>
                         </Container>
                     }
-                    {!this.state.loading && this.state.articles.length > 0 && 
-                        this.state.articles.map((article) => 
+                    {!this.state.loading && this.state.articles.length > 0 &&
+                        this.state.articles.map((article) =>
                             <ArticleBlock article={article} key={article._id} />)
                     }
                     {!this.state.loading && this.state.articles.length === 0 && !this.state.error &&
@@ -169,16 +177,16 @@ export default class Articles extends Component {
                         <Box display="flex" flexWrap="wrap" mt={1}>
                             {this.state.page > 1 &&
                                 <Box mr={1} mb={1}>
-                                    <CustomButton color="defaultOutlined" 
+                                    <CustomButton color="primary"
                                         icon="arrow_back" text="Anterior"
                                         className="buttonFootList"
                                         onClick={this.changePage('back')}
                                     />
                                 </Box>
                             }
-                            {this.state.articles.length > 0 && 
+                            {this.state.articles.length > 0 &&
                                 <Box mr={1} mb={1}>
-                                    <CustomButton color="defaultOutlined"
+                                    <CustomButton color="primary"
                                         icon="arrow_forward" text="Próxima"
                                         className="buttonFootList"
                                         onClick={this.changePage('next')}
@@ -188,7 +196,7 @@ export default class Articles extends Component {
                         </Box>
                     </Container>
                 }
-            </Container>        
+            </Container>
         )
     }
 }

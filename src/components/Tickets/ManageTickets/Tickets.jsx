@@ -30,7 +30,7 @@ import { backendUrl } from '@/config/backend';
 import { scrollToTop } from '@/config/ScrollToTop';
 
 import FloatingButton from '@/components/FloatingButton.jsx';
-import CustomButton from '@/components/Button.jsx';
+import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/IconButton.jsx';
 import Header from '@/components/Header.jsx';
 
@@ -192,7 +192,7 @@ function Tickets(props) {
           <Box mr={1} className="linkButton">
             <Link to="/management" className="linkRouter linkButton">
               <CustomButton
-                color="gray"
+                color="default"
                 text="Configurações"
                 icon="settings"
               />
@@ -267,7 +267,7 @@ function Tickets(props) {
                             && (
                               <CustomIconButton
                                 icon="info"
-                                color="danger"
+                                color="secondary"
                                 aria-label="Ticket não lido"
                                 tooltip={(<span style={{ fontSize: '0.8rem' }}>Ticket não lido</span>)}
                               />
@@ -277,7 +277,7 @@ function Tickets(props) {
                           && (
                             <CustomIconButton
                               icon="done"
-                              color="success"
+                              color="primary"
                               aria-label="Ticket lido"
                               tooltip={(<span style={{ fontSize: '0.8rem' }}>Ticket lido</span>)}
                             />

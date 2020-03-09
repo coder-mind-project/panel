@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 import { CustomGrid, CustomCard } from './styles';
 
-import Button from '../Button';
+import Button from '../Buttons/Button';
 
 const ThemesAndCategories = (props) => {
   const { user } = { ...props };

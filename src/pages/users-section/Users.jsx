@@ -18,7 +18,7 @@ import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../config/backend'
 import { OPTIONS_LIMIT, DEFAULT_LIMIT, LIMIT_LABEL, DISPLAYED_ROWS } from '../../config/dataProperties'
 
-import CustomButton from '../../components/Button.jsx'
+import CustomButton from '../../components/Buttons/Button'
 import CustomIconButton from '../../components/IconButton.jsx'
 import CustomChip from '../../components/Chip.jsx'
 import Header from '../../components/Header'
@@ -258,7 +258,7 @@ class Users extends Component {
                         </Link>
                         { this.props.user.tagAdmin && <Box ml={1} mr={1} className="linkButton">
                             <Link to="/management" className="linkRouter linkButton">
-                                <CustomButton color="gray" text="Configurações"
+                                <CustomButton color="default" text="Configurações"
                                     icon="settings" />
                             </Link>
                         </Box>}
@@ -349,7 +349,7 @@ class Users extends Component {
                                                     text="Administrador"/> :
                                                 <CustomChip size="small"
                                                     className="chipTypeUser"
-                                                    color="gray"
+                                                    color="default"
                                                     sizeIcon="small"
                                                     icon="person"
                                                     text="Autor"
@@ -363,7 +363,7 @@ class Users extends Component {
                                                 onClick={this.goTo(`user/${user._id}`)}
                                             />
                                             <CustomIconButton icon="delete_forever"
-                                                aria-label="Delete" color="danger"
+                                                aria-label="Delete" color="secondary"
                                                 tooltip="Remover"
                                                 onClick={this.selectUser(user)}
                                             />

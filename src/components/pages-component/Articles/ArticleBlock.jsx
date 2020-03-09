@@ -19,7 +19,7 @@ import { displayDate } from '../../../config/masks';
 import { styles } from './styles/ArticleBlock';
 
 
-import CustomButton from '../../Button.jsx';
+import CustomButton from '../../Buttons/Button';
 import CustomChip from '../../Chip.jsx';
 
 import LogoDefault from '../../../assets/HPArticleThumb.png';
@@ -248,7 +248,7 @@ const ArticleBlock = (props) => {
                       {article.published && !article.inactivated && !article.boosted
                             && (
                             <CustomChip
-                              color="success"
+                              color="primary"
                               sizeIcon="small"
                               icon="done"
                               text="Publicado"
@@ -272,7 +272,12 @@ const ArticleBlock = (props) => {
       {!matches
                 && (
                 <Container className={classes.buttonXsScreen}>
-                  <CustomButton fullWidth text="Abrir" icon="edit" color="a" onClick={() => setRedirectTo(`/article/${article.customURL}`)} />
+                  <CustomButton
+                    fullWidth
+                    text="Abrir"
+                    icon="edit"
+                    onClick={() => setRedirectTo(`/article/${article.customURL}`)}
+                  />
                 </Container>
                 )
             }
@@ -313,7 +318,7 @@ const ArticleBlock = (props) => {
                     {article.published && !article.inactivated && !article.boosted
                             && (
                             <CustomChip
-                              color="success"
+                              color="primary"
                               sizeIcon="small"
                               icon="done"
                               text="Publicado"
@@ -350,7 +355,8 @@ const ArticleBlock = (props) => {
                               fullWidth
                               icon={article.inactivated ? 'restore' : 'block'}
                               text={article.inactivated ? 'Reativar' : 'Inativar'}
-                              color="noneOutlinedNoPadding"
+                              color="inherit"
+                              variant="outlined"
                               onClick={() => (article.inactivated ? active(article._id) : inactive(article._id))}
                             />
                             )
@@ -362,7 +368,8 @@ const ArticleBlock = (props) => {
                               fullWidth
                               icon="publish"
                               text="Publicar"
-                              color="noneOutlinedNoPadding"
+                              color="inherit"
+                              variant="outlined"
                               onClick={() => publish(article._id)}
                             />
                             )
@@ -372,7 +379,8 @@ const ArticleBlock = (props) => {
                       fullWidth
                       icon="share"
                       text="Impulsionar"
-                      color="noneOutlinedNoPadding"
+                      color="inherit"
+                      variant="outlined"
                       onClick={() => boost(article._id)}
                     />
                     <CustomButton
@@ -380,7 +388,8 @@ const ArticleBlock = (props) => {
                       fullWidth
                       icon="delete"
                       text="Remover"
-                      color="noneOutlinedNoPadding"
+                      color="inherit"
+                      variant="outlined"
                       onClick={() => remove(article._id)}
                     />
                     <Grid className={classes.moreInformation}>

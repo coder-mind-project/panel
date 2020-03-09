@@ -3,7 +3,7 @@ import { TextField,
     Grid, InputAdornment, Box, Switch, Divider } from '@material-ui/core'
 import { FaTwitterSquare, FaYoutube, FaGithub, FaInstagram } from 'react-icons/fa'
 
-import CustomButton from '../../Button.jsx'
+import CustomButton from '../../Buttons/Button'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
@@ -207,7 +207,7 @@ class ExtraInformation extends Component {
                     </Box>
                 </Grid>
                 <Box width="100%" display="flex" alignItems="center" justifyContent="flex-end" mt={3}>
-                    <CustomButton color="success" icon="done" iconSize="small"
+                    <CustomButton color="primary" icon="done" iconSize="small"
                         text={this.state.saving ? 'Salvando...' : 'Salvar' } onClick={this.save} loading={this.state.saving}
                     />
                 </Box>

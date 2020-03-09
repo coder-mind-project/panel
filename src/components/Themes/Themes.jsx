@@ -24,7 +24,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { scrollToTop } from '../../config/ScrollToTop';
-import CustomButton from '../Button';
+import CustomButton from '../Buttons/Button';
 import CustomIconButton from '../IconButton';
 import Header from '../Header';
 import Form from './Form';
@@ -159,7 +159,7 @@ function Themes(props) {
           {user.tagAdmin && (
           <Box mr={1} className="linkButton">
             <Link to="/management" className="linkRouter linkButton">
-              <CustomButton color="gray" text="Configurações" icon="settings" />
+              <CustomButton color="default" text="Configurações" icon="settings" />
             </Link>
           </Box>
           )}

@@ -22,7 +22,7 @@ import { backendUrl, defineErrorMsg } from '../../../config/backend';
 
 import { CODER_MIND_URL } from '../../../config/dataProperties';
 
-import CustomButton from '../../Button';
+import CustomButton from '../../Buttons/Button';
 
 import { CustomTextField, CustomBox, IconBox } from './styles';
 

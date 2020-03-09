@@ -20,7 +20,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
-import CustomButton from '../../Button';
+import CustomButton from '../../Buttons/Button';
 
 import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 import { error as toastError } from '../../../config/toasts';
@@ -135,7 +135,7 @@ function ImprovementSuggestion(props) {
                 onChange={(evt) => handleChangeTicket(evt, 'msg')}
               />
               <Box width="100%" marginTop="15px">
-                <CustomButton onClick={sendTicket} fullWidth color="success" variant="contained" disabled={isSending} icon="save" loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
+                <CustomButton onClick={sendTicket} fullWidth color="primary" variant="contained" disabled={isSending} icon="save" loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
               </Box>
             </Box>
             )

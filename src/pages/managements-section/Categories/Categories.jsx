@@ -14,7 +14,7 @@ import { Container, Grid, Button, Table,
     Box } from '@material-ui/core'
 import SearchBar from 'material-ui-search-bar'
 
-import CustomButton from '../../../components/Button.jsx'
+import CustomButton from '../../../components/Buttons/Button'
 import CustomIconButton from '../../../components/IconButton.jsx'
 import Header from '../../../components/Header.jsx'
 import Searching from '../../../assets/loading.gif'
@@ -163,7 +163,7 @@ class Categories extends Component {
                         }
                         { this.props.user.tagAdmin && <Box mr={1} className="linkButton">
                             <Link to="/management" className="linkRouter linkButton">
-                                <CustomButton color="gray" text="Configurações"
+                                <CustomButton color="default" text="Configurações"
                                     icon="settings" />
                             </Link>
                         </Box>}
@@ -252,7 +252,7 @@ class Categories extends Component {
                                                     aria-label="Editar" tooltip="Editar"
                                                     onClick={this.goTo(`category/${category._id}`)}
                                                 />
-                                                <CustomIconButton icon="delete_forever" color="danger"
+                                                <CustomIconButton icon="delete_forever" color="secondary"
                                                     aria-label="Delete" tooltip="Remover"
                                                     onClick={this.selectCategory(category)}
                                                 />

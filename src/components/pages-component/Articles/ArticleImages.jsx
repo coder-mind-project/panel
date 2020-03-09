@@ -16,7 +16,7 @@ import SmallImgDefault from '../../../assets/img_not_found_512x512.png'
 import MediumImgDefault from '../../../assets/img_not_found_768.png'
 import BigImgDefault from '../../../assets/img_not_found_1080.png'
 
-import CustomButton from '../../Button.jsx'
+import CustomButton from '../../Buttons/Button'
 
 import './css/ArticleImages.css'
 
@@ -295,7 +295,7 @@ class ArticleImages extends Component {
                             </Grid>
                         </Grid>
                     <Grid item xs={12} className="footList formGroup">
-                        <Link to="/articles" className="linkRouter linkButton"><CustomButton color="gray" text="Voltar" icon="exit_to_app" /></Link>
+                        <Link to="/articles" className="linkRouter linkButton"><CustomButton color="default" text="Voltar" icon="exit_to_app" /></Link>
                     </Grid>
                 </Container>}
                 {!this.props.article._id &&

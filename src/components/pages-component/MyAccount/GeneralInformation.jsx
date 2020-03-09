@@ -9,7 +9,7 @@ import MomentUtils from '@date-io/moment'
 
 import { cpfMask, celphoneMask } from '../../../config/masks'
 
-import CustomButton from '../../Button.jsx'
+import CustomButton from '../../Buttons/Button'
 
 import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
@@ -439,7 +439,7 @@ class GeneralInformation extends Component {
                     </Box>
 
                     <Box width="100%" display="flex" alignItems="center" justifyContent='flex-end'>
-                        <CustomButton color="success" icon="done" iconSize="small"
+                        <CustomButton color="primary" icon="done" iconSize="small"
                             text={this.state.saving ? 'Salvando...' : 'Salvar' } onClick={this.save} loading={this.state.saving}
                         />
                     </Box>

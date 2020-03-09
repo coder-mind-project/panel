@@ -13,7 +13,7 @@ import { callToast } from '../../redux/toast/toastActions'
 
 import CustomChip from '../../components/Chip.jsx'
 import CustomIconButton from '../../components/IconButton.jsx'
-import CustomButton from '../../components/Button.jsx'
+import CustomButton from '../../components/Buttons/Button'
 import Searching from '../../assets/loading.gif'
 import NotFound from '../../components/NotFound.jsx'
 
@@ -289,7 +289,7 @@ class Comments extends Component {
                                     <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
                                         <Grid item xs={12} md={6} className="form-footer-left">
                                             <CustomButton
-                                                color="success"
+                                                color="primary"
                                                 variant="contained"
                                                 text={this.state.saving ? "Salvando..." : "Salvar"}
                                                 icon="done"
@@ -341,7 +341,7 @@ class Comments extends Component {
                                 if(op)
                                     this.closeAnswerDialog()
                             }}
-                            color="danger"
+                            color="secondary"
                             variant="contained"
                             icon="clear"
                             disabled={this.state.sendingAnswer}
@@ -349,7 +349,7 @@ class Comments extends Component {
                         <CustomButton
                             text={this.state.sendingAnswer ? 'Enviando...' : 'Enviar' }
                             onClick={() => this.sendAnswer()}
-                            color="success"
+                            color="primary"
                             variant="contained"
                             icon="save"
                             disabled={this.state.sendingAnswer}
@@ -414,13 +414,13 @@ class Comments extends Component {
                                             {comment.confirmed ?
                                                 <CustomChip size="small"
                                                     className="chipTypeUser"
-                                                    color="success"
+                                                    color="primary"
                                                     sizeIcon="small"
                                                     icon="done"
                                                     text="Aprovado"/> :
                                                 <CustomChip size="small"
                                                     className="chipTypeUser"
-                                                    color="gray"
+                                                    color="default"
                                                     sizeIcon="small"
                                                     icon="warning"
                                                     text="Não aprovado"

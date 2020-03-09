@@ -13,7 +13,7 @@ import { info } from '../../config/toasts'
 import { callToast } from '../../redux/toast/toastActions'
 
 import CustomIconButton from '../../components/IconButton.jsx'
-import CustomButton from '../../components/Button.jsx'
+import CustomButton from '../../components/Buttons/Button'
 
 import Searching from '../../assets/loading.gif'
 

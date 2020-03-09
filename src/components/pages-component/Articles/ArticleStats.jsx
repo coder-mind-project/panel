@@ -12,7 +12,7 @@ import ErrorBlock from '../../ErrorBlock.jsx'
 import StatsBlock from '../../Statistics/StatsBlock.jsx'
 import CustomChip from '../../Chip.jsx'
 import CustomIconButton from '../../IconButton.jsx'
-import CustomButton from '../../Button.jsx'
+import CustomButton from '../../Buttons/Button'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -274,13 +274,13 @@ class ArticleStats extends Component {
                                                         {comment.confirmed ?
                                                             <CustomChip size="small"
                                                                 className="chipTypeUser"
-                                                                color="success"
+                                                                color="primary"
                                                                 sizeIcon="small"
                                                                 icon="done"
                                                                 text="Aprovado"/> :
                                                             <CustomChip size="small"
                                                                 className="chipTypeUser"
-                                                                color="gray"
+                                                                color="default"
                                                                 sizeIcon="small"
                                                                 icon="warning"
                                                                 text="Não aprovado"
@@ -359,7 +359,7 @@ class ArticleStats extends Component {
                                 if(op)
                                     this.closeAnswerDialog()
                             }}
-                            color="danger"
+                            color="secondary"
                             variant="contained"
                             icon="clear"
                             disabled={this.state.sendingAnswer}
@@ -367,7 +367,7 @@ class ArticleStats extends Component {
                         <CustomButton
                             text={this.state.sendingAnswer ? 'Enviando...' : 'Enviar'}
                             onClick={() => this.sendAnswer()}
-                            color="success"
+                            color="primary"
                             variant="contained"
                             icon="save"
                             disabled={this.state.sendingAnswer}

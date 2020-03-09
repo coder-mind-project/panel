@@ -11,7 +11,7 @@ import MomentUtils from '@date-io/moment'
 import PasswordField from 'material-ui-password-field'
 
 import Header from '../../components/Header'
-import CustomButton from '../../components/Button.jsx'
+import CustomButton from '../../components/Buttons/Button'
 import Searching from '../../assets/loading.gif'
 
 import axios from 'axios'
@@ -487,14 +487,14 @@ class User extends Component{
                             <CustomButton className="buttonFootList"
                                 iconSize="small"
                                 icon="logout"
-                                color="gray"
+                                color="default"
                                 text="Voltar"
                                 onClick={() => this.goTo("users")}
                                 disabled={this.state.saving}
                             />
                             <CustomButton className="buttonFootList"
                                 iconSize="small"
-                                color="success"
+                                color="primary"
                                 icon="done"
                                 text={`${this.state.saving ? 'Salvando...' : 'Salvar' }`}
                                 loading={this.state.saving}

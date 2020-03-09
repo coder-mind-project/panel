@@ -26,7 +26,7 @@ import { backendUrl, defineErrorMsg } from '../../../config/backend';
 import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 import { error as toastError } from '../../../config/toasts';
 
-import CustomButton from '../../Button';
+import CustomButton from '../../Buttons/Button';
 
 function AccountProblem(props) {
   const { user, callToast, goBack } = { ...props };
@@ -147,7 +147,7 @@ function AccountProblem(props) {
                 onChange={(evt) => handleChangeTicket(evt, 'msg')}
               />
               <Box width="100%" marginTop="15px">
-                <CustomButton onClick={() => sendTicket()} fullWidth color="success" variant="contained" disabled={isSending} icon="save" loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
+                <CustomButton onClick={() => sendTicket()} fullWidth color="primary" variant="contained" disabled={isSending} icon="save" loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
               </Box>
             </Box>
             )
