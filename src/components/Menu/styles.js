@@ -26,7 +26,6 @@ export const CustomAppBar = styled(AppBar)({
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '0 1rem',
-  backgroundColor: 'rgb(20,20,20)',
   zIndex: 11,
   width: '100%',
 });

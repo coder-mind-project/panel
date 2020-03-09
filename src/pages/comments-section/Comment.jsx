@@ -10,7 +10,7 @@ import { Grid, Box, TextField,
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { info } from '../../config/toasts'
-import { callToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toast/toastActions'
 
 import CustomIconButton from '../../components/IconButton.jsx'
 import CustomButton from '../../components/Button.jsx'

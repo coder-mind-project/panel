@@ -19,7 +19,7 @@ import '../../css/forms.css'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { callToast } from "../../../redux/toastActions"
+import { callToast } from "../../../redux/toast/toastActions"
 import { success, error } from "../../../config/toasts"
 
 class Category extends Component{

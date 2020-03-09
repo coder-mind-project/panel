@@ -21,10 +21,10 @@ import { backendUrl } from './config/backend';
 
 
 // Redux imports
-import { setUser as defineUser } from './redux/userActions';
-import { setError as dispatchError } from './redux/errorActions';
-import { setMenu as callMenu } from './redux/menuActions';
-import { callToast as toastEmitter } from './redux/toastActions';
+import { setUser as defineUser } from './redux/user/userActions';
+import { setError as dispatchError } from './redux/error/errorActions';
+import { setMenu as callMenu } from './redux/menu/menuActions';
+import { callToast as toastEmitter } from './redux/toast/toastActions';
 
 import Menu from './components/Menu/Menu';
 import Toast from './components/Toast';
@@ -52,7 +52,7 @@ import RemoveAccount from './pages/auth-section/RemoveAccount';
 
 // Css imports
 import './index.css';
-import { AppContent } from './styles'
+import { AppContent } from './styles';
 
 function App(props) {
   const {

@@ -20,7 +20,7 @@ import axios from 'axios';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { callToast as toastEmitter } from '../redux/toastActions';
+import { callToast as toastEmitter } from '../redux/toast/toastActions';
 import { error as toastError } from '../config/toasts';
 
 import Logo from '../assets/coder-mind-painelv1-preto.png';

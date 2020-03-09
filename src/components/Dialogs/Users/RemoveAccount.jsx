@@ -11,7 +11,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { callToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toast/toastActions'
 import { success, error } from '../../../config/toasts'
 
 class RemoveAccount extends Component {

@@ -10,10 +10,10 @@ import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 
 import { connect } from 'react-redux'
-import { setUser } from '../../../redux/userActions'
+import { setUser } from '../../../redux/user/userActions'
 import { bindActionCreators } from 'redux'
 
-import { callToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toast/toastActions'
 import { success, error } from '../../../config/toasts'
 
 import {formatCustomURL} from '../../../config/masks'

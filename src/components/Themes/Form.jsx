@@ -23,7 +23,7 @@ import { backendUrl, defineErrorMsg } from '../../config/backend';
 import '../../pages/css/defaultPage.css';
 import '../../pages/css/forms.css';
 
-import { callToast as toastEmitter } from '../../redux/toastActions';
+import { callToast as toastEmitter } from '../../redux/toast/toastActions';
 import { success, error as toastError } from '../../config/toasts';
 
 function ThemeForm(props) {

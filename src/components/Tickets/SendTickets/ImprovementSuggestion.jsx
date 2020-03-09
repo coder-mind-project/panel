@@ -22,7 +22,7 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import CustomButton from '../../Button';
 
-import { callToast as toastEmitter } from '../../../redux/toastActions';
+import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 import { error as toastError } from '../../../config/toasts';
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend';

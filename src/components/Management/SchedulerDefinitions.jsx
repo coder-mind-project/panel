@@ -14,7 +14,7 @@ import axios from 'axios';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { callToast as toastEmitter } from '../../redux/toastActions';
+import { callToast as toastEmitter } from '../../redux/toast/toastActions';
 
 import { displayFullDate } from '../../config/masks';
 

@@ -4,7 +4,7 @@ import { Grid, Paper, FormControl,
     InputLabel, CircularProgress, Box, Button } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import PasswordField from 'material-ui-password-field'
-import ButtonBase from '../../components/ButtonBase.jsx'
+import ButtonBase from '@/components/Authentications/AuthButton.jsx'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
@@ -24,7 +24,7 @@ import './css/RedeemAccount.css'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { success } from '../../config/toasts'
-import { callToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toast/toastActions'
 class RedeemAccount extends Component {
 
     _isMounted = false

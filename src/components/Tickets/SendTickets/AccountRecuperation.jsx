@@ -15,7 +15,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 import axios from 'axios';
 import { error } from '../../../config/toasts';
-import { callToast as toastEmitter } from '../../../redux/toastActions';
+import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend';

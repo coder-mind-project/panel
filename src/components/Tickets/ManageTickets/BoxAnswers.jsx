@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import { backendUrl } from '@/config/backend';
 
-import { callToast as toastEmitter } from '@/redux/toastActions';
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
 
 import { BoxAnswers as CustomBox } from './styles';

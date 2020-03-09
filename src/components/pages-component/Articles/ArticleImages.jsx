@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { callToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toast/toastActions'
 import { success, error, info } from '../../../config/toasts'
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend'

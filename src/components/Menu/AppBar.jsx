@@ -47,7 +47,7 @@ function AppBar(props) {
 
   return (
     <HideOnScroll>
-      <CustomAppBar>
+      <CustomAppBar color="inherit">
         <Toolbar>
           <CustomLink to="/">
             <img

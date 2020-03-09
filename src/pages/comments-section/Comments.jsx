@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { success, error, info } from '../../config/toasts'
-import { callToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toast/toastActions'
 
 import CustomChip from '../../components/Chip.jsx'
 import CustomIconButton from '../../components/IconButton.jsx'

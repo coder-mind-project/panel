@@ -5,7 +5,7 @@ import Avatar from 'react-avatar'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { callToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toast/toastActions'
 import { error } from '../../../config/toasts'
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend'

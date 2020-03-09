@@ -15,10 +15,10 @@ import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 import { connect } from 'react-redux'
-import { setUser } from '../../../redux/userActions'
+import { setUser } from '../../../redux/user/userActions'
 import { bindActionCreators } from 'redux'
 
-import { callToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toast/toastActions'
 import { success, error, info } from '../../../config/toasts'
 
 import ImgDefault from '../../../assets/img_not_found_512x512.png'

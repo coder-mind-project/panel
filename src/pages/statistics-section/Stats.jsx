@@ -10,8 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrophy, faMedal, faThumbsUp, faUsers, faBookOpen} from '@fortawesome/free-solid-svg-icons'
 
 import { connect } from 'react-redux'
-import { setUser } from '../../redux/userActions'
-import { callToast } from '../../redux/toastActions'
+import { setUser } from '../../redux/user/userActions'
+import { callToast } from '../../redux/toast/toastActions'
 import { bindActionCreators } from 'redux'
 import { error, info} from '../../config/toasts'
 

@@ -11,7 +11,7 @@ import SearchBar from 'material-ui-search-bar'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { callToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toast/toastActions'
 import { success, error, info } from '../../config/toasts'
 
 import axios from 'axios'

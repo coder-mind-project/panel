@@ -23,7 +23,7 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-import { callToast as toastEmitter } from '../../../redux/toastActions';
+import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 import { error as toastError } from '../../../config/toasts';
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend';

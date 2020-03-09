@@ -19,7 +19,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { success, error, info } from '../../config/toasts'
-import { callToast } from '../../redux/toastActions'
+import { callToast } from '../../redux/toast/toastActions'
 
 import { backendUrl, defineErrorMsg } from '../../config/backend'
 import { formatCustomURL } from '../../config/masks'

@@ -6,7 +6,7 @@ import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { callToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toast/toastActions'
 import { success, error } from '../../../config/toasts'
 
 import CustomButton from '../../Button.jsx'

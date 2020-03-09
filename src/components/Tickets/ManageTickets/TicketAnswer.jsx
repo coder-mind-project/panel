@@ -14,7 +14,7 @@ import { displayFullDate } from '@/config/masks';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { info } from '@/config/toasts';
-import { callToast as toastEmitter } from '@/redux/toastActions';
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 
 import {
   BoxMessageAdmin,

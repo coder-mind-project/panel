@@ -38,7 +38,7 @@ import {
   DISPLAYED_ROWS,
 } from '../../config/dataProperties';
 
-import { callToast as toastEmitter } from '../../redux/toastActions';
+import { callToast as toastEmitter } from '../../redux/toast/toastActions';
 
 function Themes(props) {
   const { user } = { ...props };

@@ -11,7 +11,7 @@ import {
   Popper, Paper, Box, Icon, IconButton,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { callToast } from '../../../redux/toastActions';
+import { callToast } from '../../../redux/toast/toastActions';
 import { success, error } from '../../../config/toasts';
 
 import { backendUrl, defineErrorMsg } from '../../../config/backend';

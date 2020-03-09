@@ -14,7 +14,7 @@ import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { error, success } from '../../config/toasts';
-import { callToast as ToastEmitter } from '../../redux/toastActions';
+import { callToast as ToastEmitter } from '../../redux/toast/toastActions';
 
 import { defineErrorMsg, backendUrl } from '../../config/backend';
 

@@ -20,7 +20,7 @@ import './css/RemovedUsers.css'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { callToast } from '../../../redux/toastActions'
+import { callToast } from '../../../redux/toast/toastActions'
 import { success, error, info } from '../../../config/toasts'
 
 class RemovedUsers extends Component {

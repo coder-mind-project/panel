@@ -4,7 +4,7 @@ import { Box } from '@material-ui/core'
 import CustomButton from '../../Button.jsx'
 
 import { connect } from 'react-redux'
-import { setUser } from '../../../redux/userActions'
+import { setUser } from '../../../redux/user/userActions'
 import { bindActionCreators } from 'redux'
 
 import ChangeMyPassoword from '../../Dialogs/Users/ChangeMyPassword.jsx'
@@ -13,7 +13,7 @@ import RemoveAccount from '../../Dialogs/Users/RemoveAccount.jsx'
 import '../../../pages/css/defaultPage.css'
 
 class Configurations extends Component {
-    state = { 
+    state = {
         user: {
             _id: null,
             password: '',
@@ -52,8 +52,8 @@ class Configurations extends Component {
         }
     }
 
-    render() { 
-        return ( 
+    render() {
+        return (
             <Box display="flex" flexWrap="wrap" alignItems="baseline">
                 <Box className="formGroup">
                     <Box m={1}>
@@ -63,7 +63,7 @@ class Configurations extends Component {
                     <Box m={1} mt={3}>
                         <CustomButton color="danger" variant="outlined" icon="delete_forever"
                             iconSize="small" text="Excluir"
-                            onClick={() => this.toogleRemoveAccount()} 
+                            onClick={() => this.toogleRemoveAccount()}
                         />
                     </Box>
                 </Box>
@@ -75,7 +75,7 @@ class Configurations extends Component {
                     <Box m={1} mt={3}>
                         <CustomButton color="primary" variant="outlined" icon="refresh"
                             iconSize="small" text="Alterar"
-                            onClick={() => this.toogleChangePassword()} 
+                            onClick={() => this.toogleChangePassword()}
                         />
                     </Box>
                 </Box>
