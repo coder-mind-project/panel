@@ -139,7 +139,7 @@ function Auth(props) {
   }, [email, loading, password, recaptchaToken]);
 
   return (
-    <Box display="flex" alignItems="center" flexWrap="wrap">
+    <Box display="flex" alignItems="center" flexWrap="wrap" height="100%">
       {redirect
           && <Redirect to="/" />
       }
