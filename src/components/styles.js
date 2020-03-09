@@ -4,6 +4,7 @@ import {
   Slide,
   Grid,
   Icon,
+  Chip,
 } from '@material-ui/core';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -48,4 +49,10 @@ export const CustomIcon = styled(Icon)({
 
 export const CustomFaIcon = styled(FontAwesomeIcon)({
   color: '#444',
+});
+
+export const CustomChip = styled(Chip)({
+  '& .MuiIcon-root': {
+    marginRight: '5px',
+  },
 });
