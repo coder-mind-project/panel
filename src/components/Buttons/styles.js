@@ -1,4 +1,4 @@
-import { styled, Fab } from '@material-ui/core';
+import { styled, Fab, Button } from '@material-ui/core';
 
 import { devices } from '@/config/devices';
 
@@ -14,4 +14,14 @@ export const CustomFab = styled(Fab)({
   },
 });
 
-export default { CustomFab };
+export const CustomButton = styled(Button)({
+  marginBottom: '10px',
+  paddingLeft: '10px',
+  paddingRight: '10px',
+  '& .MuiCircularProgress-root': {
+    marginRight: '5px',
+  },
+  '& .MuiIcon-root': {
+    marginRight: '5px',
+  },
+});
