@@ -5,7 +5,12 @@ import {
   Redirect,
   Switch,
 } from 'react-router-dom';
-import { Grid, Fade, CircularProgress } from '@material-ui/core';
+
+import {
+  Grid,
+  Fade,
+  CircularProgress,
+} from '@material-ui/core';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -15,6 +20,8 @@ import { bindActionCreators } from 'redux';
 import ErrorBoundary from '@/components/Errors/ErrorBoundary.jsx';
 
 
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { standard } from '@/config/themes';
 import { WHITE_LIST_ROUTES } from './config/dataProperties';
 // Requests imports
 import { backendUrl } from './config/backend';
@@ -54,6 +61,7 @@ import RemoveAccount from './pages/auth-section/RemoveAccount';
 import './index.css';
 import { AppContent } from './styles';
 
+
 function App(props) {
   const {
     setMenu,
@@ -63,7 +71,10 @@ function App(props) {
     toast,
     error,
     user,
+    theme,
   } = { ...props };
+
+  const appTheme = standard(theme);
 
   const [validatingToken, setValidatingToken] = useState(true);
   const [path, setPath] = useState('');
@@ -121,8 +132,9 @@ function App(props) {
   }, [setMenu, setUser, setError, validatingToken]);
 
   return (
-    <div className="page">
-      { !validatingToken
+    <MuiThemeProvider theme={appTheme}>
+      <Grid>
+        { !validatingToken
             && (
               <Router>
                 <ErrorBoundary>
@@ -172,7 +184,7 @@ function App(props) {
               </Router>
             )
           }
-      { validatingToken
+        { validatingToken
             && (
             <Fade in={validatingToken}>
               <Grid item xs={12} className="loading-app-area">
@@ -181,16 +193,24 @@ function App(props) {
             </Fade>
             )
           }
-    </div>
+      </Grid>
+    </MuiThemeProvider>
   );
 }
 
 
 const mapStateToProps = (state) => ({
-  user: state.user, error: state.error, menu: state.menu, toast: state.toast,
+  user: state.user,
+  error: state.error,
+  menu: state.menu,
+  toast: state.toast,
+  theme: state.theme,
 });
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  setUser: defineUser, setError: dispatchError, setMenu: callMenu, callToast: toastEmitter,
+  setUser: defineUser,
+  setError: dispatchError,
+  setMenu: callMenu,
+  callToast: toastEmitter,
 }, dispatch);
 
 
