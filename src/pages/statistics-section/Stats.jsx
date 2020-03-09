@@ -19,7 +19,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import MomentUtils from '@date-io/moment'
 
 import Header from '../../components/Header.jsx'
-import StatsBlock from '../../components/pages-component/Stats/StatsBlock.jsx'
+import StatsBlock from '../../components/Statistics/StatsBlock.jsx'
 
 
 import { displayFullDate, randomNumber } from '../../config/masks'
@@ -425,13 +425,13 @@ class Stats extends Component{
                 </Box>}
                 <Grid item xs={12} className="stats-blocks-home">
                     <Grid item xs={12} md={4}>
-                        <StatsBlock icon="touch_app" loading={this.state.loadingStats} title="Visualizações por mês" loadingMsg="Obtendo visualizações" data={this.state.views} />
+                        <StatsBlock icon="touch_app" loading={this.state.loadingStats} title="Visualizações" loadingMsg="Obtendo visualizações" data={this.state.views} />
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <StatsBlock icon="thumb_up" loading={this.state.loadingStats} title="Curtidas por mês" loadingMsg="Obtendo avaliações" data={this.state.likes} />
+                        <StatsBlock icon="thumb_up" loading={this.state.loadingStats} title="Curtidas" loadingMsg="Obtendo avaliações" data={this.state.likes} />
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <StatsBlock icon="comment" loading={this.state.loadingStats} title="Comentários por mês" loadingMsg="Obtendo comentários" data={this.state.comments} />
+                        <StatsBlock icon="comment" loading={this.state.loadingStats} title="Comentários" loadingMsg="Obtendo comentários" data={this.state.comments} />
                     </Grid>
                 </Grid>
                 { !this.state.loadingStats &&
