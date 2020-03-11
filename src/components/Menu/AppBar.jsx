@@ -81,10 +81,9 @@ function AppBar(props) {
                   <AboutSystem />
                   <CustomAvatar
                     onClick={openMenu}
-                    style={{ cursor: 'pointer' }}
                     color="#888"
                     name={user.name}
-                    size="35"
+                    size={35}
                     round="30px"
                     src={`${backendUrl}/${user.profilePhoto}`}
                   />

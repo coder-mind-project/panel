@@ -44,6 +44,7 @@ export const AppBarItems = styled(Box)({
 
 export const CustomAvatar = styled(Avatar)({
   marginRight: '1rem',
+  cursor: 'pointer',
   [devices.mobileLarge]: {
     display: 'none',
   },
