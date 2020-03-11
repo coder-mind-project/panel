@@ -49,7 +49,7 @@ import Article from './pages/articles-section/Article';
 import Stats from './pages/statistics-section/Stats';
 import Categories from './pages/managements-section/Categories/Categories';
 import Category from './pages/managements-section/Categories/Category';
-import MyAccount from './pages/users-section/MyAccount';
+import MyAccount from './components/Users/MyAccount/MyAccount';
 import Comments from './pages/comments-section/Comments';
 import Comment from './pages/comments-section/Comment';
 import RedeemAccount from './pages/auth-section/RedeemAccount';
