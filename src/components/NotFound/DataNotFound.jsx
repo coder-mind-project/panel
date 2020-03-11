@@ -10,7 +10,7 @@ import TiredRobot from '@/assets/tired_robot_by_vonholdt.jpg';
 
 import { NotFoundBox } from './styles';
 
-const NotFound = (props) => {
+const DataNotFound = (props) => {
   const {
     msg,
     alt,
@@ -43,13 +43,13 @@ const NotFound = (props) => {
   );
 };
 
-NotFound.propTypes = {
+DataNotFound.propTypes = {
   msg: PropTypes.string.isRequired,
   alt: PropTypes.string,
 };
 
-NotFound.defaultProps = {
+DataNotFound.defaultProps = {
   alt: 'Resource not found',
 };
 
-export default NotFound;
+export default DataNotFound;
