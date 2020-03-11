@@ -15,7 +15,7 @@ import CustomChip from '../../components/Chip.jsx'
 import CustomIconButton from '../../components/IconButton.jsx'
 import CustomButton from '../../components/Buttons/Button'
 import Searching from '../../assets/loading.gif'
-import NotFound from '../../components/NotFound.jsx'
+import NotFound from '../../components/NotFound/DataNotFound'
 
 import { Grid, Table, TableHead, TableRow,
         TableCell, Icon, TableBody, TableFooter,

@@ -10,7 +10,7 @@ import Header from '../../components/Header.jsx'
 import ArticleBlock from '../../components/pages-component/Articles/ArticleBlock.jsx'
 import FloatingButton from '../../components/Buttons/FloatingButton'
 import Searching from '../../assets/loading.gif'
-import NotFound from '../../components/NotFound.jsx'
+import NotFound from '../../components/NotFound/DataNotFound'
 
 import axios from 'axios'
 import { backendUrl } from '../../config/backend'
