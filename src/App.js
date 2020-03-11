@@ -42,6 +42,7 @@ import Error from './components/Errors/Error';
 import Auth from './components/Authentications/Auth';
 import Ticket from './components/Tickets/SendTickets/Ticket';
 import Tickets from './components/Tickets/ManageTickets/Tickets';
+import RouteNotFound from './components/NotFound/RouteNotFound';
 import Users from './pages/users-section/Users';
 import User from './pages/users-section/User';
 import Articles from './pages/articles-section/Articles';
@@ -178,6 +179,7 @@ function App(props) {
                       <Route path="/comments/:id" exact component={Comment} />
                       <Route path="/error" exact component={Error} />
                       <Route path="/stats" exact component={Stats} />
+                      <Route component={RouteNotFound} />
                     </Switch>
                   </AppContent>
                 </ErrorBoundary>
