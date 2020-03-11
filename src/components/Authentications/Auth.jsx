@@ -6,9 +6,6 @@ import {
   Fade,
   LinearProgress,
   Button,
-  InputAdornment,
-  IconButton,
-  Icon,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
@@ -25,6 +22,7 @@ import { CAPTCHA_SITE_KEY } from '@/config/dataProperties';
 import { devices } from '@/config/devices';
 import RedeemAccount from '@/components/RedeemAccount.jsx';
 import CustomButtonBase from '@/components/Authentications/AuthButton.jsx';
+import PasswordField from '@/components/PasswordField.jsx';
 
 import { backendUrl, defineErrorMsg } from '@/config/backend';
 
@@ -41,10 +39,8 @@ import {
   SpecialButton,
   SubmitArea,
   CustomAlert,
+  CustomFormControl,
 } from './styles';
-
-import '@/pages/css/defaultPage.css';
-
 
 function Auth(props) {
   const {
@@ -58,7 +54,6 @@ function Auth(props) {
   const [loading, setLoading] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState(null);
-  const [passwordVisibility, setPasswordVisibility] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState('');
 
   const matches = useMediaQuery(devices.mobileLarge);
@@ -88,10 +83,6 @@ function Auth(props) {
       const { value } = event.target;
       setAttr(value);
     };
-  }
-
-  function tooglePasswordVisibility() {
-    setPasswordVisibility(!passwordVisibility);
   }
 
   function authFormFocus() {
@@ -186,22 +177,16 @@ function Auth(props) {
                       onChange={handleChange(setEmail)}
                       inputProps={{ autoComplete: 'email', id: 'coder-mind-username' }}
                     />
-                    <CustomTextField
-                      label="Senha"
-                      onChange={handleChange(setPassword)}
-                      type={passwordVisibility ? 'text' : 'password'}
-                      InputProps={{
-                        autoComplete: 'password',
-                        id: 'cm-password',
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton onClick={() => tooglePasswordVisibility()}>
-                              <Icon>{!passwordVisibility ? 'visibility_off' : 'visibility'}</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
+                    <CustomFormControl>
+                      <PasswordField
+                        label="Senha"
+                        inputId="cm-password"
+                        inputAutoComplete="password"
+                        value={password}
+                        onChange={handleChange(setPassword)}
+                        autoFocus
+                      />
+                    </CustomFormControl>
                     <Box mt={2} mb={3}>
                       <Button
                         size="small"

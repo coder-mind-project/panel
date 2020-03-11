@@ -6,6 +6,7 @@ import {
   Button,
   ButtonBase,
   Paper,
+  FormControl,
 } from '@material-ui/core';
 
 import { Alert } from '@material-ui/lab';
@@ -75,6 +76,14 @@ export const FormArea = styled(Box)({
 });
 
 export const CustomTextField = styled(TextField)({
+  width: '60%',
+  margin: '0.8rem 0',
+  [devices.tablet]: {
+    width: '100%',
+  },
+});
+
+export const CustomFormControl = styled(FormControl)({
   width: '60%',
   margin: '0.8rem 0',
   [devices.tablet]: {
