@@ -66,7 +66,7 @@ function ChangeMyPassword(props) {
     setAuthorizing(false);
   }
 
-  function changePassword() {
+  async function changePassword() {
     const payload = {
       firstField: newPass,
       secondField: confirmNewPass,
@@ -76,7 +76,7 @@ function ChangeMyPassword(props) {
 
     setSaving(true);
 
-    axios.post(url, payload).then(() => {
+    await axios.post(url, payload).then(() => {
       callToast(success('Senha alterada com sucesso'));
 
       resetState();
