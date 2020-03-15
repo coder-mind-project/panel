@@ -16,8 +16,7 @@ export const userType = shape({
   gender: string,
   tagAuthor: string,
   tagAdmin: string,
-  cpf: string,
-  celphone: string,
+  cellphone: string,
   birthDate: oneOfType([
     Date,
     string,
