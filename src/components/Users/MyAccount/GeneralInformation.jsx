@@ -326,7 +326,7 @@ function GeneralInformation(props) {
         <Grid item xs={12} md={9}>
           <Box width="100%" alignItems="center">
             <CustomTextField
-              label="E-mail *"
+              label="E-mail"
               value={userState.email || ''}
               onFocus={displayEmailHelpMessage}
               onBlur={hideEmailHelpMessage}
@@ -345,13 +345,13 @@ function GeneralInformation(props) {
             />
           </Box>
           <CustomTextField
-            label="Nome *"
+            label="Nome"
             inputProps={{ maxLength: 50 }}
             value={userState.name || ''}
             onChange={(evt) => handleChange(evt, 'name')}
           />
           <CustomTextField
-            label="Genero *"
+            label="Genero"
             value={userState.gender || ''}
             select
             onChange={(evt) => handleChange(evt, 'gender')}
@@ -367,16 +367,10 @@ function GeneralInformation(props) {
             </MenuItem>
           </CustomTextField>
           <CustomTextField
-            label="CPF *"
-            value={userState.cpf || ''}
-            onChange={(evt) => handleChangeMaskData(evt, 'cpf')}
-            inputProps={{ maxLength: 14 }}
-          />
-          <CustomTextField
-            label="Número de celular *"
-            placeholder="Ex: (xx)xxxxx-xxxx"
-            value={userState.celphone || ''}
-            onChange={(evt) => handleChangeMaskData(evt, 'celphone')}
+            label="Número de celular"
+            placeholder="Ex: (11) 12355-5321"
+            value={userState.cellphone || ''}
+            onChange={(evt) => handleChangeMaskData(evt, 'cellphone')}
             inputProps={{ maxLength: 15 }}
           />
           <MuiPickersUtilsProvider utils={MomentUtils}>
