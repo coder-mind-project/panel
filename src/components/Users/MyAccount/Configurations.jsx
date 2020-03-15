@@ -178,7 +178,7 @@ Configurations.propTypes = {
 };
 
 
-const mapStateToProps = (state) => ({ theme: state.theme });
+const mapStateToProps = (state) => ({ theme: state.theme, user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ setTheme: toogleTheme }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Configurations);
