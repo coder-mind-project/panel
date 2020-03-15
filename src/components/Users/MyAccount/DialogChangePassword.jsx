@@ -137,6 +137,7 @@ function ChangeMyPassword(props) {
                       fullWidth
                       onChange={(evt) => setNewPass(evt.target.value)}
                       autoFocus
+                      margin="dense"
                     />
                   </form>
                   <form onSubmit={submit}>
@@ -147,6 +148,7 @@ function ChangeMyPassword(props) {
                       value={confirmNewPass}
                       fullWidth
                       onChange={(evt) => setConfirmNewPass(evt.target.value)}
+                      margin="dense"
                     />
                   </form>
                 </Box>
