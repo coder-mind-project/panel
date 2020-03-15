@@ -385,6 +385,7 @@ function GeneralInformation(props) {
               maxDate={new Date()}
               maxDateMessage="Data acima do permitido"
               minDateMessage="Data abaixo do permitido"
+              format="DD/MM/YYYY"
             />
           </MuiPickersUtilsProvider>
           <CustomTextField
