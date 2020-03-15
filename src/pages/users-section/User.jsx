@@ -120,7 +120,7 @@ class User extends Component{
         const user = await this.formatData()
 
         const method = user._id ? 'put' : 'post'
-        const url =  method === 'post' ? `${backendUrl}/users` : `${backendUrl}/users/${user._id}`
+        const url =  method === 'post' ? `${backendUrl}/users?sm=yes` : `${backendUrl}/users/${user._id}?sm=yes`
 
         this.toogleSaving()
 
@@ -149,14 +149,13 @@ class User extends Component{
         evt.preventDefault()
 
         this.setState({loadingOp: true})
-        const url = `${backendUrl}/users`
+        const url = `${backendUrl}/users/configs/${this.state.user._id}`
 
         const payload = {
-            _id: this.state.user._id,
             password: this.state.user.password
         }
 
-        await axios.patch(url, payload).then( () => {
+        await axios.post(url, payload).then( () => {
             this.props.callToast(success('Senha alterada com sucesso!'))
             this.setState({openDialog: false})
         }).catch(async err => {
