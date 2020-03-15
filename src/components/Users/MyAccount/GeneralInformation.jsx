@@ -17,7 +17,7 @@ import { Alert } from '@material-ui/lab';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 
-import { cpfMask, celphoneMask } from '@/config/masks';
+import { celphoneMask } from '@/config/masks';
 
 import CustomButton from '@/components/Buttons/Button.jsx';
 
@@ -59,66 +59,52 @@ function GeneralInformation(props) {
 
   function handleChange(evt, attr) {
     const { value } = evt.target;
-    setUserState({ ...user, [attr]: value });
+    setUserState({ ...userState, [attr]: value });
   }
 
   function handleChangeMaskData(evt, attr) {
     if (typeof attr !== 'string') return;
     const { value } = evt.target;
-    switch (attr) {
-      case 'cpf': {
-        setUserState({ ...user, [attr]: cpfMask(value) });
-        break;
-      }
-      default: {
-        setUserState({ ...user, [attr]: celphoneMask(value) });
-        break;
-      }
-    }
+    setUserState({ ...userState, [attr]: celphoneMask(value) });
   }
 
   function handleDate(date) {
-    setUserState({ ...user, birthDate: date });
+    setUserState({ ...userState, birthDate: date });
   }
 
   async function formatData() {
     const data = { ...userState };
 
-    if (user.email !== data.email) {
-      data.confirmEmail = data.email;
-      delete data.email;
+    if (data.cellphone) {
+      data.cellphone = data.cellphone.replace('(', '').replace(')', '').replace(' ', '').replace('-', '');
     }
+
     return data;
   }
 
   async function save() {
     setSaving(true);
+    try {
+      const url = `${backendUrl}/users/${user._id}`;
 
-    const url = `${backendUrl}/users/${user._id}`;
+      const data = await formatData();
 
-    const data = await formatData();
+      await axios.patch(url, data).then((res) => {
+        callToast(success('Informações salvas com sucesso'));
+        if (res.data.confirmEmail) {
+          setUserState(res.data);
+        }
 
-    await axios.put(url, data).then((res) => {
-      callToast(success('Informações salvas com sucesso'));
-      if (res.data.confirmEmail) {
-        setUserState({
-          ...userState,
-          confirmEmail: res.data.confirmEmail,
-          confirmEmailToken: res.data.confirmEmailToken,
-        });
-      }
+        const updatedUser = {
+          user: res.data,
+        };
 
-      const updatedUser = {
-        user: {
-          ...userState, profilePhoto: res.data,
-        },
-      };
-
-      setUser(updatedUser);
-    }).catch(async (err) => {
+        setUser(updatedUser);
+      });
+    } catch (err) {
       const msg = defineErrorMsg(err);
       callToast(error(msg));
-    });
+    }
 
     setSaving(false);
   }
@@ -201,8 +187,8 @@ function GeneralInformation(props) {
 
     setResendingEmail(true);
 
-    await axios.post(url, userState).then((res) => {
-      callToast(success(res.data));
+    await axios.post(url, userState).then(() => {
+      callToast(success('Enviamos um novo e-mail, verifique sua caixa de entrada'));
     }).catch((err) => {
       const msg = defineErrorMsg(err);
       callToast(error(msg));
@@ -220,9 +206,14 @@ function GeneralInformation(props) {
     setCancelingChangeEmail(true);
 
     await axios.patch(url).then(() => {
-      const updatedUser = userState;
-      delete user.confirmEmail;
-      setUserState({ updatedUser });
+      let updatedUser = userState;
+      delete updatedUser.confirmEmail;
+      setUserState(updatedUser);
+
+      updatedUser = {
+        user: updatedUser,
+      };
+      setUser(updatedUser);
       callToast(success('Solicitação de alteração de e-mail removida com sucesso!'));
     }).catch((err) => {
       const msg = defineErrorMsg(err);
@@ -233,7 +224,15 @@ function GeneralInformation(props) {
   }
 
   useEffect(() => {
-    if (!userState._id) setUserState(user);
+    if (!userState._id) {
+      const newUser = user;
+
+      if (user.cellphone) {
+        newUser.cellphone = celphoneMask(user.cellphone);
+      }
+
+      setUserState(newUser);
+    }
   }, [user, userState]);
 
   return (
