@@ -17,6 +17,7 @@ function PasswordField(props) {
     fullWidth,
     autoFocus,
     value,
+    margin,
   } = props;
 
   const [visible, setVisible] = useState(false);
@@ -33,6 +34,7 @@ function PasswordField(props) {
       autoFocus={autoFocus}
       value={value}
       type={visible ? 'text' : 'password'}
+      margin={margin}
       InputProps={{
         autoComplete: inputAutoComplete,
         id: inputId,
@@ -57,6 +59,11 @@ PasswordField.propTypes = {
   fullWidth: PropTypes.bool,
   autoFocus: PropTypes.bool,
   value: PropTypes.string,
+  margin: PropTypes.oneOf([
+    'dense',
+    'none',
+    'normal',
+  ]),
 };
 
 PasswordField.defaultProps = {
@@ -67,6 +74,7 @@ PasswordField.defaultProps = {
   fullWidth: false,
   autoFocus: false,
   value: '',
+  margin: 'none',
 };
 
 export default PasswordField;
