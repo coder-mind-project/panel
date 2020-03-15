@@ -100,7 +100,7 @@ function MyAccount(props) {
                 expanded={Boolean(expanded === 'extra_information')}
               />
               <ExpansionPanelDetails>
-                <ExtraInformation user={user} isActive={expanded === 'extra_information'} />
+                <ExtraInformation isActive={expanded === 'extra_information'} />
               </ExpansionPanelDetails>
             </ExpansionPanel>
             <ExpansionPanel
@@ -114,7 +114,7 @@ function MyAccount(props) {
                 expanded={Boolean(expanded === 'configurations')}
               />
               <ExpansionPanelDetails>
-                <Configurations user={user} />
+                <Configurations />
               </ExpansionPanelDetails>
             </ExpansionPanel>
           </Grid>
