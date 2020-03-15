@@ -28,6 +28,7 @@ import { backendUrl, defineErrorMsg } from '@/config/backend';
 import { CODER_MIND_URL } from '@/config/dataProperties';
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
+import { setUser as storeUser } from '@/redux/user/userActions';
 import { success, error } from '@/config/toasts';
 
 import { formatCustomURL } from '@/config/masks';
@@ -45,6 +46,7 @@ function ExtraInformation(props) {
     user,
     callToast,
     isActive,
+    setUser,
   } = props;
 
   const [userState, setUserState] = useState({});
@@ -72,9 +74,14 @@ function ExtraInformation(props) {
 
     const url = `${backendUrl}/users/${userState._id}`;
 
-    await axios.patch(url, userState).then(() => {
-      setOpenTooltip(false);
+    await axios.patch(url, userState).then((res) => {
       callToast(success('Informações salvas com sucesso'));
+      setOpenTooltip(false);
+
+      const updatedUser = {
+        user: res.data,
+      };
+      setUser(updatedUser);
     }).catch((err) => {
       const msg = defineErrorMsg(err);
       callToast(error(msg));
@@ -85,17 +92,7 @@ function ExtraInformation(props) {
 
   useEffect(() => {
     if (!userState._id) {
-      setUserState({
-        _id: user._id,
-        instagram: user.instagram,
-        twitter: user.twitter,
-        github: user.github,
-        youtube: user.youtube,
-        occupation: user.occupation,
-        especiality: user.especiality,
-        customUrl: user.customUrl,
-        publicProfile: user.publicProfile,
-      });
+      setUserState({ ...user });
     }
   }, [user, userState]);
 
@@ -299,6 +296,7 @@ ExtraInformation.propTypes = {
   user: userType.isRequired,
   callToast: PropTypes.func.isRequired,
   isActive: PropTypes.bool,
+  setUser: PropTypes.func.isRequired,
 };
 
 ExtraInformation.defaultProps = {
@@ -308,6 +306,6 @@ ExtraInformation.defaultProps = {
 
 const mapStateToProps = (state) => ({ user: state.user, toast: state.toast });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter, setUser: storeUser }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExtraInformation);
