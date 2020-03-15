@@ -56,7 +56,7 @@ function ChangeMyPassword(props) {
 
     setAuthorizing(true);
 
-    await axios.put(url, payload).then(() => {
+    await axios.patch(url, payload).then(() => {
       setAuthorized(true);
     }).catch((err) => {
       const msg = defineErrorMsg(err);
