@@ -43,7 +43,7 @@ import Auth from './components/Authentications/Auth';
 import Ticket from './components/Tickets/SendTickets/Ticket';
 import Tickets from './components/Tickets/ManageTickets/Tickets';
 import RouteNotFound from './components/NotFound/RouteNotFound';
-import Users from './pages/users-section/Users';
+import Users from './components/Users/Management/Users';
 import User from './pages/users-section/User';
 import Articles from './pages/articles-section/Articles';
 import Article from './pages/articles-section/Article';
