@@ -33,14 +33,14 @@ function CustomIconButton(props) {
 }
 
 CustomIconButton.propTypes = {
-  tooltip: PropTypes.string,
+  tooltip: PropTypes.node || PropTypes.string,
   color: PropTypes.oneOf([
     'primary',
     'secondary',
     'inherit',
     'default',
   ]),
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   disabled: PropTypes.bool,
   size: PropTypes.string,
   icon: PropTypes.string.isRequired,
@@ -51,6 +51,7 @@ CustomIconButton.defaultProps = {
   color: 'default',
   disabled: false,
   size: 'medium',
+  onClick: () => null,
 };
 
 export default CustomIconButton;
