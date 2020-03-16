@@ -15,11 +15,13 @@ function Chip(props) {
     icon,
     text,
     variant,
+    color,
   } = props;
 
 
   return (
     <CustomChip
+      color={color}
       size={size}
       label={
         (
@@ -46,6 +48,11 @@ Chip.propTypes = {
   icon: PropTypes.string,
   text: PropTypes.string.isRequired,
   variant: PropTypes.string,
+  color: PropTypes.oneOf([
+    'default',
+    'primary',
+    'secondary',
+  ]),
 };
 
 Chip.defaultProps = {
@@ -53,6 +60,7 @@ Chip.defaultProps = {
   sizeIcon: 'default',
   icon: '',
   variant: 'default',
+  color: 'default',
 };
 
 export default Chip;
