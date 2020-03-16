@@ -17,7 +17,7 @@ function CustomIconButton(props) {
   } = props;
 
   return (
-    <Tooltip title={tooltip}>
+    <Tooltip title={disabled ? '' : tooltip}>
       <IconButton
         color={color}
         onClick={onClick}
