@@ -44,7 +44,7 @@ import CustomIconButton from '@/components/IconButton.jsx';
 import CustomChip from '@/components/Chip.jsx';
 import NotFound from '@/components/NotFound/DataNotFound.jsx';
 import ErrorFromData from '@/components/Errors/ErrorFromData.jsx';
-import DialogConfirmRestore from './DialogConfirmRestore';
+import DialogConfirmRestore from './DialogConfirmRestoreUser';
 
 import {
   TableIcon,
