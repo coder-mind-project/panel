@@ -21,6 +21,15 @@ export function standard(theme) {
         'sans-serif',
       ].join(','),
     },
+    overrides: {
+      MuiButtonBase: {
+        root: {
+          '&$disabled': {
+            color: 'rgb(190,190,190) !important',
+          },
+        },
+      },
+    },
   });
 }
 
