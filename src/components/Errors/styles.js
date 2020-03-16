@@ -3,7 +3,10 @@ import {
   Container,
   Paper,
   Box,
+  Icon,
 } from '@material-ui/core';
+
+import { devices } from '@/config/devices';
 
 export const ErrorContainer = styled(Container)({
   display: 'flex',
@@ -35,4 +38,18 @@ export const ErrorLogo = styled(Box)({
 export const ErrorMsg = styled(Box)({
   textAlign: 'justify',
   margin: '1rem 0rem',
+});
+
+export const ErrorFromDataContainer = styled(Box)({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: '2rem',
+  [devices.tablet]: {
+    flexDirection: 'column',
+  },
+});
+
+export const ErrorFromDataIcon = styled(Icon)({
+  fontSize: '12rem',
 });
