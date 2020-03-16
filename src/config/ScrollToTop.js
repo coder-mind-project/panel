@@ -1,5 +1,6 @@
-export function scrollToTop() {
-  document.documentElement.scrollTop = 0;
+export function scrollToTop(element) {
+  const ref = element || document.documentElement;
+  ref.scrollTop = 0;
 }
 
 export default { scrollToTop };
