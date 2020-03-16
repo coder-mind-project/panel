@@ -2,6 +2,7 @@ import {
   shape,
   string,
   bool,
+  oneOf,
   oneOfType,
   number,
 } from 'prop-types';
@@ -105,3 +106,8 @@ export const statType = shape({
   year: number,
   reference: string,
 });
+
+export const appTheme = oneOf([
+  'light',
+  'dark',
+]);
