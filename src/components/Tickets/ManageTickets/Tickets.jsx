@@ -24,7 +24,6 @@ import {
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 
-import { faIdCard } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { backendUrl } from '@/config/backend';
 import { scrollToTop } from '@/config/ScrollToTop';
@@ -183,8 +182,7 @@ function Tickets(props) {
       <Header
         title="Tickets"
         description="Visualize e responda tickets de atendimento aos autores da plataforma"
-        fontAwesomeIcon
-        faIcon={faIdCard}
+        icon="email"
       />
       <FloatingButton action={scrollToTop} />
       <Container className="hudBar">
