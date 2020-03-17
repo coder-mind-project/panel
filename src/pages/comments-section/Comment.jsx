@@ -17,7 +17,7 @@ import CustomButton from '../../components/Buttons/Button'
 
 import Searching from '../../assets/loading.gif'
 
-import ErrorBlock from '../../components/ErrorBlock.jsx'
+import ErrorFromData from '@/components/Errors/ErrorFromData.jsx'
 
 import { Link } from 'react-router-dom'
 
@@ -325,7 +325,7 @@ class Comment extends Component {
                     </Grid>
                 }
                 { this.state.error &&
-                    <ErrorBlock />
+                    <ErrorFromData msg="Ocorreu um erro ao obter os comentários" />
                 }
             </Container>
         )
