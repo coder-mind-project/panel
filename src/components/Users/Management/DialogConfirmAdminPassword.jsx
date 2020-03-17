@@ -110,6 +110,7 @@ ConfirmAdminPassword.defaultProps = {
   open: false,
 };
 
+const mapStateToProps = (state) => ({ toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
-export default connect(mapDispatchToProps)(ConfirmAdminPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(ConfirmAdminPassword);
