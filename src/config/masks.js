@@ -10,7 +10,7 @@
 export const cpfMask = (elem) => {
   try {
     let aux = elem;
-    aux = elem.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4');
+    aux = aux.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4');
     return aux;
   } catch (error) {
     console.error(error);
@@ -27,9 +27,9 @@ export const cpfMask = (elem) => {
 export const celphoneMask = (elem) => {
   try {
     let aux = elem;
-    aux = elem.replace(/\D/g, '');
-    aux = elem.replace(/^(\d{2})(\d)/g, '($1) $2');
-    aux = elem.replace(/(\d)(\d{4})$/, '$1-$2');
+    aux = aux.replace(/\D/g, '');
+    aux = aux.replace(/^(\d{2})(\d)/g, '($1) $2');
+    aux = aux.replace(/(\d)(\d{4})$/, '$1-$2');
 
     return aux;
   } catch (error) {
@@ -47,8 +47,8 @@ export const celphoneMask = (elem) => {
 export const formatCustomURL = (url) => {
   try {
     let aux = url;
-    aux = url.split(' ').join('-');
-    aux = url.toLowerCase();
+    aux = aux.split(' ').join('-');
+    aux = aux.toLowerCase();
 
     return aux;
   } catch (error) {
