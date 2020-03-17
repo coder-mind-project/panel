@@ -9,7 +9,7 @@ export const AppContent = styled(Box)({
   marginBottom: (props) => (props.user._id || props.isvalidating ? 20 : 0),
   [devices.mobileLarge]: {
     marginLeft: '0 !important',
-    marginBottom: '80px !important',
+    marginBottom: (props) => (props.user._id || props.isvalidating ? '80px !important' : 0),
   },
 });
 
