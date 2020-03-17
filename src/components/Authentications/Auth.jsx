@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   Grid,
   Box,
-  Fade,
   LinearProgress,
   Button,
   Typography,
@@ -20,7 +19,7 @@ import Recaptcha from 'react-google-invisible-recaptcha';
 import { CAPTCHA_SITE_KEY } from '@/config/dataProperties';
 
 import { devices } from '@/config/devices';
-import RedeemAccount from '@/components/RedeemAccount.jsx';
+import RedeemAccount from '@/components/Authentications/RedeemAccount.jsx';
 import CustomButtonBase from '@/components/Authentications/AuthButton.jsx';
 import PasswordField from '@/components/PasswordField.jsx';
 
@@ -35,7 +34,7 @@ import {
   AuthSection,
   LogoArea,
   FormArea,
-  CustomTextField,
+  AuthTextField,
   SpecialButton,
   SubmitArea,
   CustomAlert,
@@ -172,7 +171,7 @@ function Auth(props) {
                       )
                   }
                   <form onSubmit={resolve}>
-                    <CustomTextField
+                    <AuthTextField
                       label="E-mail"
                       onChange={handleChange(setEmail)}
                       inputProps={{ autoComplete: 'email', id: 'coder-mind-username' }}
@@ -222,14 +221,12 @@ function Auth(props) {
               </AuthSection>
             )
         }
-        { rescuePassword
+      </Grid>
+      { rescuePassword
             && (
-              <Fade in={rescuePassword}>
-                <RedeemAccount back={() => toogleRescuePassword()} />
-              </Fade>
+              <RedeemAccount back={() => toogleRescuePassword()} />
             )
         }
-      </Grid>
     </Box>
 
   );
