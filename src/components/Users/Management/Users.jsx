@@ -155,18 +155,6 @@ function Users(props) {
   }
 
   useEffect(() => {
-    function addEventListener() {
-      document.addEventListener('keydown', (evt) => {
-        if (evt.code === 'F10' && !validateDialog) {
-          showValidadeDialog();
-        }
-      });
-    }
-
-    addEventListener();
-  }, [validateDialog]);
-
-  useEffect(() => {
     async function searchUsers() {
       const url = `${backendUrl}/users?page=${page}&query=${query}&limit=${limit}&order=${order}`;
       setLoading(true);
@@ -211,21 +199,22 @@ function Users(props) {
       <Box mb={3}>
         <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" width="100%">
           <HudButtons>
-            { user.tagAdmin && (
-              <HudLink to="/management">
-                <CustomButton
-                  color="default"
-                  text="Configurações"
-                  icon="settings"
-                  fullWidth
-                />
-              </HudLink>
-            )}
             <HudLink to="/user">
               <CustomButton
                 color="primary"
                 icon="add_circle_outline"
-                text="Novo Usuário"
+                fullWidth
+              />
+            </HudLink>
+            <CustomButton
+              color="secondary"
+              icon="security"
+              onClick={showValidadeDialog}
+            />
+            <HudLink to="/management">
+              <CustomButton
+                color="default"
+                icon="settings"
                 fullWidth
               />
             </HudLink>
