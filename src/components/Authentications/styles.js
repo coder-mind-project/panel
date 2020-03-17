@@ -7,6 +7,7 @@ import {
   ButtonBase,
   Paper,
   FormControl,
+  Container,
 } from '@material-ui/core';
 
 import { Alert } from '@material-ui/lab';
@@ -51,6 +52,28 @@ export const AuthSection = styled(Paper)({
   height: '100vh',
 });
 
+export const RedeemAccountContainer = styled(Container)({
+  backgroundColor: '#FFFFFF',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: (props) => (props.option === 'emailAndPassword' ? 'flex-start' : 'center'),
+  flexDirection: 'column',
+  height: '100%',
+  width: '100%',
+  overflowY: 'scroll',
+  paddingBottom: 24,
+});
+
+export const RedeemAccountFormControl = styled(FormControl)({
+  [devices.mobileLarge]: {
+    paddingBottom: (props) => (props.option !== 'menu' ? 100 : 0),
+  },
+});
+
+export const RedeemAccountTextField = styled(TextField)({
+  margin: '5px 0',
+});
+
 export const LogoArea = styled(Box)({
   height: '160px',
   width: '100%',
@@ -75,13 +98,14 @@ export const FormArea = styled(Box)({
   },
 });
 
-export const CustomTextField = styled(TextField)({
+export const AuthTextField = styled(TextField)({
   width: '60%',
   margin: '0.8rem 0',
   [devices.tablet]: {
     width: '100%',
   },
 });
+
 
 export const CustomFormControl = styled(FormControl)({
   width: '60%',
