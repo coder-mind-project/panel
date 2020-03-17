@@ -8,7 +8,7 @@ import axios from 'axios'
 import { backendUrl, defineErrorMsg } from '../../../config/backend'
 
 import Searching from '../../../assets/loading.gif'
-import ErrorBlock from '../../ErrorBlock.jsx'
+import ErrorFromData from '@/components/Errors/ErrorFromData.jsx'
 import StatsBlock from '../../Statistics/StatsBlock.jsx'
 import CustomChip from '../../Chip.jsx'
 import CustomIconButton from '../../IconButton.jsx'
@@ -331,7 +331,7 @@ class ArticleStats extends Component {
                     </Grid>
                 }
                 { this.state.error &&
-                    <ErrorBlock />
+                    <ErrorFromData msg="Ocorreu um erro ao obter as estatísticas" />
                 }
                 <Dialog open={this.state.dialogAnswer} onClose={() => this.setState({dialogAnswer: false})} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Responda o comentário de {this.state.comment.userName}</DialogTitle>
