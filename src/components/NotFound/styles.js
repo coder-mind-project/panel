@@ -16,6 +16,9 @@ export const NotFoundBox = styled(Box)({
   },
   '& img': {
     maxWidth: '300px',
+    [devices.tablet]: {
+      maxWidth: '100%',
+    },
   },
 });
 
