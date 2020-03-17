@@ -23,6 +23,7 @@ function Button(props) {
     circularProgressSize,
     CircularProgressColor,
     text,
+    size,
   } = props;
 
   const matches = useMediaQuery(devices.tablet);
@@ -34,6 +35,7 @@ function Button(props) {
       color={color}
       onClick={onClick}
       disabled={disabled}
+      size={size}
     >
       { !disabledIcon && !loading
         && (
@@ -88,6 +90,11 @@ Button.propTypes = {
     'primary',
     'secondary',
   ]),
+  size: PropTypes.oneOf([
+    'large',
+    'medium',
+    'small',
+  ]),
 };
 
 Button.defaultProps = {
@@ -103,6 +110,7 @@ Button.defaultProps = {
   text: '',
   color: 'primary',
   onClick: null,
+  size: 'medium',
 };
 
 export default Button;
