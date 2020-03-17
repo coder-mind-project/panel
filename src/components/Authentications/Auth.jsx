@@ -183,7 +183,6 @@ function Auth(props) {
                         inputAutoComplete="password"
                         value={password}
                         onChange={handleChange(setPassword)}
-                        autoFocus
                       />
                     </CustomFormControl>
                     <Box mt={2} mb={3}>
