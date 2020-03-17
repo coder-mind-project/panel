@@ -45,10 +45,6 @@ import { CAPTCHA_SITE_KEY } from '../../config/dataProperties';
 
 import { cpfMask, celphoneMask } from '../../config/masks';
 
-import '@/pages/css/defaultPage.css';
-import '@/pages/css/forms.css';
-import '@/pages/auth-section/css/RedeemAccount.css';
-
 import {
   RedeemAccountContainer,
   RedeemAccountFormControl,
@@ -260,9 +256,8 @@ function RescueAccount(props) {
               </Typography>
             </Box>
             <Box width="100%" mb={2}>
-              <TextField
+              <RedeemAccountTextField
                 label="E-mail"
-                className="modalFormInput"
                 fullWidth
                 onChange={handleChange(setEmail)}
                 inputProps={{ autoComplete: 'email' }}
@@ -477,7 +472,6 @@ function RescueAccount(props) {
                         value={msg}
                         fullWidth
                         onChange={handleChange(setMsg)}
-                        className="modalFormInput"
                         variant="outlined"
                         color="primary"
                         multiline
