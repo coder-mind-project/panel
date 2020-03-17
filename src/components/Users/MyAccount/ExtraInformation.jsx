@@ -304,8 +304,16 @@ ExtraInformation.defaultProps = {
 };
 
 
-const mapStateToProps = (state) => ({ user: state.user, toast: state.toast });
+const mapStateToProps = (state) =>
+  ({
+    user: state.user,
+    toast: state.toast,
+  });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter, setUser: storeUser }, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators({
+    callToast: toastEmitter,
+    setUser: storeUser,
+  }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ExtraInformation);
