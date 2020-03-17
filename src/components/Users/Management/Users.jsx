@@ -208,7 +208,7 @@ function Users(props) {
             </HudLink>
             <CustomButton
               color="secondary"
-              icon="security"
+              icon="restore_from_trash"
               onClick={showValidadeDialog}
             />
             <HudLink to="/management">
