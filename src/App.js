@@ -44,7 +44,7 @@ import Ticket from './components/Tickets/SendTickets/Ticket';
 import Tickets from './components/Tickets/ManageTickets/Tickets';
 import RouteNotFound from './components/NotFound/RouteNotFound';
 import Users from './components/Users/Management/Users';
-import User from './pages/users-section/User';
+import UserForm from './components/Users/Management/UserForm';
 import Articles from './pages/articles-section/Articles';
 import Article from './pages/articles-section/Article';
 import Stats from './pages/statistics-section/Stats';
@@ -163,8 +163,8 @@ function App(props) {
                       <Route path="/ticket" exact component={Ticket} />
                       <Route path="/tickets" exact component={Tickets} />
                       <Route path="/confirm-email" exact component={ConfirmEmail} />
-                      <Route path="/user" exact component={User} />
-                      <Route path="/user/:id" exact component={User} />
+                      <Route path="/user" exact component={UserForm} />
+                      <Route path="/user/:id" exact component={UserForm} />
                       <Route path="/users" exact component={Users} />
                       <Route path="/article" exact component={Article} />
                       <Route path="/article/:id" exact component={Article} />
