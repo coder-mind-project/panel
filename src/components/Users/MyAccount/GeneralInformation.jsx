@@ -72,7 +72,7 @@ function GeneralInformation(props) {
     setUserState({ ...userState, birthDate: date });
   }
 
-  async function formatData() {
+  function formatData() {
     const data = { ...userState };
 
     if (data.cellphone) {
