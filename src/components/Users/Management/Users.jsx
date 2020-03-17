@@ -170,6 +170,7 @@ function Users(props) {
     }
 
     if (reload) {
+      scrollToTop();
       setError(false);
       setReload(false);
       searchUsers();
