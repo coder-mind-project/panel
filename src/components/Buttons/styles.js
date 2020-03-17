@@ -19,9 +19,9 @@ export const CustomButton = styled(Button)({
   paddingLeft: '10px',
   paddingRight: '10px',
   '& .MuiCircularProgress-root': {
-    marginRight: '5px',
+    marginRight: (props) => (props.applymargin ? '5px' : 0),
   },
   '& .MuiIcon-root': {
-    marginRight: '5px',
+    marginRight: (props) => (props.applymargin ? '5px' : 0),
   },
 });

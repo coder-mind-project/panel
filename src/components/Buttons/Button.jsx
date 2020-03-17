@@ -41,6 +41,7 @@ function Button(props) {
         && (
           <Icon
             fontSize={iconSize}
+            applymargin={text}
           >
             {icon}
           </Icon>
