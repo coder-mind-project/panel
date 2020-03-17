@@ -5,6 +5,7 @@ import {
   oneOf,
   oneOfType,
   number,
+  object,
 } from 'prop-types';
 
 export const userType = shape({
@@ -111,3 +112,10 @@ export const appTheme = oneOf([
   'light',
   'dark',
 ]);
+
+export const reactRouterParams = shape({
+  path: string,
+  url: string,
+  isExact: bool,
+  params: object, // Property types are changed according to the context
+});
