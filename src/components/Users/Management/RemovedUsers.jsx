@@ -40,7 +40,7 @@ import {
   DEFAULT_LIMIT,
 } from '@/config/dataProperties';
 
-import CustomIconButton from '@/components/IconButton.jsx';
+import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import CustomChip from '@/components/Chip.jsx';
 import NotFound from '@/components/NotFound/DataNotFound.jsx';
 import ErrorFromData from '@/components/Errors/ErrorFromData.jsx';

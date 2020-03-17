@@ -15,7 +15,7 @@ import { Container, Grid, Button, Table,
 import SearchBar from 'material-ui-search-bar'
 
 import CustomButton from '../../../components/Buttons/Button'
-import CustomIconButton from '../../../components/IconButton.jsx'
+import CustomIconButton from '../../../components/Buttons/IconButton.jsx'
 import Header from '../../../components/Header.jsx'
 import Searching from '../../../assets/loading.gif'
 

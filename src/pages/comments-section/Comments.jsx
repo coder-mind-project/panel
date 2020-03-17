@@ -12,7 +12,7 @@ import { success, error, info } from '../../config/toasts'
 import { callToast } from '../../redux/toast/toastActions'
 
 import CustomChip from '../../components/Chip.jsx'
-import CustomIconButton from '../../components/IconButton.jsx'
+import CustomIconButton from '../../components/Buttons/IconButton.jsx'
 import CustomButton from '../../components/Buttons/Button'
 import Searching from '../../assets/loading.gif'
 import NotFound from '../../components/NotFound/DataNotFound'

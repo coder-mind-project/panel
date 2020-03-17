@@ -25,7 +25,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { scrollToTop } from '../../config/ScrollToTop';
 import CustomButton from '../Buttons/Button';
-import CustomIconButton from '../IconButton';
+import CustomIconButton from '../Buttons/IconButton';
 import Header from '../Header';
 import Form from './Form';
 import RemoveConfirmation from './RemoveConfirmation';

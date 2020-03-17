@@ -38,7 +38,7 @@ import { info } from '@/config/toasts';
 import { backendUrl } from '@/config/backend';
 import { scrollToTop } from '@/config/ScrollToTop';
 
-import CustomIconButton from '@/components/IconButton.jsx';
+import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import NotFound from '@/components/NotFound/DataNotFound.jsx';
 import ErrorFromData from '@/components/Errors/ErrorFromData.jsx';
 import CustomButton from '@/components/Buttons/Button.jsx';

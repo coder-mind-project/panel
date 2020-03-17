@@ -31,7 +31,7 @@ import { scrollToTop } from '@/config/ScrollToTop';
 
 import FloatingButton from '@/components/Buttons/FloatingButton.jsx';
 import CustomButton from '@/components/Buttons/Button.jsx';
-import CustomIconButton from '@/components/IconButton.jsx';
+import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import Header from '@/components/Header.jsx';
 
 import ViewTicket from './ViewTicket';

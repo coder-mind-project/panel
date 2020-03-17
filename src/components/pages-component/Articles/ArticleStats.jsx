@@ -11,7 +11,7 @@ import Searching from '../../../assets/loading.gif'
 import ErrorFromData from '@/components/Errors/ErrorFromData.jsx'
 import StatsBlock from '../../Statistics/StatsBlock.jsx'
 import CustomChip from '../../Chip.jsx'
-import CustomIconButton from '../../IconButton.jsx'
+import CustomIconButton from '../../Buttons/IconButton.jsx'
 import CustomButton from '../../Buttons/Button'
 
 import { connect } from 'react-redux'

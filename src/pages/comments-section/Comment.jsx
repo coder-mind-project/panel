@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux'
 import { info } from '../../config/toasts'
 import { callToast } from '../../redux/toast/toastActions'
 
-import CustomIconButton from '../../components/IconButton.jsx'
+import CustomIconButton from '../../components/Buttons/IconButton.jsx'
 import CustomButton from '../../components/Buttons/Button'
 
 import Searching from '../../assets/loading.gif'
