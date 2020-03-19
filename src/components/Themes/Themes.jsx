@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { userType } from '@/types';
+
 import {
   Container,
   Table,
@@ -46,7 +48,7 @@ import {
 } from './styles';
 
 function Themes(props) {
-  const { user } = { ...props };
+  const { user } = props;
 
   const [themes, setThemes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -301,6 +303,10 @@ function Themes(props) {
     </Container>
   );
 }
+
+Themes.propTypes = {
+  user: userType.isRequired,
+};
 
 const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
