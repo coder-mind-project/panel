@@ -7,7 +7,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import { scrollToTop } from '../../config/ScrollToTop';
+import { scrollToTop } from '@/config/ScrollToTop';
 
 import Header from '../Header';
 import ShortcutSection from './ShortcutSection';
@@ -27,6 +27,10 @@ function Management(props) {
     setHideHelp(true);
   }
 
+  function goToTheTop() {
+    scrollToTop();
+  }
+
   useEffect(() => {
     function getManagementConfig() {
       const payload = JSON.parse(localStorage.getItem('management-help'));
@@ -38,7 +42,7 @@ function Management(props) {
 
   return (
     <Container id="component">
-      <FloatingButton icon="keyboard_arrow_up" action={scrollToTop} />
+      <FloatingButton icon="keyboard_arrow_up" action={goToTheTop} />
       <Header
         title="Configurações"
         description="Configure propriedades da aplicação: como temas e categorias de artigos, Sincronizador e outras configurações"
