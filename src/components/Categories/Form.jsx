@@ -125,6 +125,7 @@ function CategoryForm(props) {
       onClose={() => close()}
       onEscapeKeyDown={() => close()}
       onBackdropClick={() => close()}
+      maxWidth="md"
     >
       {loading && <LinearProgress color="primary" /> }
       <Box mb={1} p={2}>

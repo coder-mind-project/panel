@@ -50,7 +50,7 @@ export const TableIcon = styled(Icon)({
 
 export const CustomTextField = styled(TextField)({
   margin: '1rem',
-  minWidth: '225px',
+  minWidth: '300px',
   [devices.tablet]: {
     width: '100%',
     minWidth: '100%',
