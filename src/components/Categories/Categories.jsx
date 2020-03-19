@@ -44,6 +44,7 @@ import {
   HudSearchBar,
   HudLink,
   TableIcon,
+  TableWrapper,
 } from './styles';
 
 function Categories(props) {
@@ -207,7 +208,7 @@ function Categories(props) {
       <Paper>
         {loading && categories.length > 0 && <LinearProgress color="primary" />}
         {categories.length > 0 && (
-        <Container>
+        <TableWrapper>
           <Table>
             <TableHead>
               <TableRow>
@@ -302,7 +303,7 @@ function Categories(props) {
               </TableRow>
             </TableFooter>
           </Table>
-        </Container>
+        </TableWrapper>
         )}
       </Paper>
     </Container>
