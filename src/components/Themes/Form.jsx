@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Icon,
   Grid,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
@@ -20,11 +19,10 @@ import { bindActionCreators } from 'redux';
 
 import { backendUrl, defineErrorMsg } from '../../config/backend';
 
-import '../../pages/css/defaultPage.css';
-import '../../pages/css/forms.css';
-
 import { callToast as toastEmitter } from '../../redux/toast/toastActions';
 import { success, error as toastError } from '../../config/toasts';
+
+import { CustomTextField } from './styles';
 
 function ThemeForm(props) {
   const {
@@ -96,46 +94,38 @@ function ThemeForm(props) {
       </Box>
       <DialogContent>
         <Box display="flex" alignItems="center" flexWrap="wrap">
-          <Grid item xs={12} md={6} className="formGroup">
-            <TextField
-              label="Tema"
-              error={Boolean(error.name)}
-              helperText={error.name
-                ? error.msg : ''}
-              fullWidth
-              onBlur={() => setError({})}
-              value={theme.name}
-              onChange={(event) => handleChange(event, 'name')}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} className="formGroup">
-            <TextField
-              label="Apelido"
-              error={Boolean(error.alias)}
-              helperText={error.alias
-                ? error.msg
-                : ''}
-              onBlur={() => setError({})}
-              value={theme.alias}
-              fullWidth
-              onChange={(event) => handleChange(event, 'alias')}
-            />
-          </Grid>
-          <Grid item xs={12} className="formGroup">
-            <TextField
-              label="Descrição"
-              error={Boolean(error.description)}
-              helperText={error.description
-                ? error.msg
-                : ''}
-              onBlur={() => setError({})}
-              fullWidth
-              value={theme.description}
-              multiline
-              rows={3}
-              onChange={(event) => handleChange(event, 'description')}
-            />
-          </Grid>
+          <CustomTextField
+            label="Tema"
+            error={Boolean(error.name)}
+            helperText={error.name
+              ? error.msg : ''}
+            onBlur={() => setError({})}
+            value={theme.name}
+            onChange={(event) => handleChange(event, 'name')}
+          />
+          <CustomTextField
+            label="Apelido"
+            error={Boolean(error.alias)}
+            helperText={error.alias
+              ? error.msg
+              : ''}
+            onBlur={() => setError({})}
+            value={theme.alias}
+            onChange={(event) => handleChange(event, 'alias')}
+          />
+          <CustomTextField
+            label="Descrição"
+            error={Boolean(error.description)}
+            helperText={error.description
+              ? error.msg
+              : ''}
+            onBlur={() => setError({})}
+            fullWidth
+            value={theme.description}
+            multiline
+            rows={3}
+            onChange={(event) => handleChange(event, 'description')}
+          />
         </Box>
       </DialogContent>
       <DialogActions style={{ margin: 10 }}>
