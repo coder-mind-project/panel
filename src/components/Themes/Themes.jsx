@@ -45,6 +45,7 @@ import {
   HudSearchBar,
   HudButtons,
   TableIcon,
+  TableWrapper,
 } from './styles';
 
 function Themes(props) {
@@ -214,7 +215,7 @@ function Themes(props) {
       <Paper>
         {loading && themes.length > 0 && <LinearProgress color="primary" />}
         {themes.length > 0 && (
-        <Container>
+        <TableWrapper>
           <Table>
             <TableHead>
               <TableRow>
@@ -295,7 +296,7 @@ function Themes(props) {
               </TableRow>
             </TableFooter>
           </Table>
-        </Container>
+        </TableWrapper>
         )}
       </Paper>
     </Container>
