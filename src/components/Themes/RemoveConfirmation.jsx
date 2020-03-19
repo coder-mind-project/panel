@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { themeType } from '@/types';
+
 import {
   Dialog,
   DialogTitle,
@@ -26,12 +29,12 @@ function RemoveConfirmation(props) {
     themesQuantity,
     page,
     callToast,
-  } = { ...props };
+  } = props;
 
   const [loading, setLoading] = useState(false);
 
-  function close(newPage) {
-    onClose(newPage);
+  function close(stack) {
+    onClose(stack);
   }
 
   async function remove() {
@@ -44,6 +47,7 @@ function RemoveConfirmation(props) {
       .then(() => {
         callToast(success('Operação realizada com sucesso'));
         if (themesQuantity === 1) newPage = page - 1 === 0 ? 1 : page - 1;
+        close({ removed: true, newPage });
       })
       .catch((err) => {
         const msg = defineErrorMsg(err);
@@ -51,7 +55,6 @@ function RemoveConfirmation(props) {
       });
 
     setLoading(false);
-    close(newPage);
   }
 
   return (
@@ -93,6 +96,19 @@ function RemoveConfirmation(props) {
     </Dialog>
   );
 }
+
+RemoveConfirmation.propTypes = {
+  open: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+  propTheme: themeType.isRequired,
+  themesQuantity: PropTypes.number.isRequired,
+  page: PropTypes.number.isRequired,
+  callToast: PropTypes.func.isRequired,
+};
+
+RemoveConfirmation.defaultProps = {
+  open: false,
+};
 
 const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: ToastEmitter }, dispatch);
