@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { themeType } from '@/types';
 
 import {
   Icon,
@@ -25,8 +27,11 @@ import { CustomTextField } from './styles';
 
 function ThemeForm(props) {
   const {
-    callToast, propTheme, open, onClose,
-  } = { ...props };
+    callToast,
+    propTheme,
+    open,
+    onClose,
+  } = props;
 
   const [theme, setTheme] = useState({});
 
@@ -134,6 +139,17 @@ function ThemeForm(props) {
     </Dialog>
   );
 }
+
+ThemeForm.propTypes = {
+  callToast: PropTypes.func.isRequired,
+  propTheme: themeType.isRequired,
+  open: PropTypes.bool,
+  onClose: PropTypes.func.isRequired,
+};
+
+ThemeForm.defaultProps = {
+  open: false,
+};
 
 
 const mapStateToProps = (state) => ({ toast: state.config });
