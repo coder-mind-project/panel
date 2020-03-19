@@ -184,9 +184,15 @@ function Themes(props) {
         </Box>
       </Box>
       {loading && themes.length === 0 && (
-        <Container>
+        <Box
+          width="100%"
+          height="300px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
           <CircularProgress color="primary" size={80} />
-        </Container>
+        </Box>
       )}
       {!loading && themes.length === 0 && (
         <Container>
