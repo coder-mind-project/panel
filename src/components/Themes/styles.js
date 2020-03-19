@@ -2,6 +2,7 @@ import {
   styled,
   Box,
   Icon,
+  TextField,
 } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
@@ -43,4 +44,14 @@ export const HudSearchBar = styled(SearchBar)({
 
 export const TableIcon = styled(Icon)({
   marginRight: '5px',
+});
+
+export const CustomTextField = styled(TextField)({
+  margin: '1rem',
+  minWidth: '225px',
+  [devices.tablet]: {
+    width: '100%',
+    minWidth: '100%',
+    margin: '1rem 0',
+  },
 });
