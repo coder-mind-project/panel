@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Container,
-  Grid,
   Table,
   TableRow,
   TableHead,
@@ -16,29 +15,29 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
-
-import { Link } from 'react-router-dom';
-import SearchBar from 'material-ui-search-bar';
-
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { scrollToTop } from '../../config/ScrollToTop';
-import CustomButton from '../Buttons/Button';
-import CustomIconButton from '../Buttons/IconButton';
-import Header from '../Header';
-import Form from './Form';
-import RemoveConfirmation from './RemoveConfirmation';
+import { scrollToTop } from '@/config/ScrollToTop';
 
-import { backendUrl } from '../../config/backend';
+import CustomButton from '@/components/Buttons/Button.jsx';
+import CustomIconButton from '@/components/Buttons/IconButton.jsx';
+import Header from '@/components/Header.jsx';
+
+import { backendUrl } from '@/config/backend';
 import {
   OPTIONS_LIMIT,
   DEFAULT_LIMIT,
   LIMIT_LABEL,
   DISPLAYED_ROWS,
-} from '../../config/dataProperties';
+} from '@/config/dataProperties';
 
-import { callToast as toastEmitter } from '../../redux/toast/toastActions';
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
+
+import RemoveConfirmation from './RemoveConfirmation';
+import Form from './Form';
+
+import { HudLink, HudSearchBar, HudButtons } from './styles';
 
 function Themes(props) {
   const { user } = { ...props };
@@ -154,60 +153,64 @@ function Themes(props) {
         propTheme={themeSelected}
         page={page}
       />
-      <Container className="hudBar">
-        <Grid item className="hudBarChild">
-          {user.tagAdmin && (
-          <Box mr={1} className="linkButton">
-            <Link to="/management" className="linkRouter linkButton">
-              <CustomButton color="default" text="Configurações" icon="settings" />
-            </Link>
-          </Box>
-          )}
-          {user.tagAdmin && (
-            <Box mr={1} className="linkButton">
-              <CustomButton color="default" text="Novo Tema" icon="add_circle_outline" onClick={() => handleOpenForm(true)} />
-            </Box>
-          )}
-        </Grid>
-        <Grid item className="hudBarChild">
-          <SearchBar
+      <Box mb={3}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" width="100%">
+          <HudButtons>
+            <CustomButton
+              color="primary"
+              icon="add_circle_outline"
+              onClick={() => handleOpenForm(true)}
+            />
+            { user.tagAdmin
+              && (
+                <HudLink to="/management">
+                  <CustomButton
+                    color="default"
+                    icon="settings"
+                    fullWidth
+                  />
+                </HudLink>
+              )
+            }
+          </HudButtons>
+          <HudSearchBar
             id="search_field"
-            className="searchTextField"
+            fullWidth
             placeholder="Pesquisar"
             value={query}
-            onChange={(term) => changeQueryValue(term)}
+            onChange={(q) => changeQueryValue(q)}
             onCancelSearch={() => changeQueryValue('')}
           />
-        </Grid>
-      </Container>
+        </Box>
+      </Box>
       {loading && themes.length === 0 && (
-        <Container className="center spinnerContainer">
+        <Container>
           <CircularProgress color="primary" size={80} />
         </Container>
       )}
       {!loading && themes.length === 0 && (
-        <Container className="center">
-          <p className="defaultFontColor">Ops, Nenhum resultado encontrado</p>
+        <Container>
+          <p>Ops, Nenhum resultado encontrado</p>
         </Container>
       )}
       <Paper>
         {loading && themes.length > 0 && <LinearProgress color="primary" />}
         {themes.length > 0 && (
-        <Container className="wrapper">
-          <Table className="defaultTable">
+        <Container>
+          <Table>
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <span className="centerVertical">
-                    <Icon fontSize="small" className="marginRight">
+                  <span>
+                    <Icon fontSize="small">
                       bookmark
                     </Icon>
                     Tema
                   </span>
                 </TableCell>
                 <TableCell>
-                  <span className="centerVertical">
-                    <Icon fontSize="small" className="marginRight">
+                  <span>
+                    <Icon fontSize="small">
                       bookmark_border
                     </Icon>
                     Alias
@@ -215,8 +218,8 @@ function Themes(props) {
                 </TableCell>
                 {user.tagAdmin && (
                 <TableCell>
-                  <span className="centerVertical">
-                    <Icon fontSize="small" className="marginRight">
+                  <span>
+                    <Icon fontSize="small">
                       build
                     </Icon>
                     Ações
