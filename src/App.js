@@ -45,11 +45,10 @@ import Tickets from './components/Tickets/ManageTickets/Tickets';
 import RouteNotFound from './components/NotFound/RouteNotFound';
 import Users from './components/Users/Management/Users';
 import UserForm from './components/Users/Management/UserForm';
+import Categories from './components/Categories/Categories';
 import Articles from './pages/articles-section/Articles';
 import Article from './pages/articles-section/Article';
 import Stats from './pages/statistics-section/Stats';
-import Categories from './pages/managements-section/Categories/Categories';
-import Category from './pages/managements-section/Categories/Category';
 import MyAccount from './components/Users/MyAccount/MyAccount';
 import Comments from './pages/comments-section/Comments';
 import Comment from './pages/comments-section/Comment';
@@ -171,8 +170,6 @@ function App(props) {
                       <Route path="/articles" exact component={Articles} />
                       <Route path="/management" exact component={Management} />
                       <Route path="/themes" exact component={Themes} />
-                      <Route path="/category" exact component={Category} />
-                      <Route path="/category/:id" exact component={Category} />
                       <Route path="/categories" exact component={Categories} />
                       <Route path="/my-account" exact component={MyAccount} />
                       <Route path="/comments" exact component={Comments} />
