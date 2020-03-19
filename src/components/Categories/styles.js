@@ -5,6 +5,7 @@ import {
   TextField,
   FormGroup,
   InputLabel,
+  Container,
 } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
@@ -68,4 +69,13 @@ export const CustomFormGroup = styled(FormGroup)({
 
 export const CustomInputLabel = styled(InputLabel)({
   marginBottom: '5px',
+});
+
+export const TableWrapper = styled(Container)({
+  marginBottom: '20px',
+  overflowX: 'scroll',
+  '& th': {
+    fontSize: '0.875rem !important',
+    fontWeight: '400 !important',
+  },
 });
