@@ -3,6 +3,7 @@ import {
   Box,
   Icon,
   TextField,
+  Container,
 } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
@@ -53,5 +54,14 @@ export const CustomTextField = styled(TextField)({
     width: '100%',
     minWidth: '100%',
     margin: '1rem 0',
+  },
+});
+
+export const TableWrapper = styled(Container)({
+  marginBottom: '20px',
+  overflowX: 'scroll',
+  '& th': {
+    fontSize: '0.875rem !important',
+    fontWeight: '400 !important',
   },
 });
