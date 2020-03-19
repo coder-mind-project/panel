@@ -1,6 +1,7 @@
 import {
   styled,
   Box,
+  Icon,
 } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
@@ -38,4 +39,8 @@ export const HudSearchBar = styled(SearchBar)({
   [devices.tablet]: {
     width: '100%',
   },
+});
+
+export const TableIcon = styled(Icon)({
+  marginRight: '5px',
 });
