@@ -28,11 +28,7 @@ function ThemeForm(props) {
     callToast, propTheme, open, onClose,
   } = { ...props };
 
-  const [theme, setTheme] = useState({
-    name: '',
-    alias: '',
-    description: '',
-  });
+  const [theme, setTheme] = useState({});
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
@@ -71,7 +67,7 @@ function ThemeForm(props) {
 
   useEffect(() => {
     if (open) {
-      if (!propTheme) setTheme({ name: '', alias: '', description: '' });
+      if (!propTheme._id) setTheme({ name: '', alias: '', description: '' });
       else setTheme(propTheme);
     }
   }, [open, propTheme]);
