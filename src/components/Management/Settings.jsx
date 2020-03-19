@@ -56,7 +56,7 @@ function Settings() {
               <Box width="100%" ml={2} mr={2}>
                 <Link to="/users" className="linkRouter">
                   <Button
-                    color="default"
+                    color="primary"
                     icon="exit_to_app"
                     text="Acessar"
                   />
@@ -90,7 +90,7 @@ function Settings() {
               <Box width="100%" ml={2} mr={2}>
                 <Link to="/tickets" className="linkRouter">
                   <Button
-                    color="default"
+                    color="primary"
                     icon="exit_to_app"
                     text="Acessar"
                   />
