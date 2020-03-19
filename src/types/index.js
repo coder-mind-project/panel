@@ -50,6 +50,18 @@ export const themeType = shape({
   state: string,
 });
 
+export const categoryType = shape({
+  _id: string,
+  name: string,
+  alias: string,
+  description: string,
+  theme: themeType,
+  state: oneOf([
+    'active',
+    'removed',
+  ]),
+});
+
 export const articleType = shape({
   _id: string,
 });
