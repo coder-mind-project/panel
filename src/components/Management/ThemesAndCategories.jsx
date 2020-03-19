@@ -59,7 +59,7 @@ const ThemesAndCategories = (props) => {
               <Box width="100%" ml={2} mr={2}>
                 <Link to="/themes" className="linkRouter">
                   <Button
-                    color="default"
+                    color="primary"
                     icon="exit_to_app"
                     text="Acessar"
                   />
@@ -97,7 +97,7 @@ const ThemesAndCategories = (props) => {
               <Box width="100%" ml={2} mr={2}>
                 <Link to="/categories" className="linkRouter">
                   <Button
-                    color="default"
+                    color="primary"
                     icon="exit_to_app"
                     text="Acessar"
                   />
