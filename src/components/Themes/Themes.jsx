@@ -23,6 +23,7 @@ import { scrollToTop } from '@/config/ScrollToTop';
 import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import Header from '@/components/Header.jsx';
+import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
 
 import { backendUrl } from '@/config/backend';
 import {
@@ -200,9 +201,7 @@ function Themes(props) {
         </Box>
       )}
       {!loading && themes.length === 0 && (
-        <Container>
-          <p>Ops, Nenhum resultado encontrado</p>
-        </Container>
+        <DataNotFound msg="Nenhum tema encontrado" />
       )}
       <Paper>
         {loading && themes.length > 0 && <LinearProgress color="primary" />}
