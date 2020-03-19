@@ -55,7 +55,7 @@ function Themes(props) {
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(DEFAULT_LIMIT);
   const [error, setError] = useState(false);
-  const [themeSelected, setThemeSelected] = useState(null);
+  const [themeSelected, setThemeSelected] = useState({});
   const [reload, setReload] = useState(true);
   const [openForm, setOpenForm] = useState(false);
   const [openRemoveConfirm, setOpenRemoveConfirm] = useState(false);
@@ -76,24 +76,25 @@ function Themes(props) {
     if (loading) return;
 
     if (!isOpen) {
-      setThemeSelected(null);
+      setThemeSelected({});
       setReload(succeeded);
     }
 
     setOpenForm(isOpen);
   }
 
-  function handleOpenRemoveConfirm(isOpen = false, newPage = false) {
+  function handleOpenRemoveConfirm(isOpen = false, stack = null) {
     if (loading) return;
 
     if (!isOpen) {
-      setThemeSelected(null);
+      setThemeSelected({});
 
-      if (newPage) {
-        setPage(newPage);
+      if (stack && stack.removed) {
+        if (stack.newPage) {
+          setPage(stack.newPage);
+        }
+        setReload(true);
       }
-
-      setReload(true);
     }
     setOpenRemoveConfirm(isOpen);
   }
@@ -155,7 +156,8 @@ function Themes(props) {
       />
       <RemoveConfirmation
         open={openRemoveConfirm}
-        onClose={(newPage) => handleOpenRemoveConfirm(false, newPage)}
+        themesQuantity={themes.length}
+        onClose={(stack) => handleOpenRemoveConfirm(false, stack)}
         propTheme={themeSelected}
         page={page}
       />
