@@ -162,11 +162,15 @@ function Themes(props) {
       <Box mb={3}>
         <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" width="100%">
           <HudButtons>
-            <CustomButton
-              color="primary"
-              icon="add_circle_outline"
-              onClick={() => handleOpenForm(true)}
-            />
+            { user.tagAdmin
+              && (
+              <CustomButton
+                color="primary"
+                icon="add_circle_outline"
+                onClick={() => handleOpenForm(true)}
+              />
+              )
+            }
             { user.tagAdmin
               && (
                 <HudLink to="/management">
