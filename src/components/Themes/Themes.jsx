@@ -9,10 +9,10 @@ import {
   TableFooter,
   TablePagination,
   Paper,
-  Icon,
   Box,
   LinearProgress,
   CircularProgress,
+  Typography,
 } from '@material-ui/core';
 
 import axios from 'axios';
@@ -37,7 +37,12 @@ import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import RemoveConfirmation from './RemoveConfirmation';
 import Form from './Form';
 
-import { HudLink, HudSearchBar, HudButtons } from './styles';
+import {
+  HudLink,
+  HudSearchBar,
+  HudButtons,
+  TableIcon,
+} from './styles';
 
 function Themes(props) {
   const { user } = { ...props };
@@ -207,29 +212,35 @@ function Themes(props) {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <span>
-                    <Icon fontSize="small">
+                  <Box display="flex" alignItems="center">
+                    <TableIcon fontSize="small" color="action">
                       bookmark
-                    </Icon>
-                    Tema
-                  </span>
+                    </TableIcon>
+                    <Typography component="span" variant="body1">
+                      Tema
+                    </Typography>
+                  </Box>
                 </TableCell>
                 <TableCell>
-                  <span>
-                    <Icon fontSize="small">
+                  <Box display="flex" alignItems="center">
+                    <TableIcon fontSize="small" color="action">
                       bookmark_border
-                    </Icon>
-                    Alias
-                  </span>
+                    </TableIcon>
+                    <Typography component="span" variant="body1">
+                      Alias
+                    </Typography>
+                  </Box>
                 </TableCell>
                 {user.tagAdmin && (
                 <TableCell>
-                  <span>
-                    <Icon fontSize="small">
+                  <Box display="flex" alignItems="center">
+                    <TableIcon fontSize="small" color="action">
                       build
-                    </Icon>
-                    Ações
-                  </span>
+                    </TableIcon>
+                    <Typography component="span" variant="body1">
+                      Ações
+                    </Typography>
+                  </Box>
                 </TableCell>
                 )}
               </TableRow>
