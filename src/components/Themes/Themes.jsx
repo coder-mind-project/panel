@@ -262,15 +262,13 @@ function Themes(props) {
                     <CustomIconButton
                       icon="edit"
                       color="primary"
-                      aria-label="Editar"
-                      tooltip="Editar"
+                      tooltip={<Typography component="span" variant="body2">Editar</Typography>}
                       onClick={selectTheme(theme, 'edit')}
                     />
                     <CustomIconButton
                       icon="delete_forever"
                       color="secondary"
-                      aria-label="Delete"
-                      tooltip="Remover"
+                      tooltip={<Typography component="span" variant="body2">Remover</Typography>}
                       onClick={selectTheme(theme, 'remove')}
                     />
                   </TableCell>
