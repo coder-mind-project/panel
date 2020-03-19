@@ -83,6 +83,7 @@ function ThemeForm(props) {
       onClose={() => close()}
       onEscapeKeyDown={() => close()}
       onBackdropClick={() => close()}
+      maxWidth="md"
     >
       {loading && <LinearProgress color="primary" /> }
       <Box mb={3} p={2}>
