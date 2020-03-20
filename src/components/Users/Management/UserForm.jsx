@@ -271,7 +271,7 @@ function UserForm(props) {
               />
               <CustomTextField
                 label="Genero"
-                value={userState.gender || ''}
+                value={userState.gender || 'undefined'}
                 select
                 onChange={(evt) => handleChange(evt, 'gender')}
               >
