@@ -143,6 +143,7 @@ function Categories(props) {
     }
 
     if (reload) {
+      scrollToTop();
       setReload(false);
       searchCategories();
     }
