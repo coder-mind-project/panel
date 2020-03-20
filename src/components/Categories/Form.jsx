@@ -120,13 +120,29 @@ function CategoryForm(props) {
   }
 
   useEffect(() => {
-    if (open) {
+    function getCategory() {
       if (!propCategory._id) {
         setCategory({
           name: '', alias: '', theme: null, description: '',
         });
-      } else setCategory(propCategory);
+      } else {
+        const theme = propCategory.theme || {};
+
+        // Set label and value properties to display in async-select component
+        const currentCategory = {
+          ...propCategory,
+          theme: {
+            ...theme,
+            label: theme.name,
+            value: theme._id,
+          },
+        };
+
+        setCategory(currentCategory);
+      }
     }
+
+    if (open) getCategory();
   }, [open, propCategory]);
 
   return (
