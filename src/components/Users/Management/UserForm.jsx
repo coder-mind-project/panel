@@ -287,7 +287,7 @@ function UserForm(props) {
               </CustomTextField>
               <CustomTextField
                 label="Tipo"
-                value={userState.type || ''}
+                value={userState.type || 'author'}
                 helperText="Tipo de conta do usuário"
                 select
                 onChange={(evt) => handleChange(evt, 'type')}
