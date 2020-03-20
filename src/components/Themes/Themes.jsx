@@ -144,6 +144,7 @@ function Themes(props) {
     }
 
     if (reload) {
+      scrollToTop();
       setReload(false);
       searchThemes();
     }
