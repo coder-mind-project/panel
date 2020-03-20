@@ -90,6 +90,15 @@ function CategoryForm(props) {
     }, 1000);
   }
 
+  function formatData() {
+    const data = { ...category };
+
+    data.themeId = data.theme ? data.theme._id : null;
+    delete data.theme;
+
+    return data;
+  }
+
   async function save() {
     if (loading) return;
 
@@ -97,7 +106,8 @@ function CategoryForm(props) {
     const url = method === 'post' ? `${backendUrl}/categories` : `${backendUrl}/categories/${category._id}`;
     setLoading(true);
 
-    await axios[method](url, category).then(() => {
+    const data = formatData(category);
+    await axios[method](url, data).then(() => {
       callToast(success('Operação realizada com sucesso'));
       close(true);
     }).catch((err) => {
