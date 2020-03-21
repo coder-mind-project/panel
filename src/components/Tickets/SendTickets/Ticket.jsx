@@ -139,7 +139,7 @@ function Ticket(props) {
                 <Box width="100%" display="flex" alignItems="center" mt={2} mb={2}>
                   {!matches && (
                     <Box display="flex" alignItems="center" mr={1}>
-                      <Icon fontSize="large">label</Icon>
+                      <Icon fontSize="large" color="action">email</Icon>
                     </Box>
                   )}
                   <Box display="flex" alignItems="center">
@@ -149,7 +149,7 @@ function Ticket(props) {
                 <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap">
                   <CustomCard>
                     <CardHeader
-                      avatar={!matches ? (<Icon fontSize="large">lock_open</Icon>) : null}
+                      avatar={!matches ? (<Icon fontSize="large" color="action">lock_open</Icon>) : null}
                       title="Alteraram os dados da minha conta!"
                       titleTypographyProps={{ component: 'h4', variant: 'h6' }}
                     />
@@ -165,7 +165,7 @@ function Ticket(props) {
                   </CustomCard>
                   <CustomCard>
                     <CardHeader
-                      avatar={!matches ? (<Icon fontSize="large">bug_report</Icon>) : null}
+                      avatar={!matches ? (<Icon fontSize="large" color="action">bug_report</Icon>) : null}
                       title="Reporte de bugs/erros"
                       titleTypographyProps={{ component: 'h4', variant: 'h6' }}
                     />
@@ -183,7 +183,7 @@ function Ticket(props) {
                   </CustomCard>
                   <CustomCard>
                     <CardHeader
-                      avatar={!matches ? (<Icon fontSize="large">extension</Icon>) : null}
+                      avatar={!matches ? (<Icon fontSize="large" color="action">extension</Icon>) : null}
                       title="Sugestão de melhorias"
                       titleTypographyProps={{ component: 'h4', variant: 'h6' }}
                     />
