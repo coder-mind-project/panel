@@ -145,3 +145,30 @@ export const CustomLink = styled(Link)({
 export const TableIcon = styled(Icon)({
   marginRight: '5px',
 });
+
+export const HudButtons = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  width: '60%',
+  [devices.tablet]: {
+    width: '100%',
+  },
+  '& a': {
+    margin: '0 8px',
+  },
+  '& > button': {
+    margin: '0 8px 10px 8px',
+    [devices.tablet]: {
+      width: '100%',
+    },
+  },
+});
+
+export const HudLink = styled(Link)({
+  textDecoration: 'none',
+  [devices.tablet]: {
+    width: '100%',
+    margin: 0,
+  },
+});
