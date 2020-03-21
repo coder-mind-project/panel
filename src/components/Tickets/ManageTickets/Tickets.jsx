@@ -44,7 +44,11 @@ import { displayFullDate } from '@/config/masks';
 import ViewTicket from './ViewTicket';
 import Filter from './Filter';
 
-import { TableIcon } from './styles';
+import {
+  TableIcon,
+  HudButtons,
+  HudLink,
+} from './styles';
 
 
 function Tickets(props) {
@@ -185,26 +189,24 @@ function Tickets(props) {
         icon="email"
       />
       <FloatingButton action={scrollToTop} />
-      <Container className="hudBar">
-        <Grid item className="hudBarChild">
-          <Box mr={1} className="linkButton">
-            <Link to="/management" className="linkRouter linkButton">
+      <Box mb={3}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" width="100%">
+          <HudButtons>
+            <CustomButton
+              color="primary"
+              icon={showFilter ? 'clear' : 'filter_list'}
+              onClick={() => setShowFilter(!showFilter)}
+            />
+            <HudLink to="/management">
               <CustomButton
                 color="default"
-                text="Configurações"
                 icon="settings"
+                fullWidth
               />
-            </Link>
-          </Box>
-          <Box mr={1} className="linkButton">
-            <CustomButton
-              text="Filtros"
-              icon={showFilter ? 'clear' : 'filter_list'}
-              onClick={() => setShowFilter(true)}
-            />
-          </Box>
-        </Grid>
-      </Container>
+            </HudLink>
+          </HudButtons>
+        </Box>
+      </Box>
       <Filter
         showFilter={showFilter}
         emitSearchByFilters={(newFilters) => prepareForSearchWithFilters(newFilters)}
