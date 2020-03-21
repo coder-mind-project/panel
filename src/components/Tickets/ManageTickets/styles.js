@@ -141,3 +141,7 @@ export const CustomMenu = styled(Menu)({
 export const CustomLink = styled(Link)({
   textDecoration: 'none',
 });
+
+export const TableIcon = styled(Icon)({
+  marginRight: '5px',
+});
