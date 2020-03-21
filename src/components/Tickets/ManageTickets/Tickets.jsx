@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Container,
-  Grid,
   Table,
   TableRow,
   TableHead,
@@ -32,6 +31,7 @@ import FloatingButton from '@/components/Buttons/FloatingButton.jsx';
 import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import Header from '@/components/Header.jsx';
+import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
 
 import {
   OPTIONS_LIMIT,
@@ -222,16 +222,9 @@ function Tickets(props) {
           )
       }
       {!loading && tickets.length === 0
-          && (
-          <Box display="flex" flexWrap="wrap" alignItems="center" justifyContent="center" width="100%">
-            <Icon>
-              search
-            </Icon>
-            <Typography component="h5" variant="body1">
-              Ops, Nenhum resultado encontrado
-            </Typography>
-          </Box>
-          )
+        && (
+          <DataNotFound msg="Ops, nenhum ticket encontrado" />
+        )
       }
       {loading && tickets.length > 0 && <LinearProgress color="primary" />}
       {tickets.length > 0
