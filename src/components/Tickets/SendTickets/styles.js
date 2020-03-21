@@ -5,9 +5,11 @@ import {
   TextField,
   Box,
   Paper,
+  FormControl,
 } from '@material-ui/core';
 
-import { devices } from '../../../config/devices';
+import { devices } from '@/config/devices';
+import { KeyboardDateTimePicker } from '@material-ui/pickers';
 
 
 export const CustomCard = styled(Card)({
@@ -40,6 +42,26 @@ export const CustomCardActions = styled(CardActions)({
 
 export const CustomTextField = styled(TextField)({
   margin: '10px',
+  width: '320px',
+  [devices.mobileLarge]: {
+    width: '100%',
+  },
+});
+
+export const CustomFormControl = styled(FormControl)({
+  margin: '10px',
+  width: '320px',
+  [devices.mobileLarge]: {
+    width: '100%',
+  },
+});
+
+export const CustomKeyboardDateTimePicker = styled(KeyboardDateTimePicker)({
+  margin: '10px',
+  width: '320px',
+  [devices.mobileLarge]: {
+    width: '100%',
+  },
 });
 
 export const CustomBox = styled(Box)({
