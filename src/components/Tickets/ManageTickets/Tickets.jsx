@@ -299,20 +299,19 @@ function Tickets(props) {
                         { !ticket.content.readed
                             && (
                               <CustomIconButton
-                                icon="info"
+                                icon="report"
                                 color="secondary"
-                                aria-label="Ticket não lido"
-                                tooltip={(<span style={{ fontSize: '0.8rem' }}>Ticket não lido</span>)}
+                                tooltip={(<Typography component="span" variant="body2">Ticket não lido</Typography>)}
                               />
                             )
                         }
                         { ticket.content.readed
                           && (
                             <CustomIconButton
-                              icon="done"
+                              icon="check_circle_outline"
                               color="primary"
                               aria-label="Ticket lido"
-                              tooltip={(<span style={{ fontSize: '0.8rem' }}>Ticket lido</span>)}
+                              tooltip={(<Typography component="span" variant="body2">Ticket lido</Typography>)}
                             />
                           )
                         }
@@ -339,10 +338,27 @@ function Tickets(props) {
                       {ticket.content.email}
                     </TableCell>
                     <TableCell scope="responses">
-                      <Tooltip title={(<Typography component="p" variant="body2">Responder</Typography>)}>
-                        <IconButton color="inherit" onClick={() => toogleTicketDialog(true, ticket, true)}>
-                          <Badge badgeContent={ticket.responses ? ticket.responses.length : 0} max={99} color="primary">
-                            <Icon>comment</Icon>
+                      <Tooltip
+                        title={
+                            (
+                              <Typography component="p" variant="body2">
+                                Responder
+                              </Typography>
+                            )
+                        }
+                      >
+                        <IconButton
+                          color="inherit"
+                          onClick={() => toogleTicketDialog(true, ticket, true)}
+                        >
+                          <Badge
+                            badgeContent={ticket.responses ? ticket.responses.length : 0}
+                            max={99}
+                            color="primary"
+                          >
+                            <Icon color="action">
+                              comment
+                            </Icon>
                           </Badge>
                         </IconButton>
                       </Tooltip>
