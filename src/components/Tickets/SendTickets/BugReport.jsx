@@ -6,7 +6,6 @@ import {
   Divider,
   Button,
   TextField,
-  FormControl,
   InputLabel,
   Select,
   MenuItem,
@@ -21,14 +20,21 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
-import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
+
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
-import { error as toastError } from '../../../config/toasts';
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
+import { error as toastError } from '@/config/toasts';
 
-import { backendUrl, defineErrorMsg } from '../../../config/backend';
+import { backendUrl, defineErrorMsg } from '@/config/backend';
 
-import CustomButton from '../../Buttons/Button';
+import CustomButton from '@/components/Buttons/Button.jsx';
+
+import {
+  CustomFormControl,
+  CustomKeyboardDateTimePicker,
+  CustomTextField,
+} from './styles';
 
 function BugReport(props) {
   const { callToast, user, goBack } = { ...props };
