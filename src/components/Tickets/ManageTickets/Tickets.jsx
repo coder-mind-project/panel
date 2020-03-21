@@ -240,19 +240,54 @@ function Tickets(props) {
                 <TableRow>
                   <TableCell />
                   <TableCell>
-                    Data de envio
+                    <Box display="flex" alignItems="center" justifyContent="center">
+                      <TableIcon fontSize="small" color="action">
+                        calendar_today
+                      </TableIcon>
+                      <Typography component="span" variant="body1" align="center">
+                        Data
+                      </Typography>
+                    </Box>
                   </TableCell>
                   <TableCell>
-                    Tipo
+                    <Box display="flex" alignItems="center">
+                      <TableIcon fontSize="small" color="action">
+                        class
+                      </TableIcon>
+                      <Typography component="span" variant="body1" align="center">
+                        Tipo
+                      </Typography>
+                    </Box>
                   </TableCell>
                   <TableCell>
-                    Ticket
+                    <Box display="flex" alignItems="center">
+                      <TableIcon fontSize="small" color="action">
+                        email
+                      </TableIcon>
+                      <Typography component="span" variant="body1" align="center">
+                        Ticket
+                      </Typography>
+                    </Box>
                   </TableCell>
                   <TableCell>
-                    E-mail solicitante
+                    <Box display="flex" alignItems="center">
+                      <TableIcon fontSize="small" color="action">
+                        alternate_email
+                      </TableIcon>
+                      <Typography component="span" variant="body1" align="center">
+                        Solicitante
+                      </Typography>
+                    </Box>
                   </TableCell>
                   <TableCell>
-                    Respostas
+                    <Box display="flex" alignItems="center">
+                      <TableIcon fontSize="small" color="action">
+                        forum
+                      </TableIcon>
+                      <Typography component="span" variant="body1" align="center">
+                        Respostas
+                      </Typography>
+                    </Box>
                   </TableCell>
                 </TableRow>
               </TableHead>
