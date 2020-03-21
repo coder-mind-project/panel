@@ -376,9 +376,6 @@ function Tickets(props) {
                     labelRowsPerPage={LIMIT_LABEL}
                     labelDisplayedRows={DISPLAYED_ROWS}
                     page={page - 1}
-                    SelectProps={{
-                      inputProps: { 'aria-label': 'Limite' },
-                    }}
                     onChangePage={changePage}
 
                     onChangeRowsPerPage={defineLimit}
