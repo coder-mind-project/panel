@@ -33,18 +33,18 @@ import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import Header from '@/components/Header.jsx';
 
-import ViewTicket from './ViewTicket';
-import Filter from './Filter';
-
-
 import {
   OPTIONS_LIMIT,
   DEFAULT_LIMIT,
   LIMIT_LABEL,
   DISPLAYED_ROWS,
-} from '../../../config/dataProperties';
+} from '@/config/dataProperties';
+import { displayFullDate } from '@/config/masks';
 
-import { displayFullDate } from '../../../config/masks';
+import ViewTicket from './ViewTicket';
+import Filter from './Filter';
+
+import { TableIcon } from './styles';
 
 
 function Tickets(props) {
