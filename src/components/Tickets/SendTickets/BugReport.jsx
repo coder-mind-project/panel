@@ -107,12 +107,12 @@ function BugReport(props) {
     <Grow in>
       <Grid item xs={12}>
         <Box width="100%" marginLeft="25px" marginRight="25px" marginTop="15px">
-          <Button variant="outlined" color="primary" onClick={goOut}>Voltar</Button>
+          <Button color="primary" onClick={goOut}>Voltar</Button>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center" margin="25px">
           <Box width="100%" display="flex" alignItems="center">
             <Box display="flex" alignItems="center" mr={1}>
-              <Icon>bug_report</Icon>
+              <Icon color="action">bug_report</Icon>
             </Box>
             <Box display="flex" alignItems="center">
               <Typography component="h4" variant="h6">Reporte de bugs / erros</Typography>
@@ -129,58 +129,49 @@ function BugReport(props) {
             && (
             <Box padding="25px">
               <Box display="flex" flexWrap="wrap" alignItems="flex-start">
-                <Grid item xs={12} md={5} className="formInput">
-                  <FormControl fullWidth>
-                    <InputLabel>Onde ocorreu o bug? *</InputLabel>
-                    <Select
-                      value={ticket.software}
-                      onChange={(evt) => handleChangeTicket(evt, 'software')}
-                    >
-                      <MenuItem value="site">Site Coder Mind - codermind.com.br</MenuItem>
-                      <MenuItem value="panel">Painel Coder Mind - painel.codermind.com.br</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} md={5} className="formInput">
-                  <MuiPickersUtilsProvider utils={MomentUtils}>
-                    <KeyboardDateTimePicker
-                      label="Data da ocorrência (opcional)"
-                      ampm={false}
-                      clearable
-                      cancelLabel="Cancelar"
-                      clearLabel="Limpar"
-                      className="formInput"
-                      value={ticket.date}
-                      onChange={handleDateTicket}
-                      mask="__/__/____ __:__:__"
-                      maxDate={new Date()}
-                      maxDateMessage="Data acima do permitido"
-                      minDateMessage="Data abaixo do permitido"
-                      format="DD/MM/YYYY HH:mm:ss"
-                      invalidDateMessage="Formato de data inválido"
-                      fullWidth
-                    />
-                  </MuiPickersUtilsProvider>
-                </Grid>
-                <Grid item xs={12} md={5} className="formInput">
-                  <FormControl fullWidth>
-                    <InputLabel>Qual dispositivo você estava utilizando? *</InputLabel>
-                    <Select
-                      value={ticket.device}
-                      onChange={(evt) => handleChangeTicket(evt, 'device')}
-                    >
-                      <MenuItem value="celphone - webapp">Celular - Pelo site</MenuItem>
-                      <MenuItem value="computer">Computador</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
+                <CustomFormControl>
+                  <InputLabel>Onde ocorreu o bug?</InputLabel>
+                  <Select
+                    value={ticket.software}
+                    onChange={(evt) => handleChangeTicket(evt, 'software')}
+                  >
+                    <MenuItem value="site">Site Coder Mind - codermind.com.br</MenuItem>
+                    <MenuItem value="panel">Painel Coder Mind - painel.codermind.com.br</MenuItem>
+                  </Select>
+                </CustomFormControl>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                  <CustomKeyboardDateTimePicker
+                    label="Data da ocorrência (opcional)"
+                    ampm={false}
+                    clearable
+                    cancelLabel="Cancelar"
+                    clearLabel="Limpar"
+                    value={ticket.date}
+                    onChange={handleDateTicket}
+                    mask="__/__/____ __:__:__"
+                    maxDate={new Date()}
+                    maxDateMessage="Data acima do permitido"
+                    minDateMessage="Data abaixo do permitido"
+                    format="DD/MM/YYYY HH:mm:ss"
+                    invalidDateMessage="Formato de data inválido"
+                  />
+                </MuiPickersUtilsProvider>
+                <CustomFormControl>
+                  <InputLabel>Qual dispositivo você estava utilizando?</InputLabel>
+                  <Select
+                    value={ticket.device}
+                    onChange={(evt) => handleChangeTicket(evt, 'device')}
+                  >
+                    <MenuItem value="celphone - webapp">Celular - Pelo site</MenuItem>
+                    <MenuItem value="computer">Computador</MenuItem>
+                  </Select>
+                </CustomFormControl>
                 { Boolean(ticket.device === 'celphone - webapp' || ticket.device === 'computer')
                         && (
-                        <Grid item xs={12} md={5} className="formInput">
-                          <FormControl fullWidth>
+                          <CustomFormControl>
                             <InputLabel>
                               Qual Browser/Navegador de internet
-                              você estava utilizando? *
+                              você estava utilizando?
                             </InputLabel>
                             <Select
                               value={ticket.browser}
@@ -193,16 +184,14 @@ function BugReport(props) {
                               <MenuItem value="opera">Opera</MenuItem>
                               <MenuItem value="other">Outro</MenuItem>
                             </Select>
-                          </FormControl>
-                        </Grid>
+                          </CustomFormControl>
                         )
                     }
                 { ticket.browser === 'other'
                         && (
-                        <Grid item xs={12} md={5} className="formInput">
-                          <TextField
-                            fullWidth
-                            label="Especifique o browser *"
+                        <Grid item xs={12} md={5}>
+                          <CustomTextField
+                            label="Especifique o browser"
                             value={ticket.anotherBrowser}
                             onChange={(evt) => handleChangeTicket(evt, 'anotherBrowser')}
                           />
@@ -211,11 +200,11 @@ function BugReport(props) {
                     }
               </Box>
               <TextField
-                className="formInput"
+
                 fullWidth
                 multiline
                 rows="10"
-                label="Se possível detalhe o acontecimento *"
+                label="Se possível detalhe o acontecimento"
                 value={ticket.msg}
                 onChange={(evt) => handleChangeTicket(evt, 'msg')}
               />
