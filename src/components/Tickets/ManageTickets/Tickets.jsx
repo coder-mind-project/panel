@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core';
 
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
 import { backendUrl } from '@/config/backend';
