@@ -170,8 +170,7 @@ function BugReport(props) {
                         && (
                           <CustomFormControl>
                             <InputLabel>
-                              Qual Browser/Navegador de internet
-                              você estava utilizando?
+                              Qual o navegador utilizado?
                             </InputLabel>
                             <Select
                               value={ticket.browser}
