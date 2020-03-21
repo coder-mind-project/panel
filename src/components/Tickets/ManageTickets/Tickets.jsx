@@ -162,6 +162,7 @@ function Tickets(props) {
     }
 
     if (reload) {
+      scrollToTop();
       setReload(false);
       searchTickets();
     }
