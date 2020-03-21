@@ -11,7 +11,7 @@ import { devices } from '../../../config/devices';
 
 
 export const CustomCard = styled(Card)({
-  maxWidth: '25%',
+  width: '30%',
   minHeight: '250px',
   margin: '10px',
   display: 'flex',
@@ -19,13 +19,10 @@ export const CustomCard = styled(Card)({
   justifyContent: 'space-between',
   boxShadow: '0px 1px 8px 0px rgba(0,0,0,0.2), 0px 1px 2px 0px rgba(0,0,0,0.14), 0px 5px 1px -1px rgba(0,0,0,0.12)',
   [devices.laptop]: {
-    maxWidth: '40%',
+    width: '40%',
   },
   [devices.tablet]: {
-    maxWidth: '70%',
-  },
-  [devices.mobileLarge]: {
-    maxWidth: '100%',
+    width: '100%',
   },
 });
 
