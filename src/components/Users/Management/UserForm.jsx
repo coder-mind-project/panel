@@ -134,6 +134,9 @@ function UserForm(props) {
       data.cellphone = data.cellphone.replace('(', '').replace(')', '').replace(' ', '').replace('-', '');
     }
 
+    data.gender = data.gender || 'undefined';
+    data.type = data.type || 'author';
+
     return data;
   }
 
