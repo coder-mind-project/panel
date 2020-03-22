@@ -120,7 +120,7 @@ function FormRedeemAccount(props) {
   return (
     <Box height="100%" width="100%" overflow="hidden">
       {confirming && <LinearProgress color="primary" />}
-      <RedeemAccountContainer option="emailAndPassword">
+      <RedeemAccountContainer justifycontent="flex-start">
         { !loading && authorized && !success
           && (
           <form onSubmit={changePassword}>
