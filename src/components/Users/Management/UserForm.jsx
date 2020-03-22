@@ -186,8 +186,8 @@ function UserForm(props) {
 
     if (reload) {
       scrollToTop();
-      const preference = localStorage.getItem('users-send-email');
-      setSendEmail(Boolean(preference));
+      const preference = localStorage.getItem('users-send-email') === 'true';
+      setSendEmail(preference);
     }
 
     if (id && reload) {
