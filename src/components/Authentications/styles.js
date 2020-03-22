@@ -62,6 +62,7 @@ export const RedeemAccountContainer = styled(Container)({
   flexDirection: 'column',
   height: '100%',
   width: '100%',
+  maxWidth: '100%',
   overflowY: 'scroll',
   paddingBottom: 24,
 });
