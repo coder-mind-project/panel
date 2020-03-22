@@ -58,7 +58,7 @@ export const RedeemAccountContainer = styled(Container)({
   backgroundColor: '#FFFFFF',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: (props) => (props.option === 'emailAndPassword' ? 'flex-start' : 'center'),
+  justifyContent: (props) => (props.justifycontent === 'flex-start' ? 'flex-start' : 'center'),
   flexDirection: 'column',
   height: '100%',
   width: '100%',
