@@ -15,6 +15,8 @@ import { Alert } from '@material-ui/lab';
 import { COLOR_APP, COLOR_APP_HOVER } from '@/config/dataProperties';
 import { devices } from '@/config/devices';
 
+import { Link } from 'react-router-dom';
+
 export const GridPresentation = styled(Grid)({
   display: 'flex',
   alignItems: 'center',
@@ -156,4 +158,8 @@ export const CustomButtonBase = styled(ButtonBase)({
   '& .MuiIcon-root': {
     marginRight: '5px',
   },
+});
+
+export const CustomLink = styled(Link)({
+  textDecoration: 'none',
 });

@@ -173,9 +173,9 @@ function RescueAccount(props) {
     const method = option === 'onlyPassword' ? 'patch' : 'put';
 
     setWaiting(true);
-    await axios[method](url, data).then((res) => {
-      setResponse(res.data);
-      clearForms();
+    await axios[method](url, data).then(() => {
+      const message = method === 'patch' ? 'Enviamos um e-mail para você, as proximas instruções estarão por lá! ;)' : 'Solicitação enviada com sucesso, agora é com a gente, basta aguardar que entraremos em contato! ;)';
+      setResponse(message);
     }).catch(async (err) => {
       const errorMessage = defineErrorMsg(err);
       callToast(toastError(errorMessage));
@@ -486,16 +486,16 @@ function RescueAccount(props) {
         { Boolean(response)
           && (
             <Box>
-              <Box height="100%" display="flex" alignItems="center">
-                <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
-                  <Box mr={2} mb={2}>
+              <Box height="100%" display="flex" flexDirection="column" alignItems="center" mt={3}>
+                <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap" mb={3}>
+                  <Box mr={2}>
                     <FontAwesomeIcon icon={faCheckCircle} size="4x" color="#218838" />
                   </Box>
-                  <Box mb={5}>
+                  <Box>
                     {response}
                   </Box>
-                  <Button variant="outlined" color="primary" onClick={back}>Ir para a tela de autenticação</Button>
                 </Box>
+                <Button variant="outlined" color="primary" onClick={back}>Ir para a tela de autenticação</Button>
               </Box>
             </Box>
           )}
