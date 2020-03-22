@@ -40,6 +40,7 @@ import Themes from './components/Themes/Themes';
 import Management from './components/Management/Management';
 import Error from './components/Errors/Error';
 import Auth from './components/Authentications/Auth';
+import RedeemAccount from './components/Authentications/FormRedeemAccount';
 import Ticket from './components/Tickets/SendTickets/Ticket';
 import Tickets from './components/Tickets/ManageTickets/Tickets';
 import RouteNotFound from './components/NotFound/RouteNotFound';
@@ -52,7 +53,6 @@ import Stats from './pages/statistics-section/Stats';
 import MyAccount from './components/Users/MyAccount/MyAccount';
 import Comments from './pages/comments-section/Comments';
 import Comment from './pages/comments-section/Comment';
-import RedeemAccount from './pages/auth-section/RedeemAccount';
 import ConfirmEmail from './pages/auth-section/ConfirmEmail';
 import RemoveAccount from './pages/auth-section/RemoveAccount';
 
