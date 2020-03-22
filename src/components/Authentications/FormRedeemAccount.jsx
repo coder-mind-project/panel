@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { reactRouterParams } from '@/types';
+import { reactRouterParams, userType } from '@/types';
 
 import {
   Grid,
@@ -23,14 +23,13 @@ import { backendUrl, defineErrorMsg } from '@/config/backend';
 
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { callToast } from '@/redux/toast/toastActions';
 
 import { LogoArea, RedeemAccountContainer, CustomLink } from './styles';
 
 function FormRedeemAccount(props) {
   const {
     location,
+    userLogged,
   } = props;
 
   const [error, setError] = useState(false);
@@ -65,7 +64,7 @@ function FormRedeemAccount(props) {
 
   useEffect(() => {
     function collectToken() {
-      if (!location.search) {
+      if (!location.search || userLogged._id) {
         window.open('/auth', '_self');
         return null;
       }
@@ -116,7 +115,7 @@ function FormRedeemAccount(props) {
       setLoaded(true);
       verifyToken();
     }
-  }, [loading, location, user, authorized, error, token, loaded]);
+  }, [userLogged, loading, location, user, authorized, error, token, loaded]);
 
   return (
     <Box height="100%" width="100%" overflow="hidden">
@@ -223,9 +222,13 @@ function FormRedeemAccount(props) {
 
 FormRedeemAccount.propTypes = {
   location: reactRouterParams.isRequired,
+  userLogged: userType,
 };
 
-const mapStateToProps = (state) => ({ toast: state.config });
-const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast }, dispatch);
+FormRedeemAccount.defaultProps = {
+  userLogged: {},
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormRedeemAccount);
+const mapStateToProps = (state) => ({ userLogged: state.user });
+
+export default connect(mapStateToProps)(FormRedeemAccount);
