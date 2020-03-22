@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Box,
@@ -52,7 +53,11 @@ import {
 } from './styles';
 
 function RescueAccount(props) {
-  const { back, callToast } = { ...props };
+  const {
+    back,
+    callToast,
+  } = props;
+
   const [option, setOption] = useState('menu');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
@@ -525,6 +530,11 @@ function RescueAccount(props) {
     </Box>
   );
 }
+
+RescueAccount.propTypes = {
+  back: PropTypes.func.isRequired,
+  callToast: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({ toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
