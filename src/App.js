@@ -153,7 +153,7 @@ function App(props) {
                   { error
                     && <Redirect to="/error" />
                   }
-                  <AppContent user={user} isvalidating={validatingToken ? 'true' : ''}>
+                  <AppContent user={getPath() === '/confirm-email' ? {} : user} isvalidating={validatingToken ? 'true' : ''}>
                     <Switch>
                       <Route path="/" exact component={Articles} />
                       <Route path="/auth" exact component={Auth} />
