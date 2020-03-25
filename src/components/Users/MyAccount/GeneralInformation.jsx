@@ -205,7 +205,7 @@ function GeneralInformation(props) {
 
     setCancelingChangeEmail(true);
 
-    await axios.patch(url).then(() => {
+    await axios.delete(url).then(() => {
       let updatedUser = userState;
       delete updatedUser.confirmEmail;
       setUserState(updatedUser);
