@@ -4,6 +4,7 @@ import {
   Icon,
   useMediaQuery,
   CircularProgress,
+  Box,
 } from '@material-ui/core';
 
 import { devices } from '@/config/devices';
@@ -55,7 +56,9 @@ function Button(props) {
           />
         )
       }
-      {text}
+      <Box ml={loading || (icon && !disabledIcon) ? 1 : 0}>
+        {text}
+      </Box>
     </CustomButton>
   );
 }
