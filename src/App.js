@@ -41,20 +41,20 @@ import Management from './components/Management/Management';
 import Error from './components/Errors/Error';
 import Auth from './components/Authentications/Auth';
 import RedeemAccount from './components/Authentications/FormRedeemAccount';
+import ConfirmEmail from './components/Authentications/FormConfirmEmail';
+import RemoveAccount from './components/Authentications/FormRemoveAccount';
 import Ticket from './components/Tickets/SendTickets/Ticket';
 import Tickets from './components/Tickets/ManageTickets/Tickets';
 import RouteNotFound from './components/NotFound/RouteNotFound';
 import Users from './components/Users/Management/Users';
 import UserForm from './components/Users/Management/UserForm';
 import Categories from './components/Categories/Categories';
-import RemoveAccount from './components/Authentications/FormRemoveAccount';
 import Articles from './pages/articles-section/Articles';
 import Article from './pages/articles-section/Article';
 import Stats from './pages/statistics-section/Stats';
 import MyAccount from './components/Users/MyAccount/MyAccount';
 import Comments from './pages/comments-section/Comments';
 import Comment from './pages/comments-section/Comment';
-import ConfirmEmail from './pages/auth-section/ConfirmEmail';
 
 
 // Css imports
