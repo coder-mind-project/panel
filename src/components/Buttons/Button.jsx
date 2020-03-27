@@ -56,7 +56,7 @@ function Button(props) {
           />
         )
       }
-      <Box ml={loading || (icon && !disabledIcon) ? 1 : 0}>
+      <Box ml={loading || (icon && !disabledIcon && text) ? 1 : 0}>
         {text}
       </Box>
     </CustomButton>
