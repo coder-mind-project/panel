@@ -29,6 +29,7 @@ export const CommentContainer = styled(Grid)({
 export const ArticleSmallImgContainer = styled(Box)({
   '& .article-small-img': {
     height: '48px',
+    width: '48px',
     borderRadius: '24px',
     marginRight: '8px',
   },
