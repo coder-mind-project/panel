@@ -229,7 +229,7 @@ function Categories(props) {
                       bookmark_border
                     </TableIcon>
                     <Typography component="span" variant="body1">
-                      Alias
+                      Apelido
                     </Typography>
                   </Box>
                 </TableCell>
