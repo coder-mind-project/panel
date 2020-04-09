@@ -4,6 +4,7 @@ import {
   Grid,
   Icon,
   Chip,
+  DialogContent,
 } from '@material-ui/core';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,5 +38,11 @@ export const CustomFaIcon = styled(FontAwesomeIcon)({
 export const CustomChip = styled(Chip)({
   '& .MuiIcon-root': {
     marginRight: '5px',
+  },
+});
+
+export const CustomDialogContent = styled(DialogContent)({
+  '& .cm-link': {
+    color: (props) => (props.theme === 'dark' ? '#fff' : 'auto'),
   },
 });

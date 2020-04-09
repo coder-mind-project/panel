@@ -8,27 +8,37 @@ import {
   Divider,
   Dialog,
   DialogActions,
-  DialogContent,
   DialogTitle,
   Button,
   Typography,
 } from '@material-ui/core';
 
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import { APP_VERSION, APP_BUILD, APP_DEPENDENCIES } from '@/config/dataProperties';
 
 import Logo from '@/assets/coder-mind-painelv1-preto.png';
+import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
 
-import { CustomLink } from './styles';
+import { CustomLink, CustomDialogContent } from './styles';
 
 function MoreInfo(props) {
-  const { opened, closeDialog, user } = props;
+  const {
+    opened,
+    closeDialog,
+    user,
+    theme,
+  } = props;
 
   const [open, setOpen] = useState(false);
 
   function close() {
     setOpen(false);
     closeDialog();
+  }
+
+  function isDarkTheme() {
+    return theme === 'dark';
   }
 
   useEffect(() => {
@@ -44,11 +54,11 @@ function MoreInfo(props) {
     >
       <DialogTitle id="alert-dialog-title">
         <Box width="100%" display="flex" justifyContent="center" alignItems="center">
-          <img src={Logo} width="225px" alt="Coder Mind" />
+          <img src={isDarkTheme() ? LogoWhite : Logo} width="225px" alt="Coder Mind" />
         </Box>
       </DialogTitle>
       <Divider />
-      <DialogContent>
+      <CustomDialogContent theme={theme}>
         <Grid item xs={12}>
           <Box mb={2} width="100%" display="flex" alignItems="center">
             <Box>
@@ -74,7 +84,17 @@ function MoreInfo(props) {
               </Typography>
               <Typography variant="body1" component="p">
                 Dependências:&nbsp;
-                <a href={APP_DEPENDENCIES} target="_blank" rel="noopener noreferrer" style={{ textWeigth: 800 }}>Visualizar dependências</a>
+                <a
+                  href={APP_DEPENDENCIES}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textWeigth: 800 }}
+                  className="cm-link"
+                >
+                  <Typography component="span" variant="body1">
+                    Visualizar dependências
+                  </Typography>
+                </a>
               </Typography>
             </Box>
           </Box>
@@ -94,17 +114,20 @@ function MoreInfo(props) {
           <Typography component="p" variant="body2" align="center">
             &copy; Coder Mind &#38; Colaboradores | Licenciado sobre a licença BSD 3
           </Typography>
-          <Link
-            to="https://opensource.org/licenses/BSD-3-Clause"
+          <a
+            href="https://opensource.org/licenses/BSD-3-Clause"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cm-link"
           >
             <Typography component="p" variant="body2" align="center">
               https://opensource.org/licenses/BSD-3-Clause
             </Typography>
-          </Link>
+          </a>
         </Box>
-      </DialogContent>
+      </CustomDialogContent>
       <DialogActions>
-        <Button onClick={close} color="primary" autoFocus>
+        <Button onClick={close} variant={isDarkTheme() ? 'contained' : 'text'} color="primary" autoFocus>
           Fechar
         </Button>
       </DialogActions>
@@ -116,10 +139,12 @@ MoreInfo.propTypes = {
   opened: PropTypes.bool,
   closeDialog: PropTypes.func.isRequired,
   user: userType.isRequired,
+  theme: PropTypes.string.isRequired,
 };
 
 MoreInfo.defaultProps = {
   opened: false,
 };
 
-export default MoreInfo;
+const mapStateToProps = (state) => ({ theme: state.theme });
+export default connect(mapStateToProps)(MoreInfo);
