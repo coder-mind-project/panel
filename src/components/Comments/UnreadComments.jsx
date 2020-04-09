@@ -5,7 +5,7 @@ import {
   IconButton,
   Icon,
   CircularProgress,
-  Fade,
+  Grow,
   Divider,
   Tooltip,
   Typography,
@@ -37,27 +37,11 @@ function UnreadComments() {
     setOpen(false);
   }
 
-  async function removeNotification(comment) {
-    const currentComments = comments;
-
-    const newComments = [];
-
-    currentComments.map((elem) => {
-      if (elem._id !== comment._id) {
-        newComments.push(elem);
-      }
-
-      return elem;
-    });
-
-    setComments(newComments);
-
-    if (currentComments.length - newComments.length === 1) {
-      setCount(count - 1);
-    }
-
-    const willBeOpen = newComments.length > 0;
-    setOpen(willBeOpen);
+  async function markAllAsRead() {
+    const url = `${backendUrl}/comments`;
+    axios.patch(url);
+    setComments([]);
+    setCount(0);
   }
 
   useEffect(() => {
@@ -110,10 +94,15 @@ function UnreadComments() {
         </Tooltip>
         <CustomMenu
           anchorEl={menuRef.current}
+          variant="menu"
           keepMounted
           open={open}
           onClose={closeMenuNotifications}
-          TransitionComponent={Fade}
+          transitionDuration={{
+            enter: 400,
+            exit: 400,
+          }}
+          TransitionComponent={Grow}
           getContentAnchorEl={null}
           anchorOrigin={{
             vertical: 'bottom',
@@ -133,14 +122,19 @@ function UnreadComments() {
                   </Icon>
                 </Box>
                 <Box display="flex" alignItems="center">
-                  <Typography component="h3" variant="body1">
+                  <Typography component="h3" variant="body2">
                     Comentários não lidos
                   </Typography>
                 </Box>
               </Box>
-              <IconButton onClick={closeMenuNotifications}>
+              <IconButton
+                size="small"
+                color="primary"
+                disabled={!count}
+                onClick={markAllAsRead}
+              >
                 <Icon>
-                  clear
+                  done_all
                 </Icon>
               </IconButton>
             </Box>
@@ -173,8 +167,14 @@ function UnreadComments() {
             }
             { loading
               && (
-              <Box p={2}>
-                <CircularProgress color="inherit" size={20} />
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                minWidth="260px"
+                p={2}
+              >
+                <CircularProgress color="primary" size={20} />
               </Box>
               )
             }
@@ -185,7 +185,6 @@ function UnreadComments() {
                     <NotificationItem
                       key={notification._id}
                       notification={notification}
-                      reloadComments={(comment) => removeNotification(comment)}
                       close={closeMenuNotifications}
                     />
                   ))}
