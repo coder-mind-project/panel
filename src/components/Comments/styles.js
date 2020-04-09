@@ -1,4 +1,10 @@
-import { styled, Menu, Icon } from '@material-ui/core';
+import {
+  styled,
+  Menu,
+  Icon,
+  Box,
+  Grid,
+} from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
 
@@ -13,4 +19,17 @@ export const CustomIcon = styled(Icon)({
 
 export const CustomMenu = styled(Menu)({
   marginTop: '.5rem',
+});
+
+export const CommentContainer = styled(Grid)({
+  margin: '0 5px',
+  maxWidth: '350px',
+});
+
+export const ArticleSmallImgContainer = styled(Box)({
+  '& .article-small-img': {
+    height: '48px',
+    borderRadius: '24px',
+    marginRight: '8px',
+  },
 });

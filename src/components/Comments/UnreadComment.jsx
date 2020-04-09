@@ -2,80 +2,64 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { commentType } from '@/types';
 
-import axios from 'axios';
+import { connect } from 'react-redux';
+
 import {
   Box,
-  Grid,
-  Icon,
-  IconButton,
   Typography,
   Divider,
-  Tooltip,
 } from '@material-ui/core';
 import { backendUrl } from '@/config/backend';
 
-import { CustomLink } from './styles';
+import ArticleSmallImgSample from '@/assets/img_not_found_512x512.png';
+import {
+  CustomLink,
+  ArticleSmallImgContainer,
+  CommentContainer,
+} from './styles';
 
 const UnreadComment = (props) => {
   const {
     notification,
-    reloadComments,
     close,
+    theme,
   } = props;
 
-  function checkNotification() {
-    const readed = {
-      _id: notification._id,
-      readed: true,
-    };
-
-    const url = `${backendUrl}/comments`;
-
-    axios.patch(url, readed).then(() => {
-      reloadComments(readed);
-    });
-  }
-
   return (
-    <Grid item xs={12}>
+    <CommentContainer item xs={12}>
       <Box display="flex" mb={1} mt={1}>
-        <Grid item xs={10}>
-          <CustomLink to="/comments" onClick={close}>
-            <Typography component="p" variant="button">
-              {notification.article.title}
-            </Typography>
+        <CustomLink to={`/comments?cid=${notification._id}`} onClick={close} theme={theme}>
+          <Box display="flex" alignItems="center">
+            <ArticleSmallImgContainer>
+              <img
+                className="article-small-img"
+                src={notification.article.smallImg ? `${backendUrl}${notification.article.smallImg}` : ArticleSmallImgSample}
+                alt={notification.article.title}
+              />
+            </ArticleSmallImgContainer>
             <Box>
-              <Typography component="span" variant="body2">{notification.userName}</Typography>
-              {' '}
-              <Typography component="span" variant="body2">fez um novo comentário</Typography>
-            </Box>
-          </CustomLink>
-        </Grid>
-        <Grid item xs={2}>
-          <Tooltip
-            title={(
               <Typography component="span" variant="body2">
-                Marcar como lido
+                {notification.userName.length > 30 ? `${notification.userName.slice(0, 29)}...` : notification.userName}
+                {' '}
+                fez um novo comentário no artigo
+                {' '}
+                <strong>{notification.article.title}</strong>
               </Typography>
-            )}
-          >
-            <IconButton color="primary" onClick={checkNotification}>
-              <Icon>
-                done
-              </Icon>
-            </IconButton>
-          </Tooltip>
-        </Grid>
+            </Box>
+          </Box>
+        </CustomLink>
       </Box>
       <Divider />
-    </Grid>
+    </CommentContainer>
   );
 };
 
 UnreadComment.propTypes = {
   notification: commentType.isRequired,
-  reloadComments: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
+  theme: PropTypes.string.isRequired,
 };
 
-export default UnreadComment;
+const mapStateToProps = (state) => ({ theme: state.theme });
+
+export default connect(mapStateToProps)(UnreadComment);
