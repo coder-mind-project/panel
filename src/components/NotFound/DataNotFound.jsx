@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-import TiredRobot from '@/assets/tired_robot_by_vonholdt.jpg';
+import TiredRobot from '@/assets/tired_robot_by_vonholdt.png';
 
 import { NotFoundBox } from './styles';
 
