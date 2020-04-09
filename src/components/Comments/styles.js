@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export const CustomLink = styled(Link)({
   textDecoration: 'none',
-  color: '#444',
+  color: (props) => (props.theme === 'dark' ? '#fff' : '#444'),
 });
 
 export const CustomIcon = styled(Icon)({
