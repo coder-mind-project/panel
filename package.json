@@ -24,6 +24,7 @@
     "react": "^16.8.6",
     "react-avatar": "^3.6.0",
     "react-chartjs-2": "^2.8.0",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.8.6",
     "react-google-invisible-recaptcha": "^0.2.11",
     "react-icons": "^3.7.0",
