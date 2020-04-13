@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { userType } from '@/types';
+
 import {
   Grid,
   Box,
@@ -37,7 +40,7 @@ import {
 } from './styles';
 
 function BugReport(props) {
-  const { callToast, user, goBack } = { ...props };
+  const { callToast, user, goBack } = props;
 
   const [ticket, setTicket] = useState({
     date: null,
@@ -232,6 +235,12 @@ function BugReport(props) {
     </Grow>
   );
 }
+
+BugReport.propTypes = {
+  user: userType.isRequired,
+  goBack: PropTypes.func.isRequired,
+  callToast: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);

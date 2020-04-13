@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { userType } from '@/types';
+
 import {
   Grid,
   Box,
@@ -29,7 +32,7 @@ import { error as toastError } from '../../../config/toasts';
 import CustomButton from '../../Buttons/Button';
 
 function AccountProblem(props) {
-  const { user, callToast, goBack } = { ...props };
+  const { user, callToast, goBack } = props;
 
   const [ticket, setTicket] = useState({
     code: '',
@@ -171,6 +174,12 @@ function AccountProblem(props) {
     </Grow>
   );
 }
+
+AccountProblem.propTypes = {
+  user: userType.isRequired,
+  goBack: PropTypes.func.isRequired,
+  callToast: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);

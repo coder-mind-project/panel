@@ -1,4 +1,5 @@
 import React from 'react';
+import PropsTypes from 'prop-types';
 
 import {
   Grid,
@@ -13,7 +14,7 @@ import {
 
 
 function WhatIsTicketDialog(props) {
-  const { closeDialog } = { ...props };
+  const { closeDialog } = props;
 
   return (
     <Dialog
@@ -42,5 +43,9 @@ function WhatIsTicketDialog(props) {
     </Dialog>
   );
 }
+
+WhatIsTicketDialog.propTypes = {
+  closeDialog: PropsTypes.func.isRequired,
+};
 
 export default WhatIsTicketDialog;

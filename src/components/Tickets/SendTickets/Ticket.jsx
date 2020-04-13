@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { userType, reactRouterParams } from '@/types';
+
 import {
   Container,
   Box,
@@ -35,7 +38,7 @@ function Ticket(props) {
     location,
     user,
     theme,
-  } = { ...props };
+  } = props;
 
   const matches = useMediaQuery(devices.mobileMedium);
 
@@ -224,6 +227,11 @@ function Ticket(props) {
   );
 }
 
+Ticket.propTypes = {
+  user: userType.isRequired,
+  location: reactRouterParams.isRequired,
+  theme: PropTypes.string.isRequired,
+};
 const mapStateToProps = (state) => ({ user: state.user, menu: state.menu, theme: state.theme });
 
 export default connect(mapStateToProps)(Ticket);

@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { userType } from '@/types';
+
 import {
   Grid,
   Box,
@@ -33,7 +36,7 @@ function ImprovementSuggestion(props) {
     callToast,
     goBack,
     changeType,
-  } = { ...props };
+  } = props;
 
   const [ticket, setTicket] = useState({
     emailUser: '',
@@ -159,6 +162,13 @@ function ImprovementSuggestion(props) {
     </Grow>
   );
 }
+
+ImprovementSuggestion.propTypes = {
+  user: userType.isRequired,
+  goBack: PropTypes.func.isRequired,
+  changeType: PropTypes.func.isRequired,
+  callToast: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);

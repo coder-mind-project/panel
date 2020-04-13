@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import {
   Container,
@@ -28,7 +29,7 @@ import { CustomTextField, CustomBox, IconBox } from './styles';
 
 
 function AccountRecuperation(props) {
-  const { params, callToast } = { ...props };
+  const { params, callToast } = props;
 
   const [accountChanged, setAccountChanged] = useState({
     firstCode: '',
@@ -186,6 +187,13 @@ function AccountRecuperation(props) {
     </Container>
   );
 }
+
+AccountRecuperation.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  params: PropTypes.object.isRequired,
+  callToast: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => ({ toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
