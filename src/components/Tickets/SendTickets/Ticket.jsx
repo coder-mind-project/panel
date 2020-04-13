@@ -34,6 +34,7 @@ function Ticket(props) {
   const {
     location,
     user,
+    theme,
   } = { ...props };
 
   const matches = useMediaQuery(devices.mobileMedium);
@@ -129,8 +130,13 @@ function Ticket(props) {
                   </Box>
                 </Box>
                 <Box mt={2}>
-                  <Button color="primary" size="small" variant="text" onClick={() => toogleDialogs('what-is-ticket')}>
-                    <Typography component="span" variant="button">O que é ticket?</Typography>
+                  <Button
+                    color="primary"
+                    size="small"
+                    variant={theme === 'dark' ? 'contained' : 'text'}
+                    onClick={() => toogleDialogs('what-is-ticket')}
+                  >
+                    O que é ticket?
                   </Button>
                 </Box>
               </Box>
@@ -218,6 +224,6 @@ function Ticket(props) {
   );
 }
 
-const mapStateToProps = (state) => ({ user: state.user, menu: state.menu });
+const mapStateToProps = (state) => ({ user: state.user, menu: state.menu, theme: state.theme });
 
 export default connect(mapStateToProps)(Ticket);
