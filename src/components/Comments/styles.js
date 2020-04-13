@@ -51,7 +51,7 @@ export const CustomCard = styled(Card)({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  maxWidth: '357px',
+  maxWidth: '345px',
   height: '320px',
   margin: '15px',
   [devices.laptop]: {
