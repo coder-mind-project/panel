@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import {
   Grid,
@@ -40,7 +40,12 @@ import {
 } from './styles';
 
 function BugReport(props) {
-  const { callToast, user, goBack } = props;
+  const {
+    callToast,
+    user,
+    goBack,
+    theme,
+  } = props;
 
   const [ticket, setTicket] = useState({
     date: null,
@@ -110,7 +115,14 @@ function BugReport(props) {
     <Grow in>
       <Grid item xs={12}>
         <Box width="100%" marginLeft="25px" marginRight="25px" marginTop="15px">
-          <Button color="primary" onClick={goOut}>Voltar</Button>
+          <Button
+            color="primary"
+            variant={theme === 'dark' ? 'contained' : 'text'}
+            onClick={goOut}
+            size="small"
+          >
+            Voltar
+          </Button>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center" margin="25px">
           <Box width="100%" display="flex" alignItems="center">
@@ -240,9 +252,10 @@ BugReport.propTypes = {
   user: userType.isRequired,
   goBack: PropTypes.func.isRequired,
   callToast: PropTypes.func.isRequired,
+  theme: appTheme.isRequired,
 };
 
-const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
+const mapStateToProps = (state) => ({ user: state.user, toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(BugReport);

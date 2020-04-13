@@ -146,14 +146,7 @@ function Ticket(props) {
               <Box p={3}>
                 <Divider />
                 <Box width="100%" display="flex" alignItems="center" mt={2} mb={2}>
-                  {!matches && (
-                    <Box display="flex" alignItems="center" mr={1}>
-                      <Icon fontSize="large" color="action">email</Icon>
-                    </Box>
-                  )}
-                  <Box display="flex" alignItems="center">
-                    <Typography component="h4" variant="h6">Selecione o tipo de ticket que deseja enviar</Typography>
-                  </Box>
+                  <Typography component="h4" variant="h6">Selecione o tipo de ticket que deseja enviar</Typography>
                 </Box>
                 <Box display="flex" alignItems="center" justifyContent="center" flexWrap="wrap">
                   <CustomCard>
@@ -169,7 +162,7 @@ function Ticket(props) {
                       </Typography>
                     </CardContent>
                     <CustomCardActions>
-                      <Button color="primary" variant="contained" onClick={() => defineTicketType('account-problem')}>Abrir Ticket</Button>
+                      <Button color="primary" size="small" variant="contained" onClick={() => defineTicketType('account-problem')}>Abrir Ticket</Button>
                     </CustomCardActions>
                   </CustomCard>
                   <CustomCard>
@@ -187,7 +180,7 @@ function Ticket(props) {
                       </Typography>
                     </CardContent>
                     <CustomCardActions>
-                      <Button color="primary" variant="contained" onClick={() => defineTicketType('bug-report')}>Abrir Ticket</Button>
+                      <Button color="primary" size="small" variant="contained" onClick={() => defineTicketType('bug-report')}>Abrir Ticket</Button>
                     </CustomCardActions>
                   </CustomCard>
                   <CustomCard>
@@ -202,7 +195,7 @@ function Ticket(props) {
                       </Typography>
                     </CardContent>
                     <CustomCardActions>
-                      <Button color="primary" variant="contained" onClick={() => defineTicketType('improvement-suggestion')}>Abrir Ticket</Button>
+                      <Button color="primary" size="small" variant="contained" onClick={() => defineTicketType('improvement-suggestion')}>Abrir Ticket</Button>
                     </CustomCardActions>
                   </CustomCard>
                 </Box>
