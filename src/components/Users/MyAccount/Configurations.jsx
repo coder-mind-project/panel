@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { toogleTheme } from '@/redux/theme/themeActions';
 
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import CustomButton from '@/components/Buttons/Button.jsx';
 
@@ -173,7 +173,7 @@ function Configurations(props) {
 
 Configurations.propTypes = {
   user: userType.isRequired,
-  theme: PropTypes.string.isRequired,
+  theme: appTheme.isRequired,
   setTheme: PropTypes.func.isRequired,
 };
 

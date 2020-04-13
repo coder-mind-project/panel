@@ -1,5 +1,5 @@
 import React from 'react';
-import { commentType } from '@/types';
+import { commentType, appTheme } from '@/types';
 import PropTypes from 'prop-types';
 
 import {
@@ -146,7 +146,7 @@ function CommentCard(props) {
 
 CommentCard.propTypes = {
   comment: commentType.isRequired,
-  theme: PropTypes.string.isRequired,
+  theme: appTheme.isRequired,
   callToast: PropTypes.func.isRequired,
   emitAsRead: PropTypes.func.isRequired,
 };
