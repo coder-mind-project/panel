@@ -98,11 +98,11 @@ function CommentSettingsDialog(props) {
       const url = `${backendUrl}/comments/settings`;
 
       // Time to leave to implement using data stored locally
-      const options = {
+      const options = currentSettings ? {
         headers: {
-          ttl: currentSettings ? currentSettings.ttl : null,
+          'CM-TTL-Comments': currentSettings.ttl,
         },
-      };
+      } : null;
 
       axios(url, options).then((response) => {
         setSettings(response.data);
