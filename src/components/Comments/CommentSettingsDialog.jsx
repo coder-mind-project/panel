@@ -13,6 +13,7 @@ import {
   Divider,
   Button,
   Tooltip,
+  LinearProgress,
 } from '@material-ui/core';
 
 import { connect } from 'react-redux';
@@ -73,6 +74,7 @@ function CommentSettingsDialog(props) {
       disableEscapeKeyDown={saving}
       maxWidth="lg"
     >
+      { saving && <LinearProgress color="primary" /> }
       <DialogSettingsTitle id="title" disableTypography>
         <SettingsTitleContent>
           <Box display="flex" alignItems="center">
