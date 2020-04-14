@@ -113,6 +113,21 @@ export const commentType = shape({
   ]),
 });
 
+export const commentSettingsType = shape({
+  userId: string,
+  type: oneOf([
+    'all',
+    'not-readed',
+    'only-readed',
+  ]),
+  order: oneOf([
+    'desc',
+    'asc',
+  ]),
+  limit: number,
+  notify: bool,
+});
+
 export const statType = shape({
   id: number,
   month: number,
