@@ -145,6 +145,10 @@ export const SettingsIcon = styled(Icon)({
   marginRight: '5px',
 });
 
+export const SettingsContainer = styled(Box)({
+  display: (props) => (props.open ? 'block' : 'none'),
+});
+
 export const CustomInputLabel = styled(InputLabel)({
   marginRight: '10px',
 });
