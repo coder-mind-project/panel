@@ -21,6 +21,25 @@ const defineErrorMsg = (error) => {
   return errorMsg;
 };
 
+const defineErrorType = (error) => {
+  let errorType = 'internal';
+
+  if (error && error.response && error.response.data) {
+    const keys = Object.keys(error.response.data);
+    const remainingKeys = keys.filter((elem) => elem !== 'code' && elem !== 'msg');
+
+    if (remainingKeys.length === 1) {
+      [errorType] = remainingKeys;
+    }
+  }
+
+  return errorType;
+};
+
 export {
-  backendUrl, defineErrorMsg, ipinfo, ipinfoToken,
+  backendUrl,
+  defineErrorMsg,
+  defineErrorType,
+  ipinfo,
+  ipinfoToken,
 };

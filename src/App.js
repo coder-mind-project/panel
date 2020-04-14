@@ -49,13 +49,11 @@ import RouteNotFound from './components/NotFound/RouteNotFound';
 import Users from './components/Users/Management/Users';
 import UserForm from './components/Users/Management/UserForm';
 import Categories from './components/Categories/Categories';
+import CommentList from './components/Comments/CommentList';
 import Articles from './pages/articles-section/Articles';
 import Article from './pages/articles-section/Article';
 import Stats from './pages/statistics-section/Stats';
 import MyAccount from './components/Users/MyAccount/MyAccount';
-import Comments from './pages/comments-section/Comments';
-import Comment from './pages/comments-section/Comment';
-
 
 // Css imports
 import './index.css';
@@ -172,8 +170,7 @@ function App(props) {
                       <Route path="/themes" exact component={Themes} />
                       <Route path="/categories" exact component={Categories} />
                       <Route path="/my-account" exact component={MyAccount} />
-                      <Route path="/comments" exact component={Comments} />
-                      <Route path="/comments/:id" exact component={Comment} />
+                      <Route path="/comments" exact component={CommentList} />
                       <Route path="/error" exact component={Error} />
                       <Route path="/stats" exact component={Stats} />
                       <Route component={RouteNotFound} />

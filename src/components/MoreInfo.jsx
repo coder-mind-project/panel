@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import {
   Grid,
@@ -139,7 +139,7 @@ MoreInfo.propTypes = {
   opened: PropTypes.bool,
   closeDialog: PropTypes.func.isRequired,
   user: userType.isRequired,
-  theme: PropTypes.string.isRequired,
+  theme: appTheme.isRequired,
 };
 
 MoreInfo.defaultProps = {

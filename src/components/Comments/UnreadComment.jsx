@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { commentType } from '@/types';
+import { commentType, appTheme } from '@/types';
 
 import { connect } from 'react-redux';
 
@@ -57,7 +57,7 @@ const UnreadComment = (props) => {
 UnreadComment.propTypes = {
   notification: commentType.isRequired,
   close: PropTypes.func.isRequired,
-  theme: PropTypes.string.isRequired,
+  theme: appTheme.isRequired,
 };
 
 const mapStateToProps = (state) => ({ theme: state.theme });

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import { connect } from 'react-redux';
 
@@ -194,10 +194,7 @@ function DrawerMenu(props) {
 DrawerMenu.propTypes = {
   user: userType.isRequired,
   logout: PropTypes.func.isRequired,
-  theme: PropTypes.oneOf([
-    'light',
-    'dark',
-  ]).isRequired,
+  theme: appTheme.isRequired,
 };
 
 const mapStateToProps = (state) => ({ user: state.user, theme: state.theme });

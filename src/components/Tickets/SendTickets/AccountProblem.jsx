@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { userType, appTheme } from '@/types';
+
 import {
   Grid,
   Box,
@@ -29,7 +32,12 @@ import { error as toastError } from '../../../config/toasts';
 import CustomButton from '../../Buttons/Button';
 
 function AccountProblem(props) {
-  const { user, callToast, goBack } = { ...props };
+  const {
+    user,
+    callToast,
+    goBack,
+    theme,
+  } = props;
 
   const [ticket, setTicket] = useState({
     code: '',
@@ -81,7 +89,7 @@ function AccountProblem(props) {
     <Grow in>
       <Grid item xs={12}>
         <Box width="100%" marginLeft="25px" marginRight="25px" marginTop="15px">
-          <Button variant="outlined" color="primary" onClick={goOut}>Voltar</Button>
+          <Button variant={theme === 'dark' ? 'contained' : 'text'} size="small" color="primary" onClick={goOut}>Voltar</Button>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="center" margin="25px">
           <Box width="100%" display="flex" alignItems="center">
@@ -172,7 +180,14 @@ function AccountProblem(props) {
   );
 }
 
-const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
+AccountProblem.propTypes = {
+  user: userType.isRequired,
+  goBack: PropTypes.func.isRequired,
+  callToast: PropTypes.func.isRequired,
+  theme: appTheme.isRequired,
+};
+
+const mapStateToProps = (state) => ({ user: state.user, toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountProblem);

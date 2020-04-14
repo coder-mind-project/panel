@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { appTheme } from '@/types';
+
 import {
   Grid,
   Box,
@@ -233,10 +235,7 @@ function Auth(props) {
 
 Auth.propTypes = {
   appError: PropTypes.bool,
-  theme: PropTypes.oneOf([
-    'light',
-    'dark',
-  ]).isRequired,
+  theme: appTheme.isRequired,
 };
 
 Auth.defaultProps = {

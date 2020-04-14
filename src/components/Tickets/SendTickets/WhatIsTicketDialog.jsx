@@ -1,4 +1,8 @@
 import React from 'react';
+import PropsTypes from 'prop-types';
+import { appTheme } from '@/types';
+
+import { connect } from 'react-redux';
 
 import {
   Grid,
@@ -11,18 +15,15 @@ import {
   Typography,
 } from '@material-ui/core';
 
-
 function WhatIsTicketDialog(props) {
-  const { closeDialog } = { ...props };
+  const { closeDialog, theme } = props;
 
   return (
     <Dialog
       open
       onClose={closeDialog}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
+      <DialogTitle>
         O que é ticket?
       </DialogTitle>
       <DialogContent>
@@ -35,7 +36,13 @@ function WhatIsTicketDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDialog} color="primary" autoFocus>
+        <Button
+          onClick={closeDialog}
+          color="primary"
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
+          autoFocus
+        >
           Entendi
         </Button>
       </DialogActions>
@@ -43,4 +50,11 @@ function WhatIsTicketDialog(props) {
   );
 }
 
-export default WhatIsTicketDialog;
+WhatIsTicketDialog.propTypes = {
+  closeDialog: PropsTypes.func.isRequired,
+  theme: appTheme.isRequired,
+};
+
+const mapStateToProps = (state) => ({ theme: state.theme });
+
+export default connect(mapStateToProps)(WhatIsTicketDialog);

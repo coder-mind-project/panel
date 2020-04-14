@@ -91,14 +91,19 @@ export const ticketType = shape({
 
 export const commentType = shape({
   _id: string,
-  confirmed: bool,
-  readed: bool,
-  answerOf: ticketType,
   userName: string,
   userEmail: string,
-  comment: string,
+  message: string,
   article: articleType,
-  created_at: oneOfType([
+  confirmedAt: oneOfType([
+    Date,
+    string,
+  ]),
+  readedAt: oneOfType([
+    Date,
+    string,
+  ]),
+  createdAt: oneOfType([
     Date,
     string,
   ]),
@@ -106,6 +111,21 @@ export const commentType = shape({
     Date,
     string,
   ]),
+});
+
+export const commentSettingsType = shape({
+  userId: string,
+  type: oneOf([
+    'all',
+    'not-readed',
+    'only-readed',
+  ]),
+  order: oneOf([
+    'desc',
+    'asc',
+  ]),
+  limit: number,
+  notify: bool,
 });
 
 export const statType = shape({

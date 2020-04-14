@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -176,10 +176,7 @@ function AppBar(props) {
 AppBar.propTypes = {
   user: userType.isRequired,
   logout: PropTypes.func.isRequired,
-  theme: PropTypes.oneOf([
-    'light',
-    'dark',
-  ]).isRequired,
+  theme: appTheme.isRequired,
   swapTheme: PropTypes.func.isRequired,
 };
 
