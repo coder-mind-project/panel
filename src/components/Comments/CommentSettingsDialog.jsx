@@ -105,7 +105,14 @@ function CommentSettingsDialog(props) {
       } : null;
 
       axios(url, options).then((response) => {
-        setSettings(response.data);
+        const actualSettings = response.data;
+
+        if (!currentSettings) {
+          actualSettings.ttl = Date.now() + (1000 * 60 * 60 * 24 * 30);
+          localStorage.setItem('cm-comments-settings', JSON.stringify(actualSettings));
+        }
+
+        setSettings(actualSettings);
       }).catch(() => {
         // Calls when the response is 304 or some error
 
