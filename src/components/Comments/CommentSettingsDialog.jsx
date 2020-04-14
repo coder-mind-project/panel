@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -19,7 +19,10 @@ import {
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
-import { success } from '@/config/toasts';
+import { success, error as toastError } from '@/config/toasts';
+
+import axios from 'axios';
+import { backendUrl, defineErrorMsg } from '@/config/backend';
 
 import SettingsDialogSearch from './SettingsDialogSearch';
 import SettingsDialogCommunication from './SettingsDialogCommunication';
@@ -41,30 +44,83 @@ function CommentSettingsDialog(props) {
     callToast,
   } = props;
 
+  /**
+   * @description Data states
+   */
+  const [settings, setSettings] = useState({});
   const [option, setOption] = useState('search');
+
+  /**
+   * @description Controller states
+   */
   const [saving, setSaving] = useState(false);
+  const [load, setLoad] = useState(false);
 
   function changeOption(opt) {
     setOption(opt);
   }
 
   function close(event) {
+    changeOption('search');
     closeDialog(event);
   }
 
-  function saveSettings() {
-    setSaving(true);
+  function handleSettings(changedSetting) {
+    setSettings({ ...settings, ...changedSetting });
   }
 
-  function storeSettings(settings) {
-    const currentConfig = JSON.parse(localStorage.getItem('cm-comments-settings'));
-    const updatedSettings = currentConfig ? { ...currentConfig, ...settings } : settings;
+  async function saveSettings() {
+    setSaving(true);
 
-    localStorage.setItem('cm-comments-settings', JSON.stringify(updatedSettings));
-    callToast(success('Configurações salvas com sucesso'));
+    const currentSettings = JSON.parse(localStorage.getItem('cm-comments-settings'));
+    const updatedSettings = currentSettings ? { ...currentSettings, ...settings } : { ...settings };
+
+    const url = `${backendUrl}/comments/settings`;
+
+    await axios.post(url, updatedSettings).then((response) => {
+      const latestSettings = response.data;
+
+      localStorage.setItem('cm-comments-settings', JSON.stringify(latestSettings));
+      callToast(success('Configurações salvas com sucesso'));
+    }).catch((error) => {
+      const msg = defineErrorMsg(error);
+      callToast(toastError(msg));
+    });
+
 
     setSaving(false);
   }
+
+  // Called for get current settings
+  useEffect(() => {
+    function getSettings() {
+      const currentSettings = JSON.parse(localStorage.getItem('cm-comments-settings'));
+      const url = `${backendUrl}/comments/settings`;
+
+      // Time to leave to implement using data stored locally
+      const options = {
+        headers: {
+          ttl: currentSettings ? currentSettings.ttl : null,
+        },
+      };
+
+      axios(url, options).then((response) => {
+        setSettings(response.data);
+      }).catch(() => {
+        // Calls when the response is 304 or some error
+
+        // Store local settings
+        if (currentSettings) {
+          setSettings(currentSettings);
+        }
+      });
+    }
+
+    if (!load) {
+      setLoad(true);
+      getSettings();
+    }
+  }, [settings, load]);
 
   return (
     <CustomDialog
@@ -101,15 +157,43 @@ function CommentSettingsDialog(props) {
       <DialogContent>
         <Box width="100%" height="100%" display="flex">
           <SettingsMenu item sm={6} md={4}>
-            <MenuItem onClick={() => changeOption('search')}>Pesquisa</MenuItem>
-            <MenuItem onClick={() => changeOption('communication')}>Comunicação</MenuItem>
-            <MenuItem onClick={() => changeOption('appearance')} disabled>Personalização</MenuItem>
+            <MenuItem
+              selected={option === 'search'}
+              onClick={() => changeOption('search')}
+            >
+              Pesquisa
+            </MenuItem>
+            <MenuItem
+              selected={option === 'communication'}
+              onClick={() => changeOption('communication')}
+            >
+              Comunicação
+            </MenuItem>
+            <MenuItem
+              selected={option === 'appearance'}
+              onClick={() => changeOption('appearance')}
+              disabled
+            >
+              Personalização
+            </MenuItem>
           </SettingsMenu>
           <Scrollbars autoHide>
             <SettingsContent item sm={6} md={8}>
-              { option === 'search' && <SettingsDialogSearch save={storeSettings} emitSettings={saving} /> }
-              { option === 'communication' && <SettingsDialogCommunication save={storeSettings} emitSettings={saving} /> }
-              { option === 'appearance' && <SettingsDialogAppearance save={storeSettings} /> }
+              <SettingsDialogSearch
+                open={option === 'search'}
+                settings={settings}
+                emitSettings={handleSettings}
+              />
+              <SettingsDialogCommunication
+                open={option === 'communication'}
+                settings={settings}
+                emitSettings={handleSettings}
+              />
+              <SettingsDialogAppearance
+                open={option === 'appearance'}
+                settings={settings}
+                emitSettings={handleSettings}
+              />
             </SettingsContent>
           </Scrollbars>
         </Box>

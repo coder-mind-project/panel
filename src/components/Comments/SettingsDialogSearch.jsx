@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { commentSettingsType } from '@/types';
 
 import {
   Box,
@@ -9,25 +10,33 @@ import {
 
 import SettingsDialogContentHeader from './SettingsDialogContentHeader';
 
-import { CustomInputLabel } from './styles';
+import { CustomInputLabel, SettingsContainer } from './styles';
 
 function SettingsDialogSearch(props) {
   const {
-    emitSettings,
-    save,
+    open, // Flag to display this container, see `SettingsContainer` for more details
+    settings, // Current settings provided by the parent component
+    emitSettings, // Issues the updated property for the parent component
   } = props;
 
+  /**
+   * @description Data states
+   */
   const [limit, setLimit] = useState(6);
   const [order, setOrder] = useState('desc');
   const [type, setType] = useState('all');
-  const [emitted, setEmitted] = useState(false);
+
+  /**
+   * @description Controller states
+   */
   const [load, setLoad] = useState(false);
 
   function handleChange(evt, option) {
-    const { value } = evt.target;
+    let { value } = evt.target;
 
     switch (option) {
       case 'limit': {
+        value = Number(value);
         setLimit(value);
         break;
       }
@@ -39,43 +48,27 @@ function SettingsDialogSearch(props) {
         setType(value);
       }
     }
+
+    const propertyChanged = { [option]: value };
+    emitSettings(propertyChanged);
   }
 
-  useEffect(() => {
-    if (emitSettings && !emitted) {
-      const settings = {
-        limit,
-        order,
-        type,
-      };
-
-      save(settings);
-      setEmitted(true);
-    }
-
-    if (!emitSettings) {
-      setEmitted(false);
-    }
-  }, [save, emitSettings, emitted, limit, order, type]);
-
+  // Called when the component is mount
   useEffect(() => {
     function getStoredSettings() {
-      const currentSettings = JSON.parse(localStorage.getItem('cm-comments-settings'));
-      if (currentSettings) {
-        setLimit(currentSettings.limit);
-        setOrder(currentSettings.order);
-        setType(currentSettings.type);
-      }
+      setLimit(settings.limit);
+      setOrder(settings.order);
+      setType(settings.type);
     }
 
     if (!load) {
       setLoad(true);
       getStoredSettings();
     }
-  }, [order, type, limit, load]);
+  }, [order, type, limit, load, settings]);
 
   return (
-    <Box>
+    <SettingsContainer open={open}>
       <SettingsDialogContentHeader icon="search" title="Pesquisa" />
       <Box
         mb={2}
@@ -160,13 +153,23 @@ function SettingsDialogSearch(props) {
           padrão ao entrar na tela de listagem
         </FormHelperText>
       </Box>
-    </Box>
+    </SettingsContainer>
   );
 }
 
 SettingsDialogSearch.propTypes = {
-  save: PropTypes.func.isRequired,
-  emitSettings: PropTypes.bool.isRequired,
+  open: PropTypes.bool,
+  settings: commentSettingsType,
+  emitSettings: PropTypes.func.isRequired,
+};
+
+SettingsDialogSearch.defaultProps = {
+  settings: PropTypes.shape({
+    type: 'all',
+    order: 'desc',
+    limit: 6,
+  }),
+  open: false,
 };
 
 export default SettingsDialogSearch;

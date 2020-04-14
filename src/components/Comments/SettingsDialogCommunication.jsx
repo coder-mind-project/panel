@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { commentSettingsType } from '@/types';
 
 import {
   Box,
@@ -9,55 +10,48 @@ import {
 
 import SettingsDialogContentHeader from './SettingsDialogContentHeader';
 
-import { CustomInputLabel } from './styles';
+import { CustomInputLabel, SettingsContainer } from './styles';
 
 function SettingsDialogCommunication(props) {
   const {
-    emitSettings,
-    save,
+    open, // Flag to display this container, see `SettingsContainer` for more details
+    settings, // Current settings provided by the parent component
+    emitSettings, // Issues the updated property for the parent component
   } = props;
 
+  /**
+   * @description Data states
+   */
   const [notify, setNotify] = useState(false);
-  const [emitted, setEmitted] = useState(false);
+
+  /**
+   * @description Controller states
+   */
   const [load, setLoad] = useState(false);
 
   function handleChange(evt) {
     const { checked } = evt.target;
 
     setNotify(checked);
+
+    const propertyChanged = { notify: checked };
+    emitSettings(propertyChanged);
   }
 
-  useEffect(() => {
-    if (emitSettings && !emitted) {
-      const settings = {
-        notify,
-      };
-
-      save(settings);
-      setEmitted(true);
-    }
-
-    if (!emitSettings) {
-      setEmitted(false);
-    }
-  }, [save, emitSettings, emitted, notify]);
-
+  // Called when the component is mount
   useEffect(() => {
     function getStoredSettings() {
-      const currentSettings = JSON.parse(localStorage.getItem('cm-comments-settings'));
-      if (currentSettings) {
-        setNotify(Boolean(currentSettings.notify));
-      }
+      setNotify(Boolean(settings.notify));
     }
 
     if (!load) {
       setLoad(true);
       getStoredSettings();
     }
-  }, [notify, load]);
+  }, [notify, load, settings]);
 
   return (
-    <Box>
+    <SettingsContainer open={open}>
       <SettingsDialogContentHeader icon="question_answer" title="Comunicação" />
       <Box
         mb={2}
@@ -81,13 +75,21 @@ function SettingsDialogCommunication(props) {
           notificado quando uma resposta for criada
         </FormHelperText>
       </Box>
-    </Box>
+    </SettingsContainer>
   );
 }
 
 SettingsDialogCommunication.propTypes = {
-  save: PropTypes.func.isRequired,
-  emitSettings: PropTypes.bool.isRequired,
+  open: PropTypes.bool,
+  settings: commentSettingsType,
+  emitSettings: PropTypes.func.isRequired,
+};
+
+SettingsDialogCommunication.defaultProps = {
+  open: false,
+  settings: PropTypes.shape({
+    notify: false,
+  }),
 };
 
 export default SettingsDialogCommunication;
