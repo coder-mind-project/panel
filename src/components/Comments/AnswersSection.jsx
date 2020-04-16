@@ -60,6 +60,7 @@ function AnswersSection(props) {
   const [count, setCount] = useState(0);
   const [showActionButtons, setShowActionButtons] = useState(false);
   const [anchorMenuOrder, setAnchorMenuOrder] = useState(null);
+  const [notifyLoaded, setNotifyLoaded] = useState(false);
 
   /**
    * @description Data states
@@ -95,6 +96,11 @@ function AnswersSection(props) {
     setAnswer('');
   }
 
+  function reloadAnswers() {
+    setPage(1);
+    setReload(true);
+  }
+
   async function saveAnswer() {
     if (saving) return;
 
@@ -104,15 +110,8 @@ function AnswersSection(props) {
 
     const data = { answer };
     await axios.post(url, data).then((response) => {
-      if (latestAnswer) {
-        const currentAnswers = answers;
-        const newAnswer = latestAnswer;
-        currentAnswers.push(newAnswer);
-
-        setAnswers(currentAnswers);
-      }
-      setLatestAnswer(response.data);
-      setCount(count + 1);
+      reloadAnswers();
+      if (order === 'asc') setLatestAnswer(response.data);
       clearAnswerField();
     }).catch((err) => {
       const msg = defineErrorMsg(err);
@@ -156,8 +155,16 @@ function AnswersSection(props) {
       const { _id } = comment;
       const url = `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${order}`;
       await axios(url).then((response) => {
-        const currentAnswers = answers;
-        currentAnswers.push(...response.data.answers);
+        let currentAnswers = answers;
+        const newAnswers = response.data.answers;
+
+        // Reloading verification
+        if (currentAnswers.length && page === 1) {
+          currentAnswers = newAnswers;
+        } else {
+          currentAnswers.push(...newAnswers);
+        }
+
         setAnswers(currentAnswers);
         setLimit(response.data.limit);
         setCount(response.data.count);
@@ -168,10 +175,27 @@ function AnswersSection(props) {
 
     if (reload) {
       setReload(false);
-      if (!answers.length) getNotifyState();
+      if (!notifyLoaded) {
+        setNotifyLoaded(true);
+        getNotifyState();
+      }
       getAnswers();
     }
-  }, [comment, reload, loading, answers, limit, page, count, open, notify, order]);
+  },
+  [
+    comment,
+    reload,
+    loading,
+    answers,
+    limit,
+    page,
+    count,
+    open,
+    notify,
+    order,
+    latestAnswer,
+    notifyLoaded,
+  ]);
 
   return (
     <CustomDialog
@@ -181,7 +205,11 @@ function AnswersSection(props) {
       disableEscapeKeyDown={saving}
       maxWidth="md"
     >
-      { saving && <LinearProgress color="primary" /> }
+      {/* saving a new answers or reloading answers after save the new answer */}
+      { (saving || (loading && answers.length && page === 1))
+        && (
+          <LinearProgress color="primary" />
+        )}
       <DialogSettingsTitle id="title" disableTypography>
         <SettingsTitleContent>
           <Box display="flex" alignItems="center">
@@ -345,7 +373,10 @@ function AnswersSection(props) {
               mb={2}
               key={0}
             >
-              <CircularProgress color="primary" size={40} />
+              { !(loading && answers.length && page === 1)
+                && (
+                  <CircularProgress color="primary" size={40} />
+                )}
             </Box>
           )}
           useWindow={false}
