@@ -6,6 +6,8 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
+import InfiniteScroll from 'react-infinite-scroller';
+
 import Header from '@/components/Header.jsx';
 import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
 
@@ -27,7 +29,6 @@ function CommentList() {
   const [order, setOrder] = useState('desc');
   const [query, setQuery] = useState('');
   const [error, setError] = useState(false);
-  const [isAtBottom, setIsAtBottom] = useState(false);
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const [settingsLoaded, setSettingsLoaded] = useState(false);
 
@@ -95,40 +96,12 @@ function CommentList() {
     setShowSettingsDialog(false);
   }
 
-  useEffect(() => {
-    function getTolerance(width) {
-      if (width > 0 && width <= 565) return 90;
-      if (width > 565 && width <= 768) return 170;
-      if (width > 768 && width <= 1024) return 280;
-      if (width > 1024 && width <= 1366) return 400;
-      if (width > 1366 && width <= 1600) return 450;
-      if (width > 1600 && width <= 1920) return 600;
-      if (width > 1920 && width <= 2440) return 720;
-      if (width > 2400) return 850;
-
-      return 90;
-    }
-
-    function changePage() {
-      const nextPage = page + 1;
-      setPage(nextPage);
+  function getMoreComments() {
+    if (!loading) {
+      setPage(page + 1);
       setReload(true);
     }
-
-    function getScrollPosition() {
-      const { scrollY, innerHeight, innerWidth } = window;
-      const tolerance = getTolerance(innerWidth);
-
-      setIsAtBottom(innerHeight - scrollY <= tolerance);
-      if (count > comments.length) changePage();
-    }
-
-    window.addEventListener('scroll', getScrollPosition);
-
-    return () => {
-      window.removeEventListener('scroll', getScrollPosition);
-    };
-  }, [isAtBottom, page, reload, comments, count]);
+  }
 
   useEffect(() => {
     function getSettings() {
@@ -149,6 +122,7 @@ function CommentList() {
       setLoading(true);
 
       const params = getSettings();
+
 
       const url = params
         ? `${backendUrl}/comments?type=${params.type}&order=${params.order}&query=${query}&page=${page}&limit=${params.limit}`
@@ -216,29 +190,38 @@ function CommentList() {
           <DataNotFound msg={type === 'not-readed' && !query ? 'Ops, atualmente você não possui comentários não lidos' : 'Ops, nenhum comentário encontrado'} />
         )
       }
-      { count > 0 && !loading
+      { count > 0
         && (
-          <Box id="comments-container" display="flex" flexDirection="column" alignItems="center">
-            <Box display="flex" alignItems="center" flexWrap="wrap" width="100%">
+          <InfiniteScroll
+            pageStart={page}
+            loadMore={getMoreComments}
+            hasMore={count > comments.length}
+            initialLoad={false}
+            loader={(
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                width="100%"
+                mt={2}
+                mb={2}
+                key={0}
+              >
+                <CircularProgress color="primary" size={40} />
+              </Box>
+            )}
+          >
+            <Box
+              display="flex"
+              alignItems="center"
+              flexWrap="wrap"
+              width="100%"
+            >
               {comments.map((elem) =>
                 (<CommentCard comment={elem} key={elem._id} emitAsRead={updateReadComment} />))
-              }
+                }
             </Box>
-            { isAtBottom
-              && (
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  width="100%"
-                  mt={2}
-                  mb={2}
-                >
-                  <CircularProgress color="primary" size={40} />
-                </Box>
-              )
-            }
-          </Box>
+          </InfiniteScroll>
         )}
     </Container>
   );
