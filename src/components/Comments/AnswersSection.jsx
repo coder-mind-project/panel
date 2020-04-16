@@ -171,7 +171,7 @@ function AnswersSection(props) {
       if (!answers.length) getNotifyState();
       getAnswers();
     }
-  }, [comment, reload, loading, answers, limit, page, count, open, notify]);
+  }, [comment, reload, loading, answers, limit, page, count, open, notify, order]);
 
   return (
     <CustomDialog
