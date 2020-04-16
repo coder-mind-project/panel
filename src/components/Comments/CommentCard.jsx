@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { commentType, appTheme } from '@/types';
 import PropTypes from 'prop-types';
 
@@ -25,6 +25,9 @@ import { error as toastError } from '@/config/toasts';
 import { backendUrl } from '@/config/backend';
 import { devices } from '@/config/devices';
 
+import CommentDetailsDialog from './CommentDetailsDialog';
+import AnswersSection from './AnswersSection';
+
 import {
   CustomCard,
   CustomCardActionArea,
@@ -39,7 +42,29 @@ function CommentCard(props) {
     emitAsRead,
   } = props;
 
+  /**
+   * @description Controller states
+   */
+  const [showDetails, setShowDetails] = useState(false);
+  const [showAnswers, setShowAnswers] = useState(false);
+
   const matches = useMediaQuery(devices.tablet);
+
+  function openDetails() {
+    setShowDetails(true);
+  }
+
+  function closeDetails() {
+    setShowDetails(false);
+  }
+
+  function openAnswers() {
+    setShowAnswers(true);
+  }
+
+  function closeAnswers() {
+    setShowAnswers(false);
+  }
 
   function formatCommentMessage(message) {
     if (!message) return '';
@@ -88,7 +113,17 @@ function CommentCard(props) {
 
   return (
     <CustomCard>
-      <CustomCardActionArea comment={comment}>
+      <CommentDetailsDialog open={showDetails} comment={comment} closeDialog={closeDetails} />
+      { showAnswers
+        && (
+          <AnswersSection
+            open={showAnswers}
+            comment={comment}
+            closeDialog={closeAnswers}
+          />
+        )
+       }
+      <CustomCardActionArea comment={comment} onClick={openDetails}>
         <CardMedia
           component="img"
           alt={comment && comment.article ? comment.article.title : 'Artigo não definido'}
@@ -129,7 +164,7 @@ function CommentCard(props) {
                 { !matches && 'Marcar como lido'}
               </Button>
             )}
-        <Button size="small" color={theme === 'dark' ? 'default' : 'primary'}>
+        <Button onClick={openAnswers} size="small" color={theme === 'dark' ? 'default' : 'primary'}>
           { matches
             && (
               <Icon>
