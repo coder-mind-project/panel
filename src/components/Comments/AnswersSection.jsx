@@ -131,7 +131,13 @@ function AnswersSection(props) {
   }
 
   function changeOrder(o) {
+    if (latestAnswer && o === 'desc') {
+      setLatestAnswer(null);
+    }
     setOrder(o);
+    setAnswers([]);
+    setPage(1);
+    setReload(true);
     closeMenuOrder();
   }
 
@@ -206,7 +212,7 @@ function AnswersSection(props) {
       maxWidth="md"
     >
       {/* saving a new answers or reloading answers after save the new answer */}
-      { (saving || (loading && answers.length && page === 1))
+      { (saving || (loading && Boolean(answers.length) && page === 1))
         && (
           <LinearProgress color="primary" />
         )}
@@ -285,7 +291,7 @@ function AnswersSection(props) {
             )
           }
         </Box>
-        { !count && loading
+        { Boolean(!count) && loading
           && (
             <Box
               display="flex"
@@ -338,13 +344,13 @@ function AnswersSection(props) {
                       onClick={() => changeOrder('desc')}
                       selected={order === 'desc'}
                     >
-                      Mais antigo
+                      Mais recente
                     </MenuItem>
                     <MenuItem
                       onClick={() => changeOrder('asc')}
                       selected={order === 'asc'}
                     >
-                      Mais recente
+                      Mais antigo
                     </MenuItem>
                   </Menu>
                 </Box>
