@@ -29,10 +29,12 @@ export const CustomHeader = styled(Grid)({
 
 export const CustomIcon = styled(Icon)({
   color: '#444',
+  marginRight: '5px',
 });
 
 export const CustomFaIcon = styled(FontAwesomeIcon)({
   color: '#444',
+  marginRight: '5px',
 });
 
 export const CustomChip = styled(Chip)({

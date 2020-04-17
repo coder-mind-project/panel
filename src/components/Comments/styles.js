@@ -12,6 +12,7 @@ import {
   Dialog,
   InputLabel,
   DialogActions,
+  TextField,
 } from '@material-ui/core';
 
 import SearchBar from 'material-ui-search-bar';
@@ -170,4 +171,30 @@ export const CustomDialogActions = styled(DialogActions)({
   display: 'flex',
   justifyContent: 'space-between',
   padding: '15px',
+});
+
+export const CustomTextField = styled(TextField)({
+  margin: '1rem',
+  minWidth: '300px',
+  [devices.tablet]: {
+    width: '100%',
+    minWidth: '100%',
+    margin: '1rem 0',
+  },
+});
+
+export const AnswerOwner = styled(Box)({
+  width: '100%',
+  '& .answer-owner': {
+    fontWeight: 700,
+    marginRight: '10px',
+    marginBottom: '2px',
+  },
+});
+
+export const AnswerMessage = styled(Box)({
+  width: '100%',
+  '& .answer-message': {
+    whiteSpace: 'pre-line',
+  },
 });
