@@ -164,7 +164,7 @@ function AnswersSection(props) {
         let currentAnswers = answers;
         const newAnswers = response.data.answers;
 
-        // Reloading verification
+        // Reloading verification (when a new answer is added)
         if (currentAnswers.length && page === 1) {
           currentAnswers = newAnswers;
         } else {
@@ -379,6 +379,7 @@ function AnswersSection(props) {
               mb={2}
               key={0}
             >
+              {/* not displayed when answers are reloaded after saving the new answer */}
               { !(loading && answers.length && page === 1)
                 && (
                   <CircularProgress color="primary" size={40} />
