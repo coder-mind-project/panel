@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Box,
@@ -25,16 +25,17 @@ function UnreadComments() {
 
   const [comments, setComments] = useState([]);
   const [count, setCount] = useState(0);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(null);
   const [load, setLoad] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  function openMenuNotifications() {
-    setOpen(true);
+  function openMenuNotifications(evt) {
+    const { currentTarget } = evt;
+    setOpen(currentTarget);
   }
 
   function closeMenuNotifications() {
-    setOpen(false);
+    setOpen(null);
   }
 
   async function markAllAsRead() {
@@ -78,7 +79,7 @@ function UnreadComments() {
           <IconButton
             color="inherit"
             onClick={openMenuNotifications}
-            ref={menuRef}
+            ref={open}
           >
             <Badge
               invisible={!count}
@@ -93,10 +94,10 @@ function UnreadComments() {
           </IconButton>
         </Tooltip>
         <CustomMenu
-          anchorEl={menuRef.current}
+          anchorEl={open}
           variant="menu"
           keepMounted
-          open={open}
+          open={Boolean(open)}
           onClose={closeMenuNotifications}
           transitionDuration={{
             enter: 400,
