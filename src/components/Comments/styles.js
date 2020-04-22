@@ -140,6 +140,12 @@ export const SettingsTitleContent = styled(Box)({
   alignItems: 'center',
   width: '100%',
   marginBottom: '10px',
+  '& .dialog-title': {
+    '& span': {
+      wordBreak: 'break-all',
+      whiteSpace: 'normal',
+    },
+  },
 });
 
 export const SettingsContent = styled(Grid)({
