@@ -122,7 +122,7 @@ function CommentCard(props) {
             closeDialog={closeAnswers}
           />
         )
-       }
+      }
       <CustomCardActionArea comment={comment} onClick={openDetails}>
         <CardMedia
           component="img"
