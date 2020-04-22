@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { backendUrl } from '@/config/backend';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import {
   Box,
@@ -24,6 +24,7 @@ import { CustomMenu, CustomLink } from './styles';
 function UnreadedTickets(props) {
   const {
     user,
+    theme,
   } = props;
 
   const menuRef = useRef(null);
@@ -136,11 +137,13 @@ function UnreadedTickets(props) {
               alignItems="center"
               justifyContent="center"
             >
-              <CustomLink to="/tickets">
-                <Button onClick={closeMenu} color="primary" size="small">
-                  Visualizar tickets
-                </Button>
-              </CustomLink>
+              <Box mt={1} mb={1}>
+                <CustomLink to="/tickets">
+                  <Button onClick={closeMenu} color="primary" size="small" variant={theme === 'dark' ? 'contained' : 'text'}>
+                    Visualizar tickets
+                  </Button>
+                </CustomLink>
+              </Box>
             </Box>
             <Box mb={1} mt={1}>
               <Divider />
@@ -189,7 +192,8 @@ function UnreadedTickets(props) {
 
 UnreadedTickets.propTypes = {
   user: userType.isRequired,
+  theme: appTheme.isRequired,
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ user: state.user, theme: state.theme });
 export default connect(mapStateToProps)(UnreadedTickets);
