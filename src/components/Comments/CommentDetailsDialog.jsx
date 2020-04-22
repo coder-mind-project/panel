@@ -85,10 +85,13 @@ function CommentDetailsDialog(props) {
             <Typography
               component="span"
               variant="body1"
+              className="dialog-title"
             >
               Comentário de
               {' '}
-              {comment.userName}
+              <Typography component="span" variant="body1">
+                {comment.userName}
+              </Typography>
               {comment.article ? ` - ${comment.article.title}` : ''}
             </Typography>
           </Box>
