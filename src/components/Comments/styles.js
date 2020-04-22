@@ -13,6 +13,7 @@ import {
   InputLabel,
   DialogActions,
   TextField,
+  MenuItem,
 } from '@material-ui/core';
 
 import SearchBar from 'material-ui-search-bar';
@@ -23,7 +24,20 @@ import { devices } from '@/config/devices';
 
 export const CustomLink = styled(Link)({
   textDecoration: 'none',
-  color: (props) => (props.theme === 'dark' ? '#fff' : '#444'),
+});
+
+export const CustomMenuItem = styled(MenuItem)({
+  width: '100%',
+  paddingLeft: '6px',
+  paddingRight: '6px',
+  '& .comment-info': {
+    width: '80%',
+    '& p': {
+      width: '100%',
+      wordBreak: 'break-word',
+      whiteSpace: 'normal',
+    },
+  },
 });
 
 export const CustomIcon = styled(Icon)({
@@ -35,16 +49,15 @@ export const CustomMenu = styled(Menu)({
 });
 
 export const CommentContainer = styled(Grid)({
-  margin: '0 5px',
   maxWidth: '350px',
 });
 
 export const ArticleSmallImgContainer = styled(Box)({
+  marginRight: '8px',
   '& .article-small-img': {
     height: '48px',
     width: '48px',
     borderRadius: '24px',
-    marginRight: '8px',
     objectFit: 'cover',
   },
 });

@@ -20,6 +20,7 @@ import { backendUrl } from '@/config/backend';
 
 import Scrollbars from 'react-custom-scrollbars';
 import NotificationItem from './UnreadComment';
+import CommentDetailsDialog from './CommentDetailsDialog';
 
 import { CustomMenu, CustomLink } from './styles';
 
@@ -33,6 +34,8 @@ function UnreadComments(props) {
   const [open, setOpen] = useState(null);
   const [load, setLoad] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [commentSelected, setCommentSelected] = useState(null);
+  const [showCommentDetails, setShowCommentDetails] = useState(false);
 
   function openMenuNotifications(evt) {
     const { currentTarget } = evt;
@@ -48,6 +51,16 @@ function UnreadComments(props) {
     axios.patch(url);
     setComments([]);
     setCount(0);
+  }
+
+  function openCommentDetails(comment) {
+    setCommentSelected(comment);
+    setShowCommentDetails(true);
+  }
+
+  function closeCommentDetails() {
+    setCommentSelected(null);
+    setShowCommentDetails(false);
   }
 
   useEffect(() => {
@@ -73,6 +86,14 @@ function UnreadComments(props) {
 
   return (
     <Box mr={3}>
+      { Boolean(commentSelected && showCommentDetails)
+        && (
+          <CommentDetailsDialog
+            open={showCommentDetails}
+            closeDialog={closeCommentDetails}
+            comment={commentSelected}
+          />
+        )}
       <Box>
         <Tooltip
           title={(
@@ -199,7 +220,7 @@ function UnreadComments(props) {
                       <NotificationItem
                         key={notification._id}
                         notification={notification}
-                        close={closeMenuNotifications}
+                        selectComment={openCommentDetails}
                       />
                     ))}
                   </Box>
