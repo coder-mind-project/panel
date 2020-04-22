@@ -133,8 +133,8 @@ function CommentCard(props) {
           className="article-logo"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {comment.userName && comment.userName.length > 30 ? `${comment.userName.slice(0, 29)}...` : comment.userName}
+          <Typography variant="h5" component="h2" className="comment-user-name">
+            {comment.userName && comment.userName.length > 22 ? `${comment.userName.slice(0, 21)}...` : comment.userName}
           </Typography>
           <Box
             width="100%"

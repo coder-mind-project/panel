@@ -88,6 +88,10 @@ export const CustomCardActionArea = styled(CardActionArea)({
   '& .article-logo': {
     filter: (props) => (props.comment && props.comment.readedAt ? 'grayscale(100%)' : 'none'),
   },
+  '& .comment-user-name': {
+    wordBreak: 'break-all',
+    whiteSpace: 'normal',
+  },
 });
 
 export const CustomCardActions = styled(CardActions)({
