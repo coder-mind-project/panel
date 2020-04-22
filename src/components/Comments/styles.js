@@ -45,6 +45,7 @@ export const ArticleSmallImgContainer = styled(Box)({
     width: '48px',
     borderRadius: '24px',
     marginRight: '8px',
+    objectFit: 'cover',
   },
 });
 
