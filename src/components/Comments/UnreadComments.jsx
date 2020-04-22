@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { appTheme } from '@/types';
 import {
   Box,
   IconButton,
@@ -12,16 +12,21 @@ import {
   Badge,
   Button,
 } from '@material-ui/core';
+
+import axios from 'axios';
 import { connect } from 'react-redux';
-import { backendUrl } from '../../config/backend';
+import { backendUrl } from '@/config/backend';
 
 
+import Scrollbars from 'react-custom-scrollbars';
 import NotificationItem from './UnreadComment';
 
 import { CustomMenu, CustomLink } from './styles';
 
-function UnreadComments() {
-  const menuRef = useRef(null);
+function UnreadComments(props) {
+  const {
+    theme,
+  } = props;
 
   const [comments, setComments] = useState([]);
   const [count, setCount] = useState(0);
@@ -115,7 +120,12 @@ function UnreadComments() {
           }}
         >
           <Box pl={1.3} pr={1.3}>
-            <Box width="100%" display="flex" justifyContent="space-between">
+            <Box
+              width="100%"
+              display="flex"
+              justifyContent="space-between"
+              mb={0.5}
+            >
               <Box display="flex" alignItems="center">
                 <Box mr={1} display="flex" alignItems="center">
                   <Icon fontSize="small" color="action">
@@ -128,16 +138,18 @@ function UnreadComments() {
                   </Typography>
                 </Box>
               </Box>
-              <IconButton
-                size="small"
-                color="primary"
-                disabled={!count}
-                onClick={markAllAsRead}
-              >
-                <Icon>
-                  done_all
-                </Icon>
-              </IconButton>
+              <Box mr={1}>
+                <IconButton
+                  size="small"
+                  color={theme === 'dark' ? 'inherit' : 'primary'}
+                  disabled={!count}
+                  onClick={markAllAsRead}
+                >
+                  <Icon>
+                    done_all
+                  </Icon>
+                </IconButton>
+              </Box>
             </Box>
             <Divider />
             { count === 0 && !loading
@@ -181,15 +193,17 @@ function UnreadComments() {
             }
             { count > 0 && !loading
               && (
-                <Box>
-                  {comments.map((notification) => (
-                    <NotificationItem
-                      key={notification._id}
-                      notification={notification}
-                      close={closeMenuNotifications}
-                    />
-                  ))}
-                </Box>
+                <Scrollbars autoHeight>
+                  <Box>
+                    {comments.map((notification) => (
+                      <NotificationItem
+                        key={notification._id}
+                        notification={notification}
+                        close={closeMenuNotifications}
+                      />
+                    ))}
+                  </Box>
+                </Scrollbars>
               )
             }
           </Box>
@@ -199,5 +213,10 @@ function UnreadComments() {
   );
 }
 
-const mapStateToProps = (state) => ({ user: state.user });
+UnreadComments.propTypes = {
+  theme: appTheme.isRequired,
+};
+
+const mapStateToProps = (state) => ({ theme: state.theme });
+
 export default connect(mapStateToProps)(UnreadComments);
