@@ -105,7 +105,7 @@ function CommentDetailsDialog(props) {
       </DialogSettingsTitle>
       <DialogContent>
         <Box width="100%" display="flex" flexWrap="wrap">
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={7}>
             <CustomTextField
               label="Nome do leitor"
               value={comment.userName}
@@ -123,7 +123,7 @@ function CommentDetailsDialog(props) {
           </Grid>
           { !matches
             && (
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={5}>
                 <img
                   style={{ boxShadow: '0px 0px 2px 1px #ccc', objectFit: 'cover' }}
                   width="100%"
