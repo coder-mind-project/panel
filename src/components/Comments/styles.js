@@ -14,6 +14,7 @@ import {
   DialogActions,
   TextField,
   MenuItem,
+  Chip,
 } from '@material-ui/core';
 
 import SearchBar from 'material-ui-search-bar';
@@ -24,6 +25,7 @@ import { devices } from '@/config/devices';
 
 export const CustomLink = styled(Link)({
   textDecoration: 'none',
+  color: 'inherit',
 });
 
 export const CustomMenuItem = styled(MenuItem)({
@@ -195,6 +197,9 @@ export const CustomDialogActions = styled(DialogActions)({
   display: 'flex',
   justifyContent: 'space-between',
   padding: '15px',
+  [devices.tablet]: {
+    display: (props) => (props.responsive === 'true' ? 'none' : 'flex'),
+  },
 });
 
 export const CustomTextField = styled(TextField)({
@@ -221,4 +226,25 @@ export const AnswerMessage = styled(Box)({
   '& .answer-message': {
     whiteSpace: 'pre-line',
   },
+});
+
+export const HudCommentDetailsContainer = styled(Box)({
+  padding: '0px 16px',
+  display: 'none',
+  [devices.tablet]: {
+    display: 'block',
+  },
+});
+
+export const CommentDetailsStateArea = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  marginBottom: '8px',
+  [devices.mobileLarge]: {
+    display: 'none',
+  },
+});
+
+export const CustomChip = styled(Chip)({
+  marginLeft: '5px',
 });
