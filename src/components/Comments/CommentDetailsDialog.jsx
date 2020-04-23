@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { commentSettingsType, appTheme } from '@/types';
 
@@ -12,12 +12,17 @@ import {
   Button,
   Tooltip,
   Grid,
+  Switch,
   useMediaQuery,
 } from '@material-ui/core';
 
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
+import { error as toastError } from '@/config/toasts';
 
-import { backendUrl } from '@/config/backend';
+import axios from 'axios';
+import { backendUrl, defineErrorMsg } from '@/config/backend';
 import { devices } from '@/config/devices';
 
 import ArticleLogoSample from '@/assets/img_not_found_512x512.png';
@@ -25,6 +30,7 @@ import ArticleLogoSample from '@/assets/img_not_found_512x512.png';
 import { displayFullDate } from '@/config/masks';
 
 import AnswersSection from './AnswersSection';
+import HudCommmentDetails from './HudCommentDetails';
 
 import {
   DialogSettingsTitle,
@@ -34,6 +40,7 @@ import {
   CustomTextField,
   CustomLink,
   HudIconButton,
+  CustomInputLabel,
 } from './styles';
 
 function CommentDetailsDialog(props) {
@@ -42,12 +49,21 @@ function CommentDetailsDialog(props) {
     closeDialog,
     comment,
     theme,
+    updateComment,
+    readComment,
+    callToast,
   } = props;
 
   /**
    * @description Controller states
    */
   const [showResponses, setShowResponses] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  /**
+   * @description Data states
+   */
+  const [commentState, setCommentState] = useState(true);
 
   const matches = useMediaQuery(devices.tablet);
 
@@ -62,6 +78,35 @@ function CommentDetailsDialog(props) {
   function closeAnswersSection() {
     setShowResponses(false);
   }
+
+  async function changeCommentState() {
+    try {
+      const newState = !commentState;
+      setCommentState(newState);
+
+      const { _id } = comment;
+      const url = `${backendUrl}/comments/${_id}`;
+      const method = newState ? 'put' : 'delete';
+
+      await axios[method](url);
+
+      const updatedComment = { ...comment, state: newState ? 'enabled' : 'disabled' };
+      updateComment(updatedComment);
+    } catch (error) {
+      const msg = defineErrorMsg(error);
+      callToast(toastError(msg));
+    }
+  }
+
+  useEffect(() => {
+    if (open && !loaded) {
+      setCommentState(comment.state === 'enabled');
+      setLoaded(true);
+      if (!comment.readedAt) {
+        readComment();
+      }
+    }
+  }, [comment, commentState, open, loaded, readComment]);
 
   return (
     <CustomDialog
@@ -103,9 +148,14 @@ function CommentDetailsDialog(props) {
         </SettingsTitleContent>
         <Divider />
       </DialogSettingsTitle>
+      <HudCommmentDetails
+        answerComment={openAnswersSection}
+        changeCommentState={changeCommentState}
+        comment={comment}
+      />
       <DialogContent>
         <Box width="100%" display="flex" flexWrap="wrap">
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={12} sm={7}>
             <CustomTextField
               label="Nome do leitor"
               value={comment.userName}
@@ -123,7 +173,7 @@ function CommentDetailsDialog(props) {
           </Grid>
           { !matches
             && (
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={5}>
                 <img
                   style={{ boxShadow: '0px 0px 2px 1px #ccc', objectFit: 'cover' }}
                   width="100%"
@@ -135,7 +185,7 @@ function CommentDetailsDialog(props) {
                   width="100%"
                   display="flex"
                   justifyContent="center"
-                  mt={2}
+                  mt={1}
                 >
                   <CustomLink to={`/articles/${comment.article.customURL}`}>
                     <Button
@@ -147,11 +197,28 @@ function CommentDetailsDialog(props) {
                     </Button>
                   </CustomLink>
                 </Box>
+                <Box mt={2}>
+                  <Box display="flex" alignItems="center">
+                    <CustomInputLabel htmlFor="enable-comment">
+                      Habilitar comentário
+                    </CustomInputLabel>
+                    <Switch
+                      checked={commentState}
+                      onChange={changeCommentState}
+                      color="primary"
+                      size="small"
+                      inputProps={{ id: 'enable-comment' }}
+                    />
+                  </Box>
+                  <Typography variant="caption" component="span">
+                    Se desmarcado, o comentário não ficará visivel publicamente
+                  </Typography>
+                </Box>
               </Grid>
             )}
         </Box>
       </DialogContent>
-      <CustomDialogActions>
+      <CustomDialogActions responsive="true">
         <Box
           display="flex"
           alignItems="center"
@@ -234,14 +301,19 @@ function CommentDetailsDialog(props) {
 CommentDetailsDialog.propTypes = {
   open: PropTypes.bool,
   closeDialog: PropTypes.func.isRequired,
+  readComment: PropTypes.func.isRequired,
+  updateComment: PropTypes.func,
   comment: commentSettingsType.isRequired,
   theme: appTheme.isRequired,
+  callToast: PropTypes.func.isRequired,
 };
 
 CommentDetailsDialog.defaultProps = {
   open: false,
+  updateComment: () => null,
 };
 
 const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
+const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
-export default connect(mapStateToProps)(CommentDetailsDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(CommentDetailsDialog);

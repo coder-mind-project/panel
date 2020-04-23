@@ -32,6 +32,7 @@ import {
   CustomCard,
   CustomCardActionArea,
   CustomCardActions,
+  CustomChip,
 } from './styles';
 
 function CommentCard(props) {
@@ -40,6 +41,7 @@ function CommentCard(props) {
     theme,
     callToast,
     emitAsRead,
+    updateCard,
   } = props;
 
   /**
@@ -111,9 +113,19 @@ function CommentCard(props) {
     });
   }
 
+  function emitCommentUpdated(commentUpdated) {
+    updateCard(commentUpdated);
+  }
+
   return (
     <CustomCard>
-      <CommentDetailsDialog open={showDetails} comment={comment} closeDialog={closeDetails} />
+      <CommentDetailsDialog
+        open={showDetails}
+        comment={comment}
+        closeDialog={closeDetails}
+        updateComment={emitCommentUpdated}
+        readComment={markAsRead}
+      />
       { showAnswers
         && (
           <AnswersSection
@@ -143,7 +155,20 @@ function CommentCard(props) {
             mt={1}
             mb={1}
           >
-            <Chip color={comment.readedAt ? 'primary' : 'default'} size="small" label={comment.readedAt ? 'Lido' : 'Não lido'} />
+            <Chip
+              icon={(<Icon fontSize="small">{comment.readedAt ? 'drafts' : 'markunread'}</Icon>)}
+              color={comment.readedAt ? 'primary' : 'default'}
+              size="small"
+              label={comment.readedAt ? 'Lido' : 'Não lido'}
+            />
+            {comment.state !== 'enabled'
+              && (
+                <CustomChip
+                  icon={(<Icon fontSize="small">lock</Icon>)}
+                  size="small"
+                  label="Desabilitado"
+                />
+              )}
           </Box>
           <Typography variant="body2" color="textSecondary" component="p">
             {formatCommentMessage(comment.message)}
@@ -184,6 +209,7 @@ CommentCard.propTypes = {
   theme: appTheme.isRequired,
   callToast: PropTypes.func.isRequired,
   emitAsRead: PropTypes.func.isRequired,
+  updateCard: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
