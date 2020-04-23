@@ -82,6 +82,15 @@ function CommentList() {
     }
   }
 
+  function updateCommentInList(newComment = {}) {
+    const updatedComments = comments.map((elem) => {
+      const commentUpdated = newComment._id === elem._id ? newComment : elem;
+      return commentUpdated;
+    });
+
+    setComments(updatedComments);
+  }
+
   function searchComments(q) {
     clearComments();
     setQuery(q);
@@ -218,7 +227,14 @@ function CommentList() {
               width="100%"
             >
               {comments.map((elem) =>
-                (<CommentCard comment={elem} key={elem._id} emitAsRead={updateReadComment} />))
+                (
+                  <CommentCard
+                    comment={elem}
+                    key={elem._id}
+                    emitAsRead={updateReadComment}
+                    updateCard={updateCommentInList}
+                  />
+                ))
                 }
             </Box>
           </InfiniteScroll>
