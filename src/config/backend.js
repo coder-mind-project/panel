@@ -1,3 +1,6 @@
+// Local APIS
+const backendUrl = process.env.REACT_APP_LOCAL_API_DEVELOPMENT;
+
 // Development APIS
 // const backendUrl = process.env.REACT_APP_DEVELOPMENT_API;
 
