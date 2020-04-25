@@ -1,5 +1,5 @@
 // Development APIS
-const backendUrl = process.env.REACT_APP_LOCAL_API_DEVELOPMENT;
+// const backendUrl = process.env.REACT_APP_DEVELOPMENT_API;
 
 // Production APIS
 // const backendUrl = process.env.REACT_APP_PRODUCTION_API
