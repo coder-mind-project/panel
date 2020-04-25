@@ -2,7 +2,7 @@
 const backendUrl = process.env.REACT_APP_LOCAL_API_DEVELOPMENT;
 
 // Production APIS
-// const backendUrl = process.env.REACT_APP_PRODUCTION_API_DEVELOPMENT
+// const backendUrl = process.env.REACT_APP_PRODUCTION_API
 
 // ipinfo.io API
 const ipinfo = process.env.REACT_APP_IP_INFO_API;
