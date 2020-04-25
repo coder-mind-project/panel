@@ -68,7 +68,7 @@ export const CustomCard = styled(Card)({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  maxWidth: '345px',
+  width: '345px',
   height: '320px',
   margin: '15px',
   [devices.laptop]: {
@@ -87,6 +87,7 @@ export const CustomCard = styled(Card)({
 export const CustomCardActionArea = styled(CardActionArea)({
   height: '272px',
   flexDirection: 'column',
+  alignItems: 'flex-start',
   '& .article-logo': {
     filter: (props) => (props.comment && props.comment.readedAt ? 'grayscale(100%)' : 'none'),
   },
