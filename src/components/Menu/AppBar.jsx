@@ -21,8 +21,10 @@ import CommentsNotifications from '@/components/Comments/UnreadComments.jsx';
 import TicketsNotifications from '@/components/Tickets/ManageTickets/UnreadedTickets.jsx';
 import ThemeSwitcher from '@/components/Menu/ThemeSwitcher.jsx';
 
-import LogoBlack from '../../assets/coder-mind-painelv1-preto.png';
-import LogoWhite from '../../assets/coder-mind-painelv1-branco.png';
+import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
+import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
+
+import { backendUrl } from '@/config/backend';
 
 import {
   CustomAppBar,
@@ -31,8 +33,6 @@ import {
   CustomMenu,
   CustomLink,
 } from './styles';
-
-import { backendUrl } from '../../config/backend';
 
 function AppBar(props) {
   const {
