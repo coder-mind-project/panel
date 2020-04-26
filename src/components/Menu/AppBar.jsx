@@ -19,6 +19,7 @@ import HideOnScroll from '@/components/HideOnScroll.jsx';
 import AboutSystem from '@/components/AboutSystem.jsx';
 import CommentsNotifications from '@/components/Comments/UnreadComments.jsx';
 import TicketsNotifications from '@/components/Tickets/ManageTickets/UnreadedTickets.jsx';
+import ThemeSwitcher from '@/components/Menu/ThemeSwitcher.jsx';
 
 import LogoBlack from '../../assets/coder-mind-painelv1-preto.png';
 import LogoWhite from '../../assets/coder-mind-painelv1-branco.png';
@@ -74,6 +75,7 @@ function AppBar(props) {
           { user && user.name
               && (
                 <AppBarItems display="flex" alignItems="center">
+                  <ThemeSwitcher />
                   <CommentsNotifications />
                   { user.tagAdmin
                     && <TicketsNotifications />
