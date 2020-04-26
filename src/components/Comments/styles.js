@@ -15,6 +15,7 @@ import {
   TextField,
   MenuItem,
   Chip,
+  Tabs,
 } from '@material-ui/core';
 
 import SearchBar from 'material-ui-search-bar';
@@ -134,7 +135,7 @@ export const HudSearchBar = styled(SearchBar)({
 });
 
 export const DialogSettingsTitle = styled(DialogTitle)({
-  padding: '10px 20px',
+  padding: '10px 25px 0px 25px',
 });
 
 export const SettingsTitleContent = styled(Box)({
@@ -151,30 +152,13 @@ export const SettingsTitleContent = styled(Box)({
   },
 });
 
-export const SettingsContent = styled(Grid)({
-  minWidth: '350px',
-  padding: '5px 15px 5px 5px',
-  marginLeft: '15px',
-  [devices.mobileLarge]: {
-    minWidth: '100%',
-    marginLeft: '0px',
-  },
-});
-
-export const SettingsMenu = styled(Grid)({
-  marginRight: '15px',
-  borderRight: '1px solid rgba(0, 0, 0, .25)',
-  [devices.mobileLarge]: {
-    display: 'none',
-  },
-});
-
 export const SettingsIcon = styled(Icon)({
   marginRight: '5px',
 });
 
 export const SettingsContainer = styled(Box)({
   display: (props) => (props.open ? 'block' : 'none'),
+  padding: '15px',
 });
 
 export const CustomInputLabel = styled(InputLabel)({
@@ -248,4 +232,17 @@ export const CommentDetailsStateArea = styled(Box)({
 
 export const CustomChip = styled(Chip)({
   marginLeft: '5px',
+});
+
+export const CustomDialogContent = styled(Box)({
+  display: 'flex',
+  flexDirection: (props) => (props.sm === 'true' ? 'column' : 'row'),
+  height: '100%',
+});
+
+export const CommentSettingsTabs = styled(Tabs)({
+  width: '250px',
+  [devices.tablet]: {
+    width: '100%',
+  },
 });

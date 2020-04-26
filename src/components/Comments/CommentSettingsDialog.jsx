@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { Scrollbars } from 'react-custom-scrollbars';
-
 import {
-  DialogContent,
-  MenuItem,
   Box,
   Typography,
   IconButton,
   Icon,
-  Divider,
   Button,
   Tooltip,
   LinearProgress,
+  Tab,
+  useMediaQuery,
 } from '@material-ui/core';
+
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error as toastError } from '@/config/toasts';
+
+import { devices } from '@/config/devices';
 
 import axios from 'axios';
 import { backendUrl, defineErrorMsg } from '@/config/backend';
@@ -29,12 +30,12 @@ import SettingsDialogAnswers from './SettingsDialogAnswers';
 import SettingsDialogAppearance from './SettingsDialogAppearance';
 
 import {
-  SettingsContent,
   DialogSettingsTitle,
   CustomDialog,
   SettingsTitleContent,
-  SettingsMenu,
   CustomDialogActions,
+  CustomDialogContent,
+  CommentSettingsTabs,
 } from './styles';
 
 function CommentSettingsDialog(props) {
@@ -48,7 +49,7 @@ function CommentSettingsDialog(props) {
    * @description Data states
    */
   const [settings, setSettings] = useState({});
-  const [option, setOption] = useState('comments');
+  const [option, setOption] = useState(0);
 
   /**
    * @description Controller states
@@ -56,12 +57,14 @@ function CommentSettingsDialog(props) {
   const [saving, setSaving] = useState(false);
   const [load, setLoad] = useState(false);
 
-  function changeOption(opt) {
+  const matches = useMediaQuery(devices.tablet);
+
+  function changeOption(evt, opt = 0) {
     setOption(opt);
   }
 
   function close(event) {
-    changeOption('comments');
+    changeOption();
     closeDialog(event);
   }
 
@@ -159,52 +162,38 @@ function CommentSettingsDialog(props) {
             </Icon>
           </IconButton>
         </SettingsTitleContent>
-        <Divider />
       </DialogSettingsTitle>
-      <DialogContent>
-        <Box width="100%" height="100%" display="flex">
-          <SettingsMenu item sm={6} md={4}>
-            <MenuItem
-              selected={option === 'comments'}
-              onClick={() => changeOption('comments')}
-            >
-              Comentários
-            </MenuItem>
-            <MenuItem
-              selected={option === 'answers'}
-              onClick={() => changeOption('answers')}
-            >
-              Respostas
-            </MenuItem>
-            <MenuItem
-              selected={option === 'appearance'}
-              onClick={() => changeOption('appearance')}
-              disabled
-            >
-              Personalização
-            </MenuItem>
-          </SettingsMenu>
-          <Scrollbars autoHide>
-            <SettingsContent item sm={6} md={8}>
-              <SettingsDialogComments
-                open={option === 'comments'}
-                settings={settings}
-                emitSettings={handleSettings}
-              />
-              <SettingsDialogAnswers
-                open={option === 'answers'}
-                settings={settings}
-                emitSettings={handleSettings}
-              />
-              <SettingsDialogAppearance
-                open={option === 'appearance'}
-                settings={settings}
-                emitSettings={handleSettings}
-              />
-            </SettingsContent>
-          </Scrollbars>
-        </Box>
-      </DialogContent>
+      <CustomDialogContent sm={matches ? 'true' : ''}>
+        <CommentSettingsTabs
+          orientation={matches ? 'horizontal' : 'vertical'}
+          value={option}
+          onChange={changeOption}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="scrollable"
+        >
+          <Tab label="Comentários" />
+          <Tab label="Respostas" />
+          <Tab label="Aparência" disabled />
+        </CommentSettingsTabs>
+        <Scrollbars>
+          <SettingsDialogComments
+            open={option === 0}
+            settings={settings}
+            emitSettings={handleSettings}
+          />
+          <SettingsDialogAnswers
+            open={option === 1}
+            settings={settings}
+            emitSettings={handleSettings}
+          />
+          <SettingsDialogAppearance
+            open={option === 2}
+            settings={settings}
+            emitSettings={handleSettings}
+          />
+        </Scrollbars>
+      </CustomDialogContent>
       <CustomDialogActions>
         <Tooltip
           title={(
