@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { appTheme } from '@/types';
+
 import {
   Box,
   IconButton,
@@ -30,6 +32,7 @@ import { CustomMenu, CustomLink } from './styles';
 function UnreadComments(props) {
   const {
     callToast,
+    theme,
   } = props;
 
   const [comments, setComments] = useState([]);
@@ -168,18 +171,20 @@ function UnreadComments(props) {
                   </Typography>
                 </Box>
               </Box>
-              <Box mr={1}>
-                <IconButton
-                  size="small"
-                  color={theme === 'dark' ? 'inherit' : 'primary'}
-                  disabled={!count}
-                  onClick={markAllAsRead}
-                >
-                  <Icon>
-                    done_all
-                  </Icon>
-                </IconButton>
-              </Box>
+              { Boolean(count)
+                && (
+                  <Box mr={1}>
+                    <IconButton
+                      size="small"
+                      color={theme === 'dark' ? 'inherit' : 'primary'}
+                      onClick={markAllAsRead}
+                    >
+                      <Icon>
+                        done_all
+                      </Icon>
+                    </IconButton>
+                  </Box>
+                )}
             </Box>
             <Divider />
             { count === 0 && !loading
@@ -245,9 +250,10 @@ function UnreadComments(props) {
 
 UnreadComments.propTypes = {
   callToast: PropTypes.func.isRequired,
+  theme: appTheme.isRequired,
 };
 
-const mapStateToProps = (state) => ({ toast: state.config });
+const mapStateToProps = (state) => ({ theme: state.theme, toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UnreadComments);
