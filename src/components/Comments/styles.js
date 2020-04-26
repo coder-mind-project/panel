@@ -203,6 +203,10 @@ export const AnswerOwner = styled(Box)({
     fontWeight: 700,
     marginRight: '10px',
     marginBottom: '2px',
+    '& .cm-user-icon': {
+      marginRight: '5px',
+      verticalAlign: 'bottom',
+    },
   },
 });
 
