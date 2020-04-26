@@ -25,6 +25,7 @@ import { devices } from '@/config/devices';
 import axios from 'axios';
 import { backendUrl, defineErrorMsg } from '@/config/backend';
 
+import { appTheme } from '@/types';
 import SettingsDialogComments from './SettingsDialogComments';
 import SettingsDialogAnswers from './SettingsDialogAnswers';
 import SettingsDialogAppearance from './SettingsDialogAppearance';
@@ -43,6 +44,7 @@ function CommentSettingsDialog(props) {
     open,
     closeDialog,
     callToast,
+    theme,
   } = props;
 
   /**
@@ -169,7 +171,7 @@ function CommentSettingsDialog(props) {
           value={option}
           onChange={changeOption}
           indicatorColor="primary"
-          textColor="primary"
+          textColor={theme === 'dark' ? 'inherit' : 'primary'}
           variant="scrollable"
         >
           <Tab label="Comentários" />
@@ -227,13 +229,14 @@ CommentSettingsDialog.propTypes = {
   open: PropTypes.bool,
   closeDialog: PropTypes.func.isRequired,
   callToast: PropTypes.func.isRequired,
+  theme: appTheme.isRequired,
 };
 
 CommentSettingsDialog.defaultProps = {
   open: false,
 };
 
-const mapStateToProps = (state) => ({ toast: state.config });
+const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentSettingsDialog);
