@@ -126,3 +126,11 @@ export const CustomMenu = styled(Menu)({
     marginLeft: '.6rem',
   },
 });
+
+export const ThemeSwitcherContainer = styled(Box)({
+  display: 'none',
+  [devices.mobileLarge]: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+});
