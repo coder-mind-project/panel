@@ -52,7 +52,7 @@ function SettingsDialogCommunication(props) {
 
   return (
     <SettingsContainer open={open}>
-      <SettingsDialogContentHeader icon="question_answer" title="Comunicação" />
+      <SettingsDialogContentHeader icon="question_answer" title="Respostas" />
       <Box
         mb={2}
       >
@@ -71,8 +71,8 @@ function SettingsDialogCommunication(props) {
           />
         </Box>
         <FormHelperText>
-          Caso esteja marcado, o leitor que realizou o comentário será
-          notificado quando uma resposta for criada
+          Caso esteja marcado, ao responder um comentário o leitor que realizou o comentário será
+          notificado.
         </FormHelperText>
       </Box>
     </SettingsContainer>
