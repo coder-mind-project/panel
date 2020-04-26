@@ -24,8 +24,8 @@ import { success, error as toastError } from '@/config/toasts';
 import axios from 'axios';
 import { backendUrl, defineErrorMsg } from '@/config/backend';
 
-import SettingsDialogSearch from './SettingsDialogSearch';
-import SettingsDialogCommunication from './SettingsDialogCommunication';
+import SettingsDialogComments from './SettingsDialogComments';
+import SettingsDialogAnswers from './SettingsDialogAnswers';
 import SettingsDialogAppearance from './SettingsDialogAppearance';
 
 import {
@@ -48,7 +48,7 @@ function CommentSettingsDialog(props) {
    * @description Data states
    */
   const [settings, setSettings] = useState({});
-  const [option, setOption] = useState('search');
+  const [option, setOption] = useState('comments');
 
   /**
    * @description Controller states
@@ -61,7 +61,7 @@ function CommentSettingsDialog(props) {
   }
 
   function close(event) {
-    changeOption('search');
+    changeOption('comments');
     closeDialog(event);
   }
 
@@ -165,16 +165,16 @@ function CommentSettingsDialog(props) {
         <Box width="100%" height="100%" display="flex">
           <SettingsMenu item sm={6} md={4}>
             <MenuItem
-              selected={option === 'search'}
-              onClick={() => changeOption('search')}
+              selected={option === 'comments'}
+              onClick={() => changeOption('comments')}
             >
-              Pesquisa
+              Comentários
             </MenuItem>
             <MenuItem
-              selected={option === 'communication'}
-              onClick={() => changeOption('communication')}
+              selected={option === 'answers'}
+              onClick={() => changeOption('answers')}
             >
-              Comunicação
+              Respostas
             </MenuItem>
             <MenuItem
               selected={option === 'appearance'}
@@ -186,13 +186,13 @@ function CommentSettingsDialog(props) {
           </SettingsMenu>
           <Scrollbars autoHide>
             <SettingsContent item sm={6} md={8}>
-              <SettingsDialogSearch
-                open={option === 'search'}
+              <SettingsDialogComments
+                open={option === 'comments'}
                 settings={settings}
                 emitSettings={handleSettings}
               />
-              <SettingsDialogCommunication
-                open={option === 'communication'}
+              <SettingsDialogAnswers
+                open={option === 'answers'}
                 settings={settings}
                 emitSettings={handleSettings}
               />

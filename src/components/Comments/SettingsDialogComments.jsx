@@ -69,7 +69,7 @@ function SettingsDialogSearch(props) {
 
   return (
     <SettingsContainer open={open}>
-      <SettingsDialogContentHeader icon="search" title="Pesquisa" />
+      <SettingsDialogContentHeader icon="comments" title="Comentários" />
       <Box
         mb={2}
       >
@@ -95,7 +95,7 @@ function SettingsDialogSearch(props) {
           </Select>
         </Box>
         <FormHelperText>
-          Define o limite inicial de comentários a serem apresentados na tela de listagem
+          Define o limite inicial de comentários a serem apresentados
         </FormHelperText>
       </Box>
       <Box
@@ -116,13 +116,12 @@ function SettingsDialogSearch(props) {
               id: 'comments-order',
             }}
           >
-            <option value="asc">Ascendente</option>
-            <option value="desc">Decrescente</option>
+            <option value="desc">Mais recente</option>
+            <option value="asc">Mais antigo</option>
           </Select>
         </Box>
         <FormHelperText>
-          Define a ordenação de comentários,
-          esta que será realizada pela data de criação do comentário pelo leitor
+          Define a ordenação de comentários
         </FormHelperText>
       </Box>
       <Box
@@ -149,8 +148,8 @@ function SettingsDialogSearch(props) {
           </Select>
         </Box>
         <FormHelperText>
-          Define quais tipos de comentários serão carregados como
-          padrão ao entrar na tela de listagem
+          Define o tipo de comentário que será carregado como padrão
+          (Ainda será possível visualizar os outros tipos de comentários).
         </FormHelperText>
       </Box>
     </SettingsContainer>
