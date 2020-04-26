@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { appTheme } from '@/types';
+import PropTypes from 'prop-types';
 import {
   Box,
   IconButton,
@@ -15,8 +15,11 @@ import {
 
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { backendUrl } from '@/config/backend';
 
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
+import { error as toastError } from '@/config/toasts';
 
 import Scrollbars from 'react-custom-scrollbars';
 import NotificationItem from './UnreadComment';
@@ -26,7 +29,7 @@ import { CustomMenu, CustomLink } from './styles';
 
 function UnreadComments(props) {
   const {
-    theme,
+    callToast,
   } = props;
 
   const [comments, setComments] = useState([]);
@@ -47,10 +50,16 @@ function UnreadComments(props) {
   }
 
   async function markAllAsRead() {
-    const url = `${backendUrl}/comments`;
-    axios.patch(url);
-    setComments([]);
-    setCount(0);
+    try {
+      if (!count) return;
+
+      const url = `${backendUrl}/comments`;
+      axios.patch(url);
+      setComments([]);
+      setCount(0);
+    } catch (error) {
+      callToast(toastError('Ocorreu um erro desconhecido, se persistir reporte'));
+    }
   }
 
   function openCommentDetails(comment) {
@@ -235,9 +244,10 @@ function UnreadComments(props) {
 }
 
 UnreadComments.propTypes = {
-  theme: appTheme.isRequired,
+  callToast: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ theme: state.theme });
+const mapStateToProps = (state) => ({ toast: state.config });
+const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
-export default connect(mapStateToProps)(UnreadComments);
+export default connect(mapStateToProps, mapDispatchToProps)(UnreadComments);
