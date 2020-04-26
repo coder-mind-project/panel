@@ -222,7 +222,7 @@ function HudCommentList(props) {
                   <Typography variant="caption" component="span">
                     Ordenação atual:
                     {' '}
-                    {order === 'asc' ? 'Ascendente' : 'Descendente'}
+                    {order === 'asc' ? 'Mais antigo' : 'Mais recente'}
                   </Typography>
                 </Box>
               </MenuItem>
@@ -265,11 +265,11 @@ function HudCommentList(props) {
                 horizontal: 'left',
               }}
             >
-              <MenuItem selected={order === 'asc'} onClick={() => switchOrder('asc', 'order')}>
-                <Typography>A-Z</Typography>
-              </MenuItem>
               <MenuItem selected={order === 'desc'} onClick={() => switchOrder('desc', 'order')}>
-                <Typography>Z-A</Typography>
+                <Typography>Mais recente</Typography>
+              </MenuItem>
+              <MenuItem selected={order === 'asc'} onClick={() => switchOrder('asc', 'order')}>
+                <Typography>Mais antigo</Typography>
               </MenuItem>
             </Menu>
             <Tooltip title={(
