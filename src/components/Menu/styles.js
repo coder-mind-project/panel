@@ -46,7 +46,7 @@ export const CustomAvatar = styled(Avatar)({
   marginRight: '1rem',
   cursor: 'pointer',
   [devices.mobileLarge]: {
-    display: 'none',
+    display: 'none !important',
   },
 });
 
