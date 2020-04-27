@@ -474,7 +474,7 @@ function AnswersSection(props) {
           useWindow={false}
         >
           { answers && answers.map((elem) => (<AnswerItem answer={elem} key={elem._id} />))}
-          { !count
+          { !count && !loading
             && (
               <Box
                 display="flex"
