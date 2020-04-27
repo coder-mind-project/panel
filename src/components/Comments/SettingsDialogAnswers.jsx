@@ -2,13 +2,10 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { commentSettingsType } from '@/types';
 
-import { usePrevious } from '@/hooks';
-
 import {
   Box,
   FormHelperText,
   Switch,
-  Select,
 } from '@material-ui/core';
 
 import SettingsDialogContentHeader from './SettingsDialogContentHeader';
@@ -26,35 +23,18 @@ function SettingsDialogCommunication(props) {
    * @description Data states
    */
   const [notify, setNotify] = useState(false);
-  const [order, setOrder] = useState('desc');
-  const [type, setType] = useState('');
 
+  /**
+   * @description Controller states
+   */
+  const [load, setLoad] = useState(false);
 
-  const prevOpen = usePrevious(open);
+  function handleChange(evt) {
+    const { checked } = evt.target;
 
-  function handleChange(evt, reason) {
-    const { checked, value } = evt.target;
+    setNotify(checked);
 
-    const propertyChanged = {};
-
-    switch (reason) {
-      case 'notify': {
-        setNotify(checked);
-        propertyChanged.notify = checked;
-        break;
-      }
-      case 'order': {
-        setOrder(value);
-        propertyChanged.answersOrder = value;
-        break;
-      }
-      default: {
-        propertyChanged.answersType = value;
-        setType(value);
-      }
-    }
-
-
+    const propertyChanged = { notify: checked };
     emitSettings(propertyChanged);
   }
 
@@ -62,14 +42,13 @@ function SettingsDialogCommunication(props) {
   useEffect(() => {
     function getStoredSettings() {
       setNotify(Boolean(settings.notify));
-      setOrder(settings.answersOrder);
-      setType(settings.answersType);
     }
 
-    if (!prevOpen && open) {
+    if (!load) {
+      setLoad(true);
       getStoredSettings();
     }
-  }, [notify, order, type, open, prevOpen, settings]);
+  }, [notify, load, settings]);
 
   return (
     <SettingsContainer open={open}>
@@ -86,67 +65,14 @@ function SettingsDialogCommunication(props) {
           </CustomInputLabel>
           <Switch
             checked={notify}
-            onChange={(evt) => handleChange(evt, 'notify')}
+            onChange={handleChange}
             color="primary"
             inputProps={{ id: 'comments-notify' }}
           />
         </Box>
         <FormHelperText>
-          Se estiver marcado, será enviado uma notificação ao leitor quando responder um comentário
-        </FormHelperText>
-      </Box>
-      <Box
-        mb={2}
-      >
-        <Box
-          display="flex"
-          alignItems="center"
-        >
-          <CustomInputLabel htmlFor="answers-order">
-            Ordenação padrão
-          </CustomInputLabel>
-          <Select
-            native
-            value={order}
-            onChange={(evt) => handleChange(evt, 'order')}
-            inputProps={{
-              id: 'answers-order',
-            }}
-          >
-            <option value="desc">Mais recente</option>
-            <option value="asc">Mais antigo</option>
-          </Select>
-        </Box>
-        <FormHelperText>
-          Define a ordenação de respostas
-        </FormHelperText>
-      </Box>
-      <Box
-        mb={2}
-      >
-        <Box
-          display="flex"
-          alignItems="center"
-        >
-          <CustomInputLabel htmlFor="answers-type">
-            Tipo de resposta padrão
-          </CustomInputLabel>
-          <Select
-            native
-            value={type}
-            onChange={(evt) => handleChange(evt, 'type')}
-            inputProps={{
-              id: 'answers-type',
-            }}
-          >
-            <option value="all">Todas</option>
-            <option value="enabled">Somente habilitadas</option>
-            <option value="disabled">Somente desabilitadas</option>
-          </Select>
-        </Box>
-        <FormHelperText>
-          Define o tipo de resposta que será carregado por
-          padrão (Ainda será possível visualizar os outros tipos de respostas)
+          Caso esteja marcado, ao responder um comentário o leitor que realizou o comentário será
+          notificado.
         </FormHelperText>
       </Box>
     </SettingsContainer>
