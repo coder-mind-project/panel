@@ -201,17 +201,25 @@ export const AnswerOwner = styled(Box)({
   width: '100%',
   '& .answer-owner': {
     fontWeight: 700,
-    marginRight: '10px',
+    marginRight: '5px',
     marginBottom: '2px',
     '& .cm-user-icon': {
       marginRight: '5px',
       verticalAlign: 'bottom',
     },
   },
+  '& .cm-disable-indicator': {
+    marginLeft: '5px',
+    verticalAlign: 'top',
+  },
 });
 
 export const AnswerMessage = styled(Box)({
   width: '100%',
+  textDecoration: (props) => (props.state === 'disabled' ? 'line-through' : 'none'),
+  [devices.mobileLarge]: {
+    marginTop: '5px',
+  },
   '& .answer-message': {
     whiteSpace: 'pre-line',
   },
@@ -248,5 +256,12 @@ export const CommentSettingsTabs = styled(Tabs)({
   width: '250px',
   [devices.tablet]: {
     width: '100%',
+  },
+});
+
+export const AnswersHudItem = styled(Box)({
+  height: '100%',
+  [devices.mobileLarge]: {
+    height: 'auto',
   },
 });

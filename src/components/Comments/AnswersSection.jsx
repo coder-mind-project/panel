@@ -18,6 +18,7 @@ import {
   MenuItem,
   CircularProgress,
   Tooltip,
+  useMediaQuery,
 } from '@material-ui/core';
 
 
@@ -29,6 +30,8 @@ import { error as toastError } from '@/config/toasts';
 import axios from 'axios';
 import { backendUrl, defineErrorMsg } from '@/config/backend';
 
+import { devices } from '@/config/devices';
+
 import InfiniteScroll from 'react-infinite-scroller';
 import CustomButton from '@/components/Buttons/Button.jsx';
 
@@ -39,6 +42,7 @@ import {
   DialogSettingsTitle,
   CustomDialog,
   SettingsTitleContent,
+  AnswersHudItem,
 } from './styles';
 
 function AnswersSection(props) {
@@ -74,6 +78,9 @@ function AnswersSection(props) {
   const [latestAnswer, setLatestAnswer] = useState(null);
   const [order, setOrder] = useState('desc');
   const [type, setType] = useState('');
+
+
+  const matches = useMediaQuery(devices.mobileLarge);
 
   function close(event) {
     closeDialog(event);
@@ -182,6 +189,19 @@ function AnswersSection(props) {
         return 'Todos';
       }
     }
+  }
+
+  function updateAnswerState(currentAnswer) {
+    const updatedAnswers = answers.map((elem) => {
+      let ans = elem;
+      if (ans._id === currentAnswer._id) {
+        ans = currentAnswer;
+      }
+
+      return ans;
+    });
+
+    setAnswers(updatedAnswers);
   }
 
   useEffect(() => {
@@ -355,26 +375,40 @@ function AnswersSection(props) {
         </Box>
         <Box>
           <Box display="flex" justifyContent="space-between" width="100%" mb={2}>
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" flexWrap="wrap">
               { Boolean(count)
                 && (
-                  <Box height="100%">
-                    <Typography component="h2" variant="subtitle1">
+                  <AnswersHudItem>
+                    <Typography component="h2" variant={matches ? 'body2' : 'subtitle1'}>
                       {`${count} resposta${count > 1 ? 's' : ''}`}
                     </Typography>
-                  </Box>
+                  </AnswersHudItem>
                 )}
               { Boolean(count)
                 && (
-                  <Box height="100%" ml={2}>
-                    <CustomButton
-                      variant="text"
-                      color="default"
-                      onClick={openMenuOrder}
-                      icon="sort"
-                      text="Ordenar por"
-                      size="small"
-                    />
+                  <AnswersHudItem>
+                    <Box ml={1}>
+                      { matches
+                      && (
+                        <IconButton onClick={openMenuOrder}>
+                          <Icon fontSize="small">
+                            sort
+                          </Icon>
+                        </IconButton>
+                      )
+                    }
+                      {!matches
+                      && (
+                      <CustomButton
+                        variant="text"
+                        color="default"
+                        onClick={openMenuOrder}
+                        icon="sort"
+                        text="Ordenar por"
+                        size="small"
+                      />
+                      )}
+                    </Box>
                     <Menu
                       anchorEl={anchorMenuOrder}
                       keepMounted
@@ -403,7 +437,7 @@ function AnswersSection(props) {
                         Mais antigo
                       </MenuItem>
                     </Menu>
-                  </Box>
+                  </AnswersHudItem>
                 )}
             </Box>
             <Box>
@@ -499,7 +533,16 @@ function AnswersSection(props) {
           )}
           useWindow={false}
         >
-          { answers && answers.map((elem) => (<AnswerItem answer={elem} key={elem._id} />))}
+          { answers
+            && answers.map((elem) =>
+              (
+                <AnswerItem
+                  answer={elem}
+                  key={elem._id}
+                  changeAnswerState={updateAnswerState}
+                />
+              ))
+          }
           { !count && !loading
             && (
               <Box
