@@ -426,7 +426,7 @@ function AnswersSection(props) {
               >
                 <MenuItem
                   onClick={() => changeType('')}
-                  selected={!type}
+                  selected={!type || type === 'all'}
                 >
                   Todos
                 </MenuItem>
@@ -502,7 +502,7 @@ function AnswersSection(props) {
                 width="100%"
               >
                 <Typography component="p" variant="body1" align="center">
-                  {!type ? 'Este comentário não possui respostas' : `Este comentário não possui respostas do tipo "${defineType()}"`}
+                  {!type || type === 'all' ? 'Este comentário não possui respostas' : `Este comentário não possui respostas do tipo "${defineType()}"`}
                 </Typography>
               </Box>
             )}
