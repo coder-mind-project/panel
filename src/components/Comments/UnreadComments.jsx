@@ -104,6 +104,7 @@ function UnreadComments(props) {
             open={showCommentDetails}
             closeDialog={closeCommentDetails}
             comment={commentSelected}
+            provider="notifications"
           />
         )}
       <Box>

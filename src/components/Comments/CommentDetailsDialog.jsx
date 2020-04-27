@@ -52,6 +52,7 @@ function CommentDetailsDialog(props) {
     updateComment,
     readComment,
     callToast,
+    provider,
   } = props;
 
   /**
@@ -102,11 +103,11 @@ function CommentDetailsDialog(props) {
     if (open && !loaded) {
       setCommentState(comment.state === 'enabled');
       setLoaded(true);
-      if (!comment.readedAt) {
+      if (!comment.readedAt && provider !== 'notifications') {
         readComment();
       }
     }
-  }, [comment, commentState, open, loaded, readComment]);
+  }, [comment, commentState, open, loaded, readComment, provider]);
 
   return (
     <CustomDialog
@@ -306,6 +307,10 @@ CommentDetailsDialog.propTypes = {
   comment: commentSettingsType.isRequired,
   theme: appTheme.isRequired,
   callToast: PropTypes.func.isRequired,
+  provider: PropTypes.oneOf([
+    'notifications',
+    'comments',
+  ]).isRequired,
 };
 
 CommentDetailsDialog.defaultProps = {

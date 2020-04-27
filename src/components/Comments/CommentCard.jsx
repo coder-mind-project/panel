@@ -125,6 +125,7 @@ function CommentCard(props) {
         closeDialog={closeDetails}
         updateComment={emitCommentUpdated}
         readComment={markAsRead}
+        provider="comments"
       />
       { showAnswers
         && (
