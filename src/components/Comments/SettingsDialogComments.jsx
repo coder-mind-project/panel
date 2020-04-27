@@ -145,6 +145,8 @@ function SettingsDialogSearch(props) {
             <option value="all">Todos</option>
             <option value="not-readed">Não lidos</option>
             <option value="only-readed">Somente lidos</option>
+            <option value="enabled">Habilitados</option>
+            <option value="disabled">Desabilitados</option>
           </Select>
         </Box>
         <FormHelperText>

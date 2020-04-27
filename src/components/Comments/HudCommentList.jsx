@@ -99,6 +99,8 @@ function HudCommentList(props) {
   function getTypes() {
     if (type === 'not-readed') return 'Não lidos';
     if (type === 'only-readed') return 'Somente lidos';
+    if (type === 'enabled') return 'Habilitados';
+    if (type === 'disabled') return 'Desabilitados';
 
     return 'Todos';
   }
@@ -191,6 +193,8 @@ function HudCommentList(props) {
           <MenuItem onClick={() => setTypes('all')}>Todos</MenuItem>
           <MenuItem onClick={() => setTypes('not-readed')}>Não lidos</MenuItem>
           <MenuItem onClick={() => setTypes('only-readed')}>Somente lidos</MenuItem>
+          <MenuItem onClick={() => setTypes('enabled')}>Habilitados</MenuItem>
+          <MenuItem onClick={() => setTypes('disabled')}>Desabilitados</MenuItem>
         </Menu>
         { matches && (
           <Box>
