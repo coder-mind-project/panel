@@ -47,6 +47,7 @@ function AnswersSection(props) {
     closeDialog,
     comment,
     callToast,
+    readComment,
   } = props;
 
 
@@ -257,6 +258,12 @@ function AnswersSection(props) {
     settingsLoaded,
     type,
   ]);
+
+  useEffect(() => {
+    if (open && !comment.readedAt && typeof readComment === 'function') {
+      readComment();
+    }
+  }, [comment, open, readComment]);
 
   return (
     <CustomDialog
@@ -517,10 +524,12 @@ AnswersSection.propTypes = {
   closeDialog: PropTypes.func.isRequired,
   comment: commentSettingsType.isRequired,
   callToast: PropTypes.func.isRequired,
+  readComment: PropTypes.func,
 };
 
 AnswersSection.defaultProps = {
   open: false,
+  readComment: null,
 };
 
 const mapStateToProps = (state) => ({ toast: state.config });

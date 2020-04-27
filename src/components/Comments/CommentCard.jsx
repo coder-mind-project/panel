@@ -132,6 +132,7 @@ function CommentCard(props) {
             open={showAnswers}
             comment={comment}
             closeDialog={closeAnswers}
+            readComment={markAsRead}
           />
         )
       }
