@@ -21,6 +21,8 @@ import { displayFullDate, displayDate } from '@/config/masks';
 import axios from 'axios';
 import { backendUrl } from '@/config/backend';
 
+import WhatIsDisabledAnswersDialog from './WhatIsDisabledAnswersDialog';
+
 import {
   AnswerOwner,
   AnswerMessage,
@@ -32,6 +34,7 @@ function AnswerItem(props) {
     changeAnswerState,
   } = props;
 
+  const [whatIsDisabledAnswers, setWhatIsDisabledAnswers] = useState(false);
   const [anchorMenu, setAnchorMenu] = useState(null);
 
   const matches = useMediaQuery(devices.mobileLarge);
@@ -43,6 +46,14 @@ function AnswerItem(props) {
 
   function closeMenu() {
     setAnchorMenu(null);
+  }
+
+  function openWhatIsDisabledAnswersDialog() {
+    setWhatIsDisabledAnswers(true);
+  }
+
+  function closeWhatIsDisabledAnswersDialog() {
+    setWhatIsDisabledAnswers(false);
   }
 
   function changeState() {
@@ -73,6 +84,10 @@ function AnswerItem(props) {
       mt={1}
       mb={2}
     >
+      <WhatIsDisabledAnswersDialog
+        open={whatIsDisabledAnswers}
+        closeDialog={closeWhatIsDisabledAnswersDialog}
+      />
       <Box
         display="flex"
         alignItems="center"
@@ -136,17 +151,30 @@ function AnswerItem(props) {
           </Typography>
           {answer.state !== 'enabled'
             && (
-              <IconButton
-                size="small"
-                className="cm-disable-indicator"
+              <Tooltip
+                title={(
+                  <Typography
+                    component="span"
+                    variant="caption"
+                  >
+                    Este comentário está desabilitado
+                  </Typography>
+              )}
+                placement="right"
               >
-                <Icon
-                  fontSize="small"
-                  color="action"
+                <IconButton
+                  size="small"
+                  className="cm-disable-indicator"
+                  onClick={openWhatIsDisabledAnswersDialog}
                 >
-                  lock
-                </Icon>
-              </IconButton>
+                  <Icon
+                    fontSize="small"
+                    color="action"
+                  >
+                    lock
+                  </Icon>
+                </IconButton>
+              </Tooltip>
             )
           }
         </AnswerOwner>
