@@ -302,7 +302,7 @@ function CommentDetailsDialog(props) {
 CommentDetailsDialog.propTypes = {
   open: PropTypes.bool,
   closeDialog: PropTypes.func.isRequired,
-  readComment: PropTypes.func.isRequired,
+  readComment: PropTypes.func,
   updateComment: PropTypes.func,
   comment: commentSettingsType.isRequired,
   theme: appTheme.isRequired,
@@ -316,6 +316,7 @@ CommentDetailsDialog.propTypes = {
 CommentDetailsDialog.defaultProps = {
   open: false,
   updateComment: () => null,
+  readComment: null,
 };
 
 const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
