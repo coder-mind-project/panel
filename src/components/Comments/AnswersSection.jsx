@@ -61,7 +61,7 @@ function AnswersSection(props) {
   const [count, setCount] = useState(0);
   const [showActionButtons, setShowActionButtons] = useState(false);
   const [anchorMenuOrder, setAnchorMenuOrder] = useState(null);
-  const [notifyLoaded, setNotifyLoaded] = useState(false);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [anchorMenuType, setAnchorMenuType] = useState(null);
 
   /**
@@ -114,7 +114,7 @@ function AnswersSection(props) {
     const data = { answer };
     await axios.post(url, data).then((response) => {
       reloadAnswers();
-      if (order === 'asc') setLatestAnswer(response.data);
+      if (order === 'asc' && type !== 'disabled') setLatestAnswer(response.data);
       clearAnswerField();
     }).catch((err) => {
       const msg = defineErrorMsg(err);
@@ -184,17 +184,40 @@ function AnswersSection(props) {
   }
 
   useEffect(() => {
-    function getNotifyState() {
-      const settings = JSON.parse(localStorage.getItem('cm-comments-settings'));
-      const willNotify = settings && settings.notify ? 'yes' : 'no';
-      setNotify(willNotify);
+    function getSettings() {
+      try {
+        const currentSettings = JSON.parse(localStorage.getItem('cm-comments-settings'));
+        if (currentSettings) {
+          const willNotify = currentSettings.notify ? 'yes' : 'no';
+          const { answersOrder, answersType } = currentSettings;
+
+          setNotify(willNotify);
+          setType(answersType);
+          setOrder(answersOrder);
+          return { notify: willNotify, type: answersType, order: answersOrder };
+        }
+
+        throw new Error('Settings is not defined');
+      } catch (error) {
+        return null;
+      }
     }
 
     async function getAnswers() {
       setLoading(true);
 
+      let initialSettings = null;
+
+      if (!settingsLoaded) {
+        setSettingsLoaded(true);
+        initialSettings = getSettings();
+      }
+
       const { _id } = comment;
-      const url = `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${order}&state=${type}`;
+      const url = initialSettings
+        ? `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${initialSettings.order}&state=${initialSettings.type}`
+        : `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${order}&state=${type}`;
+
       await axios(url).then((response) => {
         let currentAnswers = answers;
         const newAnswers = response.data.answers;
@@ -216,10 +239,6 @@ function AnswersSection(props) {
 
     if (reload) {
       setReload(false);
-      if (!notifyLoaded) {
-        setNotifyLoaded(true);
-        getNotifyState();
-      }
       getAnswers();
     }
   },
@@ -235,7 +254,7 @@ function AnswersSection(props) {
     notify,
     order,
     latestAnswer,
-    notifyLoaded,
+    settingsLoaded,
     type,
   ]);
 
