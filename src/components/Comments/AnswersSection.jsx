@@ -17,6 +17,7 @@ import {
   Menu,
   MenuItem,
   CircularProgress,
+  Tooltip,
 } from '@material-ui/core';
 
 
@@ -61,6 +62,7 @@ function AnswersSection(props) {
   const [showActionButtons, setShowActionButtons] = useState(false);
   const [anchorMenuOrder, setAnchorMenuOrder] = useState(null);
   const [notifyLoaded, setNotifyLoaded] = useState(false);
+  const [anchorMenuType, setAnchorMenuType] = useState(null);
 
   /**
    * @description Data states
@@ -70,6 +72,7 @@ function AnswersSection(props) {
   const [notify, setNotify] = useState('no');
   const [latestAnswer, setLatestAnswer] = useState(null);
   const [order, setOrder] = useState('desc');
+  const [type, setType] = useState('');
 
   function close(event) {
     closeDialog(event);
@@ -141,10 +144,42 @@ function AnswersSection(props) {
     closeMenuOrder();
   }
 
+  function openMenuType(evt) {
+    const { currentTarget } = evt;
+    setAnchorMenuType(currentTarget);
+  }
+
+  function closeMenuType() {
+    setAnchorMenuType(null);
+  }
+
+  function changeType(t) {
+    if (latestAnswer) setLatestAnswer(null);
+    setType(t);
+    setAnswers([]);
+    setPage(1);
+    setReload(true);
+    closeMenuType();
+  }
+
   function getMoreAnswers() {
     if (!loading) {
       setPage(page + 1);
       setReload(true);
+    }
+  }
+
+  function defineType() {
+    switch (type) {
+      case 'enabled': {
+        return 'Somente habilitados';
+      }
+      case 'disabled': {
+        return 'Somente desabilitados';
+      }
+      default: {
+        return 'Todos';
+      }
     }
   }
 
@@ -159,7 +194,7 @@ function AnswersSection(props) {
       setLoading(true);
 
       const { _id } = comment;
-      const url = `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${order}`;
+      const url = `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${order}&state=${type}`;
       await axios(url).then((response) => {
         let currentAnswers = answers;
         const newAnswers = response.data.answers;
@@ -201,6 +236,7 @@ function AnswersSection(props) {
     order,
     latestAnswer,
     notifyLoaded,
+    type,
   ]);
 
   return (
@@ -291,6 +327,106 @@ function AnswersSection(props) {
             )
           }
         </Box>
+        <Box>
+          <Box display="flex" justifyContent="space-between" width="100%" mb={2}>
+            <Box display="flex" alignItems="center">
+              { Boolean(count)
+                && (
+                  <Box height="100%">
+                    <Typography component="h2" variant="subtitle1">
+                      {`${count} resposta${count > 1 ? 's' : ''}`}
+                    </Typography>
+                  </Box>
+                )}
+              { Boolean(count)
+                && (
+                  <Box height="100%" ml={2}>
+                    <CustomButton
+                      variant="text"
+                      color="default"
+                      onClick={openMenuOrder}
+                      icon="sort"
+                      text="Ordenar por"
+                      size="small"
+                    />
+                    <Menu
+                      anchorEl={anchorMenuOrder}
+                      keepMounted
+                      open={Boolean(anchorMenuOrder)}
+                      onClose={closeMenuOrder}
+                      getContentAnchorEl={null}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                    >
+                      <MenuItem
+                        onClick={() => changeOrder('desc')}
+                        selected={order === 'desc'}
+                      >
+                        Mais recente
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => changeOrder('asc')}
+                        selected={order === 'asc'}
+                      >
+                        Mais antigo
+                      </MenuItem>
+                    </Menu>
+                  </Box>
+                )}
+            </Box>
+            <Box>
+              <Tooltip title={<Typography component="span" variant="body2">Tipos de respostas</Typography>}>
+                <IconButton
+                  onClick={openMenuType}
+                >
+                  <Icon fontSize="small" color="inherit">
+                    filter_list
+                  </Icon>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                anchorEl={anchorMenuType}
+                keepMounted
+                open={Boolean(anchorMenuType)}
+                onClose={closeMenuType}
+                getContentAnchorEl={null}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <MenuItem
+                  onClick={() => changeType('')}
+                  selected={!type}
+                >
+                  Todos
+                </MenuItem>
+                <MenuItem
+                  onClick={() => changeType('enabled')}
+                  selected={type === 'enabled'}
+                >
+                  Somente habilitados
+                </MenuItem>
+                <MenuItem
+                  onClick={() => changeType('disabled')}
+                  selected={type === 'disabled'}
+                >
+                  Somente desabilitados
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Box>
+        </Box>
         { Boolean(!count) && loading
           && (
             <Box
@@ -304,57 +440,6 @@ function AnswersSection(props) {
               key={0}
             >
               <CircularProgress color="primary" size={40} />
-            </Box>
-          )
-        }
-        { Boolean(count)
-          && (
-            <Box>
-              <Box display="flex" width="100%" mb={2}>
-                <Box>
-                  <Typography component="h2" variant="subtitle1">
-                    {`${count} resposta${count > 1 ? 's' : ''}`}
-                  </Typography>
-                </Box>
-                <Box ml={2}>
-                  <CustomButton
-                    variant="text"
-                    color="default"
-                    onClick={openMenuOrder}
-                    icon="sort"
-                    text="Ordenar por"
-                    size="small"
-                  />
-                  <Menu
-                    anchorEl={anchorMenuOrder}
-                    keepMounted
-                    open={Boolean(anchorMenuOrder)}
-                    onClose={closeMenuOrder}
-                    getContentAnchorEl={null}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left',
-                    }}
-                  >
-                    <MenuItem
-                      onClick={() => changeOrder('desc')}
-                      selected={order === 'desc'}
-                    >
-                      Mais recente
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => changeOrder('asc')}
-                      selected={order === 'asc'}
-                    >
-                      Mais antigo
-                    </MenuItem>
-                  </Menu>
-                </Box>
-              </Box>
             </Box>
           )
         }
@@ -389,6 +474,19 @@ function AnswersSection(props) {
           useWindow={false}
         >
           { answers && answers.map((elem) => (<AnswerItem answer={elem} key={elem._id} />))}
+          { !count
+            && (
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                width="100%"
+              >
+                <Typography component="p" variant="body1" align="center">
+                  {!type ? 'Este comentário não possui respostas' : `Este comentário não possui respostas do tipo "${defineType()}"`}
+                </Typography>
+              </Box>
+            )}
         </InfiniteScroll>
       </DialogContent>
     </CustomDialog>
