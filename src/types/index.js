@@ -126,6 +126,15 @@ export const commentSettingsType = shape({
   ]),
   limit: number,
   notify: bool,
+  answersOrder: oneOf([
+    'desc',
+    'asc',
+  ]),
+  answersType: oneOf([
+    'all',
+    'enabled',
+    'disabled',
+  ]),
 });
 
 export const statType = shape({

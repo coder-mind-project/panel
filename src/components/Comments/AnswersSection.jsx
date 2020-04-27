@@ -17,6 +17,8 @@ import {
   Menu,
   MenuItem,
   CircularProgress,
+  Tooltip,
+  useMediaQuery,
 } from '@material-ui/core';
 
 
@@ -28,6 +30,8 @@ import { error as toastError } from '@/config/toasts';
 import axios from 'axios';
 import { backendUrl, defineErrorMsg } from '@/config/backend';
 
+import { devices } from '@/config/devices';
+
 import InfiniteScroll from 'react-infinite-scroller';
 import CustomButton from '@/components/Buttons/Button.jsx';
 
@@ -38,6 +42,7 @@ import {
   DialogSettingsTitle,
   CustomDialog,
   SettingsTitleContent,
+  AnswersHudItem,
 } from './styles';
 
 function AnswersSection(props) {
@@ -46,6 +51,7 @@ function AnswersSection(props) {
     closeDialog,
     comment,
     callToast,
+    readComment,
   } = props;
 
 
@@ -60,7 +66,8 @@ function AnswersSection(props) {
   const [count, setCount] = useState(0);
   const [showActionButtons, setShowActionButtons] = useState(false);
   const [anchorMenuOrder, setAnchorMenuOrder] = useState(null);
-  const [notifyLoaded, setNotifyLoaded] = useState(false);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
+  const [anchorMenuType, setAnchorMenuType] = useState(null);
 
   /**
    * @description Data states
@@ -70,6 +77,10 @@ function AnswersSection(props) {
   const [notify, setNotify] = useState('no');
   const [latestAnswer, setLatestAnswer] = useState(null);
   const [order, setOrder] = useState('desc');
+  const [type, setType] = useState('');
+
+
+  const matches = useMediaQuery(devices.mobileLarge);
 
   function close(event) {
     closeDialog(event);
@@ -111,7 +122,7 @@ function AnswersSection(props) {
     const data = { answer };
     await axios.post(url, data).then((response) => {
       reloadAnswers();
-      if (order === 'asc') setLatestAnswer(response.data);
+      if (order === 'asc' && type !== 'disabled') setLatestAnswer(response.data);
       clearAnswerField();
     }).catch((err) => {
       const msg = defineErrorMsg(err);
@@ -141,6 +152,24 @@ function AnswersSection(props) {
     closeMenuOrder();
   }
 
+  function openMenuType(evt) {
+    const { currentTarget } = evt;
+    setAnchorMenuType(currentTarget);
+  }
+
+  function closeMenuType() {
+    setAnchorMenuType(null);
+  }
+
+  function changeType(t) {
+    if (latestAnswer) setLatestAnswer(null);
+    setType(t);
+    setAnswers([]);
+    setPage(1);
+    setReload(true);
+    closeMenuType();
+  }
+
   function getMoreAnswers() {
     if (!loading) {
       setPage(page + 1);
@@ -148,18 +177,68 @@ function AnswersSection(props) {
     }
   }
 
+  function defineType() {
+    switch (type) {
+      case 'enabled': {
+        return 'Somente habilitados';
+      }
+      case 'disabled': {
+        return 'Somente desabilitados';
+      }
+      default: {
+        return 'Todos';
+      }
+    }
+  }
+
+  function updateAnswerState(currentAnswer) {
+    const updatedAnswers = answers.map((elem) => {
+      let ans = elem;
+      if (ans._id === currentAnswer._id) {
+        ans = currentAnswer;
+      }
+
+      return ans;
+    });
+
+    setAnswers(updatedAnswers);
+  }
+
   useEffect(() => {
-    function getNotifyState() {
-      const settings = JSON.parse(localStorage.getItem('cm-comments-settings'));
-      const willNotify = settings && settings.notify ? 'yes' : 'no';
-      setNotify(willNotify);
+    function getSettings() {
+      try {
+        const currentSettings = JSON.parse(localStorage.getItem('cm-comments-settings'));
+        if (currentSettings) {
+          const willNotify = currentSettings.notify ? 'yes' : 'no';
+          const { answersOrder, answersType } = currentSettings;
+
+          setNotify(willNotify);
+          setType(answersType);
+          setOrder(answersOrder);
+          return { notify: willNotify, type: answersType, order: answersOrder };
+        }
+
+        throw new Error('Settings is not defined');
+      } catch (error) {
+        return null;
+      }
     }
 
     async function getAnswers() {
       setLoading(true);
 
+      let initialSettings = null;
+
+      if (!settingsLoaded) {
+        setSettingsLoaded(true);
+        initialSettings = getSettings();
+      }
+
       const { _id } = comment;
-      const url = `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${order}`;
+      const url = initialSettings
+        ? `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${initialSettings.order}&state=${initialSettings.type}`
+        : `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${order}&state=${type}`;
+
       await axios(url).then((response) => {
         let currentAnswers = answers;
         const newAnswers = response.data.answers;
@@ -181,10 +260,6 @@ function AnswersSection(props) {
 
     if (reload) {
       setReload(false);
-      if (!notifyLoaded) {
-        setNotifyLoaded(true);
-        getNotifyState();
-      }
       getAnswers();
     }
   },
@@ -200,8 +275,15 @@ function AnswersSection(props) {
     notify,
     order,
     latestAnswer,
-    notifyLoaded,
+    settingsLoaded,
+    type,
   ]);
+
+  useEffect(() => {
+    if (open && !comment.readedAt && typeof readComment === 'function') {
+      readComment();
+    }
+  }, [comment, open, readComment]);
 
   return (
     <CustomDialog
@@ -291,6 +373,120 @@ function AnswersSection(props) {
             )
           }
         </Box>
+        <Box>
+          <Box display="flex" justifyContent="space-between" width="100%" mb={2}>
+            <Box display="flex" alignItems="center" flexWrap="wrap">
+              { Boolean(count)
+                && (
+                  <AnswersHudItem>
+                    <Typography component="h2" variant={matches ? 'body2' : 'subtitle1'}>
+                      {`${count} resposta${count > 1 ? 's' : ''}`}
+                    </Typography>
+                  </AnswersHudItem>
+                )}
+              { Boolean(count)
+                && (
+                  <AnswersHudItem>
+                    <Box ml={1}>
+                      { matches
+                      && (
+                        <IconButton onClick={openMenuOrder}>
+                          <Icon fontSize="small">
+                            sort
+                          </Icon>
+                        </IconButton>
+                      )
+                    }
+                      {!matches
+                      && (
+                      <CustomButton
+                        variant="text"
+                        color="default"
+                        onClick={openMenuOrder}
+                        icon="sort"
+                        text="Ordenar por"
+                        size="small"
+                      />
+                      )}
+                    </Box>
+                    <Menu
+                      anchorEl={anchorMenuOrder}
+                      keepMounted
+                      open={Boolean(anchorMenuOrder)}
+                      onClose={closeMenuOrder}
+                      getContentAnchorEl={null}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                    >
+                      <MenuItem
+                        onClick={() => changeOrder('desc')}
+                        selected={order === 'desc'}
+                      >
+                        Mais recente
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => changeOrder('asc')}
+                        selected={order === 'asc'}
+                      >
+                        Mais antigo
+                      </MenuItem>
+                    </Menu>
+                  </AnswersHudItem>
+                )}
+            </Box>
+            <Box>
+              <Tooltip title={<Typography component="span" variant="body2">Tipos de respostas</Typography>}>
+                <IconButton
+                  onClick={openMenuType}
+                >
+                  <Icon fontSize="small" color="inherit">
+                    filter_list
+                  </Icon>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                anchorEl={anchorMenuType}
+                keepMounted
+                open={Boolean(anchorMenuType)}
+                onClose={closeMenuType}
+                getContentAnchorEl={null}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <MenuItem
+                  onClick={() => changeType('')}
+                  selected={!type || type === 'all'}
+                >
+                  Todos
+                </MenuItem>
+                <MenuItem
+                  onClick={() => changeType('enabled')}
+                  selected={type === 'enabled'}
+                >
+                  Somente habilitados
+                </MenuItem>
+                <MenuItem
+                  onClick={() => changeType('disabled')}
+                  selected={type === 'disabled'}
+                >
+                  Somente desabilitados
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Box>
+        </Box>
         { Boolean(!count) && loading
           && (
             <Box
@@ -304,57 +500,6 @@ function AnswersSection(props) {
               key={0}
             >
               <CircularProgress color="primary" size={40} />
-            </Box>
-          )
-        }
-        { Boolean(count)
-          && (
-            <Box>
-              <Box display="flex" width="100%" mb={2}>
-                <Box>
-                  <Typography component="h2" variant="subtitle1">
-                    {`${count} resposta${count > 1 ? 's' : ''}`}
-                  </Typography>
-                </Box>
-                <Box ml={2}>
-                  <CustomButton
-                    variant="text"
-                    color="default"
-                    onClick={openMenuOrder}
-                    icon="sort"
-                    text="Ordenar por"
-                    size="small"
-                  />
-                  <Menu
-                    anchorEl={anchorMenuOrder}
-                    keepMounted
-                    open={Boolean(anchorMenuOrder)}
-                    onClose={closeMenuOrder}
-                    getContentAnchorEl={null}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left',
-                    }}
-                  >
-                    <MenuItem
-                      onClick={() => changeOrder('desc')}
-                      selected={order === 'desc'}
-                    >
-                      Mais recente
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => changeOrder('asc')}
-                      selected={order === 'asc'}
-                    >
-                      Mais antigo
-                    </MenuItem>
-                  </Menu>
-                </Box>
-              </Box>
             </Box>
           )
         }
@@ -388,7 +533,29 @@ function AnswersSection(props) {
           )}
           useWindow={false}
         >
-          { answers && answers.map((elem) => (<AnswerItem answer={elem} key={elem._id} />))}
+          { answers
+            && answers.map((elem) =>
+              (
+                <AnswerItem
+                  answer={elem}
+                  key={elem._id}
+                  changeAnswerState={updateAnswerState}
+                />
+              ))
+          }
+          { !count && !loading
+            && (
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                width="100%"
+              >
+                <Typography component="p" variant="body1" align="center">
+                  {!type || type === 'all' ? 'Este comentário não possui respostas' : `Este comentário não possui respostas do tipo "${defineType()}"`}
+                </Typography>
+              </Box>
+            )}
         </InfiniteScroll>
       </DialogContent>
     </CustomDialog>
@@ -400,10 +567,12 @@ AnswersSection.propTypes = {
   closeDialog: PropTypes.func.isRequired,
   comment: commentSettingsType.isRequired,
   callToast: PropTypes.func.isRequired,
+  readComment: PropTypes.func,
 };
 
 AnswersSection.defaultProps = {
   open: false,
+  readComment: null,
 };
 
 const mapStateToProps = (state) => ({ toast: state.config });

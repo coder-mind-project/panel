@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { appTheme } from '@/types';
+
 import {
   Box,
   IconButton,
@@ -15,8 +17,11 @@ import {
 
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { backendUrl } from '@/config/backend';
 
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
+import { error as toastError } from '@/config/toasts';
 
 import Scrollbars from 'react-custom-scrollbars';
 import NotificationItem from './UnreadComment';
@@ -26,6 +31,7 @@ import { CustomMenu, CustomLink } from './styles';
 
 function UnreadComments(props) {
   const {
+    callToast,
     theme,
   } = props;
 
@@ -47,10 +53,16 @@ function UnreadComments(props) {
   }
 
   async function markAllAsRead() {
-    const url = `${backendUrl}/comments`;
-    axios.patch(url);
-    setComments([]);
-    setCount(0);
+    try {
+      if (!count) return;
+
+      const url = `${backendUrl}/comments`;
+      axios.patch(url);
+      setComments([]);
+      setCount(0);
+    } catch (error) {
+      callToast(toastError('Ocorreu um erro desconhecido, se persistir reporte'));
+    }
   }
 
   function openCommentDetails(comment) {
@@ -92,6 +104,7 @@ function UnreadComments(props) {
             open={showCommentDetails}
             closeDialog={closeCommentDetails}
             comment={commentSelected}
+            provider="notifications"
           />
         )}
       <Box>
@@ -159,18 +172,20 @@ function UnreadComments(props) {
                   </Typography>
                 </Box>
               </Box>
-              <Box mr={1}>
-                <IconButton
-                  size="small"
-                  color={theme === 'dark' ? 'inherit' : 'primary'}
-                  disabled={!count}
-                  onClick={markAllAsRead}
-                >
-                  <Icon>
-                    done_all
-                  </Icon>
-                </IconButton>
-              </Box>
+              { Boolean(count)
+                && (
+                  <Box mr={1}>
+                    <IconButton
+                      size="small"
+                      color={theme === 'dark' ? 'inherit' : 'primary'}
+                      onClick={markAllAsRead}
+                    >
+                      <Icon>
+                        done_all
+                      </Icon>
+                    </IconButton>
+                  </Box>
+                )}
             </Box>
             <Divider />
             { count === 0 && !loading
@@ -235,9 +250,11 @@ function UnreadComments(props) {
 }
 
 UnreadComments.propTypes = {
+  callToast: PropTypes.func.isRequired,
   theme: appTheme.isRequired,
 };
 
-const mapStateToProps = (state) => ({ theme: state.theme });
+const mapStateToProps = (state) => ({ theme: state.theme, toast: state.config });
+const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
-export default connect(mapStateToProps)(UnreadComments);
+export default connect(mapStateToProps, mapDispatchToProps)(UnreadComments);

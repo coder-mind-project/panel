@@ -22,7 +22,7 @@ import { bindActionCreators } from 'redux';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
 
-import { backendUrl } from '@/config/backend';
+import { backendUrl, defineErrorType } from '@/config/backend';
 import { devices } from '@/config/devices';
 
 import CommentDetailsDialog from './CommentDetailsDialog';
@@ -108,8 +108,9 @@ function CommentCard(props) {
     emitAsRead('readed', comment);
 
     const url = `${backendUrl}/comments/${_id}`;
-    axios.patch(url).catch(() => {
-      callToast(toastError('Ocorreu um erro ao marcar o comentário como lido'));
+    axios.patch(url).catch((error) => {
+      const pending = defineErrorType(error);
+      if (pending !== 'id') callToast(toastError('Ocorreu um erro ao marcar o comentário como lido'));
     });
   }
 
@@ -125,6 +126,7 @@ function CommentCard(props) {
         closeDialog={closeDetails}
         updateComment={emitCommentUpdated}
         readComment={markAsRead}
+        provider="comments"
       />
       { showAnswers
         && (
@@ -132,6 +134,7 @@ function CommentCard(props) {
             open={showAnswers}
             comment={comment}
             closeDialog={closeAnswers}
+            readComment={markAsRead}
           />
         )
       }

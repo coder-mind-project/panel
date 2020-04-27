@@ -46,7 +46,6 @@ function CommentList() {
   }
 
   function changeType(newType) {
-    if (newType !== 'all' && newType !== 'not-readed' && newType !== 'only-readed') return;
     clearComments();
     setType(newType);
     setReload(true);
