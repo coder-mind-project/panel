@@ -342,7 +342,7 @@ function RemovedUsers(props) {
                       <TableCell>
                         <CustomIconButton
                           icon="restore_from_trash"
-                          color="primary"
+                          color={theme === 'dark' ? 'inherit' : 'primary'}
                           tooltip={
                           (
                             <Typography component="span" variant="body2">
@@ -375,7 +375,13 @@ function RemovedUsers(props) {
           )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={close} color="primary" autoFocus>
+        <Button
+          onClick={close}
+          color="primary"
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
+          autoFocus
+        >
           Fechar
         </Button>
       </DialogActions>
