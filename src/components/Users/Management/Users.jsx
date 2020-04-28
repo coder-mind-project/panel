@@ -353,7 +353,7 @@ function Users(props) {
                         <CustomLink to={`/user/${elem._id}`}>
                           <CustomIconButton
                             icon="edit"
-                            color="primary"
+                            color={theme === 'dark' ? 'inherit' : 'primary'}
                             tooltip={<Typography component="span" variant="body2">Editar</Typography>}
                           />
                         </CustomLink>
