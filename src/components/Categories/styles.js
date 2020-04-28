@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom';
 import SearchBar from 'material-ui-search-bar';
 import { devices } from '@/config/devices';
 
+import { COLOR_APP, COLOR_APP_LIGHT } from '@/config/dataProperties';
+
 export const HudLink = styled(Link)({
   textDecoration: 'none',
   [devices.tablet]: {
@@ -78,4 +80,43 @@ export const TableWrapper = styled(Container)({
     fontSize: '0.875rem !important',
     fontWeight: '400 !important',
   },
+});
+
+/**
+ * @function
+ * @description The styles of `react-select` component, @see https://react-select.com/styles#style-object
+ * @param {Object} props Parent props
+ * @returns The styles
+ */
+export const searchThemeStyle = (props) => ({
+  control: (provided, state) => ({
+    ...provided,
+    backgroundColor: props.theme === 'dark' ? '#424242' : '#fff', // #424242 equal to `dark theme`
+    borderColor: state.isFocused ? '#8a05be' : `${props.theme === 'dark' ? '#fff' : 'rgba(0,0,0,.42)'}`, // rgba(0,0,0,.42) equal to default `TextField` border color
+    boxShadow: state.isFocused ? `0 0 0 1px ${COLOR_APP}` : 'none',
+    '&:hover': {
+      borderColor: state.isFocused ? COLOR_APP : `${props.theme === 'dark' ? '#fff' : 'rgba(0,0,0,.42)'}`,
+      boxShadow: `0 0 0 1px ${state.isFocused ? COLOR_APP : `${props.theme === 'dark' ? '#fff' : '#000'}`}`,
+    },
+  }),
+  input: (provided) => ({
+    ...provided,
+    color: props.theme === 'dark' ? '#fff' : 'currentColor',
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: props.theme === 'dark' ? '#fff' : 'currentColor',
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: props.theme === 'dark' ? '#fff' : 'currentColor',
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    color: '#000',
+    backgroundColor: state.isFocused ? COLOR_APP_LIGHT : '#fff',
+    '&:hover': {
+      backgroundColor: COLOR_APP_LIGHT,
+    },
+  }),
 });
