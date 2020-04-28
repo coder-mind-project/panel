@@ -4,7 +4,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -32,6 +32,7 @@ function DialogSetPassword(props) {
     closeDialog,
     user,
     callToast,
+    theme,
   } = props;
 
   const [password, setPassword] = useState('');
@@ -87,7 +88,8 @@ function DialogSetPassword(props) {
       </DialogContent>
       <DialogActions>
         <Button
-          color="primary"
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
           onClick={closeDialog}
           disabled={saving}
         >
@@ -95,6 +97,8 @@ function DialogSetPassword(props) {
         </Button>
         <Button
           color="primary"
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
           onClick={changePassword}
         >
           Confirmar
@@ -109,13 +113,14 @@ DialogSetPassword.propTypes = {
   closeDialog: PropTypes.func.isRequired,
   user: userType.isRequired,
   callToast: PropTypes.func.isRequired,
+  theme: appTheme.isRequired,
 };
 
 DialogSetPassword.defaultProps = {
   open: false,
 };
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ user: state.user, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DialogSetPassword);
