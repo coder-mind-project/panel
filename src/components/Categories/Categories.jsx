@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 import {
   Container,
   Table,
@@ -50,6 +50,7 @@ import {
 function Categories(props) {
   const {
     user,
+    theme,
   } = props;
 
   const [categories, setCategories] = useState([]);
@@ -273,7 +274,7 @@ function Categories(props) {
                   <TableCell scope="_id">
                     <CustomIconButton
                       icon="edit"
-                      color="primary"
+                      color={theme === 'dark' ? 'inherit' : 'primary'}
                       tooltip={<Typography component="span" variant="body2">Editar</Typography>}
                       onClick={() => selectCategory(elem, 'edit')}
                     />
@@ -313,9 +314,10 @@ function Categories(props) {
 
 Categories.propTypes = {
   user: userType.isRequired,
+  theme: appTheme.isRequired,
 };
 
-const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
+const mapStateToProps = (state) => ({ user: state.user, toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Categories);

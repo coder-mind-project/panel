@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { categoryType } from '@/types';
+import { categoryType, appTheme } from '@/types';
 
 import {
   Dialog,
@@ -29,6 +29,7 @@ function RemoveConfirmation(props) {
     categoriesQuantity,
     page,
     callToast,
+    theme,
   } = props;
 
   const [loading, setLoading] = useState(false);
@@ -76,12 +77,12 @@ function RemoveConfirmation(props) {
       </DialogContent>
       <DialogActions>
         {!loading && (
-          <Button variant="contained" onClick={close}>
+          <Button variant={theme === 'dark' ? 'contained' : 'text'} size="small" onClick={close}>
             Fechar
           </Button>
         )}
         {!loading && (
-        <Button color="primary" variant="contained" onClick={remove}>
+        <Button color="primary" variant={theme === 'dark' ? 'contained' : 'text'} size="small" onClick={remove}>
           Excluir
         </Button>
         )}
@@ -97,13 +98,14 @@ RemoveConfirmation.propTypes = {
   categoriesQuantity: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
   callToast: PropTypes.func.isRequired,
+  theme: appTheme.isRequired,
 };
 
 RemoveConfirmation.defaultProps = {
   open: false,
 };
 
-const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
+const mapStateToProps = (state) => ({ user: state.user, toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: ToastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RemoveConfirmation);

@@ -130,10 +130,10 @@ function ThemeForm(props) {
         </Box>
       </DialogContent>
       <DialogActions style={{ margin: 10 }}>
-        <Button variant="contained" onClick={() => close()}>
+        <Button variant="contained" size="small" onClick={close}>
           Fechar
         </Button>
-        <Button variant="contained" color="primary" onClick={save}>
+        <Button variant="contained" size="small" color="primary" onClick={save}>
           Salvar
         </Button>
       </DialogActions>

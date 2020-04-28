@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import {
   Container,
@@ -49,7 +49,10 @@ import {
 } from './styles';
 
 function Themes(props) {
-  const { user } = props;
+  const {
+    user,
+    theme,
+  } = props;
 
   const [themes, setThemes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -102,7 +105,7 @@ function Themes(props) {
     setOpenRemoveConfirm(isOpen);
   }
 
-  function selectTheme(theme, reason) {
+  function selectTheme(newTheme, reason) {
     return () => {
       switch (reason) {
         case 'remove': {
@@ -113,7 +116,7 @@ function Themes(props) {
           handleOpenForm(true);
         }
       }
-      setThemeSelected(theme);
+      setThemeSelected(newTheme);
     };
   }
 
@@ -255,23 +258,23 @@ function Themes(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {themes.map((theme) => (
-                <TableRow key={theme._id}>
-                  <TableCell scope="name">{theme.name}</TableCell>
-                  <TableCell scope="alias">{theme.alias}</TableCell>
+              {themes.map((elem) => (
+                <TableRow key={elem._id}>
+                  <TableCell scope="name">{elem.name}</TableCell>
+                  <TableCell scope="alias">{elem.alias}</TableCell>
                   {user.tagAdmin && (
                   <TableCell scope="_id">
                     <CustomIconButton
                       icon="edit"
-                      color="primary"
+                      color={theme === 'dark' ? 'inherit' : 'primary'}
                       tooltip={<Typography component="span" variant="body2">Editar</Typography>}
-                      onClick={selectTheme(theme, 'edit')}
+                      onClick={selectTheme(elem, 'edit')}
                     />
                     <CustomIconButton
                       icon="delete_forever"
                       color="secondary"
                       tooltip={<Typography component="span" variant="body2">Remover</Typography>}
-                      onClick={selectTheme(theme, 'remove')}
+                      onClick={selectTheme(elem, 'remove')}
                     />
                   </TableCell>
                   )}
@@ -306,9 +309,10 @@ function Themes(props) {
 
 Themes.propTypes = {
   user: userType.isRequired,
+  theme: appTheme.isRequired,
 };
 
-const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
+const mapStateToProps = (state) => ({ user: state.user, toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Themes);
