@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Slide, Icon, useScrollTrigger,
+  Slide,
+  Icon,
+  useScrollTrigger,
+  CircularProgress,
 } from '@material-ui/core';
 
 import { CustomFab } from '@/components/Buttons/styles';
