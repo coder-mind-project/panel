@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { reactRouterParams } from '@/types';
 
 import {
   Container,
@@ -189,8 +190,7 @@ function AccountRecuperation(props) {
 }
 
 AccountRecuperation.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  params: PropTypes.object.isRequired,
+  params: reactRouterParams.isRequired,
   callToast: PropTypes.func.isRequired,
 };
 
