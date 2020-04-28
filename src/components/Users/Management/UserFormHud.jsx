@@ -87,7 +87,7 @@ function UserFormHud(props) {
       { user._id
         && (
           <CustomButton
-            color="inherit"
+            color="default"
             size="small"
             iconSize="small"
             icon="lock"
@@ -114,7 +114,10 @@ function UserFormHud(props) {
         <MenuItem onClick={toogleSendEmail}>
           <Box display="flex" flexDirection="column" flexWrap="wrap">
             <Typography component="span" variant="body1">
-              Notificar mudanças:
+              Notificar
+              {' '}
+              {user._id ? 'mudanças' : 'cadastro'}
+              :
               {' '}
               {sendEmail ? 'ativado' : 'desativado'}
             </Typography>
@@ -127,9 +130,9 @@ function UserFormHud(props) {
               }}
               align="center"
             >
-              Ao realizar alterações no cadastro do usuário,
-              o mesmo receberá notificação de mudança caso
-              esteja habilitado a opção.
+              {user._id
+                ? 'Se ativo o usuário receberá uma notificação de mudanças no cadastro.'
+                : 'Se ativo, o usuário receberá um e-mail de notificação contendo as credenciais de acesso ao painel'}
             </Typography>
           </Box>
         </MenuItem>

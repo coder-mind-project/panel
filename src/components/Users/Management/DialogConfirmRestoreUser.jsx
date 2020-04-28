@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -26,6 +26,7 @@ function ConfirmRestore(props) {
     closeDialog,
     callToast,
     user,
+    theme,
   } = props;
 
   const [restoring, setRestoring] = useState(false);
@@ -68,12 +69,16 @@ function ConfirmRestore(props) {
         <Button
           onClick={closeDialog}
           disabled={restoring}
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
         >
           Fechar
         </Button>
         <Button
           onClick={restore}
           color="primary"
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
           disabled={restoring}
         >
           Confirmar
@@ -88,6 +93,7 @@ ConfirmRestore.propTypes = {
   closeDialog: PropTypes.func.isRequired,
   callToast: PropTypes.func.isRequired,
   user: userType.isRequired,
+  theme: appTheme.isRequired,
 };
 
 ConfirmRestore.defaultProps = {
@@ -95,7 +101,7 @@ ConfirmRestore.defaultProps = {
 };
 
 
-const mapStateToProps = (state) => ({ toast: state.config });
+const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmRestore);

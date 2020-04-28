@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -26,6 +26,7 @@ function ConfirmRemoveUser(props) {
     closeDialog,
     callToast,
     user,
+    theme,
   } = props;
 
   const [removing, setRemoving] = useState(false);
@@ -66,7 +67,8 @@ function ConfirmRemoveUser(props) {
       </DialogContent>
       <DialogActions>
         <Button
-          color="primary"
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
           onClick={closeDialog}
           disabled={removing}
         >
@@ -74,6 +76,8 @@ function ConfirmRemoveUser(props) {
         </Button>
         <Button
           color="primary"
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
           disabled={removing}
           onClick={remove}
         >
@@ -89,13 +93,14 @@ ConfirmRemoveUser.propTypes = {
   closeDialog: PropTypes.func.isRequired,
   callToast: PropTypes.func.isRequired,
   user: userType.isRequired,
+  theme: appTheme.isRequired,
 };
 
 ConfirmRemoveUser.defaultProps = {
   open: false,
 };
 
-const mapStateToProps = (state) => ({ toast: state.config });
+const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmRemoveUser);

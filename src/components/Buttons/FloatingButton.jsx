@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Slide, Icon, useScrollTrigger,
+  Slide,
+  Icon,
+  useScrollTrigger,
+  CircularProgress,
 } from '@material-ui/core';
 
 import { CustomFab } from '@/components/Buttons/styles';
@@ -13,6 +16,9 @@ function FloatingButton(props) {
     icon,
     color,
     direction,
+    loading,
+    loadingIndicatorColor,
+    loadingIndicatorSize,
   } = props;
 
   const params = { target: window ? window() : undefined, disableHysteresis: true };
@@ -24,7 +30,19 @@ function FloatingButton(props) {
         color={color}
         onClick={action}
       >
-        <Icon>{icon}</Icon>
+        { loading
+          && (
+            <CircularProgress
+              color={loadingIndicatorColor}
+              size={loadingIndicatorSize}
+            />
+          )}
+        {icon && !loading
+          && (
+            <Icon>
+              {icon}
+            </Icon>
+          )}
       </CustomFab>
     </Slide>
   ) : null;
@@ -41,6 +59,13 @@ FloatingButton.propTypes = {
     'secondary',
   ]),
   direction: PropTypes.string,
+  loading: PropTypes.bool,
+  loadingIndicatorColor: PropTypes.oneOf([
+    'inherit',
+    'primary',
+    'secondary',
+  ]),
+  loadingIndicatorSize: PropTypes.number,
 };
 
 FloatingButton.defaultProps = {
@@ -48,5 +73,8 @@ FloatingButton.defaultProps = {
   icon: 'keyboard_arrow_up',
   color: 'primary',
   direction: 'up',
+  loading: false,
+  loadingIndicatorColor: 'inherit',
+  loadingIndicatorSize: 25,
 };
 export default FloatingButton;

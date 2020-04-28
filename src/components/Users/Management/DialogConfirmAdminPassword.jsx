@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { appTheme } from '@/types';
 
 import {
   Dialog,
@@ -25,6 +26,7 @@ function ConfirmAdminPassword(props) {
     open,
     closeDialog,
     callToast,
+    theme,
   } = props;
 
   const [validating, setValidating] = useState(false);
@@ -82,7 +84,8 @@ function ConfirmAdminPassword(props) {
       </DialogContent>
       <DialogActions>
         <Button
-          color="primary"
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
           onClick={close}
           disabled={validating}
         >
@@ -90,6 +93,8 @@ function ConfirmAdminPassword(props) {
         </Button>
         <Button
           color="primary"
+          variant={theme === 'dark' ? 'contained' : 'text'}
+          size="small"
           onClick={validatePassword}
           disabled={validating}
         >
@@ -104,13 +109,14 @@ ConfirmAdminPassword.propTypes = {
   open: PropTypes.bool,
   closeDialog: PropTypes.func.isRequired,
   callToast: PropTypes.func.isRequired,
+  theme: appTheme.isRequired,
 };
 
 ConfirmAdminPassword.defaultProps = {
   open: false,
 };
 
-const mapStateToProps = (state) => ({ toast: state.config });
+const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmAdminPassword);

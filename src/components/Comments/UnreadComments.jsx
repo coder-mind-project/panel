@@ -201,16 +201,18 @@ function UnreadComments(props) {
                   <Typography component="h3" variant="body2">
                     Parabéns!! Você está em dia com seus leitores.
                   </Typography>
-                  <CustomLink to="/comments">
-                    <Button
-                      variant="text"
-                      color="primary"
-                      size="small"
-                      onClick={closeMenuNotifications}
-                    >
-                      Ir para comentários
-                    </Button>
-                  </CustomLink>
+                  <Box mt={1}>
+                    <CustomLink to="/comments">
+                      <Button
+                        variant={theme === 'dark' ? 'contained' : 'text'}
+                        color="primary"
+                        size="small"
+                        onClick={closeMenuNotifications}
+                      >
+                        Visualizar comentários
+                      </Button>
+                    </CustomLink>
+                  </Box>
                 </Box>
               )
             }

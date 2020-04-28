@@ -205,7 +205,7 @@ function UserForm(props) {
         icon="person_add"
       />
       { redirect && <Redirect to="/users" />}
-      { !loading && <FloatingButton action={save} icon="save" />}
+      { !loading && <FloatingButton action={save} icon="save" loading={saving} />}
       <DialogConfirmRemoveUser
         open={confirmRemoveUserDialog}
         closeDialog={hideConfirmRemoveUserDialog}
