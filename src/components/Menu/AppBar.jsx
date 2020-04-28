@@ -114,7 +114,7 @@ function AppBar(props) {
                     person_outline
                   </Icon>
                   <Typography component="span" variant="body2">
-                    Meus dados
+                    Minha conta
                   </Typography>
                 </Box>
               </MenuItem>
