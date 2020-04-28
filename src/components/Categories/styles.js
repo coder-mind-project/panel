@@ -70,7 +70,9 @@ export const CustomFormGroup = styled(FormGroup)({
 });
 
 export const CustomInputLabel = styled(InputLabel)({
-  marginBottom: '5px',
+  marginBottom: '10px',
+  color: (props) => (props.theme === 'dark' ? 'rgba(255,255,255,.7)' : 'rgba(0,0,0,.54)'),
+  fontSize: '0.75rem',
 });
 
 export const TableWrapper = styled(Container)({

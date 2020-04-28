@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { categoryType } from '@/types';
+import { categoryType, appTheme } from '@/types';
 
 import {
   Icon,
@@ -29,6 +29,7 @@ import {
   CustomTextField,
   CustomFormGroup,
   CustomInputLabel,
+  searchThemeStyle,
 } from './styles';
 
 function CategoryForm(props) {
@@ -37,6 +38,7 @@ function CategoryForm(props) {
     propCategory,
     open,
     onClose,
+    theme,
   } = props;
 
   const [category, setCategory] = useState({});
@@ -126,15 +128,15 @@ function CategoryForm(props) {
           name: '', alias: '', theme: null, description: '',
         });
       } else {
-        const theme = propCategory.theme || {};
+        const currentTheme = propCategory.theme || {};
 
         // Set label and value properties to display in async-select component
         const currentCategory = {
           ...propCategory,
           theme: {
-            ...theme,
-            label: theme.name,
-            value: theme._id,
+            ...currentTheme,
+            label: currentTheme.name,
+            value: currentTheme._id,
           },
         };
 
@@ -183,10 +185,11 @@ function CategoryForm(props) {
             onChange={(event) => handleChange(event, 'alias')}
           />
           <CustomFormGroup>
-            <CustomInputLabel>
+            <CustomInputLabel theme={theme}>
               Tema
             </CustomInputLabel>
             <AsyncSelect
+              styles={searchThemeStyle({ theme })}
               cacheOptions
               value={category.theme || null}
               isClearable
@@ -215,10 +218,10 @@ function CategoryForm(props) {
         </Box>
       </DialogContent>
       <DialogActions style={{ margin: 10 }}>
-        <Button variant="contained" onClick={() => close()}>
+        <Button variant="contained" size="small" onClick={close}>
           Fechar
         </Button>
-        <Button variant="contained" color="primary" onClick={save}>
+        <Button variant="contained" size="small" color="primary" onClick={save}>
           Salvar
         </Button>
       </DialogActions>
@@ -231,6 +234,7 @@ CategoryForm.propTypes = {
   propCategory: categoryType.isRequired,
   open: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
+  theme: appTheme.isRequired,
 };
 
 CategoryForm.defaultProps = {
@@ -238,7 +242,7 @@ CategoryForm.defaultProps = {
 };
 
 
-const mapStateToProps = (state) => ({ toast: state.config });
+const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryForm);
