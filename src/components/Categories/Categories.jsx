@@ -126,28 +126,37 @@ function Categories(props) {
 
 
   useEffect(() => {
-    async function searchCategories() {
-      const url = `${backendUrl}/categories?page=${page}&query=${query}&limit=${limit}`;
-      setLoading(true);
-      await axios(url)
-        .then(async (res) => {
-          setCategories(res.data.categories);
-          setCount(res.data.count);
-          setLimit(res.data.limit);
-          setError(false);
-        })
-        .catch(() => {
-          setError(true);
-        });
+    const source = axios.CancelToken.source();
 
-      setLoading(false);
+    async function searchCategories() {
+      try {
+        setLoading(true);
+        const url = `${backendUrl}/categories?page=${page}&query=${query}&limit=${limit}`;
+
+        await axios(url, { cancelToken: source.token })
+          .then(async (res) => {
+            setReload(false);
+
+            setCategories(res.data.categories);
+            setCount(res.data.count);
+            setLimit(res.data.limit);
+            setError(false);
+          });
+
+        setLoading(false);
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          setError(true);
+        }
+      }
     }
 
     if (reload) {
       scrollToTop();
-      setReload(false);
       searchCategories();
     }
+
+    return () => source.cancel();
   }, [page, query, limit, loading, error, categories, reload]);
 
   return (
