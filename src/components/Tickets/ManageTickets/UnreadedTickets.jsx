@@ -158,8 +158,8 @@ function UnreadedTickets(props) {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Typography component="h3" variant="body2">
-                  Ops,parece que não há nenhum ticket novo recebido.
+                <Typography component="h3" variant="body2" align="center">
+                  Ops, parece que não há nenhum ticket não visualizado.
                 </Typography>
               </Box>
               )
