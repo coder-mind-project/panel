@@ -126,36 +126,45 @@ function CommentList() {
       return currentSettings;
     }
 
+    const source = axios.CancelToken.source();
+
     async function getComments() {
-      setLoading(true);
+      try {
+        setLoading(true);
 
-      const params = getSettings();
+        const params = getSettings();
 
+        const url = params
+          ? `${backendUrl}/comments?type=${params.type}&order=${params.order}&query=${query}&page=${page}&limit=${params.limit}`
+          : `${backendUrl}/comments?type=${type}&order=${order}&query=${query}&page=${page}&limit=${limit}`;
 
-      const url = params
-        ? `${backendUrl}/comments?type=${params.type}&order=${params.order}&query=${query}&page=${page}&limit=${params.limit}`
-        : `${backendUrl}/comments?type=${type}&order=${order}&query=${query}&page=${page}&limit=${limit}`;
+        await axios(url, { cancelToken: source.token }).then((res) => {
+          setReload(false);
 
-      await axios(url).then((res) => {
-        const currentComments = comments;
-        currentComments.push(...res.data.comments);
-        setComments(currentComments);
-        setCount(res.data.count);
-        setLimit(res.data.limit);
-        setError(false);
-      }).catch(() => setError(true));
+          const currentComments = comments;
+          currentComments.push(...res.data.comments);
+          setComments(currentComments);
+          setCount(res.data.count);
+          setLimit(res.data.limit);
+          setError(false);
+        });
 
-      setLoading(false);
+        setLoading(false);
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          setError(true);
+        }
+      }
     }
 
     if (reload) {
-      setReload(false);
       getComments();
     }
+
+    return () => source.cancel();
   },
   [
     comments,
-    loading,
     reload,
     type,
     order,
