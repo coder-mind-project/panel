@@ -166,8 +166,8 @@ function UnreadedTickets(props) {
             }
             {loading
               && (
-                <Box p={2}>
-                  <CircularProgress color="inherit" size={20} />
+                <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+                  <CircularProgress color={theme === 'dark' ? 'inherit' : 'primary'} size={20} />
                 </Box>
               )
             }
