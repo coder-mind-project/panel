@@ -129,28 +129,36 @@ function Themes(props) {
 
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     async function searchThemes() {
-      const url = `${backendUrl}/themes?page=${page}&query=${query}&limit=${limit}`;
-      setLoading(true);
-      await axios(url)
-        .then(async (res) => {
+      try {
+        setLoading(true);
+
+        const url = `${backendUrl}/themes?page=${page}&query=${query}&limit=${limit}`;
+
+        await axios(url, { cancelToken: source.token }).then((res) => {
+          setReload(false);
+
           setThemes(res.data.themes);
           setCount(res.data.count);
           setLimit(res.data.limit);
           setError(false);
-        })
-        .catch(() => {
-          setError(true);
         });
 
-      setLoading(false);
+        setLoading(false);
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          setError(true);
+        }
+      }
     }
 
     if (reload) {
       scrollToTop();
-      setReload(false);
       searchThemes();
     }
+    return () => source.cancel();
   }, [page, query, limit, loading, error, themes, reload]);
 
   return (

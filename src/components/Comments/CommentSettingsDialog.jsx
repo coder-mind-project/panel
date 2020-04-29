@@ -98,40 +98,47 @@ function CommentSettingsDialog(props) {
 
   // Called for get current settings
   useEffect(() => {
-    function getSettings() {
+    const source = axios.CancelToken.source();
+
+    async function getSettings() {
       const currentSettings = JSON.parse(localStorage.getItem('cm-comments-settings'));
-      const url = `${backendUrl}/comments/settings`;
+      try {
+        const url = `${backendUrl}/comments/settings`;
+        const options = currentSettings ? {
+          headers: {
+            'CM-TTL-Comments': currentSettings.ttl, // Time to leave to implement using data stored locally
+          },
+          cancelToken: source.token,
+        } : null;
 
-      // Time to leave to implement using data stored locally
-      const options = currentSettings ? {
-        headers: {
-          'CM-TTL-Comments': currentSettings.ttl,
-        },
-      } : null;
+        await axios(url, options).then((response) => {
+          setLoad(true);
 
-      axios(url, options).then((response) => {
-        const actualSettings = response.data;
+          const actualSettings = response.data;
+          if (!currentSettings) {
+            actualSettings.ttl = Date.now() + (1000 * 60 * 60 * 24 * 30);
+            localStorage.setItem('cm-comments-settings', JSON.stringify(actualSettings));
+          }
 
-        if (!currentSettings) {
-          actualSettings.ttl = Date.now() + (1000 * 60 * 60 * 24 * 30);
-          localStorage.setItem('cm-comments-settings', JSON.stringify(actualSettings));
-        }
-
-        setSettings(actualSettings);
-      }).catch(() => {
+          setSettings(actualSettings);
+        });
+      } catch (err) {
         // Calls when the response is 304 or some error
-
-        // Store local settings
-        if (currentSettings) {
-          setSettings(currentSettings);
+        if (!axios.isCancel(err)) {
+          setLoad(true);
+          // Store local settings
+          if (currentSettings) {
+            setSettings(currentSettings);
+          }
         }
-      });
+      }
     }
 
     if (!load) {
-      setLoad(true);
       getSettings();
     }
+
+    return () => source.cancel();
   }, [settings, load]);
 
   return (

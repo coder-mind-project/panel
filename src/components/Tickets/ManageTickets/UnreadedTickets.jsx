@@ -158,16 +158,16 @@ function UnreadedTickets(props) {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Typography component="h3" variant="body2">
-                  Ops,parece que não há nenhum ticket novo recebido.
+                <Typography component="h3" variant="body2" align="center">
+                  Ops, parece que não há nenhum ticket não visualizado.
                 </Typography>
               </Box>
               )
             }
             {loading
               && (
-                <Box p={2}>
-                  <CircularProgress color="inherit" size={20} />
+                <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+                  <CircularProgress color={theme === 'dark' ? 'inherit' : 'primary'} size={20} />
                 </Box>
               )
             }

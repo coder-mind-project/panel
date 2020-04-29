@@ -37,19 +37,29 @@ function MyAccount(props) {
   }
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     async function getUser() {
       const id = user._id;
       const url = `${backendUrl}/users/${id}`;
       setLoading(true);
-      await axios(url).then((res) => {
-        setUserState({ user: res.data });
-      }).catch(() => {
-        setError(true);
-      });
-      setLoading(false);
+
+      try {
+        await axios(url, { cancelToken: source.token }).then((res) => {
+          setUserState({ user: res.data });
+        });
+
+        setLoading(false);
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          setError(true);
+        }
+      }
     }
 
     if (!userState && !error) getUser();
+
+    return () => source.cancel();
   }, [user, userState, error]);
   return (
     <Container>

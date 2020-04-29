@@ -146,26 +146,38 @@ function Tickets(props) {
   useEffect(() => {
     if (!user || !user.tagAdmin) setRedirectTo('articles');
 
-    async function searchTickets() {
-      const url = filters ? `${backendUrl}/tickets?page=${page}&limit=${limit}&tid=${filters.tid}&type=${filters.type}&begin=${filters.begin}&end=${filters.end}&order=${filters.order}` : `${backendUrl}/tickets?page=${page}&limit=${limit}`;
+    const source = axios.CancelToken.source();
 
-      setLoading(true);
-      await axios(url).then((res) => {
-        setTickets(res.data.tickets);
-        setCount(res.data.count);
-        setLimit(res.data.limit);
-        setError(false);
-      }).catch(() => {
-        setError(true);
-      });
-      setLoading(false);
+    async function searchTickets() {
+      try {
+        const url = filters
+          ? `${backendUrl}/tickets?page=${page}&limit=${limit}&tid=${filters.tid}&type=${filters.type}&begin=${filters.begin}&end=${filters.end}&order=${filters.order}`
+          : `${backendUrl}/tickets?page=${page}&limit=${limit}`;
+
+        setLoading(true);
+        await axios(url, { cancelToken: source.token }).then((res) => {
+          setReload(false);
+
+          setTickets(res.data.tickets);
+          setCount(res.data.count);
+          setLimit(res.data.limit);
+          setError(false);
+        });
+
+        setLoading(false);
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          setError(true);
+        }
+      }
     }
 
     if (reload) {
       scrollToTop();
-      setReload(false);
       searchTickets();
     }
+
+    return () => source.cancel();
   },
   [
     reload,

@@ -48,21 +48,29 @@ function SchedulerDefinitions(props) {
   }
 
   useEffect(() => {
-    function getLastSincronization() {
-      const url = `${backendUrl}/stats/sincronization`;
+    const source = axios.CancelToken.source();
 
-      axios(url).then((res) => {
-        if (res.data && res.data.generatedAt) {
-          const formatedDate = displayFullDate(res.data.generatedAt);
-          setLastSincronization(formatedDate);
+    async function getLastSincronization() {
+      try {
+        const url = `${backendUrl}/stats/sincronization`;
+
+        await axios(url, { cancelToken: source.token }).then((res) => {
+          if (res.data && res.data.generatedAt) {
+            const formatedDate = displayFullDate(res.data.generatedAt);
+            setLastSincronization(formatedDate);
+          }
+        });
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          const msg = defineErrorMsg(err);
+          setError(msg);
         }
-      }).catch((err) => {
-        const msg = defineErrorMsg(err);
-        setError(msg);
-      });
+      }
     }
 
     if (!lastSincronization && !error) getLastSincronization();
+
+    return () => source.cancel();
   }, [lastSincronization, error]);
 
   return (

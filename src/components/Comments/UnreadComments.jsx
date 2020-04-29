@@ -225,7 +225,7 @@ function UnreadComments(props) {
                 minWidth="260px"
                 p={2}
               >
-                <CircularProgress color="primary" size={20} />
+                <CircularProgress color={theme === 'dark' ? 'inherit' : 'primary'} size={20} />
               </Box>
               )
             }
