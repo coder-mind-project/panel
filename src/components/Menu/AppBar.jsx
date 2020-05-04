@@ -24,8 +24,6 @@ import ThemeSwitcher from '@/components/Menu/ThemeSwitcher.jsx';
 import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
 import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
 
-import { backendUrl } from '@/config/backend';
-
 import {
   CustomAppBar,
   CustomAvatar,
@@ -87,7 +85,7 @@ function AppBar(props) {
                     name={user.name}
                     size={35}
                     round="30px"
-                    src={`${backendUrl}/${user.profilePhoto}`}
+                    src={user.profilePhoto}
                   />
                 </AppBarItems>
               )

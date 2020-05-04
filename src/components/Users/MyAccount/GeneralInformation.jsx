@@ -118,7 +118,6 @@ function GeneralInformation(props) {
 
     const formData = new FormData();
     formData.append('profilePhoto', img);
-    formData.append('idUser', id);
 
     // Overriding content-type https header for uploading images
     const config = {
@@ -134,11 +133,11 @@ function GeneralInformation(props) {
     await axios.patch(url, formData, config).then(async (res) => {
       callToast(success('Operação realizada com sucesso'));
 
-      setUserState({ ...userState, profilePhoto: res.data });
+      setUserState({ ...userState, profilePhoto: res.data.profileImageUrl });
 
       const updatedUser = {
         user: {
-          ...user, profilePhoto: res.data,
+          ...user, profilePhoto: res.data.profileImageUrl,
         },
       };
 
@@ -300,7 +299,7 @@ function GeneralInformation(props) {
                       size={150}
                       round
                       name={user.name}
-                      src={userState.profilePhoto ? `${backendUrl}/${userState.profilePhoto}` : null}
+                      src={userState.profilePhoto || null}
                       alt="Foto de perfil"
                       onClick={showConfirmRemoveImage}
                     />
