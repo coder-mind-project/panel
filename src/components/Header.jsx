@@ -1,47 +1,81 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import { Divider, Icon, Grid } from '@material-ui/core'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { styles } from './styles/Header'
+import {
+  Divider,
+  Typography,
+  Box,
+} from '@material-ui/core';
 
+import { CustomHeader, CustomIcon, CustomFaIcon } from './styles';
 
-const useStyles = makeStyles(styles)
+function Header(props) {
+  const {
+    icon,
+    title,
+    description,
+    noMarginTop,
+    fontAwesomeIcon,
+    faIcon,
+  } = props;
 
-export default (props) => {
-
-    /*
-        Propriedades disponíveis
-
-        prop: type - Description
-            options : default
-
-        icon: String - Define o ícone do cabeçalho
-            <[Opções disponíveis no site https://material.io/tools/icons/]> : '' (String vazia)
-        title: String - Define o titulo do cabeçalho
-            <[]> : '' (String vazia)
-        description: String - Define a descrição do cabeçalho
-            <[]> : '' (String vazia)
-
-        
-    */
-
-    const classes = useStyles()
-    return(
-        <Grid container className={classes.container}>
-            <Grid item xs={12} className={classes.line}>
-                <Icon fontSize="large" className={classes.icon}>
-                    {props.icon}
-                </Icon>
-                <h1 className={classes.title}>
-                    {props.title}
-                </h1>
-            </Grid>
-            <Grid item xs={12} className={classes.line}>
-                <small className={classes.description}>
-                    {props.description}
-                </small>
-            </Grid>
-            <Divider/>
-        </Grid>
-    )
+  return (
+    <CustomHeader
+      container
+      withoutmargin={noMarginTop ? 'true' : ''}
+    >
+      <Box
+        width="100%"
+        display="flex"
+        alignItems="center"
+        mb={1}
+      >
+        { !fontAwesomeIcon
+          && (
+            <CustomIcon fontSize="large">
+              {icon}
+            </CustomIcon>
+          )
+        }
+        { fontAwesomeIcon
+          && (
+            <CustomFaIcon
+              icon={faIcon}
+              size="2x"
+            />
+          )
+        }
+        <Typography component="h1" variant="h5">
+          {title}
+        </Typography>
+      </Box>
+      <Box width="100%">
+        <Typography component="h2" variant="body2">
+          {description}
+        </Typography>
+      </Box>
+      <Box mt={1}>
+        <Divider />
+      </Box>
+    </CustomHeader>
+  );
 }
+
+Header.propTypes = {
+  icon: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  noMarginTop: PropTypes.bool,
+  fontAwesomeIcon: PropTypes.bool,
+  faIcon: PropTypes.string,
+};
+
+Header.defaultProps = {
+  icon: '',
+  description: '',
+  noMarginTop: false,
+  fontAwesomeIcon: false,
+  faIcon: '',
+};
+
+export default Header;

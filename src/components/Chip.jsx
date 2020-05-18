@@ -1,24 +1,66 @@
-import React from 'react'
-import { Chip, makeStyles, Icon } from '@material-ui/core'
+import React from 'react';
+import PropTypes from 'prop-types';
+import {
+  Icon,
+  Typography,
+  Box,
+} from '@material-ui/core';
 
-import { styles } from './styles/Chip'
+import { CustomChip } from './styles';
 
-const useStyles = makeStyles(styles)
-export default (props) => {
-    const classes = useStyles()
+function Chip(props) {
+  const {
+    size,
+    sizeIcon,
+    icon,
+    text,
+    variant,
+    color,
+  } = props;
 
-    return (
-        <Chip className={classes[props.color] || classes.default}
-            size={props.size || 'medium'}
-            label={
-                (<span className={classes.chipContent}>
-                    <Icon fontSize={props.sizeIcon || 'default'}>
-                        {props.icon}
-                    </Icon>
-                    {props.text}
-                </span>)
-            }
-            variant={props.variant || 'default'}
-        />
-    )
+
+  return (
+    <CustomChip
+      color={color}
+      size={size}
+      label={
+        (
+          <Box display="flex" alignItems="center">
+            {icon && (
+              <Icon fontSize={sizeIcon}>
+                {icon}
+              </Icon>
+            )}
+            <Typography component="span" variant="body2">
+              {text}
+            </Typography>
+          </Box>
+        )
+      }
+      variant={variant}
+    />
+  );
 }
+
+Chip.propTypes = {
+  size: PropTypes.string,
+  sizeIcon: PropTypes.string,
+  icon: PropTypes.string,
+  text: PropTypes.string.isRequired,
+  variant: PropTypes.string,
+  color: PropTypes.oneOf([
+    'default',
+    'primary',
+    'secondary',
+  ]),
+};
+
+Chip.defaultProps = {
+  size: 'medium',
+  sizeIcon: 'default',
+  icon: '',
+  variant: 'default',
+  color: 'default',
+};
+
+export default Chip;

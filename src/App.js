@@ -1,141 +1,213 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-import { Container, Grid, Fade } from '@material-ui/core'
-import { ToastContainer } from 'react-toastify'
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from 'react-router-dom';
 
-import Loading from './assets/loading.gif'
+import {
+  Grid,
+  Fade,
+  CircularProgress,
+} from '@material-ui/core';
 
-//Requests imports
-import axios from 'axios'
-import { backendUrl } from './config/backend'
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-//Redux imports
-import { connect } from 'react-redux'
-import { setUser } from './redux/userActions'
-import { setError } from './redux/errorActions'
-import { setMenu } from './redux/menuActions'
-import { bindActionCreators } from 'redux'
-
-//Components imports
-import Menu from './components/Menu.jsx'
-import Users from './pages/Users.jsx'
-import User from './pages/User.jsx'
-import Articles from './pages/Articles.jsx'
-import Article from './pages/Article.jsx'
-import Stats from './pages/Stats.jsx'
-import Auth from './pages/Auth.jsx'
-import Management from './pages/Management.jsx'
-import Theme from './pages/Theme.jsx'
-import Themes from './pages/Themes.jsx'
-import Categories from './pages/Categories.jsx'
-import Category from './pages/Category.jsx'
-import Error from './pages/Error.jsx'
-import MyAccount from './pages/MyAccount.jsx'
-import Comments from './pages/Comments.jsx'
-import Comment from './pages/Comment.jsx'
+// Error Boundary
+import ErrorBoundary from '@/components/Errors/ErrorBoundary.jsx';
 
 
-//Css imports
-import './index.css'
-import 'react-toastify/dist/ReactToastify.css'
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { standard } from '@/config/themes';
+import { WHITE_LIST_ROUTES } from './config/dataProperties';
+// Requests imports
+import { backendUrl } from './config/backend';
 
-var user = JSON.parse(localStorage.getItem('user'))
 
-class App extends Component {
+// Redux imports
+import { setUser as defineUser } from './redux/user/userActions';
+import { setError as dispatchError } from './redux/error/errorActions';
+import { setMenu as callMenu } from './redux/menu/menuActions';
+import { callToast as toastEmitter } from './redux/toast/toastActions';
 
-    state = {
-      redirectTo: '',
-      validatingToken: false
+import Menu from './components/Menu/Menu';
+import Toast from './components/Toast';
+
+import Themes from './components/Themes/Themes';
+import Management from './components/Management/Management';
+import Error from './components/Errors/Error';
+import Auth from './components/Authentications/Auth';
+import RedeemAccount from './components/Authentications/FormRedeemAccount';
+import ConfirmEmail from './components/Authentications/FormConfirmEmail';
+import RemoveAccount from './components/Authentications/FormRemoveAccount';
+import Ticket from './components/Tickets/SendTickets/Ticket';
+import Tickets from './components/Tickets/ManageTickets/Tickets';
+import RouteNotFound from './components/NotFound/RouteNotFound';
+import Users from './components/Users/Management/Users';
+import UserForm from './components/Users/Management/UserForm';
+import Categories from './components/Categories/Categories';
+import CommentList from './components/Comments/CommentList';
+import Articles from './pages/articles-section/Articles';
+import Article from './pages/articles-section/Article';
+import Stats from './pages/statistics-section/Stats';
+import MyAccount from './components/Users/MyAccount/MyAccount';
+
+// Css imports
+import './index.css';
+import { AppContent } from './styles';
+
+
+function App(props) {
+  const {
+    setMenu,
+    setUser,
+    setError,
+    callToast,
+    toast,
+    error,
+    user,
+    theme,
+  } = { ...props };
+
+  const appTheme = standard(theme);
+
+  const [validatingToken, setValidatingToken] = useState(true);
+  const [path, setPath] = useState('');
+
+  function validateRoutes() {
+    let top = 0;
+    for (let i = 0; i < WHITE_LIST_ROUTES.length; i++) {
+      if (WHITE_LIST_ROUTES[i] !== path) top++;
     }
 
-    validateToken = async () => {
-      await this.toogleValidatingToken()
-      if(user){
-        const url = `${backendUrl}/validate_token`
-        await axios.post(url, user).then(async res => {
-          if(res.data.user._id){
-            this.props.setMenu(true)
-            this.props.setUser(res.data)
-          }else{
-            localStorage.removeItem('user')
-            this.props.setUser(null)
-            this.props.setMenu(false)
-          }
-        }).catch(() => {
-          this.props.setError(true)
-        })
-      }
-      this.toogleValidatingToken()
-    }
-
-    toogleValidatingToken(){
-      this.setState({validatingToken: !this.state.validatingToken})
-    }
-  
-    async componentWillMount(){
-      
-      await this.validateToken()
-    }
-
-    render(){
-      return (
-        <Container className="page">
-          { !this.state.validatingToken && 
-            <Fade in={!this.state.validatingToken}>
-              <Router>
-                <Menu/>
-                <ToastContainer/>
-                <Container>
-                  {/* Caso não exista o usuário é redirecionado para tela de autenticação */}
-                  {!user && 
-                    <Redirect to="/auth"/>
-                  }
-                  {/* Caso existe um erro é redirecionado para tela de erro */}
-                  {this.props.error && 
-                    <Redirect to="/error"/>
-                  }
-                  {/* Caso tente se acessar o diretório / é redirecionado para um determinado diretório */}
-                  {this.state.redirectTo && 
-                    <Redirect to={`/${this.state.redirectTo}`}/>
-                  }
-                  <Route path="/" exact component={Stats}/>
-                  <Route path="/auth" exact component={Auth}/>
-                  <Route path="/user" exact component={User}/>
-                  <Route path="/user/:id" exact component={User}/>
-                  <Route path="/users" exact component={Users}/>
-                  <Route path="/article" exact component={Article}/>
-                  <Route path="/article/:id" exact component={Article}/>
-                  <Route path="/articles" exact component={Articles}/>
-                  <Route path="/management" exact component={Management}/>
-                  <Route path="/theme" exact component={Theme}/>
-                  <Route path="/theme/:id" exact component={Theme}/>
-                  <Route path="/themes" exact component={Themes}/>
-                  <Route path="/category" exact component={Category}/>
-                  <Route path="/category/:id" exact component={Category}/>
-                  <Route path="/categories" exact component={Categories}/>
-                  <Route path="/my-account" exact component={MyAccount}/>
-                  <Route path="/comments" exact component={Comments}/>
-                  <Route path="/comments/:id" exact component={Comment}/>
-                  <Route path="/error" exact component={Error}/>
-                </Container>
-              </Router>
-            </Fade>
-          }
-          { this.state.validatingToken &&
-            <Fade in={this.state.validatingToken} >
-              <Grid item xs={12} className="loading-app-area">
-                <img src={Loading} alt="Carregando..." />
-              </Grid>
-            </Fade>
-          }
-        </Container>
-      )
-    }
+    return Boolean(top === WHITE_LIST_ROUTES.length);
   }
 
+  function getPath() {
+    const url = window.location.href;
+    return `/${url.split('/')[3].split('?')[0]}`;
+  }
 
-const mapStateToProps = state => ({user: state.user, error: state.error, menu: state.menu})
-const mapDispatchToProps = dispatch => bindActionCreators({setUser, setError, setMenu}, dispatch)
+  function closeToast() {
+    const config = {
+      type: 'success',
+      msg: '',
+      display: false,
+    };
+
+    callToast(config);
+  }
+
+  useEffect(() => {
+    async function validateToken() {
+      const token = await JSON.parse(localStorage.getItem('user'));
+
+      if (token) {
+        const url = `${backendUrl}/auth/logged`;
+        await axios.post(url, token).then((res) => {
+          if (res.data.user) {
+            setUser(res.data);
+            setMenu(true);
+          } else {
+            localStorage.removeItem('user');
+            setUser(null);
+            setMenu(false);
+          }
+        }).catch(() => {
+          setError(true);
+        });
+      }
+
+      setValidatingToken(false);
+    }
+
+    const currentPath = getPath();
+    setPath(currentPath);
+    if (validatingToken) validateToken();
+  }, [setMenu, setUser, setError, validatingToken]);
+
+  return (
+    <MuiThemeProvider theme={appTheme}>
+      <Grid>
+        { !validatingToken
+            && (
+              <Router>
+                <ErrorBoundary>
+                  {getPath() !== '/confirm-email' && <Menu />}
+                  <Toast
+                    show={toast.display}
+                    color={toast.type}
+                    text={toast.msg}
+                    closeToast={closeToast}
+                  />
+                  { !user._id && validateRoutes()
+                    && (
+                      <Redirect to="/auth" />
+                    )
+                  }
+                  { error
+                    && <Redirect to="/error" />
+                  }
+                  <AppContent user={getPath() === '/confirm-email' ? {} : user} isvalidating={validatingToken ? 'true' : ''}>
+                    <Switch>
+                      <Route path="/" exact component={Articles} />
+                      <Route path="/auth" exact component={Auth} />
+                      <Route path="/redeem-account" exact component={RedeemAccount} />
+                      <Route path="/remove-account" exact component={RemoveAccount} />
+                      <Route path="/ticket" exact component={Ticket} />
+                      <Route path="/tickets" exact component={Tickets} />
+                      <Route path="/confirm-email" exact component={ConfirmEmail} />
+                      <Route path="/user" exact component={UserForm} />
+                      <Route path="/user/:id" exact component={UserForm} />
+                      <Route path="/users" exact component={Users} />
+                      <Route path="/article" exact component={Article} />
+                      <Route path="/article/:id" exact component={Article} />
+                      <Route path="/articles" exact component={Articles} />
+                      <Route path="/management" exact component={Management} />
+                      <Route path="/themes" exact component={Themes} />
+                      <Route path="/categories" exact component={Categories} />
+                      <Route path="/my-account" exact component={MyAccount} />
+                      <Route path="/comments" exact component={CommentList} />
+                      <Route path="/error" exact component={Error} />
+                      <Route path="/stats" exact component={Stats} />
+                      <Route component={RouteNotFound} />
+                    </Switch>
+                  </AppContent>
+                </ErrorBoundary>
+              </Router>
+            )
+          }
+        { validatingToken
+            && (
+            <Fade in={validatingToken}>
+              <Grid item xs={12} className="loading-app-area">
+                <CircularProgress size={70} />
+              </Grid>
+            </Fade>
+            )
+          }
+      </Grid>
+    </MuiThemeProvider>
+  );
+}
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+const mapStateToProps = (state) => ({
+  user: state.user,
+  error: state.error,
+  menu: state.menu,
+  toast: state.toast,
+  theme: state.theme,
+});
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  setUser: defineUser,
+  setError: dispatchError,
+  setMenu: callMenu,
+  callToast: toastEmitter,
+}, dispatch);
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
