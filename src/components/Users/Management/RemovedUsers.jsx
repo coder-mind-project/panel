@@ -28,7 +28,7 @@ import {
 import axios from 'axios';
 
 import { backendUrl } from '@/config/backend';
-import { scrollToTop } from '@/config/ScrollToTop';
+import { scrollToTop } from '@/shared/index';
 import { displayFullDate } from '@/config/masks';
 
 import { connect } from 'react-redux';

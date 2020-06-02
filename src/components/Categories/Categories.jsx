@@ -19,7 +19,7 @@ import {
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { scrollToTop } from '@/config/ScrollToTop';
+import { scrollToTop } from '@/shared/index';
 
 import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';

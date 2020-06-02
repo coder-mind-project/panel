@@ -36,7 +36,7 @@ import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { info } from '@/config/toasts';
 
 import { backendUrl } from '@/config/backend';
-import { scrollToTop } from '@/config/ScrollToTop';
+import { scrollToTop } from '@/shared/index';
 
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import NotFound from '@/components/NotFound/DataNotFound.jsx';

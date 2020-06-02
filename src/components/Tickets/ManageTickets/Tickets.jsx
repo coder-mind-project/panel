@@ -25,7 +25,7 @@ import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
 import { backendUrl } from '@/config/backend';
-import { scrollToTop } from '@/config/ScrollToTop';
+import { scrollToTop } from '@/shared/index';
 
 import FloatingButton from '@/components/Buttons/FloatingButton.jsx';
 import CustomButton from '@/components/Buttons/Button.jsx';

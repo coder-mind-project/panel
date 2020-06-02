@@ -20,7 +20,7 @@ import { Redirect } from 'react-router-dom';
 
 import Header from '@/components/Header.jsx';
 import { devices } from '@/config/devices';
-import { scrollToTop } from '@/config/ScrollToTop';
+import { scrollToTop } from '@/shared/index';
 
 
 import WhatIsTicketDialog from './WhatIsTicketDialog';

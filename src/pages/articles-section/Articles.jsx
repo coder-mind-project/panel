@@ -13,7 +13,6 @@ import Searching from '../../assets/loading.gif'
 import NotFound from '../../components/NotFound/DataNotFound'
 
 import axios from 'axios'
-import { backendUrl } from '../../config/backend'
 import { OPTIONS_LIMIT , DEFAULT_LIMIT, ERROR_MSG_CUSTOM, SAUDATION_LOADING_MSG } from '../../config/dataProperties'
 
 import '../css/defaultPage.css'
@@ -43,8 +42,7 @@ export default class Articles extends Component {
 
     async searchArticles(){
         /* Responsável por realizar a busca de artigos */
-
-        const url = `${backendUrl}/articles?query=${this.state.query}&page=${this.state.page}&limit=${this.state.limit}&op=all`
+        const url = `/articles?query=${this.state.query}&page=${this.state.page}&limit=${this.state.limit}&op=all`
         if(this.state.articles.length > 0) this.setState({articles: []})
         if(!this.state.loading) this.setState({loading: true})
         await axios(url).then(async res => {

@@ -24,7 +24,7 @@ import {
   formatCustomURL,
   displayFullDate,
 } from '@/config/masks';
-import { scrollToTop } from '@/config/ScrollToTop';
+import { scrollToTop } from '@/shared/index';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
