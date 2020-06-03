@@ -27,7 +27,7 @@ import Header from '@/components/Header.jsx';
 import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
 import LoadingList from '@/components/LoadingList.jsx';
 
-import { backendUrl } from '@/config/backend';
+
 import {
   OPTIONS_LIMIT,
   DEFAULT_LIMIT,
@@ -135,7 +135,7 @@ function Themes(props) {
       try {
         setLoading(true);
 
-        const url = `${backendUrl}/themes?page=${page}&query=${query}&limit=${limit}`;
+        const url = `/themes?page=${page}&query=${query}&limit=${limit}`;
 
         await axios(url, { cancelToken: source.token }).then((res) => {
           setReload(false);

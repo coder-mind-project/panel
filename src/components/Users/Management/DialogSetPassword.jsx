@@ -12,7 +12,7 @@ import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error } from '@/config/toasts';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import {
   Dialog,
@@ -43,7 +43,7 @@ function DialogSetPassword(props) {
     if (evt) evt.preventDefault();
 
     setSaving(true);
-    const url = `${backendUrl}/users/configs/${user._id}`;
+    const url = `/users/configs/${user._id}`;
 
     await axios.post(url, { password }).then(() => {
       callToast(success('Senha alterada com sucesso!'));

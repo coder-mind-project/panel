@@ -5,7 +5,7 @@ import { Grid, Box, Table, TableBody, TableCell,
     DialogContent, DialogContentText, Dialog, TextField } from '@material-ui/core'
 
 import axios from 'axios'
-import { backendUrl, defineErrorMsg } from '../../../config/backend'
+import { defineErrorMsg } from '../../../config/backend'
 
 import Searching from '../../../assets/loading.gif'
 import ErrorFromData from '@/components/Errors/ErrorFromData.jsx'
@@ -78,7 +78,7 @@ class ArticleStats extends Component {
 
         comment.confirmed = true
 
-        const url = `${backendUrl}/comments`
+        const url = `/comments`
         axios.patch(url, comment).then(() => {
             this.props.callToast(success('Comentário aprovado com sucesso'))
             this.getComments()
@@ -93,7 +93,7 @@ class ArticleStats extends Component {
         const page = this.state.pageComments
         const limit = this.state.limitComments
 
-        const url = `${backendUrl}/articles/comments/${this.props.article._id}?page=${page}&limit=${limit}`
+        const url = `/articles/comments/${this.props.article._id}?page=${page}&limit=${limit}`
         axios(url).then(res => {
             this.setState({
                 comments: res.data.comments,
@@ -108,7 +108,7 @@ class ArticleStats extends Component {
             readed: true
         }
 
-        const url = `${backendUrl}/comments`
+        const url = `/comments`
 
         axios.patch(url, readed)
     }
@@ -122,7 +122,7 @@ class ArticleStats extends Component {
     }
 
     async sendAnswer(){
-        const url = `${backendUrl}/comments`
+        const url = `/comments`
 
         const body = {
             ...this.state.comment,
@@ -148,7 +148,7 @@ class ArticleStats extends Component {
             if(!articleId) return this.setState({error: true})
 
             await this.toogleLoading()
-            const url = `${backendUrl}/articles/stats/${articleId}`
+            const url = `/articles/stats/${articleId}`
             await axios(url).then( res => {
                 this.setState({
                     countViews: res.data.views.count,

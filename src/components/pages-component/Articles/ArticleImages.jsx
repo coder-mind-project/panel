@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux'
 import { callToast } from '../../../redux/toast/toastActions'
 import { success, error, info } from '../../../config/toasts'
 
-import { backendUrl, defineErrorMsg } from '../../../config/backend'
+import { defineErrorMsg } from '../../../config/backend'
 
 import SmallImgDefault from '../../../assets/img_not_found_512x512.png'
 import MediumImgDefault from '../../../assets/img_not_found_768.png'
@@ -114,7 +114,7 @@ class ArticleImages extends Component {
             }
         }
 
-        const url = `${backendUrl}/articles/img/${id}?path=${path}&size=${size}`
+        const url = `/articles/img/${id}?path=${path}&size=${size}`
         await this.toogleSending()
         await axios[method](url, formData, config).then( res => {
             this.props.callToast(success('Operação realizada com sucesso'))
@@ -122,7 +122,7 @@ class ArticleImages extends Component {
                 do envio e remoção da imagem do campo Input
             */
             this.setState({
-                [directory]: `${backendUrl}/${res.data}`,
+                [directory]: `/${res.data}`,
             })
 
         }).catch( async err => {
@@ -148,7 +148,7 @@ class ArticleImages extends Component {
 
         if(option){
             const id = this.props.article._id
-            const url = `${backendUrl}/articles/img/${id}?path=${path}`
+            const url = `/articles/img/${id}?path=${path}`
             axios.delete(url).then(() => {
                 this.props.callToast(success('Operação realizada com sucesso'))
                 /*  Definição do campo de diretorio
@@ -185,9 +185,9 @@ class ArticleImages extends Component {
 
         /* Disponibiliza as imagens definidas do artigo caso estejam definidas */
         await this.setState({
-            smallImgDirectory: article.smallImg ? `${backendUrl}/${article.smallImg}` : '',
-            mediumImgDirectory: article.mediumImg ? `${backendUrl}/${article.mediumImg}` : '',
-            bigImgDirectory: article.bigImg ? `${backendUrl}/${article.bigImg}` : ''
+            smallImgDirectory: article.smallImg ? `/${article.smallImg}` : '',
+            mediumImgDirectory: article.mediumImg ? `/${article.mediumImg}` : '',
+            bigImgDirectory: article.bigImg ? `/${article.bigImg}` : ''
         })
 
     }

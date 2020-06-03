@@ -16,7 +16,7 @@ import axios from 'axios';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error } from '@/config/toasts';
@@ -34,7 +34,7 @@ function RemoveImage(props) {
 
   async function remove() {
     const id = user._id;
-    const url = `${backendUrl}/users/img/${id}`;
+    const url = `/users/img/${id}`;
 
     setRemoving(true);
 

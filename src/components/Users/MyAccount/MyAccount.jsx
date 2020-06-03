@@ -10,7 +10,7 @@ import {
 
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { backendUrl } from '@/config/backend';
+
 import Header from '../../Header';
 
 import GeneralInformation from './GeneralInformation';
@@ -42,7 +42,7 @@ function MyAccount(props) {
 
     async function getUser() {
       const id = user._id;
-      const url = `${backendUrl}/users/${id}`;
+      const url = `/users/${id}`;
       setLoading(true);
 
       try {

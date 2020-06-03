@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 import { CODER_MIND_URL } from '@/config/dataProperties';
 import {
   celphoneMask,
@@ -144,7 +144,7 @@ function UserForm(props) {
     if (saving) return;
 
     const method = userState._id ? 'put' : 'post';
-    const url = method === 'post' ? `${backendUrl}/users?sm=${sendEmail ? 'yes' : 'no'}` : `${backendUrl}/users/${userState._id}?sm=${sendEmail ? 'yes' : 'no'}`;
+    const url = method === 'post' ? `/users?sm=${sendEmail ? 'yes' : 'no'}` : `/users/${userState._id}?sm=${sendEmail ? 'yes' : 'no'}`;
 
     const data = await formatData();
 
@@ -169,7 +169,7 @@ function UserForm(props) {
     const { id } = match && match.params;
 
     async function getUser() {
-      const url = `${backendUrl}/users/${id}`;
+      const url = `/users/${id}`;
       setLoading(true);
       await axios(url).then((res) => {
         setUserState({

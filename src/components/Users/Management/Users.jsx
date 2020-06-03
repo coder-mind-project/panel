@@ -34,7 +34,7 @@ import {
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { info } from '@/config/toasts';
 
-import { backendUrl } from '@/config/backend';
+
 import { scrollToTop } from '@/shared/index';
 
 import LoadingList from '@/components/LoadingList.jsx';
@@ -156,7 +156,7 @@ function Users(props) {
 
   useEffect(() => {
     async function searchUsers() {
-      const url = `${backendUrl}/users?page=${page}&query=${query}&limit=${limit}&order=${order}`;
+      const url = `/users?page=${page}&query=${query}&limit=${limit}&order=${order}`;
       setLoading(true);
       await axios(url).then((res) => {
         setUsers(res.data.users);

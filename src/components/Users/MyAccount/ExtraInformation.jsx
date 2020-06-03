@@ -24,7 +24,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 import { CODER_MIND_URL } from '@/config/dataProperties';
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
@@ -72,7 +72,7 @@ function ExtraInformation(props) {
   async function save() {
     setSaving(true);
 
-    const url = `${backendUrl}/users/${userState._id}`;
+    const url = `/users/${userState._id}`;
 
     await axios.patch(url, userState).then((res) => {
       callToast(success('Informações salvas com sucesso'));

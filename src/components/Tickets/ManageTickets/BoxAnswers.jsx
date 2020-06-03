@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios';
-import { backendUrl } from '@/config/backend';
+
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
@@ -33,7 +33,7 @@ function BoxAnswers(props) {
   useEffect(() => {
     async function getAnswers() {
       if (answers.length === 0 && !latestAnswer && !loaded && !hasError) {
-        const url = `${backendUrl}/tickets/${ticket._id}`;
+        const url = `/tickets/${ticket._id}`;
 
         const res = await axios(url);
         const responses = res && res.data && res.data.responses ? res.data.responses : [];

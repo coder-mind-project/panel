@@ -15,7 +15,6 @@ import { devices } from '@/config/devices';
 
 import axios from 'axios';
 import {
-  backendUrl,
   defineErrorMsg,
   defineErrorType,
 } from '@/config/backend';
@@ -124,7 +123,7 @@ function HudCommentList(props) {
 
     markAllAsRead('all-readed');
 
-    const url = `${backendUrl}/comments`;
+    const url = '/comments';
 
     axios.patch(url).catch((error) => {
       const msg = defineErrorMsg(error);

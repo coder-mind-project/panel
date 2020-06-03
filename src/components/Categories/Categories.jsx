@@ -27,7 +27,6 @@ import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
 import LoadingList from '@/components/LoadingList.jsx';
 
 
-import { backendUrl } from '@/config/backend';
 import {
   OPTIONS_LIMIT,
   DEFAULT_LIMIT,
@@ -131,7 +130,7 @@ function Categories(props) {
     async function searchCategories() {
       try {
         setLoading(true);
-        const url = `${backendUrl}/categories?page=${page}&query=${query}&limit=${limit}`;
+        const url = `/categories?page=${page}&query=${query}&limit=${limit}`;
 
         await axios(url, { cancelToken: source.token })
           .then(async (res) => {
