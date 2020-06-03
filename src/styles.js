@@ -7,8 +7,8 @@ export const AppContent = styled(Box)({
   paddingLeft: (props) => (props.user._id || props.isvalidating ? 80 : 0),
   paddingBottom: (props) => (props.user._id || props.isvalidating ? 20 : 0),
   [devices.mobileLarge]: {
-    marginLeft: '0 !important',
-    marginBottom: (props) => (props.user._id || props.isvalidating ? '80px !important' : 0),
+    paddingLeft: '0 !important',
+    paddingBottom: (props) => (props.user._id || props.isvalidating ? '80px !important' : 0),
   },
 });
 
