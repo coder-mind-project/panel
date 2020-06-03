@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { userType, appTheme, toastConfig } from '@/types';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -16,16 +19,13 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-// Error Boundary
 import ErrorBoundary from '@/components/Errors/ErrorBoundary.jsx';
-
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { standard } from '@/config/themes';
+
 import { WHITE_LIST_ROUTES } from './config/dataProperties';
 
-
-// Redux imports
 import { setUser as defineUser } from './redux/user/userActions';
 import { setError as dispatchError } from './redux/error/errorActions';
 import { setMenu as callMenu } from './redux/menu/menuActions';
@@ -68,9 +68,9 @@ function App(props) {
     error,
     user,
     theme,
-  } = { ...props };
+  } = props;
 
-  const appTheme = standard(theme);
+  const themeConfig = standard(user && user._id ? theme : 'light');
 
   const [validatingToken, setValidatingToken] = useState(true);
   const [path, setPath] = useState('');
@@ -128,7 +128,7 @@ function App(props) {
   }, [setMenu, setUser, setError, validatingToken]);
 
   return (
-    <MuiThemeProvider theme={appTheme}>
+    <MuiThemeProvider theme={themeConfig}>
       <AppContainer theme={theme}>
         { !validatingToken
             && (
@@ -196,6 +196,21 @@ function App(props) {
   );
 }
 
+App.propTypes = {
+  user: userType.isRequired,
+  error: PropTypes.bool,
+  theme: appTheme.isRequired,
+  setMenu: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  callToast: PropTypes.func.isRequired,
+  toast: toastConfig.isRequired,
+};
+
+App.defaultProps = {
+  error: false,
+};
+
 
 const mapStateToProps = (state) => ({
   user: state.user,
@@ -204,6 +219,7 @@ const mapStateToProps = (state) => ({
   toast: state.toast,
   theme: state.theme,
 });
+
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   setUser: defineUser,
   setError: dispatchError,
