@@ -23,8 +23,6 @@ import ErrorBoundary from '@/components/Errors/ErrorBoundary.jsx';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { standard } from '@/config/themes';
 import { WHITE_LIST_ROUTES } from './config/dataProperties';
-// Requests imports
-import { backendUrl } from './config/backend';
 
 
 // Redux imports
@@ -106,7 +104,7 @@ function App(props) {
       const token = await JSON.parse(localStorage.getItem('user'));
 
       if (token) {
-        const url = `${backendUrl}/auth/logged`;
+        const url = '/auth/logged';
         await axios.post(url, token).then((res) => {
           if (res.data.user) {
             setUser(res.data);
