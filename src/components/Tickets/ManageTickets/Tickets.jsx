@@ -16,7 +16,6 @@ import {
   IconButton,
   Badge,
   Icon,
-  CircularProgress,
   LinearProgress,
 } from '@material-ui/core';
 
@@ -32,6 +31,7 @@ import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import Header from '@/components/Header.jsx';
 import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
+import LoadingList from '@/components/LoadingList.jsx';
 
 import {
   OPTIONS_LIMIT,
@@ -227,11 +227,7 @@ function Tickets(props) {
         closeFilter={() => setShowFilter(false)}
       />
       {loading && tickets.length === 0
-          && (
-            <Box display="flex" justifyContent="center" alignItems="center" width="100%" height="35vh">
-              <CircularProgress size={60} color="primary" />
-            </Box>
-          )
+          && <LoadingList />
       }
       {!loading && tickets.length === 0
         && (

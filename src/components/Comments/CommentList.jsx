@@ -15,8 +15,10 @@ import axios from 'axios';
 import { backendUrl } from '@/config/backend';
 
 import HudCommentList from './HudCommentList';
+import LoadingList from '../LoadingList';
 import CommentCard from './CommentCard';
 import CommentSettingsDialog from './CommentSettingsDialog';
+
 
 function CommentList() {
   const [comments, setComments] = useState([]);
@@ -190,17 +192,7 @@ function CommentList() {
       <CommentSettingsDialog open={showSettingsDialog} closeDialog={closeSettingsDialog} />
       {
         !count && loading
-          && (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
-              height="350px"
-            >
-              <CircularProgress color="primary" size={80} />
-            </Box>
-          )
+          && <LoadingList />
       }
       { !count && !loading
         && (
