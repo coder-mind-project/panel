@@ -33,7 +33,7 @@ function AppBarMobile() {
         <ButtonMobileAppBar
           onClick={() => setActiveLocation('/')}
           isActive={getActiveLocation('/')}
-          icon="home"
+          icon="article"
           label="Artigos"
         />
         <ButtonMobileAppBar

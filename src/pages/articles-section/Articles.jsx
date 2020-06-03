@@ -102,7 +102,7 @@ export default class Articles extends Component {
                 <Header
                     title="Artigos"
                     description="Consulte, altere e crie novos artigos"
-                    icon="description"
+                    icon="article"
                 />
                 {this.state.redirectTo &&
                     <Redirect to={`/${this.state.redirectTo}`} />

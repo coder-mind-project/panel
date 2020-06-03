@@ -59,7 +59,7 @@ function DrawerMenu(props) {
             >
               <Box display="flex" alignItems="center">
                 <Icon color="action">
-                  library_books
+                  article
                 </Icon>
                 <Typography component="span" variant="body2">
                   Artigos
