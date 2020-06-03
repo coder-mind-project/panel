@@ -117,18 +117,6 @@ function AppBar(props) {
                 </Box>
               </MenuItem>
             </CustomLink>
-            <CustomLink to="/ticket" onClick={closeMenu}>
-              <MenuItem>
-                <Box display="flex" alignItems="center">
-                  <Icon color="action">
-                    feedback
-                  </Icon>
-                  <Typography component="span" variant="body2">
-                    Fale conosco
-                  </Typography>
-                </Box>
-              </MenuItem>
-            </CustomLink>
             <MenuItem onClick={setTheme}>
               <Box display="flex" alignItems="center">
                 <Icon color="action">
@@ -157,6 +145,18 @@ function AppBar(props) {
                   </CustomLink>
                 )
               }
+            <CustomLink to="/ticket" onClick={closeMenu}>
+              <MenuItem>
+                <Box display="flex" alignItems="center">
+                  <Icon color="action">
+                    feedback
+                  </Icon>
+                  <Typography component="span" variant="body2">
+                    Ajuda
+                  </Typography>
+                </Box>
+              </MenuItem>
+            </CustomLink>
             <MenuItem onClick={logout}>
               <Box display="flex" alignItems="center">
                 <Icon color="action">
