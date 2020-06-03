@@ -18,7 +18,7 @@ import { callToast as toastEmitter } from '../../redux/toast/toastActions';
 
 import { displayFullDate } from '../../config/masks';
 
-import { backendUrl, defineErrorMsg } from '../../config/backend';
+import { defineErrorMsg } from '../../config/backend';
 import { success, error as toastError } from '../../config/toasts';
 
 import { CustomGrid } from './styles';
@@ -34,7 +34,7 @@ function SchedulerDefinitions(props) {
     if (sincronizing) return;
     setSincronizing(true);
 
-    const url = `${backendUrl}/stats/sincronization`;
+    const url = '/stats/sincronization';
 
     await axios.post(url).then((res) => {
       setLastSincronization(displayFullDate(res.data.generatedAt));
@@ -52,7 +52,7 @@ function SchedulerDefinitions(props) {
 
     async function getLastSincronization() {
       try {
-        const url = `${backendUrl}/stats/sincronization`;
+        const url = '/stats/sincronization';
 
         await axios(url, { cancelToken: source.token }).then((res) => {
           if (res.data && res.data.generatedAt) {

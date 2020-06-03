@@ -17,7 +17,7 @@ import axios from 'axios';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error } from '@/config/toasts';
@@ -36,7 +36,7 @@ function RemoveAccount(props) {
   async function remove() {
     setRemoving(true);
 
-    const url = `${backendUrl}/users/configs/${user._id}`;
+    const url = `/users/configs/${user._id}`;
 
     const payload = { password };
 

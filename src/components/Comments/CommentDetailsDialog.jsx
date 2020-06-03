@@ -22,7 +22,7 @@ import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 import { devices } from '@/config/devices';
 
 import ArticleLogoSample from '@/assets/img_not_found_512x512.png';
@@ -86,7 +86,7 @@ function CommentDetailsDialog(props) {
       setCommentState(newState);
 
       const { _id } = comment;
-      const url = `${backendUrl}/comments/${_id}`;
+      const url = `/comments/${_id}`;
       const method = newState ? 'put' : 'delete';
 
       await axios[method](url);
@@ -179,7 +179,7 @@ function CommentDetailsDialog(props) {
                   style={{ boxShadow: '0px 0px 2px 1px #ccc', objectFit: 'cover' }}
                   width="100%"
                   height="200px"
-                  src={comment.article ? `${backendUrl}${comment.article.smallImg}` : ArticleLogoSample}
+                  src={comment.article ? `${comment.article.smallImg}` : ArticleLogoSample}
                   alt={comment.article ? comment.article.title : 'Artigo não definido'}
                 />
                 <Box

@@ -12,11 +12,13 @@ import Header from '@/components/Header.jsx';
 import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
 
 import axios from 'axios';
-import { backendUrl } from '@/config/backend';
+
 
 import HudCommentList from './HudCommentList';
+import LoadingList from '../LoadingList';
 import CommentCard from './CommentCard';
 import CommentSettingsDialog from './CommentSettingsDialog';
+
 
 function CommentList() {
   const [comments, setComments] = useState([]);
@@ -135,8 +137,8 @@ function CommentList() {
         const params = getSettings();
 
         const url = params
-          ? `${backendUrl}/comments?type=${params.type}&order=${params.order}&query=${query}&page=${page}&limit=${params.limit}`
-          : `${backendUrl}/comments?type=${type}&order=${order}&query=${query}&page=${page}&limit=${limit}`;
+          ? `/comments?type=${params.type}&order=${params.order}&query=${query}&page=${page}&limit=${params.limit}`
+          : `/comments?type=${type}&order=${order}&query=${query}&page=${page}&limit=${limit}`;
 
         await axios(url, { cancelToken: source.token }).then((res) => {
           setReload(false);
@@ -190,17 +192,7 @@ function CommentList() {
       <CommentSettingsDialog open={showSettingsDialog} closeDialog={closeSettingsDialog} />
       {
         !count && loading
-          && (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              width="100%"
-              height="350px"
-            >
-              <CircularProgress color="primary" size={80} />
-            </Box>
-          )
+          && <LoadingList />
       }
       { !count && !loading
         && (

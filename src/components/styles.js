@@ -28,7 +28,7 @@ export const CustomHeader = styled(Grid)({
 });
 
 export const CustomIcon = styled(Icon)({
-  color: '#444',
+  color: (props) => (props.theme === 'dark' ? '#FFF' : '#444'),
   marginRight: '5px',
 });
 

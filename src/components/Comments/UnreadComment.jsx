@@ -7,7 +7,7 @@ import {
   Typography,
   Divider,
 } from '@material-ui/core';
-import { backendUrl } from '@/config/backend';
+
 import axios from 'axios';
 
 import { connect } from 'react-redux';
@@ -37,7 +37,7 @@ const UnreadComment = (props) => {
   function markAsRead() {
     const { _id } = notification;
 
-    const url = `${backendUrl}/comments/${_id}`;
+    const url = `/comments/${_id}`;
     axios.patch(url).catch(() => {
       callToast(toastError('Ocorreu um erro ao marcar o comentário como lido'));
     });
@@ -55,7 +55,7 @@ const UnreadComment = (props) => {
           <ArticleSmallImgContainer>
             <img
               className="article-small-img"
-              src={notification.article.smallImg ? `${backendUrl}${notification.article.smallImg}` : ArticleSmallImgSample}
+              src={notification.article.smallImg ? `${notification.article.smallImg}` : ArticleSmallImgSample}
               alt={notification.article.title}
             />
           </ArticleSmallImgContainer>

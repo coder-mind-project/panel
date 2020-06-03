@@ -40,7 +40,7 @@ import { error as toastError } from '../../config/toasts';
 
 import CustomButton from '../Buttons/Button';
 
-import { backendUrl, defineErrorMsg } from '../../config/backend';
+import { defineErrorMsg } from '../../config/backend';
 
 import { CAPTCHA_SITE_KEY } from '../../config/dataProperties';
 
@@ -172,7 +172,7 @@ function RescueAccount(props) {
 
   async function redeemAccount() {
     if (waiting) return;
-    const url = `${backendUrl}/auth`;
+    const url = '/auth';
     const { payloadForOnlyPassword, payloadForMoreInformations } = await getData();
     const data = option === 'onlyPassword' ? payloadForOnlyPassword : payloadForMoreInformations;
     const method = option === 'onlyPassword' ? 'patch' : 'put';

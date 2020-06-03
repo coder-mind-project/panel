@@ -29,7 +29,7 @@ import MomentUtils from '@date-io/moment';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
 
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import CustomButton from '@/components/Buttons/Button.jsx';
 
@@ -99,7 +99,7 @@ function BugReport(props) {
   async function sendTicket() {
     setIsSending(true);
     const data = formatData();
-    const url = `${backendUrl}/tickets`;
+    const url = '/tickets';
 
     await axios.post(url, data).then(() => {
       setSuccess(true);

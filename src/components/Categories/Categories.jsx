@@ -12,22 +12,21 @@ import {
   Paper,
   Box,
   LinearProgress,
-  CircularProgress,
   Typography,
 } from '@material-ui/core';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { scrollToTop } from '@/config/ScrollToTop';
+import { scrollToTop } from '@/shared/index';
 
 import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import Header from '@/components/Header.jsx';
 import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
+import LoadingList from '@/components/LoadingList.jsx';
 
 
-import { backendUrl } from '@/config/backend';
 import {
   OPTIONS_LIMIT,
   DEFAULT_LIMIT,
@@ -131,7 +130,7 @@ function Categories(props) {
     async function searchCategories() {
       try {
         setLoading(true);
-        const url = `${backendUrl}/categories?page=${page}&query=${query}&limit=${limit}`;
+        const url = `/categories?page=${page}&query=${query}&limit=${limit}`;
 
         await axios(url, { cancelToken: source.token })
           .then(async (res) => {
@@ -208,11 +207,7 @@ function Categories(props) {
           />
         </Box>
       </Box>
-      {loading && categories.length === 0 && (
-        <Box display="flex" justifyContent="center" alignItems="center" width="100%" height="300px">
-          <CircularProgress color="primary" size={80} />
-        </Box>
-      )}
+      {loading && categories.length === 0 && <LoadingList /> }
       {!loading && categories.length === 0 && (
         <DataNotFound msg="Nenhuma categoria encontrada" />
       )}

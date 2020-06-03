@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 import { devices } from '@/config/devices';
 
 import { RedeemAccountContainer } from './styles';
@@ -63,7 +63,7 @@ function FormConfirmEmail(props) {
         window.open('/auth', '_self');
       }
 
-      const url = `${backendUrl}/users/emails/${newParams.uid}?token=${newParams.token}`;
+      const url = `/users/emails/${newParams.uid}?token=${newParams.token}`;
 
       const method = newParams.rt ? 'delete' : 'put';
 

@@ -19,7 +19,7 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import Logo from '@/assets/coder-mind-painelv1-preto.png';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 
 import { connect } from 'react-redux';
@@ -47,7 +47,7 @@ function FormRedeemAccount(props) {
     if (confirming) return;
     if (evt) evt.preventDefault();
 
-    const url = `${backendUrl}/auth/rescue?token=${token}&id=${user._id}`;
+    const url = `/auth/rescue?token=${token}&id=${user._id}`;
     const data = { firstField, secondField };
 
     setConfirming(true);
@@ -100,7 +100,7 @@ function FormRedeemAccount(props) {
         return;
       }
 
-      const url = `${backendUrl}/auth/rescue?token=${tokenResulted}`;
+      const url = `/auth/rescue?token=${tokenResulted}`;
 
       await axios.post(url).then(async (res) => {
         setUser(res.data);

@@ -7,7 +7,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import { scrollToTop } from '@/config/ScrollToTop';
+import { scrollToTop } from '@/shared/index';
 
 import Header from '../Header';
 import ShortcutSection from './ShortcutSection';

@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 
 import axios from 'axios';
-import { defineErrorMsg, backendUrl } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { CustomInputBase, BoxFieldAnswer } from './styles';
 
@@ -44,7 +44,7 @@ function BoxAnswer(props) {
 
     sendedAnswer(tempAnswer);
 
-    const url = `${backendUrl}/tickets/${ticketId}`;
+    const url = `/tickets/${ticketId}`;
 
     const data = {
       response: answer,

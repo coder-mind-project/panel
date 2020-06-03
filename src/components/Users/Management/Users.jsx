@@ -13,7 +13,6 @@ import {
   TablePagination,
   Paper,
   Box,
-  CircularProgress,
   LinearProgress,
   Typography,
   IconButton,
@@ -35,9 +34,10 @@ import {
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { info } from '@/config/toasts';
 
-import { backendUrl } from '@/config/backend';
-import { scrollToTop } from '@/config/ScrollToTop';
 
+import { scrollToTop } from '@/shared/index';
+
+import LoadingList from '@/components/LoadingList.jsx';
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import NotFound from '@/components/NotFound/DataNotFound.jsx';
 import ErrorFromData from '@/components/Errors/ErrorFromData.jsx';
@@ -156,7 +156,7 @@ function Users(props) {
 
   useEffect(() => {
     async function searchUsers() {
-      const url = `${backendUrl}/users?page=${page}&query=${query}&limit=${limit}&order=${order}`;
+      const url = `/users?page=${page}&query=${query}&limit=${limit}&order=${order}`;
       setLoading(true);
       await axios(url).then((res) => {
         setUsers(res.data.users);
@@ -231,14 +231,7 @@ function Users(props) {
         </Box>
       </Box>
       {loading && users.length === 0
-        && (
-          <Box display="flex" justifyContent="center" alignItems="center" width="100%" height={300}>
-            <CircularProgress
-              size={80}
-              color="primary"
-            />
-          </Box>
-        )
+        && <LoadingList />
       }
       {!loading && !error && users.length === 0
         && (

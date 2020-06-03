@@ -160,3 +160,9 @@ export const reactRouterParams = shape({
   isExact: bool,
   params: object, // Property types are changed according to the context
 });
+
+export const toastConfig = shape({
+  type: string,
+  msg: string,
+  display: bool,
+});

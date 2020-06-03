@@ -28,7 +28,7 @@ import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { devices } from '@/config/devices';
 
@@ -117,7 +117,7 @@ function AnswersSection(props) {
 
     setSaving(true);
     const { _id } = comment;
-    const url = `${backendUrl}/comments/${_id}?notify=${notify}`;
+    const url = `/comments/${_id}?notify=${notify}`;
 
     const data = { answer };
     await axios.post(url, data).then((response) => {
@@ -236,8 +236,8 @@ function AnswersSection(props) {
 
       const { _id } = comment;
       const url = initialSettings
-        ? `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${initialSettings.order}&state=${initialSettings.type}`
-        : `${backendUrl}/comments/history/${_id}?page=${page}&limit=${limit}&order=${order}&state=${type}`;
+        ? `/comments/history/${_id}?page=${page}&limit=${limit}&order=${initialSettings.order}&state=${initialSettings.type}`
+        : `/comments/history/${_id}?page=${page}&limit=${limit}&order=${order}&state=${type}`;
 
       await axios(url).then((response) => {
         let currentAnswers = answers;

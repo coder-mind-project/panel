@@ -16,7 +16,6 @@ import {
   IconButton,
   Badge,
   Icon,
-  CircularProgress,
   LinearProgress,
 } from '@material-ui/core';
 
@@ -24,14 +23,15 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import axios from 'axios';
-import { backendUrl } from '@/config/backend';
-import { scrollToTop } from '@/config/ScrollToTop';
+
+import { scrollToTop } from '@/shared/index';
 
 import FloatingButton from '@/components/Buttons/FloatingButton.jsx';
 import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import Header from '@/components/Header.jsx';
 import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
+import LoadingList from '@/components/LoadingList.jsx';
 
 import {
   OPTIONS_LIMIT,
@@ -151,8 +151,8 @@ function Tickets(props) {
     async function searchTickets() {
       try {
         const url = filters
-          ? `${backendUrl}/tickets?page=${page}&limit=${limit}&tid=${filters.tid}&type=${filters.type}&begin=${filters.begin}&end=${filters.end}&order=${filters.order}`
-          : `${backendUrl}/tickets?page=${page}&limit=${limit}`;
+          ? `/tickets?page=${page}&limit=${limit}&tid=${filters.tid}&type=${filters.type}&begin=${filters.begin}&end=${filters.end}&order=${filters.order}`
+          : `/tickets?page=${page}&limit=${limit}`;
 
         setLoading(true);
         await axios(url, { cancelToken: source.token }).then((res) => {
@@ -227,11 +227,7 @@ function Tickets(props) {
         closeFilter={() => setShowFilter(false)}
       />
       {loading && tickets.length === 0
-          && (
-            <Box display="flex" justifyContent="center" alignItems="center" width="100%" height="35vh">
-              <CircularProgress size={60} color="primary" />
-            </Box>
-          )
+          && <LoadingList />
       }
       {!loading && tickets.length === 0
         && (

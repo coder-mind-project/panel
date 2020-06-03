@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Grid, TextField, Box, Icon, CircularProgress, Divider,
         FormControlLabel, Checkbox, LinearProgress} from '@material-ui/core'
 import axios from 'axios'
-import { backendUrl, defineErrorMsg } from '../../../config/backend'
+import { defineErrorMsg } from '../../../config/backend'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -41,7 +41,7 @@ class ArticleConfig extends Component {
 
         await this.toogleChangingState()
 
-        const url = `${backendUrl}/articles/management/${id}`
+        const url = `/articles/management/${id}`
         await axios.delete(url).then(() => {
             this.props.callToast(success('Artigo removido com sucesso'))
             setTimeout(() => window.location.href = '/articles', 3000)
@@ -61,7 +61,7 @@ class ArticleConfig extends Component {
 
         await this.toogleChangingState()
 
-        const url = `${backendUrl}/articles/management/${id}?op=publish`
+        const url = `/articles/management/${id}?op=publish`
         await axios.patch(url).then( res => {
             this.props.callToast(success('Artigo publicado com sucesso'))
             this.setState({article: res.data})
@@ -82,7 +82,7 @@ class ArticleConfig extends Component {
 
         await this.toogleChangingState()
 
-        const url = `${backendUrl}/articles/management/${id}?op=inactive`
+        const url = `/articles/management/${id}?op=inactive`
         await axios.patch(url).then( res => {
             this.props.callToast(success('Artigo inativado com sucesso'))
             this.setState({article: res.data})
@@ -103,7 +103,7 @@ class ArticleConfig extends Component {
 
         await this.toogleChangingState()
 
-        const url = `${backendUrl}/articles/management/${id}?op=boost`
+        const url = `/articles/management/${id}?op=boost`
         await axios.patch(url).then( res => {
             this.props.callToast(success('Artigo impulsionado com sucesso'))
             this.setState({article: res.data})
@@ -124,7 +124,7 @@ class ArticleConfig extends Component {
 
         await this.toogleChangingState()
 
-        const url = `${backendUrl}/articles/management/${id}?op=active`
+        const url = `/articles/management/${id}?op=active`
         await axios.patch(url).then( res => {
             this.props.callToast(success('Artigo reativado com sucesso'))
             this.setState({article: res.data})
