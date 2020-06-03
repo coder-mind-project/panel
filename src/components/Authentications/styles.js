@@ -22,7 +22,7 @@ export const GridPresentation = styled(Grid)({
   alignItems: 'center',
   justifyContent: 'center',
   flexWrap: 'wrap',
-  minHeight: '100%',
+  minHeight: '100vh',
   width: '100vw',
   color: '#fff',
   fontWeight: 700,
