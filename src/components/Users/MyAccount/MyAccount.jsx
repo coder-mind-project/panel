@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { userType } from '@/types';
 import {
-  Container,
   ExpansionPanel,
   ExpansionPanelDetails,
   Grid,
@@ -18,6 +17,8 @@ import GeneralInformation from './GeneralInformation';
 import ExtraInformation from './ExtraInformation';
 import Configurations from './Configurations';
 import CustomPanelSummary from './CustomPanelSummary';
+
+import { CustomContainer } from './styles';
 
 function MyAccount(props) {
   const {
@@ -62,7 +63,7 @@ function MyAccount(props) {
     return () => source.cancel();
   }, [user, userState, error]);
   return (
-    <Container>
+    <CustomContainer>
       <Header
         icon="account_box"
         title="Minha conta"
@@ -130,7 +131,7 @@ function MyAccount(props) {
           </Grid>
           )
       }
-    </Container>
+    </CustomContainer>
   );
 }
 
