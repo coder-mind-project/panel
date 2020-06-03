@@ -16,7 +16,7 @@ function AppBarMobile() {
   }
 
   function getActiveLocation(intended) {
-    return location.pathname === intended ? 'primary' : 'inherit';
+    return location.pathname === intended;
   }
 
   useEffect(() => {
@@ -29,30 +29,24 @@ function AppBarMobile() {
       color="inherit"
     >
       {redirect && <Redirect to={redirect} />}
-      <Box display="flex" alignItems="center" justifyContent="center">
+      <Box display="flex" alignItems="center" justifyContent="space-between">
         <ButtonMobileAppBar
           onClick={() => setActiveLocation('/')}
-          color={getActiveLocation('/')}
+          isActive={getActiveLocation('/')}
           icon="home"
           label="Artigos"
         />
         <ButtonMobileAppBar
-          onClick={() => setActiveLocation('/stats')}
-          color={getActiveLocation('/stats')}
-          icon="assessment"
-          label="Estatísticas"
-        />
-        <ButtonMobileAppBar
           onClick={() => setActiveLocation('/comments')}
-          color={getActiveLocation('/comments')}
+          isActive={getActiveLocation('/comments')}
           icon="question_answer"
           label="Comentários"
         />
         <ButtonMobileAppBar
           onClick={() => setActiveLocation('/my-account')}
-          color={getActiveLocation('/my-account')}
+          isActive={getActiveLocation('/my-account')}
           icon="person_outlined"
-          label="Conta"
+          label="Minha conta"
         />
       </Box>
     </AppBarBottom>
