@@ -57,7 +57,7 @@ import MyAccount from './components/Users/MyAccount/MyAccount';
 
 // Css imports
 import './index.css';
-import { AppContent } from './styles';
+import { AppContent, AppContainer } from './styles';
 
 
 function App(props) {
@@ -131,7 +131,7 @@ function App(props) {
 
   return (
     <MuiThemeProvider theme={appTheme}>
-      <Grid>
+      <AppContainer theme={theme}>
         { !validatingToken
             && (
               <Router>
@@ -151,7 +151,11 @@ function App(props) {
                   { error
                     && <Redirect to="/error" />
                   }
-                  <AppContent user={getPath() === '/confirm-email' ? {} : user} isvalidating={validatingToken ? 'true' : ''}>
+                  <AppContent
+                    user={getPath() === '/confirm-email' ? {} : user}
+                    isvalidating={validatingToken ? 'true' : ''}
+                    theme={theme}
+                  >
                     <Switch>
                       <Route path="/" exact component={Articles} />
                       <Route path="/auth" exact component={Auth} />
@@ -189,7 +193,7 @@ function App(props) {
             </Fade>
             )
           }
-      </Grid>
+      </AppContainer>
     </MuiThemeProvider>
   );
 }
