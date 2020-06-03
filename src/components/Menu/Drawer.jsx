@@ -68,22 +68,6 @@ function DrawerMenu(props) {
             </CustomListItem>
           </CustomLink>
           <CustomLink
-            to="/stats"
-          >
-            <CustomListItem
-              button
-            >
-              <Box display="flex" alignItems="center">
-                <Icon color="action">
-                  assessment
-                </Icon>
-                <Typography component="span" variant="body2">
-                  Estatísticas
-                </Typography>
-              </Box>
-            </CustomListItem>
-          </CustomLink>
-          <CustomLink
             to="/comments"
           >
             <CustomListItem

@@ -50,7 +50,6 @@ import Categories from './components/Categories/Categories';
 import CommentList from './components/Comments/CommentList';
 import Articles from './pages/articles-section/Articles';
 import Article from './pages/articles-section/Article';
-import Stats from './pages/statistics-section/Stats';
 import MyAccount from './components/Users/MyAccount/MyAccount';
 
 // Css imports
@@ -174,7 +173,6 @@ function App(props) {
                       <Route path="/my-account" exact component={MyAccount} />
                       <Route path="/comments" exact component={CommentList} />
                       <Route path="/error" exact component={Error} />
-                      <Route path="/stats" exact component={Stats} />
                       <Route component={RouteNotFound} />
                     </Switch>
                   </AppContent>
