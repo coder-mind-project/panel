@@ -1,4 +1,5 @@
 import React from 'react';
+import { appTheme } from '@/types';
 import PropTypes from 'prop-types';
 
 import {
@@ -6,6 +7,8 @@ import {
   Typography,
   Box,
 } from '@material-ui/core';
+
+import { connect } from 'react-redux';
 
 import { CustomHeader, CustomIcon, CustomFaIcon } from './styles';
 
@@ -17,6 +20,7 @@ function Header(props) {
     noMarginTop,
     fontAwesomeIcon,
     faIcon,
+    theme,
   } = props;
 
   return (
@@ -32,7 +36,7 @@ function Header(props) {
       >
         { !fontAwesomeIcon
           && (
-            <CustomIcon fontSize="large">
+            <CustomIcon fontSize="large" theme={theme}>
               {icon}
             </CustomIcon>
           )
@@ -68,6 +72,7 @@ Header.propTypes = {
   noMarginTop: PropTypes.bool,
   fontAwesomeIcon: PropTypes.bool,
   faIcon: PropTypes.string,
+  theme: appTheme.isRequired,
 };
 
 Header.defaultProps = {
@@ -78,4 +83,6 @@ Header.defaultProps = {
   faIcon: '',
 };
 
-export default Header;
+const mapStateToProps = (state) => ({ theme: state.theme });
+
+export default connect(mapStateToProps)(Header);
