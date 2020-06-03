@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { appTheme } from '@/types';
 
 import {
   Grid,
@@ -27,7 +26,6 @@ import PasswordField from '@/components/PasswordField.jsx';
 
 import { defineErrorMsg } from '@/config/backend';
 
-import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
 import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
 import LogoClean from '@/assets/Logo-coder-mind.png';
 
@@ -46,7 +44,6 @@ import {
 function Auth(props) {
   const {
     appError,
-    theme,
   } = props;
 
   const [email, setEmail] = useState('');
@@ -58,7 +55,6 @@ function Auth(props) {
   const [recaptchaToken, setRecaptchaToken] = useState('');
 
   const matches = useMediaQuery(devices.mobileLarge);
-  const isLightTheme = useMediaQuery(`(prefers-color-scheme: ${theme})`);
   const recaptchaRef = useRef(null);
 
   function toogleRescuePassword() {
@@ -162,7 +158,7 @@ function Auth(props) {
               <AuthSection>
                 { loading && <LinearProgress color="primary" />}
                 <LogoArea>
-                  <img src={isLightTheme ? LogoBlack : LogoWhite} alt="Logo" width="200" />
+                  <img src={LogoBlack} alt="Logo" width="200" />
                 </LogoArea>
                 <FormArea>
                   { Boolean(error)
@@ -235,7 +231,6 @@ function Auth(props) {
 
 Auth.propTypes = {
   appError: PropTypes.bool,
-  theme: appTheme.isRequired,
 };
 
 Auth.defaultProps = {
