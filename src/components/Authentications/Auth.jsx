@@ -25,7 +25,7 @@ import RedeemAccount from '@/components/Authentications/RedeemAccount.jsx';
 import CustomButtonBase from '@/components/Authentications/AuthButton.jsx';
 import PasswordField from '@/components/PasswordField.jsx';
 
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
 import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
@@ -119,7 +119,7 @@ function Auth(props) {
         response,
       };
 
-      const url = `${backendUrl}/auth`;
+      const url = '/auth';
 
       await axios.post(url, user).then(async (res) => {
         localStorage.setItem('user', JSON.stringify({ token: res.data.token }));
