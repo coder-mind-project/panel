@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { userType } from '@/types';
-import { useDebounce } from '@/hooks';
 
-import { Container } from '@material-ui/core';
+import { Container, Icon } from '@material-ui/core';
 
 import { OPTIONS_LIMIT, DEFAULT_LIMIT } from '@/config/dataProperties';
 import { scrollToTop } from '@/shared/index';
@@ -17,6 +16,8 @@ import NotFound from '@/components/NotFound/DataNotFound.jsx';
 import Chip from '@/components/Chip.jsx';
 import ArticleHeaderTableCell from './ArticleHeaderTableCell';
 
+import { TableWrapper } from './styles';
+
 function Articles(props) {
   const { user } = props;
 
@@ -28,8 +29,6 @@ function Articles(props) {
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const [reload, setReload] = useState(true);
-
-  const debouncedQuery = useDebounce(query, 300);
 
   function getArticleState(article) {
     let state;
@@ -121,7 +120,13 @@ function Articles(props) {
   }
 
   function createArticle() {
+    // eslint-disable-next-line no-console
     console.log('creating article');
+  }
+
+  function showStats() {
+    // eslint-disable-next-line no-console
+    console.log('show stats');
   }
 
   function changePage(futurePage) {
@@ -129,19 +134,24 @@ function Articles(props) {
     setReload(true);
   }
 
+  function changeLimit(futureLimit) {
+    setLimit(futureLimit);
+    setReload(true);
+  }
+
   function getBySearch(q) {
     setQuery(q);
-    if (debouncedQuery) {
-      setPage(1);
-      setReload(true);
-    }
+    setPage(1);
+    setReload(true);
   }
 
   function removeArticles(articlesToRemove) {
+    // eslint-disable-next-line no-console
     console.log(articlesToRemove);
   }
 
   function openArticle(article) {
+    // eslint-disable-next-line no-console
     console.log(article);
   }
 
@@ -184,18 +194,25 @@ function Articles(props) {
         description="Consulte, altere e crie novos artigos"
         icon="article"
       />
-      <Container>
+      <TableWrapper>
         <MaterialTable
           columns={getArticleListColumns()}
           data={articles}
           totalCount={count}
           isLoading={loading}
           page={page - 1}
-          onChangeRowsPerPage={changePage}
+          onChangeRowsPerPage={changeLimit}
           onChangePage={changePage}
           onSearchChange={getBySearch}
+          customFilterAndSearch={() => null}
           showFirstLastPageButtons={false}
-          too
+          icons={{
+            ResetSearch: () => (query ? <Icon color="action">clear</Icon> : ''),
+            FirstPage: () => <Icon color="action">first_page</Icon>,
+            PreviousPage: () => <Icon color="action">chevron_left</Icon>,
+            NextPage: () => <Icon color="action">chevron_right</Icon>,
+            LastPage: () => <Icon color="action">last_page</Icon>,
+          }}
           options={{
             selection: true,
             showTitle: false,
@@ -209,6 +226,9 @@ function Articles(props) {
             headerStyle: {
               zIndex: 1,
             },
+            debounceInterval: 500,
+            maxBodyHeight: 750,
+            paginationType: 'normal',
           }}
           localization={{
             body: {
@@ -223,6 +243,7 @@ function Articles(props) {
               previousTooltip: 'Página anterior',
               nextTooltip: 'Próxima página',
               labelRowsSelect: 'Linhas',
+              labelDisplayedRows: '{from}-{to} de {count}',
             },
           }}
           onRowClick={((evt, selectedRow) => openArticle(selectedRow))}
@@ -234,11 +255,17 @@ function Articles(props) {
               position: 'toolbar',
             },
             {
+              tooltip: 'Métricas',
+              icon: 'bar_chart',
+              onClick: showStats,
+              position: 'toolbar',
+            },
+            {
               tooltip: 'Remover artigos', icon: 'delete', onClick: (evt, data) => removeArticles(data), position: 'toolbarOnSelect',
             },
           ]}
         />
-      </Container>
+      </TableWrapper>
     </Container>
   );
 }

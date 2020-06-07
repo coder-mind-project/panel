@@ -2,7 +2,16 @@ import {
   styled,
   Icon,
   Box,
+  Container,
 } from '@material-ui/core';
+
+import { COLOR_APP } from '@/config/dataProperties';
+
+export const TableWrapper = styled(Container)({
+  '& .MuiCheckbox-colorSecondary.Mui-checked': {
+    color: COLOR_APP,
+  },
+});
 
 export const FakeHeaderCell = styled(Box)({
   display: 'flex',
