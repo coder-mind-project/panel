@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import Button from '@/components/Buttons/Button.jsx';
 import BrokenRobot from '@/assets/broken-robot-extra-small.png';
 
+import { APP_REPORT_US } from '@/config/dataProperties';
+
 import {
   ErrorBox,
   ErrorContainer,
@@ -29,21 +31,28 @@ function Error(props) {
       }
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
         <ErrorPaper>
+          <Box display="flex" justifyContent="center" alignItems="center" p={3}>
+            <img src={BrokenRobot} alt="Erro de sistema" />
+          </Box>
           <ErrorBox>
             <ErrorLogo>
-              <Typography component="h1" variant="h5">
+              <Typography component="h1" variant="h5" align="center">
                 Ops, algo deu errado :(
               </Typography>
             </ErrorLogo>
             <ErrorMsg>
-              <Typography component="p" variant="body1">
+              <Typography component="p" variant="body1" align="center">
                 Aparentemente ocorreu algum erro, tente clicar no botão abaixo.
-              </Typography>
-              <Typography component="p" variant="body1">
-                Se o problema persitir reporte-nos!
               </Typography>
             </ErrorMsg>
             <Box>
+              <Box mb={2}>
+                <Typography component="p" variant="body2" align="center">
+                  Se o problema persitir
+                  {' '}
+                  <a href={APP_REPORT_US} target="_blank" rel="noreferrer">reporte-nos!</a>
+                </Typography>
+              </Box>
               <Button
                 fullWidth
                 icon="cached"
@@ -52,9 +61,6 @@ function Error(props) {
               />
             </Box>
           </ErrorBox>
-          <Box display="flex" justifyContent="center" alignItems="center" p={3}>
-            <img src={BrokenRobot} alt="Erro de sistema" />
-          </Box>
         </ErrorPaper>
       </Box>
     </ErrorContainer>
