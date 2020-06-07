@@ -22,7 +22,7 @@ import { bindActionCreators } from 'redux';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
 
-import { backendUrl, defineErrorType } from '@/config/backend';
+import { defineErrorType } from '@/config/backend';
 import { devices } from '@/config/devices';
 
 import CommentDetailsDialog from './CommentDetailsDialog';
@@ -107,7 +107,7 @@ function CommentCard(props) {
 
     emitAsRead('readed', comment);
 
-    const url = `${backendUrl}/comments/${_id}`;
+    const url = `/comments/${_id}`;
     axios.patch(url).catch((error) => {
       const pending = defineErrorType(error);
       if (pending !== 'id') callToast(toastError('Ocorreu um erro ao marcar o comentário como lido'));
@@ -143,7 +143,7 @@ function CommentCard(props) {
           component="img"
           alt={comment && comment.article ? comment.article.title : 'Artigo não definido'}
           height="110"
-          image={comment && comment.article ? `${backendUrl}${comment.article.smallImg}` : ArticleLogoSample}
+          image={comment && comment.article ? `${comment.article.smallImg}` : ArticleLogoSample}
           title={comment && comment.article ? comment.article.title : 'Artigo não definido'}
           className="article-logo"
         />

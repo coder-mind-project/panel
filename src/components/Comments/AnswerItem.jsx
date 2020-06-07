@@ -19,7 +19,7 @@ import { devices } from '@/config/devices';
 import { displayFullDate, displayDate } from '@/config/masks';
 
 import axios from 'axios';
-import { backendUrl } from '@/config/backend';
+
 
 import WhatIsDisabledAnswersDialog from './WhatIsDisabledAnswersDialog';
 
@@ -58,7 +58,7 @@ function AnswerItem(props) {
 
   function changeState() {
     const { _id } = answer;
-    const url = `${backendUrl}/comments/${_id}`;
+    const url = `/comments/${_id}`;
 
     let method = 'put';
     let newState = 'enabled';

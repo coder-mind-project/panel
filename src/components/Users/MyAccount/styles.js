@@ -7,6 +7,7 @@ import {
   Tooltip,
   FormGroup,
   withStyles,
+  Container,
 } from '@material-ui/core';
 
 import Avatar from 'react-avatar';
@@ -68,4 +69,8 @@ export const CustomTooltip = withStyles((theme) => ({
 
 export const ImageButton = styled(Avatar)({
   cursor: (props) => (props.haveImg ? 'pointer' : 'auto'),
+});
+
+export const CustomContainer = styled(Container)({
+  minHeight: '650px',
 });

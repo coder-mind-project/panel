@@ -20,7 +20,7 @@ import { error } from '../../../config/toasts';
 import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 
 
-import { backendUrl, defineErrorMsg } from '../../../config/backend';
+import { defineErrorMsg } from '../../../config/backend';
 
 import { CODER_MIND_URL } from '../../../config/dataProperties';
 
@@ -56,7 +56,7 @@ function AccountRecuperation(props) {
   async function sendTicket() {
     setSendingTicket(true);
 
-    const url = `${backendUrl}/tickets/unauthenticated`;
+    const url = '/tickets/unauthenticated';
     await axios.post(url, accountChanged).then(() => {
       setSuccess(true);
 

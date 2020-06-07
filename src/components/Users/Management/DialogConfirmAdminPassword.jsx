@@ -14,7 +14,7 @@ import {
 import PasswordField from '@/components/PasswordField.jsx';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -42,7 +42,7 @@ function ConfirmAdminPassword(props) {
 
     setValidating(true);
 
-    const url = `${backendUrl}/auth/logged`;
+    const url = '/auth/logged';
 
     const payload = {
       password,

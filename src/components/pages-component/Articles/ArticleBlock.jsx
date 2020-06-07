@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { callToast } from '../../../redux/toast/toastActions';
 import { success, error } from '../../../config/toasts';
 
-import { backendUrl, defineErrorMsg } from '../../../config/backend';
+import { defineErrorMsg } from '../../../config/backend';
 import { displayDate } from '../../../config/masks';
 import { styles } from './styles/ArticleBlock';
 
@@ -54,7 +54,7 @@ const ArticleBlock = (props) => {
 
     if (!id) props.callToast(error('Artigo não encontrado'));
 
-    const url = `${backendUrl}/articles/management/${id}`;
+    const url = `/articles/management/${id}`;
     axios.delete(url).then(() => {
       props.callToast(success('Artigo removido com sucesso'));
       reloadPage();
@@ -69,7 +69,7 @@ const ArticleBlock = (props) => {
 
     if (!id) props.callToast(error('Artigo não encontrado'));
 
-    const url = `${backendUrl}/articles/management/${id}?op=publish`;
+    const url = `/articles/management/${id}?op=publish`;
     axios.patch(url).then((res) => {
       props.callToast(success('Artigo publicado com sucesso'));
       setArticle(res.data);
@@ -84,7 +84,7 @@ const ArticleBlock = (props) => {
 
     if (!id) props.callToast(error('Artigo não encontrado'));
 
-    const url = `${backendUrl}/articles/management/${id}?op=inactive`;
+    const url = `/articles/management/${id}?op=inactive`;
     axios.patch(url).then((res) => {
       props.callToast(success('Artigo inativado com sucesso'));
       setArticle(res.data);
@@ -99,7 +99,7 @@ const ArticleBlock = (props) => {
 
     if (!id) props.callToast(error('Artigo não encontrado'));
 
-    const url = `${backendUrl}/articles/management/${id}?op=boost`;
+    const url = `/articles/management/${id}?op=boost`;
     axios.patch(url).then((res) => {
       props.callToast(success('Artigo impulsionado com sucesso'));
       setArticle(res.data);
@@ -114,7 +114,7 @@ const ArticleBlock = (props) => {
 
     if (!id) props.callToast(error('Artigo não encontrado'));
 
-    const url = `${backendUrl}/articles/management/${id}?op=active`;
+    const url = `/articles/management/${id}?op=active`;
     axios.patch(url).then(async (res) => {
       props.callToast(success('Artigo reativado com sucesso'));
       setArticle(res.data);
@@ -207,7 +207,7 @@ const ArticleBlock = (props) => {
                     && (
                     <img
                       className={matches ? classes.imgArticle : classes.imgArticleXs}
-                      src={article.smallImg ? `${backendUrl}/${article.smallImg}` : LogoDefault}
+                      src={article.smallImg ? `/${article.smallImg}` : LogoDefault}
                       alt={article.title}
                     />
                     )
@@ -223,7 +223,7 @@ const ArticleBlock = (props) => {
                                   <span className={classes.author}>
                                     <Avatar
                                       className="marginRight"
-                                      src={`${backendUrl}/${article.author.profilePhoto}`}
+                                      src={`/${article.author.profilePhoto}`}
                                       name={article.author.name}
                                       size={40}
                                       round="20px"
@@ -296,7 +296,7 @@ const ArticleBlock = (props) => {
                         <Box mb={1} className={classes.author}>
                           <Avatar
                             className="marginRight"
-                            src={`${backendUrl}/${article.author.profilePhoto}`}
+                            src={`/${article.author.profilePhoto}`}
                             name={article.author.name}
                             size={40}
                             round="20px"

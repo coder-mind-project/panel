@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { userType, appTheme, toastConfig } from '@/types';
+
 import {
   BrowserRouter as Router,
   Route,
@@ -16,18 +19,13 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-// Error Boundary
 import ErrorBoundary from '@/components/Errors/ErrorBoundary.jsx';
-
 
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { standard } from '@/config/themes';
+
 import { WHITE_LIST_ROUTES } from './config/dataProperties';
-// Requests imports
-import { backendUrl } from './config/backend';
 
-
-// Redux imports
 import { setUser as defineUser } from './redux/user/userActions';
 import { setError as dispatchError } from './redux/error/errorActions';
 import { setMenu as callMenu } from './redux/menu/menuActions';
@@ -52,12 +50,11 @@ import Categories from './components/Categories/Categories';
 import CommentList from './components/Comments/CommentList';
 import Articles from './pages/articles-section/Articles';
 import Article from './pages/articles-section/Article';
-import Stats from './pages/statistics-section/Stats';
 import MyAccount from './components/Users/MyAccount/MyAccount';
 
 // Css imports
 import './index.css';
-import { AppContent } from './styles';
+import { AppContent, AppContainer } from './styles';
 
 
 function App(props) {
@@ -70,9 +67,9 @@ function App(props) {
     error,
     user,
     theme,
-  } = { ...props };
+  } = props;
 
-  const appTheme = standard(theme);
+  const themeConfig = standard(user && user._id ? theme : 'light');
 
   const [validatingToken, setValidatingToken] = useState(true);
   const [path, setPath] = useState('');
@@ -106,7 +103,7 @@ function App(props) {
       const token = await JSON.parse(localStorage.getItem('user'));
 
       if (token) {
-        const url = `${backendUrl}/auth/logged`;
+        const url = '/auth/logged';
         await axios.post(url, token).then((res) => {
           if (res.data.user) {
             setUser(res.data);
@@ -130,8 +127,8 @@ function App(props) {
   }, [setMenu, setUser, setError, validatingToken]);
 
   return (
-    <MuiThemeProvider theme={appTheme}>
-      <Grid>
+    <MuiThemeProvider theme={themeConfig}>
+      <AppContainer theme={theme}>
         { !validatingToken
             && (
               <Router>
@@ -151,7 +148,11 @@ function App(props) {
                   { error
                     && <Redirect to="/error" />
                   }
-                  <AppContent user={getPath() === '/confirm-email' ? {} : user} isvalidating={validatingToken ? 'true' : ''}>
+                  <AppContent
+                    user={getPath() === '/confirm-email' ? {} : user}
+                    isvalidating={validatingToken ? 'true' : ''}
+                    theme={theme}
+                  >
                     <Switch>
                       <Route path="/" exact component={Articles} />
                       <Route path="/auth" exact component={Auth} />
@@ -172,7 +173,6 @@ function App(props) {
                       <Route path="/my-account" exact component={MyAccount} />
                       <Route path="/comments" exact component={CommentList} />
                       <Route path="/error" exact component={Error} />
-                      <Route path="/stats" exact component={Stats} />
                       <Route component={RouteNotFound} />
                     </Switch>
                   </AppContent>
@@ -189,10 +189,25 @@ function App(props) {
             </Fade>
             )
           }
-      </Grid>
+      </AppContainer>
     </MuiThemeProvider>
   );
 }
+
+App.propTypes = {
+  user: userType.isRequired,
+  error: PropTypes.bool,
+  theme: appTheme.isRequired,
+  setMenu: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  callToast: PropTypes.func.isRequired,
+  toast: toastConfig.isRequired,
+};
+
+App.defaultProps = {
+  error: false,
+};
 
 
 const mapStateToProps = (state) => ({
@@ -202,6 +217,7 @@ const mapStateToProps = (state) => ({
   toast: state.toast,
   theme: state.theme,
 });
+
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   setUser: defineUser,
   setError: dispatchError,

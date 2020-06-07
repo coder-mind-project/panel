@@ -21,7 +21,7 @@ import { bindActionCreators } from 'redux'
 import { success, error, info } from '../../config/toasts'
 import { callToast } from '../../redux/toast/toastActions'
 
-import { backendUrl, defineErrorMsg } from '../../config/backend'
+import { defineErrorMsg } from '../../config/backend'
 import { formatCustomURL } from '../../config/masks'
 
 import ReactQuill from 'react-quill'
@@ -69,7 +69,7 @@ class Article extends Component {
     }
 
     getArticle = async (customURL) => {
-        const url = `${backendUrl}/articles/${customURL}`
+        const url = `/articles/${customURL}`
         await this.toogleLoadingState()
         await axios(url).then(async res => {
 
@@ -109,7 +109,7 @@ class Article extends Component {
             com base no tema selecionado
         */
         if(attr === 'theme' && value){
-            const url = `${backendUrl}/categories/theme/${value._id}`
+            const url = `/categories/theme/${value._id}`
             axios(url).then(res => this.setState({categories: res.data}))
         }
 
@@ -137,7 +137,7 @@ class Article extends Component {
 
         const article = await this.formatData(author)
         await this.changeSavingState()
-        const url = `${backendUrl}/articles`
+        const url = `/articles`
         const method = article._id ? 'put' : 'post'
 
         await axios[method](url, article).then(async (res) => {
@@ -234,7 +234,7 @@ class Article extends Component {
 
     async loadThemes(query){
         //Carrega os temas disponíveis condicionado pela busca digitada
-        const url = `${backendUrl}/themes?query=${query}`
+        const url = `/themes?query=${query}`
         const response = await axios(url)
         let themes = response.data.themes.map((theme) => {
             return {

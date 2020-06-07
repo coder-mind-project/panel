@@ -118,6 +118,9 @@ export const AppBarBottom = styled(AppBar)({
 
 export const AppBarIconButton = styled(IconButton)({
   width: '25%',
+  [devices.mobileMedium]: {
+    margin: '0 10px',
+  },
 });
 
 export const CustomMenu = styled(Menu)({

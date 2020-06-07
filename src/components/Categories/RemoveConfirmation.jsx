@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { error, success } from '../../config/toasts';
 import { callToast as ToastEmitter } from '../../redux/toast/toastActions';
 
-import { defineErrorMsg, backendUrl } from '../../config/backend';
+import { defineErrorMsg } from '../../config/backend';
 
 function RemoveConfirmation(props) {
   const {
@@ -41,7 +41,7 @@ function RemoveConfirmation(props) {
   async function remove() {
     setLoading(true);
     const id = propCategory._id;
-    const url = `${backendUrl}/categories/${id}`;
+    const url = `/categories/${id}`;
     let newPage = null;
     await axios
       .delete(url)

@@ -28,7 +28,7 @@ import CustomButton from '../../Buttons/Button';
 import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 import { error as toastError } from '../../../config/toasts';
 
-import { backendUrl, defineErrorMsg } from '../../../config/backend';
+import { defineErrorMsg } from '../../../config/backend';
 
 function ImprovementSuggestion(props) {
   const {
@@ -66,7 +66,7 @@ function ImprovementSuggestion(props) {
 
     data.emailUser = user.email;
 
-    const url = `${backendUrl}/tickets`;
+    const url = '/tickets';
 
     await axios.post(url, data).then(() => {
       setSuccess(true);

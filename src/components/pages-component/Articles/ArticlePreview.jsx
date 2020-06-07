@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux'
 import { callToast } from '../../../redux/toast/toastActions'
 import { error } from '../../../config/toasts'
 
-import { backendUrl, defineErrorMsg } from '../../../config/backend'
+import { defineErrorMsg } from '../../../config/backend'
 
 import { Grid, Icon, Box, Divider } from '@material-ui/core'
 
@@ -51,7 +51,7 @@ class ArticlePreview extends Component {
             })
         }
 
-        const url = `${backendUrl}/articles/management/${id}`
+        const url = `/articles/management/${id}`
 
         axios(url).then(res => {
             this.setState({article: res.data})
@@ -75,7 +75,7 @@ class ArticlePreview extends Component {
                     <Grid item xs={12} className="article-content">
                         { this.state.article.bigImg &&
                             <Grid item xs={12} className="article-header">
-                                <img src={`${backendUrl}/${this.state.article.bigImg}`} alt={this.state.article.longDescription}/>
+                                <img src={`/${this.state.article.bigImg}`} alt={this.state.article.longDescription}/>
                             </Grid>
                         }
                         <Grid item xs={12} className="article-title">
@@ -87,7 +87,7 @@ class ArticlePreview extends Component {
                         <Grid item xs={12} className="header-hud-bar">
                             <Box display="flex" justifyContent="center" alignItems="center" mr={1} ml={1}>
                                 <Box mr={1} display="flex" alignItems="center">
-                                    <Avatar src={ this.state.article.author ? `${backendUrl}/${this.state.article.author.profilePhoto}` : ''} name={this.state.article.author ? this.state.article.author.name : this.props.user.name} size={30} round={true} />
+                                    <Avatar src={ this.state.article.author ? `/${this.state.article.author.profilePhoto}` : ''} name={this.state.article.author ? this.state.article.author.name : this.props.user.name} size={30} round={true} />
                                 </Box>
                                 <p>{this.state.article.author ? this.state.article.author.name : this.props.user.name}</p>
                             </Box>

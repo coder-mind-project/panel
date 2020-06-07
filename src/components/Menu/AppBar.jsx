@@ -24,8 +24,6 @@ import ThemeSwitcher from '@/components/Menu/ThemeSwitcher.jsx';
 import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
 import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
 
-import { backendUrl } from '@/config/backend';
-
 import {
   CustomAppBar,
   CustomAvatar,
@@ -87,7 +85,7 @@ function AppBar(props) {
                     name={user.name}
                     size={35}
                     round="30px"
-                    src={`${backendUrl}/${user.profilePhoto}`}
+                    src={user.profilePhoto}
                   />
                 </AppBarItems>
               )
@@ -115,18 +113,6 @@ function AppBar(props) {
                   </Icon>
                   <Typography component="span" variant="body2">
                     Minha conta
-                  </Typography>
-                </Box>
-              </MenuItem>
-            </CustomLink>
-            <CustomLink to="/ticket" onClick={closeMenu}>
-              <MenuItem>
-                <Box display="flex" alignItems="center">
-                  <Icon color="action">
-                    feedback
-                  </Icon>
-                  <Typography component="span" variant="body2">
-                    Fale conosco
                   </Typography>
                 </Box>
               </MenuItem>
@@ -159,6 +145,18 @@ function AppBar(props) {
                   </CustomLink>
                 )
               }
+            <CustomLink to="/ticket" onClick={closeMenu}>
+              <MenuItem>
+                <Box display="flex" alignItems="center">
+                  <Icon color="action">
+                    feedback
+                  </Icon>
+                  <Typography component="span" variant="body2">
+                    Ajuda
+                  </Typography>
+                </Box>
+              </MenuItem>
+            </CustomLink>
             <MenuItem onClick={logout}>
               <Box display="flex" alignItems="center">
                 <Icon color="action">

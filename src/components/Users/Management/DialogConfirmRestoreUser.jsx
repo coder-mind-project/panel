@@ -9,7 +9,7 @@ import { success, error as toastError } from '@/config/toasts';
 
 import axios from 'axios';
 
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 import {
   Dialog,
   LinearProgress,
@@ -34,7 +34,7 @@ function ConfirmRestore(props) {
   async function restore() {
     const { _id } = user;
     setRestoring(true);
-    const url = `${backendUrl}/users/configs/${_id}`;
+    const url = `/users/configs/${_id}`;
 
     await axios.patch(url).then(() => {
       callToast(success('Usuário restaurado com sucesso'));

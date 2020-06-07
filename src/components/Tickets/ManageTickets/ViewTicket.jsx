@@ -14,7 +14,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import axios from 'axios';
-import { backendUrl } from '@/config/backend';
 
 import { displayFullDate } from '@/config/masks';
 
@@ -101,7 +100,7 @@ function ViewTicket(props) {
       setReaded(true);
       if (ticket.content.readed) return;
 
-      const url = `${backendUrl}/tickets/${ticket._id}`;
+      const url = `/tickets/${ticket._id}`;
       axios.patch(url).then((response) => {
         const updatedTicket = response.data;
 

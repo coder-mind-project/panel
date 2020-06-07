@@ -27,8 +27,8 @@ import {
 
 import axios from 'axios';
 
-import { backendUrl } from '@/config/backend';
-import { scrollToTop } from '@/config/ScrollToTop';
+
+import { scrollToTop } from '@/shared/index';
 import { displayFullDate } from '@/config/masks';
 
 import { connect } from 'react-redux';
@@ -131,7 +131,7 @@ function RemovedUsers(props) {
 
   useEffect(() => {
     async function searchUsers() {
-      const url = `${backendUrl}/users?page=${page}&query=${query}&limit=${limit}&order=${order}&deleted=yes`;
+      const url = `/users?page=${page}&query=${query}&limit=${limit}&order=${order}&deleted=yes`;
       setLoading(true);
       await axios(url).then((res) => {
         setUsers(res.data.users);

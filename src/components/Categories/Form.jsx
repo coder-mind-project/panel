@@ -20,7 +20,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error as toastError } from '@/config/toasts';
@@ -69,7 +69,7 @@ function CategoryForm(props) {
   async function loadThemes(query) {
     let themes = [];
     try {
-      const url = `${backendUrl}/themes?query=${query}`;
+      const url = `/themes?query=${query}`;
       const response = await axios(url);
 
       themes = response.data.themes.map((elem) => ({
@@ -105,7 +105,7 @@ function CategoryForm(props) {
     if (loading) return;
 
     const method = category._id ? 'put' : 'post';
-    const url = method === 'post' ? `${backendUrl}/categories` : `${backendUrl}/categories/${category._id}`;
+    const url = method === 'post' ? '/categories' : `/categories/${category._id}`;
     setLoading(true);
 
     const data = formatData(category);

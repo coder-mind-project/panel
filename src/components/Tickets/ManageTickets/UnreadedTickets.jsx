@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { backendUrl } from '@/config/backend';
 import { userType, appTheme } from '@/types';
 
 import {
@@ -46,7 +45,7 @@ function UnreadedTickets(props) {
   useEffect(() => {
     async function getNotifications() {
       setLoading(true);
-      const url = `${backendUrl}/tickets/notifications`;
+      const url = '/tickets/notifications';
 
       await axios(url).then((res) => {
         const newTickets = res.data.tickets || [];
