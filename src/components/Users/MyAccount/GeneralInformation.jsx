@@ -134,11 +134,11 @@ function GeneralInformation(props) {
     await axios.patch(url, formData, config).then(async (res) => {
       callToast(success('Operação realizada com sucesso'));
 
-      setUserState({ ...userState, profilePhoto: res.data });
-
+      const { profileImageUrl } = res.data;
+      setUserState({ ...userState, profilePhoto: profileImageUrl });
       const updatedUser = {
         user: {
-          ...user, profilePhoto: res.data,
+          ...user, profilePhoto: profileImageUrl,
         },
       };
 
