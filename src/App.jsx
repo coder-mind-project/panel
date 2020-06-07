@@ -48,8 +48,7 @@ import Users from './components/Users/Management/Users';
 import UserForm from './components/Users/Management/UserForm';
 import Categories from './components/Categories/Categories';
 import CommentList from './components/Comments/CommentList';
-import Articles from './pages/articles-section/Articles';
-import Article from './pages/articles-section/Article';
+import Articles from './components/Articles/Articles';
 import MyAccount from './components/Users/MyAccount/MyAccount';
 
 // Css imports
@@ -164,8 +163,6 @@ function App(props) {
                       <Route path="/user" exact component={UserForm} />
                       <Route path="/user/:id" exact component={UserForm} />
                       <Route path="/users" exact component={Users} />
-                      <Route path="/article" exact component={Article} />
-                      <Route path="/article/:id" exact component={Article} />
                       <Route path="/articles" exact component={Articles} />
                       <Route path="/management" exact component={Management} />
                       <Route path="/themes" exact component={Themes} />
