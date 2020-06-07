@@ -50,7 +50,7 @@ function Error(props) {
                 <Typography component="p" variant="body2" align="center">
                   Se o problema persitir
                   {' '}
-                  <a href={APP_REPORT_US} target="_blank" rel="noreferrer">reporte-nos!</a>
+                  <a href={APP_REPORT_US} target="_blank" rel="noopener noreferrer">reporte-nos!</a>
                 </Typography>
               </Box>
               <Button
