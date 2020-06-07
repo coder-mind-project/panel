@@ -15,6 +15,7 @@ import Header from '@/components/Header.jsx';
 import NotFound from '@/components/NotFound/DataNotFound.jsx';
 import Chip from '@/components/Chip.jsx';
 import ArticleHeaderTableCell from './ArticleHeaderTableCell';
+import CreateArticleDialog from './CreateArticleDialog';
 
 import { TableWrapper } from './styles';
 
@@ -29,6 +30,7 @@ function Articles(props) {
   const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
   const [reload, setReload] = useState(true);
+  const [createArticleDialog, setCreateArticleDialog] = useState(false);
 
   function getArticleState(article) {
     let state;
@@ -119,9 +121,12 @@ function Articles(props) {
     return user.tagAdmin ? adminColumns : authorColumns;
   }
 
-  function createArticle() {
-    // eslint-disable-next-line no-console
-    console.log('creating article');
+  function openCreateArticleDialog() {
+    setCreateArticleDialog(true);
+  }
+
+  function closeArticleDialog() {
+    setCreateArticleDialog(false);
   }
 
   function showStats() {
@@ -194,6 +199,7 @@ function Articles(props) {
         description="Consulte, altere e crie novos artigos"
         icon="article"
       />
+      <CreateArticleDialog open={createArticleDialog} onClose={closeArticleDialog} />
       <TableWrapper>
         <MaterialTable
           columns={getArticleListColumns()}
@@ -251,7 +257,7 @@ function Articles(props) {
             {
               tooltip: 'Novo artigo',
               icon: 'add_circle',
-              onClick: createArticle,
+              onClick: openCreateArticleDialog,
               position: 'toolbar',
             },
             {
