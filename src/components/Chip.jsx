@@ -43,15 +43,27 @@ function Chip(props) {
 }
 
 Chip.propTypes = {
-  size: PropTypes.string,
-  sizeIcon: PropTypes.string,
+  size: PropTypes.oneOf([
+    'medium',
+    'small',
+  ]),
+  sizeIcon: PropTypes.oneOf([
+    'small',
+    'default',
+    'inherit',
+    'large',
+  ]),
   icon: PropTypes.string,
   text: PropTypes.string.isRequired,
-  variant: PropTypes.string,
+  variant: PropTypes.oneOf([
+    'default',
+    'outlined',
+  ]),
   color: PropTypes.oneOf([
     'default',
     'primary',
     'secondary',
+    'inherit',
   ]),
 };
 

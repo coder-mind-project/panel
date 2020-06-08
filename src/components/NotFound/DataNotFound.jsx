@@ -14,10 +14,11 @@ const DataNotFound = (props) => {
   const {
     msg,
     alt,
+    disableboxshadow,
   } = props;
 
   return (
-    <Paper>
+    <Paper style={{ boxShadow: disableboxshadow ? 'none' : 'auto' }}>
       <NotFoundBox>
         <Box
           display="flex"
@@ -46,10 +47,12 @@ const DataNotFound = (props) => {
 DataNotFound.propTypes = {
   msg: PropTypes.string.isRequired,
   alt: PropTypes.string,
+  disableboxshadow: PropTypes.bool,
 };
 
 DataNotFound.defaultProps = {
   alt: 'Resource not found',
+  disableboxshadow: false,
 };
 
 export default DataNotFound;
