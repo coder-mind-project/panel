@@ -52,7 +52,7 @@ function CreateArticleDialog(props) {
     await axios.post(url, { title: articleTitle }).then(() => {
       callToast(success('Artigo criado com sucesso'));
       clearFields();
-      close();
+      close({ reason: 'articleCreated' });
     }).catch((err) => {
       const msg = defineErrorMsg(err);
       callToast(error(msg));

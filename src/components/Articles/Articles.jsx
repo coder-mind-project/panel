@@ -125,8 +125,12 @@ function Articles(props) {
     setCreateArticleDialog(true);
   }
 
-  function closeArticleDialog() {
+  function closeArticleDialog(stack) {
     setCreateArticleDialog(false);
+    if (stack && stack.reason === 'articleCreated') {
+      setPage(1);
+      setReload(true);
+    }
   }
 
   function showStats() {
