@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { userType } from '@/types';
 
 import { Container, Icon } from '@material-ui/core';
@@ -8,19 +9,23 @@ import { scrollToTop } from '@/shared/index';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
+import { success, error as toastError } from '@/config/toasts';
+import { defineErrorMsg } from '@/config/backend';
 
 import MaterialTable from 'material-table';
 
 import Header from '@/components/Header.jsx';
 import NotFound from '@/components/NotFound/DataNotFound.jsx';
 import Chip from '@/components/Chip.jsx';
+import { bindActionCreators } from 'redux';
 import ArticleHeaderTableCell from './ArticleHeaderTableCell';
 import CreateArticleDialog from './CreateArticleDialog';
 
 import { TableWrapper } from './styles';
 
 function Articles(props) {
-  const { user } = props;
+  const { user, callToast } = props;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -155,8 +160,33 @@ function Articles(props) {
   }
 
   function removeArticles(articlesToRemove) {
-    // eslint-disable-next-line no-console
-    console.log(articlesToRemove);
+    const state = 'removed';
+    const url = '/articles';
+
+    const articlesId = articlesToRemove.map((elem) => elem._id);
+
+    axios.put(url, { state, articlesId }).then(() => {
+      const msg = `Artigo${articlesId.length > 1 ? 's' : ''} removido${articlesId.length > 1 ? 's' : ''} com sucesso`;
+      callToast(success(msg));
+      setReload(true);
+    }).catch((err) => {
+      const msg = defineErrorMsg(err);
+      callToast(toastError(msg));
+    });
+  }
+
+  function changeState(articlesToChange, state) {
+    const url = '/articles';
+
+    const articlesId = articlesToChange.map((elem) => elem._id);
+
+    axios.put(url, { state, articlesId }).then(() => {
+      callToast(success('Operação realizada com sucesso'));
+      setReload(true);
+    }).catch((err) => {
+      const msg = defineErrorMsg(err);
+      callToast(toastError(msg));
+    });
   }
 
   function openArticle(article) {
@@ -271,6 +301,15 @@ function Articles(props) {
               position: 'toolbar',
             },
             {
+              tooltip: 'Publicar artigos', icon: 'publish', onClick: (evt, data) => changeState(data, 'published'), position: 'toolbarOnSelect',
+            },
+            {
+              tooltip: 'Impulsionar artigos', icon: 'star_rate', onClick: (evt, data) => changeState(data, 'boosted'), position: 'toolbarOnSelect',
+            },
+            {
+              tooltip: 'Inativar artigos', icon: 'not_interested', onClick: (evt, data) => changeState(data, 'inactivated'), position: 'toolbarOnSelect',
+            },
+            {
               tooltip: 'Remover artigos', icon: 'delete', onClick: (evt, data) => removeArticles(data), position: 'toolbarOnSelect',
             },
           ]}
@@ -282,8 +321,10 @@ function Articles(props) {
 
 Articles.propTypes = {
   user: userType.isRequired,
+  callToast: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({ user: state.user });
+const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
-export default connect(mapStateToProps)(Articles);
+export default connect(mapStateToProps, mapDispatchToProps)(Articles);
