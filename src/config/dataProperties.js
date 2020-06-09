@@ -44,6 +44,7 @@ export const DISPLAYED_ROWS = (value) =>
 export const APP_VERSION = '1.1.0';
 export const APP_BUILD = 'Development';
 export const APP_DEPENDENCIES = 'https://google.com.br';
+export const APP_REPORT_US = 'https://github.com/coder-mind-project/coder-mind-panel/issues/new';
 
 export const WHITE_LIST_ROUTES = [
   '/auth',
