@@ -49,9 +49,9 @@ import UserForm from './components/Users/Management/UserForm';
 import Categories from './components/Categories/Categories';
 import CommentList from './components/Comments/CommentList';
 import Articles from './components/Articles/Articles';
+import Article from './components/Articles/Article/Article';
 import MyAccount from './components/Users/MyAccount/MyAccount';
 
-// Css imports
 import './index.css';
 import { AppContent, AppContainer } from './styles';
 
@@ -164,6 +164,7 @@ function App(props) {
                       <Route path="/user/:id" exact component={UserForm} />
                       <Route path="/users" exact component={Users} />
                       <Route path="/articles" exact component={Articles} />
+                      <Route path="/articles/:key" exact component={Article} />
                       <Route path="/management" exact component={Management} />
                       <Route path="/themes" exact component={Themes} />
                       <Route path="/categories" exact component={Categories} />
