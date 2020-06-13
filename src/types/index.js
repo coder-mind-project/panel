@@ -166,3 +166,11 @@ export const toastConfig = shape({
   msg: string,
   display: bool,
 });
+
+export const asyncSelectValueType = shape({
+  label: string,
+  value: oneOfType([
+    string,
+    number,
+  ]),
+});
