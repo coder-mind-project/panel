@@ -41,6 +41,7 @@ function Article(props) {
   const [loading, setLoading] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
+  const [settingsReason, setSettingsReason] = useState(null);
   const [reload, setReload] = useState(true);
   const [redirect, setRedirect] = useState('');
 
@@ -71,8 +72,20 @@ function Article(props) {
     });
   }
 
-  function toogleSettings() {
-    setShowSettings(!showSettings);
+  function removeReason() {
+    setSettingsReason(null);
+  }
+
+  function openSettings(reason = null) {
+    if (typeof reason === 'string') {
+      setSettingsReason(reason);
+    }
+    setShowSettings(true);
+  }
+
+  function closeSettings() {
+    removeReason();
+    setShowSettings(false);
   }
 
   useEffect(() => {
@@ -107,15 +120,21 @@ function Article(props) {
   return (
     <Container id="article-container">
       { redirect && <Redirect to={redirect} />}
-      <ArticleSettings open={showSettings} close={toogleSettings} />
+      <ArticleSettings
+        article={article}
+        open={showSettings}
+        close={closeSettings}
+        reason={settingsReason}
+        removeReason={removeReason}
+      />
       { !loading && (
         <Box>
           <ArticleHeader
             article={article}
-            onChange={handleChange}
             onPublish={() => changeState('published')}
             onTooglePreview={tooglePreview}
-            onShowSettings={toogleSettings}
+            onShowSettings={openSettings}
+            isPreviewed={showPreview}
           />
           <Box display="flex" height={425}>
             <ArticleEditArea sizewidth={showPreview && !matches ? 'withPreview' : 'withoutPreview'}>
@@ -146,7 +165,7 @@ function Article(props) {
         </Box>
       )}
       { loading
-        && <LoadingList />
+        && <LoadingList height={600} />
       }
     </Container>
   );

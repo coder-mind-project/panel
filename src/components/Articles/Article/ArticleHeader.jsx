@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { articleType } from '@/types';
 
-import {
-  Box,
-  Button,
-  useMediaQuery,
-  Icon,
-} from '@material-ui/core';
+import { Box, useMediaQuery } from '@material-ui/core';
 
 import CustomButton from '@/components/Buttons/Button.jsx';
 
@@ -15,6 +10,7 @@ import { devices } from '@/config/devices';
 
 import {
   ArticleTitleTextField,
+  ArticleDescriptionTextField,
   ArticleIcon,
   ArticleLogo,
   CustomDivider,
@@ -24,83 +20,85 @@ import {
 function ArticleHeader(props) {
   const {
     article,
-    onChange,
     onPublish,
     onShowSettings,
     onTooglePreview,
+    isPreviewed,
   } = props;
 
+  const [mounted, setMounted] = useState(false);
   const [articleTitle, setArticleTitle] = useState('');
   const [articleDescription, setArticleDescription] = useState('');
 
   const matches = useMediaQuery(devices.mobileExtraLarge);
 
-  function handleChange(evt, attr) {
-    onChange(evt, attr);
-  }
-
   useEffect(() => {
-    const { title, description } = article;
-    setArticleTitle(title || '');
-    setArticleDescription(description || '');
-  }, [article, articleTitle, articleDescription]);
+    if (!mounted) {
+      setMounted(true);
+      const { title, description } = article;
+      setArticleTitle(title || '');
+      setArticleDescription(description || '');
+    }
+  }, [article, articleTitle, articleDescription, mounted]);
 
   return (
     <Box marginBottom={1} minHeight="85px">
-      <Box display="flex" justifyContent="space-between">
-        <Box display="flex">
-          <ArticleLogo>
-            { !article.logoImg && <ArticleIcon color="action">text_snippet</ArticleIcon>}
-            { article.logoImg && <img src={article.logoImg} alt={article.title} />}
-          </ArticleLogo>
-          <Box marginBottom={1} display="flex" flexDirection="column">
+      <Box marginBottom={1} display="flex" flexDirection="column">
+        <Box display="flex" justifyContent="space-between">
+          <Box display="flex" alignItems="center">
+            <ArticleLogo>
+              { !article.logoImg && <ArticleIcon color="action" onClick={() => onShowSettings('images')}>text_snippet</ArticleIcon>}
+              { article.logoImg && <img src={article.logoImg} alt={article.title} />}
+            </ArticleLogo>
             <ArticleTitleTextField
               value={articleTitle}
               placeholder={articleTitle ? '' : 'Artigo sem título'}
-              onChange={(evt) => handleChange(evt, 'title')}
-            />
-            <ArticleTitleTextField
-              fontSize={0.9}
-              value={articleDescription || ''}
-              placeholder={articleDescription ? '' : 'Nenhuma descrição definida'}
-              onChange={(evt) => handleChange(evt, 'description')}
+              onChange={(evt) => setArticleTitle(evt.target.value)}
             />
           </Box>
-        </Box>
-        <Box>
-          <HudButtons smalldevices={matches.toString()}>
-            <Box marginX={1} marginBottom={matches ? 1 : 0}>
-              <Button
-                color="primary"
-                variant="contained"
-                size={matches ? 'small' : 'medium'}
-                onClick={onPublish}
-              >
-                { matches ? <Icon>publish</Icon> : 'Publicar'}
-              </Button>
-
-            </Box>
-            { !matches && (
+          <Box>
+            <HudButtons smalldevices={matches.toString()}>
               <Box marginX={1} marginBottom={matches ? 1 : 0}>
-                <Button
+                <CustomButton
+                  color="primary"
+                  text={matches ? '' : 'Publicar'}
+                  icon="publish"
                   variant="contained"
-                  onClick={onTooglePreview}
                   size={matches ? 'small' : 'medium'}
-                >
-                  { matches ? <Icon>preview</Icon> : 'Preview'}
-                </Button>
+                  onClick={onPublish}
+                />
               </Box>
-            )}
-            <Box marginX={1}>
-              <CustomButton
-                icon="settings"
-                color="default"
-                size={matches ? 'small' : 'medium'}
-                onClick={onShowSettings}
-                marginBottom="0"
-              />
-            </Box>
-          </HudButtons>
+              { !matches && (
+                <Box marginX={1} marginBottom={matches ? 1 : 0}>
+                  <CustomButton
+                    variant="contained"
+                    color="default"
+                    text={matches ? '' : 'Preview'}
+                    icon={isPreviewed ? 'visibility_off' : 'visibility'}
+                    onClick={onTooglePreview}
+                    size={matches ? 'small' : 'medium'}
+                  />
+                </Box>
+              )}
+              <Box marginX={1}>
+                <CustomButton
+                  icon="settings"
+                  color="default"
+                  size={matches ? 'small' : 'medium'}
+                  onClick={onShowSettings}
+                  marginBottom="0"
+                />
+              </Box>
+            </HudButtons>
+          </Box>
+        </Box>
+        <Box marginY={1} width="100%">
+          <ArticleDescriptionTextField
+            fontSize={0.9}
+            value={articleDescription || ''}
+            placeholder={articleDescription ? '' : 'Nenhuma descrição definida'}
+            onChange={(evt) => setArticleDescription(evt.target.value)}
+          />
         </Box>
       </Box>
       <CustomDivider />
@@ -110,10 +108,14 @@ function ArticleHeader(props) {
 
 ArticleHeader.propTypes = {
   article: articleType.isRequired,
-  onChange: PropTypes.func.isRequired,
   onPublish: PropTypes.func.isRequired,
   onShowSettings: PropTypes.func.isRequired,
   onTooglePreview: PropTypes.func.isRequired,
+  isPreviewed: PropTypes.bool,
+};
+
+ArticleHeader.defaultProps = {
+  isPreviewed: false,
 };
 
 export default ArticleHeader;
