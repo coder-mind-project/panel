@@ -118,6 +118,9 @@ const markdownPreview = {
     width: '95%',
     padding: '10px',
     overflow: 'hidden',
+    '& p, h1, h2, h3, h4, h5, h6, span, strong, code, blockquote, div, section': {
+      wordWrap: 'break-word',
+    },
   },
 };
 
