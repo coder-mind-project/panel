@@ -78,34 +78,36 @@ function ArticleSettings(props) {
         </Box>
         <Divider />
       </Box>
-      <ArticleSettingsContent>
-        <ScrollBars>
-          <ArticleInfo
-            article={article}
-            open={addReason}
-            close={deleteReason}
-            expanded={currentReason === 'info'}
-          />
-          <ArticleImages
-            article={article}
-            open={addReason}
-            close={deleteReason}
-            expanded={currentReason === 'images'}
-          />
-          <ArticleThemesAndCategories
-            article={article}
-            open={addReason}
-            close={deleteReason}
-            expanded={currentReason === 'themes&categories'}
-          />
-          <ArticleMoreOptions
-            article={article}
-            open={addReason}
-            close={deleteReason}
-            expanded={currentReason === 'moreOptions'}
-          />
-        </ScrollBars>
-      </ArticleSettingsContent>
+      { open && (
+        <ArticleSettingsContent>
+          <ScrollBars>
+            <ArticleInfo
+              article={article}
+              open={addReason}
+              close={deleteReason}
+              expanded={currentReason === 'info'}
+            />
+            <ArticleImages
+              article={article}
+              open={addReason}
+              close={deleteReason}
+              expanded={currentReason === 'images'}
+            />
+            <ArticleThemesAndCategories
+              article={article}
+              open={addReason}
+              close={deleteReason}
+              expanded={currentReason === 'themes&categories'}
+            />
+            <ArticleMoreOptions
+              article={article}
+              open={addReason}
+              close={deleteReason}
+              expanded={currentReason === 'moreOptions'}
+            />
+          </ScrollBars>
+        </ArticleSettingsContent>
+      )}
     </Drawer>
   );
 }
