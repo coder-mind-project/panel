@@ -29,7 +29,7 @@ function SavedIndicator(props) {
 
   return (
     <Box marginX={3}>
-      <Typography variant="caption" component="span">{label}</Typography>
+      <Typography variant="caption" component="span" align="center">{label}</Typography>
     </Box>
   );
 }
