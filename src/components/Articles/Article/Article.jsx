@@ -37,13 +37,21 @@ function Article(props) {
     callToast,
   } = props;
 
-  const [article, setArticle] = useState({});
+  /**
+   * @description Controller states
+   */
   const [loading, setLoading] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [settingsReason, setSettingsReason] = useState(null);
   const [reload, setReload] = useState(true);
   const [redirect, setRedirect] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+
+  /**
+   * @description Data states
+   */
+  const [article, setArticle] = useState({});
 
   const matches = useMediaQuery(devices.mobileExtraLarge);
 
@@ -70,6 +78,17 @@ function Article(props) {
       const msg = defineErrorMsg(err);
       callToast(error(msg));
     });
+  }
+
+  async function saveChanges(articleChanged) {
+    const url = `/articles/${article._id}`;
+    setIsSaving(true);
+
+    await axios.put(url, articleChanged).then(() => {
+      setArticle({ ...article, ...articleChanged });
+    });
+
+    setIsSaving(false);
   }
 
   function removeReason() {
@@ -131,6 +150,8 @@ function Article(props) {
         <Box>
           <ArticleHeader
             article={article}
+            isSaving={isSaving}
+            onSaveChanges={saveChanges}
             onPublish={() => changeState('published')}
             onTooglePreview={tooglePreview}
             onShowSettings={openSettings}

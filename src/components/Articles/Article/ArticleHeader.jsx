@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+
 import PropTypes from 'prop-types';
 import { articleType } from '@/types';
+import { useDebounce } from '@/hooks';
+import { devices } from '@/config/devices';
 
 import { Box, useMediaQuery } from '@material-ui/core';
 
 import CustomButton from '@/components/Buttons/Button.jsx';
-
-import { devices } from '@/config/devices';
+import SavedIndicator from './SavedIndicator';
 
 import {
   ArticleTitleTextField,
@@ -20,26 +22,55 @@ import {
 function ArticleHeader(props) {
   const {
     article,
+    isSaving,
     onPublish,
     onShowSettings,
+    onSaveChanges,
     onTooglePreview,
     isPreviewed,
   } = props;
 
+  /**
+   * @description Controller states
+   */
   const [mounted, setMounted] = useState(false);
-  const [articleTitle, setArticleTitle] = useState('');
-  const [articleDescription, setArticleDescription] = useState('');
+  const [enabledChanges, setEnabledChanges] = useState(false);
+  const [emitChanges, setEmitChanges] = useState(false);
+
+  /**
+   * @description Data states
+   */
+  const [articleState, setArticleState] = useState({ title: '', description: '' });
+  const debouncedArticle = useDebounce(articleState, 1000);
 
   const matches = useMediaQuery(devices.mobileExtraLarge);
+
+  function changeTitleOrDescription(evt, attr) {
+    setEnabledChanges(true);
+    const { value } = evt.target;
+    setArticleState({ ...articleState, [attr]: value });
+  }
+
+  useEffect(() => {
+    if (emitChanges) {
+      setEmitChanges(false);
+      onSaveChanges(debouncedArticle);
+    }
+  }, [emitChanges, onSaveChanges, debouncedArticle]);
+
+  useEffect(() => {
+    if (enabledChanges) {
+      setEmitChanges(true);
+    }
+  }, [debouncedArticle, enabledChanges]);
 
   useEffect(() => {
     if (!mounted) {
       setMounted(true);
       const { title, description } = article;
-      setArticleTitle(title || '');
-      setArticleDescription(description || '');
+      setArticleState({ title: title || '', description: description || '' });
     }
-  }, [article, articleTitle, articleDescription, mounted]);
+  }, [article, articleState, mounted]);
 
   return (
     <Box marginBottom={1} minHeight="85px">
@@ -51,10 +82,11 @@ function ArticleHeader(props) {
               { article.logoImg && <img src={article.logoImg} alt={article.title} />}
             </ArticleLogo>
             <ArticleTitleTextField
-              value={articleTitle}
-              placeholder={articleTitle ? '' : 'Artigo sem título'}
-              onChange={(evt) => setArticleTitle(evt.target.value)}
+              value={articleState.title}
+              placeholder={articleState.title || 'Artigo sem título'}
+              onChange={(evt) => changeTitleOrDescription(evt, 'title')}
             />
+            <SavedIndicator saving={isSaving} />
           </Box>
           <Box>
             <HudButtons smalldevices={matches.toString()}>
@@ -95,9 +127,9 @@ function ArticleHeader(props) {
         <Box marginY={1} width="100%">
           <ArticleDescriptionTextField
             fontSize={0.9}
-            value={articleDescription || ''}
-            placeholder={articleDescription ? '' : 'Nenhuma descrição definida'}
-            onChange={(evt) => setArticleDescription(evt.target.value)}
+            value={articleState.description}
+            placeholder={articleState.description || 'Nenhuma descrição definida'}
+            onChange={(evt) => changeTitleOrDescription(evt, 'description')}
           />
         </Box>
       </Box>
@@ -108,7 +140,9 @@ function ArticleHeader(props) {
 
 ArticleHeader.propTypes = {
   article: articleType.isRequired,
+  isSaving: PropTypes.bool,
   onPublish: PropTypes.func.isRequired,
+  onSaveChanges: PropTypes.func.isRequired,
   onShowSettings: PropTypes.func.isRequired,
   onTooglePreview: PropTypes.func.isRequired,
   isPreviewed: PropTypes.bool,
@@ -116,6 +150,7 @@ ArticleHeader.propTypes = {
 
 ArticleHeader.defaultProps = {
   isPreviewed: false,
+  isSaving: false,
 };
 
 export default ArticleHeader;
