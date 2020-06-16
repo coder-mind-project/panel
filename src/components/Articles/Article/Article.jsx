@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { reactRouterParams } from '@/types';
 import { Redirect } from 'react-router-dom';
@@ -11,6 +11,7 @@ import {
 
 import axios from 'axios';
 import { defineErrorMsg } from '@/config/backend';
+import { useDebounce } from '@/hooks';
 
 import { devices } from '@/config/devices';
 
@@ -41,23 +42,42 @@ function Article(props) {
    * @description Controller states
    */
   const [loading, setLoading] = useState(false);
+  const [enableChanges, setEnableChanges] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [settingsReason, setSettingsReason] = useState(null);
   const [reload, setReload] = useState(true);
   const [redirect, setRedirect] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [shouldSaveChanges, setShouldSaveChanges] = useState(false);
 
   /**
    * @description Data states
    */
   const [article, setArticle] = useState({});
+  const [articleChanged, setArticleChanged] = useState({});
+  const [articleContent, setArticleContent] = useState('');
+  const debounceArticleContent = useDebounce(articleContent, 1000);
 
+  const previewRef = useRef(null);
   const matches = useMediaQuery(devices.mobileExtraLarge);
 
-  function handleChange(evt, attr) {
+  function changeContent(evt) {
     const { value } = evt.target;
-    setArticle({ ...article, [attr]: value });
+    if (!enableChanges) setEnableChanges(true);
+    setArticleContent(value);
+  }
+
+  function setScrollTopPreview(scrollTop) {
+    const previewArea = previewRef.current;
+    if (previewArea) {
+      previewArea.scrollTop(scrollTop);
+    }
+  }
+
+  function scrollContent(evt) {
+    const { scrollTop } = evt.target;
+    setScrollTopPreview(scrollTop);
   }
 
   function tooglePreview() {
@@ -80,15 +100,9 @@ function Article(props) {
     });
   }
 
-  async function saveChanges(articleChanged) {
-    const url = `/articles/${article._id}`;
-    setIsSaving(true);
-
-    await axios.put(url, articleChanged).then(() => {
-      setArticle({ ...article, ...articleChanged });
-    });
-
-    setIsSaving(false);
+  function saveChangesFromChild(articleFromChild) {
+    setArticleChanged(articleFromChild);
+    setShouldSaveChanges(true);
   }
 
   function removeReason() {
@@ -108,6 +122,32 @@ function Article(props) {
   }
 
   useEffect(() => {
+    async function saveChanges() {
+      const url = `/articles/${article._id}`;
+      setIsSaving(true);
+
+      await axios.put(url, articleChanged).then(() => {
+        setArticle({ ...article, ...articleChanged });
+        setArticleChanged({});
+      });
+
+      setIsSaving(false);
+    }
+
+    if (shouldSaveChanges) {
+      setShouldSaveChanges(false);
+      saveChanges();
+    }
+  }, [shouldSaveChanges, articleChanged, article]);
+
+  useEffect(() => {
+    if (enableChanges) {
+      setArticleChanged({ content: debounceArticleContent });
+      setShouldSaveChanges(true);
+    }
+  }, [debounceArticleContent, enableChanges]);
+
+  useEffect(() => {
     const source = axios.CancelToken.source();
 
     async function getArticle() {
@@ -118,6 +158,7 @@ function Article(props) {
       setReload(false);
       await axios(url).then((res) => {
         setArticle(res.data);
+        setArticleContent(res.data.content);
       }).catch((err) => {
         const msg = defineErrorMsg(err);
         callToast(error(msg));
@@ -151,7 +192,7 @@ function Article(props) {
           <ArticleHeader
             article={article}
             isSaving={isSaving}
-            onSaveChanges={saveChanges}
+            onSaveChanges={saveChangesFromChild}
             onPublish={() => changeState('published')}
             onTooglePreview={tooglePreview}
             onShowSettings={openSettings}
@@ -164,18 +205,19 @@ function Article(props) {
                   multiline
                   fullWidth
                   rows={21}
-                  value={article.content || ''}
-                  onChange={(evt) => handleChange(evt, 'content')}
+                  value={articleContent || ''}
+                  onChange={changeContent}
+                  onScroll={scrollContent}
                 />
               </CustomPaper>
             </ArticleEditArea>
             { showPreview && !matches && (
               <ArticleEditArea>
                 <CustomPaper>
-                  <Scrollbars>
+                  <Scrollbars ref={previewRef}>
                     <MarkdownView
                       className="cm-preview"
-                      markdown={article.content}
+                      markdown={articleContent}
                       options={{ tablesHeaderId: true, tables: true, emoji: true }}
                     />
                   </Scrollbars>
