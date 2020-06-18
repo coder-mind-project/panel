@@ -29,6 +29,23 @@ function CustomAsyncSelect(props) {
     onChange(valueChanged);
   }
 
+  function termLengthCriteria(term) {
+    return term && term.length >= 3;
+  }
+
+  function loadLocalOptions(term) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(termLengthCriteria(term) ? loadOptions(term) : []);
+      });
+    }, 1000);
+  }
+
+  function displayLoadingMessage(evt) {
+    const { inputValue } = evt;
+    return termLengthCriteria(inputValue) ? loadingMessage : null;
+  }
+
   useEffect(() => {
     if (!mounted) {
       setMounted(true);
@@ -48,12 +65,12 @@ function CustomAsyncSelect(props) {
         cacheOptions
         value={currentValue}
         isClearable
-        loadOptions={loadOptions}
+        loadOptions={loadLocalOptions}
         onChange={changeValue}
         noOptionsMessage={(event) => (event.inputValue.length >= 3
           ? 'Nenhum resultado encontrado'
           : 'Faça uma busca com pelo menos 3 caracteres')}
-        loadingMessage={() => loadingMessage}
+        loadingMessage={displayLoadingMessage}
         placeholder={placeholder}
       />
       { helperText && (
