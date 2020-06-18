@@ -80,7 +80,7 @@ function ArticleImages(props) {
                   </Box>
                 </Box>
               </Box>
-              <Box display="flex" justifyContent="space-between" alignItems="center" marginX={2} marginY={1} width="100%">
+              <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" marginX={2} marginY={1} width="100%">
                 <img src={logoUrl()} alt={article && article.title} className="article-logo-img" />
                 <Box display="flex" alignItems="center">
                   <InputFileButton onChange={() => changeImage('logo')} name="logo">
@@ -106,7 +106,7 @@ function ArticleImages(props) {
                   </Box>
                 </Box>
               </Box>
-              <Box display="flex" justifyContent="space-between" alignItems="center" marginX={2} marginY={1} width="100%">
+              <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="center" marginX={2} marginY={1} width="100%">
                 <img src={secondaryImgUrl()} alt={article && article.title} className="article-secondary-img" />
                 <Box display="flex" alignItems="center">
                   <InputFileButton onChange={() => changeImage('secondary')} name="secondary">
@@ -132,7 +132,7 @@ function ArticleImages(props) {
                   </Box>
                 </Box>
               </Box>
-              <Box display="flex" justifyContent="space-between" alignItems="center" marginX={2} marginY={1} width="100%">
+              <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="center" marginX={2} marginY={1} width="100%">
                 <img src={headerImgUrl()} alt={article && article.title} className="article-header-img" />
                 <Box display="flex" alignItems="center">
                   <InputFileButton onChange={() => changeImage('header')} name="header">

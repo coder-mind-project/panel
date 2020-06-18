@@ -162,6 +162,7 @@ export const ArticleLogoArea = styled(Box)({
     borderRadius: '5px',
     objectFit: 'cover',
     width: '150px',
+    margin: '5px 10px',
   },
 });
 
@@ -172,6 +173,7 @@ export const ArticleSecondaryImageArea = styled(Box)({
     borderRadius: '5px',
     objectFit: 'cover',
     width: '180px',
+    margin: '5px 10px',
   },
 });
 
@@ -182,6 +184,7 @@ export const ArticleHeaderImageArea = styled(Box)({
     borderRadius: '5px',
     objectFit: 'cover',
     width: '225px',
+    margin: '5px 10px',
   },
 });
 
