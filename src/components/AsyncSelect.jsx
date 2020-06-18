@@ -19,6 +19,7 @@ function CustomAsyncSelect(props) {
     onChange,
     loadOptions,
     theme,
+    disabled,
   } = props;
 
   const [mounted, setMounted] = useState(false);
@@ -65,6 +66,7 @@ function CustomAsyncSelect(props) {
         cacheOptions
         value={currentValue}
         isClearable
+        isDisabled={disabled}
         loadOptions={loadLocalOptions}
         onChange={changeValue}
         noOptionsMessage={(event) => (event.inputValue.length >= 3
@@ -91,6 +93,7 @@ CustomAsyncSelect.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
   helperText: PropTypes.node,
+  disabled: PropTypes.bool,
 };
 
 CustomAsyncSelect.defaultProps = {
@@ -99,6 +102,7 @@ CustomAsyncSelect.defaultProps = {
   placeholder: '',
   label: null,
   helperText: null,
+  disabled: false,
 };
 
 const mapStateToProps = (state) => ({ theme: state.theme });
