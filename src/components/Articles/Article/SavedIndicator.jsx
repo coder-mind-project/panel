@@ -22,9 +22,11 @@ function SavedIndicator(props) {
       setLabel('Salvo');
     }
 
-    setTimeout(() => {
+    const handler = setTimeout(() => {
       setLabel('');
     }, 1000);
+
+    return () => clearTimeout(handler);
   }, [saving, label, previousSaving]);
 
   return (

@@ -122,22 +122,28 @@ function Article(props) {
   }
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
+
     async function saveChanges() {
       const url = `/articles/${article._id}`;
+
       setIsSaving(true);
-
-      await axios.put(url, articleChanged).then(() => {
-        setArticle({ ...article, ...articleChanged });
-        setArticleChanged({});
-      });
-
-      setIsSaving(false);
+      try {
+        await axios.put(url, articleChanged, { cancelToken: source.token }).then(() => {
+          setShouldSaveChanges(false);
+          setArticle({ ...article, ...articleChanged });
+          setArticleChanged({});
+        });
+      } finally {
+        setIsSaving(false);
+      }
     }
 
     if (shouldSaveChanges) {
-      setShouldSaveChanges(false);
       saveChanges();
     }
+
+    return () => source.cancel();
   }, [shouldSaveChanges, articleChanged, article]);
 
   useEffect(() => {
@@ -151,23 +157,28 @@ function Article(props) {
     const source = axios.CancelToken.source();
 
     async function getArticle() {
-      setLoading(true);
-      const { key } = match.params;
+      try {
+        const { key } = match.params;
+        const url = `/articles/${key}?type=customUri`;
 
-      const url = `/articles/${key}?type=customUri`;
-      setReload(false);
-      await axios(url).then((res) => {
-        setArticle(res.data);
-        setArticleContent(res.data.content);
-      }).catch((err) => {
-        const msg = defineErrorMsg(err);
-        callToast(error(msg));
-        setTimeout(() => {
-          setRedirect('/articles');
-        }, 1000);
-      });
+        setLoading(true);
 
-      setLoading(false);
+        await axios(url, { cancelToken: source.token }).then((res) => {
+          setReload(false);
+          setArticle(res.data);
+          setArticleContent(res.data.content);
+        });
+
+        setLoading(false);
+      } catch (err) {
+        if (!axios.isCancel(err)) {
+          const msg = defineErrorMsg(err);
+          callToast(error(msg));
+          setTimeout(() => {
+            setRedirect('/articles');
+          }, 1000);
+        }
+      }
     }
 
     if (reload) {
@@ -175,7 +186,7 @@ function Article(props) {
     }
 
     return () => source.cancel();
-  }, [loading, article, reload, match, callToast]);
+  }, [reload, match, callToast]);
 
   return (
     <Container id="article-container">

@@ -127,11 +127,14 @@ function ArticleMoreOptions(props) {
   }
 
   useEffect(() => {
+    let handler;
     if (isSaved) {
-      setTimeout(() => {
+      handler = setTimeout(() => {
         setIsSaved(false);
       }, 2000);
     }
+
+    return () => clearTimeout(handler);
   }, [isSaved]);
 
   useEffect(() => {
