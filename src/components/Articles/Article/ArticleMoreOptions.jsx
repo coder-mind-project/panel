@@ -154,7 +154,7 @@ function ArticleMoreOptions(props) {
         <Typography variant="h6" component="h2">Mais opções</Typography>
       </CustomExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <Box>
+        <Box width="100%">
           <BoxSocialMedia>
             <CustomTooltip
               placement="top-start"
@@ -168,7 +168,7 @@ function ArticleMoreOptions(props) {
                   /artigos/
                   <strong>{customUri ? formatCustomURL(customUri) : ''}</strong>
                 </Typography>
-          )}
+            )}
             >
               <TextField
                 label="Url Personalizada"
@@ -181,25 +181,6 @@ function ArticleMoreOptions(props) {
             </CustomTooltip>
           </BoxSocialMedia>
           <BoxSocialMedia>
-            <TextField
-              label="Repositório"
-              margin="dense"
-              error={false}
-              helperText={(
-                <Typography component="span" variant="caption">
-                  <strong>Informe o link completo do repositório</strong>
-                </Typography>
-          )}
-              value={socialRepository || ''}
-              onChange={(evt) => setSocialRepository(evt.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    {getRepoTypeIcon()}
-                  </InputAdornment>
-                ),
-              }}
-            />
             <FormControl className="social-media-type">
               <InputLabel>Tipo</InputLabel>
               <Select
@@ -211,27 +192,28 @@ function ArticleMoreOptions(props) {
                 <MenuItem value="other">Outro</MenuItem>
               </Select>
             </FormControl>
-          </BoxSocialMedia>
-          <BoxSocialMedia>
             <TextField
-              label="Video"
+              label="Repositório"
               margin="dense"
+              fullWidth
               error={false}
               helperText={(
                 <Typography component="span" variant="caption">
-                  <strong>Informe o link completo do video</strong>
+                  <strong>Informe o link completo do repositório</strong>
                 </Typography>
-          )}
-              value={socialVideo || ''}
-              onChange={(evt) => setSocialVideo(evt.target.value)}
+            )}
+              value={socialRepository || ''}
+              onChange={(evt) => setSocialRepository(evt.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    {getVideoTypeIcon()}
+                    {getRepoTypeIcon()}
                   </InputAdornment>
                 ),
               }}
             />
+          </BoxSocialMedia>
+          <BoxSocialMedia>
             <FormControl className="social-media-type">
               <InputLabel>Tipo</InputLabel>
               <Select
@@ -242,6 +224,26 @@ function ArticleMoreOptions(props) {
                 <MenuItem value="other">Outro</MenuItem>
               </Select>
             </FormControl>
+            <TextField
+              label="Video"
+              margin="dense"
+              fullWidth
+              error={false}
+              helperText={(
+                <Typography component="span" variant="caption">
+                  <strong>Informe o link completo do video</strong>
+                </Typography>
+            )}
+              value={socialVideo || ''}
+              onChange={(evt) => setSocialVideo(evt.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    {getVideoTypeIcon()}
+                  </InputAdornment>
+                ),
+              }}
+            />
           </BoxSocialMedia>
           <Box
             width="100%"

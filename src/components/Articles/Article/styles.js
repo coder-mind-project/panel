@@ -196,6 +196,7 @@ export const BoxSocialMedia = styled(Box)({
   alignItems: 'baseline',
   width: '100%',
   '& .social-media-type': {
-    marginLeft: '30px',
+    marginRight: '30px',
+    width: '120px',
   },
 });
