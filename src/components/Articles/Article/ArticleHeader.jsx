@@ -77,8 +77,8 @@ function ArticleHeader(props) {
       <Box marginBottom={1} display="flex" flexDirection="column">
         <Box display="flex" justifyContent="space-between">
           <Box display="flex" alignItems="center">
-            <ArticleLogo>
-              { !article.logoImg && <ArticleIcon color="action" onClick={() => onShowSettings('images')}>text_snippet</ArticleIcon>}
+            <ArticleLogo onClick={() => onShowSettings('images')}>
+              { !article.logoImg && <ArticleIcon color="action">text_snippet</ArticleIcon>}
               { article.logoImg && <img src={article.logoImg} alt={article.title} />}
             </ArticleLogo>
             <ArticleTitleTextField

@@ -81,6 +81,9 @@ export const ArticleLogo = styled(Box)({
   margin: '0 10px',
   '& img': {
     cursor: 'pointer',
+    width: '64px',
+    borderRadius: '40px',
+    objectFit: 'cover',
   },
   [devices.mobileExtraLarge]: {
     display: 'none',
