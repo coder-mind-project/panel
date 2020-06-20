@@ -264,7 +264,6 @@ function ArticleMoreOptions(props) {
               </Button>
             )}
           </Box>
-
         </Box>
       </ExpansionPanelDetails>
     </ExpansionPanel>
