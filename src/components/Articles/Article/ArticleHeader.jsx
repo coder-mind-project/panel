@@ -43,7 +43,7 @@ function ArticleHeader(props) {
   const [articleState, setArticleState] = useState({ title: '', description: '' });
   const debouncedArticle = useDebounce(articleState, 1000);
 
-  const matches = useMediaQuery(devices.mobileExtraLarge);
+  const matches = useMediaQuery(devices.tablet);
 
   function changeTitleOrDescription(evt, attr) {
     setEnabledChanges(true);
@@ -76,7 +76,7 @@ function ArticleHeader(props) {
     <Box marginBottom={1} minHeight="85px">
       <Box marginBottom={1} display="flex" flexDirection="column">
         <Box display="flex" justifyContent="space-between">
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" width="100%">
             <ArticleLogo onClick={() => onShowSettings('images')}>
               { !article.logoImg && <ArticleIcon color="action">text_snippet</ArticleIcon>}
               { article.logoImg && <img src={article.logoImg} alt={article.title} />}
@@ -85,10 +85,11 @@ function ArticleHeader(props) {
               value={articleState.title}
               placeholder={articleState.title || 'Artigo sem título'}
               onChange={(evt) => changeTitleOrDescription(evt, 'title')}
+              fullWidth
             />
             <SavedIndicator saving={isSaving} />
           </Box>
-          <Box>
+          <Box display="flex" alignItems="center">
             <HudButtons smalldevices={matches.toString()}>
               <Box marginX={1} marginBottom={matches ? 1 : 0}>
                 <CustomButton
