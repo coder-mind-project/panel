@@ -8,6 +8,7 @@ import {
   Typography,
   ExpansionPanelDetails,
   Icon,
+  Button,
 } from '@material-ui/core';
 
 import { connect } from 'react-redux';
@@ -29,11 +30,13 @@ function ArticleThemesAndCategories(props) {
     expanded,
     themeApp,
     callToast,
+    onSaveChanges,
   } = props;
 
   const [theme, setTheme] = useState(null);
   const [category, setCategory] = useState(null);
   const [mounted, setMounted] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   function toogleDetails() {
     if (!expanded) {
@@ -45,6 +48,10 @@ function ArticleThemesAndCategories(props) {
 
   function onChangeTheme(newTheme) {
     setTheme(newTheme);
+  }
+
+  function onChangeCategory(newCategory) {
+    setCategory(newCategory);
   }
 
   async function loadThemes(query) {
@@ -67,18 +74,24 @@ function ArticleThemesAndCategories(props) {
     return themes;
   }
 
-  function onChangeCategory(newCategory) {
-    setCategory(newCategory);
-  }
-
   function themeIsDefined() {
     return (theme && theme._id);
+  }
+
+  function saveChanges() {
+    const articleChanged = {
+      themeId: theme && theme._id,
+      categoryId: category && category._id,
+    };
+
+    onSaveChanges(articleChanged);
+    setIsSaved(true);
   }
 
   async function loadCategories(query) {
     let categories = [];
     try {
-      const url = `/categories/theme/${theme._id}?query=${query}`;
+      const url = `/categories/${query}/themes/${theme._id}`;
       const response = await axios(url);
 
       categories = response.data.map((elem) => ({
@@ -95,17 +108,36 @@ function ArticleThemesAndCategories(props) {
 
   useEffect(() => {
     if (!mounted) {
+      if (article) {
+        setTheme(article.theme ? {
+          ...article.theme,
+          label: article.theme.name,
+          value: article.theme._id,
+        } : null);
+
+        setCategory(article.category ? {
+          ...article.category,
+          label: article.category.name,
+          value: article.category._id,
+        } : null);
+      }
       setMounted(true);
-      setTheme(article.theme);
-      setCategory(article.category);
     }
-  }, [theme, category, mounted, article.theme, article.category]);
+  }, [theme, category, mounted, article, article.theme, article.category]);
 
   useEffect(() => {
-    if (!theme) {
+    if (!theme && mounted) {
       setCategory(null);
     }
-  }, [theme]);
+  }, [theme, mounted]);
+
+  useEffect(() => {
+    if (isSaved) {
+      setTimeout(() => {
+        setIsSaved(false);
+      }, 2000);
+    }
+  }, [isSaved]);
 
   return (
     <ExpansionPanel expanded={expanded}>
@@ -129,7 +161,7 @@ function ArticleThemesAndCategories(props) {
                   {' '}
                   <CustomLink to="/themes" theme={themeApp} target="_blank">temas disponíveis</CustomLink>
                 </Typography>
-              )}
+                )}
             />
           </Box>
           { themeIsDefined() && (
@@ -143,12 +175,32 @@ function ArticleThemesAndCategories(props) {
                   <Typography component="span" variant="caption">
                     Sem ideias? veja a lista de
                     {' '}
-                    <CustomLink to="/themes" theme={themeApp} target="_blank">categorias disponíveis</CustomLink>
+                    <CustomLink to="/categories" theme={themeApp} target="_blank">categorias disponíveis</CustomLink>
                   </Typography>
                   )}
               />
             </Box>
           )}
+
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="center"
+            marginY={2}
+          >
+            {!isSaved && (
+              <Button
+                size="small"
+                color="primary"
+                variant="contained"
+                onClick={saveChanges}
+              >
+                Salvar
+
+              </Button>
+            )}
+          </Box>
         </Box>
       </ExpansionPanelDetails>
     </ExpansionPanel>
@@ -160,6 +212,7 @@ ArticleThemesAndCategories.propTypes = {
   article: articleType.isRequired,
   open: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
+  onSaveChanges: PropTypes.func.isRequired,
   expanded: PropTypes.bool,
   callToast: PropTypes.func.isRequired,
 };
