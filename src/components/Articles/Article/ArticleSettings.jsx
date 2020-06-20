@@ -92,6 +92,7 @@ function ArticleSettings(props) {
               article={article}
               open={addReason}
               close={deleteReason}
+              onSaveChanges={onSaveChanges}
               expanded={currentReason === 'images'}
             />
             <ArticleThemesAndCategories
