@@ -155,7 +155,7 @@ function ArticleImages(props) {
       <ExpansionPanelDetails>
         <Box width="100%">
           <ArticleLogoArea>
-            <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+            <Box display="flex" justifyContent="space-between" flexWrap="wrap" mb={2}>
               <Box display="flex" flexDirection="column">
                 <Box display="flex" flexDirection="column">
                   <Box display="flex">
@@ -181,7 +181,7 @@ function ArticleImages(props) {
             <Divider />
           </ArticleLogoArea>
           <ArticleSecondaryImageArea>
-            <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+            <Box display="flex" justifyContent="space-between" flexWrap="wrap" mb={2}>
               <Box display="flex" flexDirection="column">
                 <Box display="flex" flexDirection="column">
                   <Box display="flex">
