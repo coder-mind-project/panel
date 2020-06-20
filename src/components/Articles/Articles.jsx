@@ -136,8 +136,7 @@ function Articles(props) {
   function closeArticleDialog(stack) {
     setCreateArticleDialog(false);
     if (stack && stack.reason === 'articleCreated') {
-      setPage(1);
-      setReload(true);
+      history.push(`/articles/${stack.customUri}`);
     }
   }
 

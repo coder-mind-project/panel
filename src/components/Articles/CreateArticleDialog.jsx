@@ -48,17 +48,16 @@ function CreateArticleDialog(props) {
   async function createArticle() {
     const url = '/articles';
     setLoading(true);
-
-    await axios.post(url, { title: articleTitle }).then(() => {
+    await axios.post(url, { title: articleTitle }).then((res) => {
+      const articleCreated = res.data;
       callToast(success('Artigo criado com sucesso'));
       clearFields();
-      close({ reason: 'articleCreated' });
+      close({ reason: 'articleCreated', customUri: articleCreated.customUri });
     }).catch((err) => {
       const msg = defineErrorMsg(err);
       callToast(error(msg));
+      setLoading(false);
     });
-
-    setLoading(false);
   }
 
   function handleChange(evt) {
