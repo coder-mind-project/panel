@@ -186,6 +186,7 @@ function Article(props) {
         close={closeSettings}
         reason={settingsReason}
         removeReason={removeReason}
+        onSaveChanges={saveChangesFromChild}
       />
       { !loading && (
         <Box>

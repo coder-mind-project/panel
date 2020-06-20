@@ -14,10 +14,16 @@ import {
   InputLabel,
   MenuItem,
   Box,
+  Button,
 } from '@material-ui/core';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { CODER_MIND_URL } from '@/config/dataProperties';
 import { formatCustomURL } from '@/config/masks';
+import { isValidLink } from '@/shared';
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
+import { error } from '@/config/toasts';
 
 import {
   FaYoutube,
@@ -36,10 +42,13 @@ function ArticleMoreOptions(props) {
     open,
     close,
     expanded,
+    onSaveChanges,
+    callToast,
   } = props;
 
   const [mounted, setMounted] = useState(false);
   const [openTooltip, setOpenTooltip] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const [socialRepository, setSocialRepository] = useState('');
   const [socialRepositoryType, setSocialRepositoryType] = useState('github');
@@ -88,6 +97,42 @@ function ArticleMoreOptions(props) {
   function hideCustomUriTooltip() {
     setOpenTooltip(false);
   }
+
+  function validateChanges() {
+    if (socialVideo && !isValidLink(socialVideo)) {
+      throw new Error('Vídeo possui um link inválido');
+    }
+
+    if (socialRepository && !isValidLink(socialRepository)) {
+      throw new Error('Repositório possui um link inválido');
+    }
+  }
+
+  function saveChanges() {
+    try {
+      validateChanges();
+
+      const articleChanges = {
+        socialRepository,
+        socialRepositoryType,
+        socialVideo,
+        socialVideoType,
+        customUri,
+      };
+      onSaveChanges(articleChanges);
+      setIsSaved(true);
+    } catch (err) {
+      callToast(error(err.message));
+    }
+  }
+
+  useEffect(() => {
+    if (isSaved) {
+      setTimeout(() => {
+        setIsSaved(false);
+      }, 2000);
+    }
+  }, [isSaved]);
 
   useEffect(() => {
     if (article._id && !mounted) {
@@ -198,6 +243,26 @@ function ArticleMoreOptions(props) {
               </Select>
             </FormControl>
           </BoxSocialMedia>
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="center"
+            marginY={2}
+          >
+            {!isSaved && (
+              <Button
+                size="small"
+                color="primary"
+                variant="contained"
+                onClick={saveChanges}
+              >
+                Salvar
+
+              </Button>
+            )}
+          </Box>
+
         </Box>
       </ExpansionPanelDetails>
     </ExpansionPanel>
@@ -208,6 +273,8 @@ ArticleMoreOptions.propTypes = {
   article: articleType.isRequired,
   open: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
+  onSaveChanges: PropTypes.func.isRequired,
+  callToast: PropTypes.func.isRequired,
   expanded: PropTypes.bool,
 };
 
@@ -215,4 +282,8 @@ ArticleMoreOptions.defaultProps = {
   expanded: false,
 };
 
-export default ArticleMoreOptions;
+const mapStateToProps = (state) => ({ toast: state.config });
+
+const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleMoreOptions);
