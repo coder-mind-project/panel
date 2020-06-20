@@ -54,6 +54,10 @@ function CustomAsyncSelect(props) {
     }
   }, [currentValue, value, mounted]);
 
+  useEffect(() => {
+    setCurrentValue(value);
+  }, [value]);
+
   return (
     <CustomFormGroup>
       {label && (
