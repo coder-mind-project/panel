@@ -94,6 +94,7 @@ function Article(props) {
 
     axios.patch(url).then(() => {
       callToast(success(defineChangeStateSuccessMsg(newState)));
+      setArticle({ ...article, state: newState });
     }).catch((err) => {
       const msg = defineErrorMsg(err);
       callToast(error(msg));
@@ -206,6 +207,7 @@ function Article(props) {
             isSaving={isSaving}
             onSaveChanges={saveChangesFromChild}
             onPublish={() => changeState('published')}
+            onInactivate={() => changeState('inactivated')}
             onTooglePreview={tooglePreview}
             onShowSettings={openSettings}
             isPreviewed={showPreview}

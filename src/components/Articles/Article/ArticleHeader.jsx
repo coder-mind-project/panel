@@ -24,6 +24,7 @@ function ArticleHeader(props) {
     article,
     isSaving,
     onPublish,
+    onInactivate,
     onShowSettings,
     onSaveChanges,
     onTooglePreview,
@@ -49,6 +50,10 @@ function ArticleHeader(props) {
     setEnabledChanges(true);
     const { value } = evt.target;
     setArticleState({ ...articleState, [attr]: value });
+  }
+
+  function isPublished() {
+    return article.state === 'published' || article.state === 'boosted';
   }
 
   useEffect(() => {
@@ -92,14 +97,26 @@ function ArticleHeader(props) {
           <Box display="flex" alignItems="center">
             <HudButtons smalldevices={matches.toString()}>
               <Box marginX={1} marginBottom={matches ? 1 : 0}>
-                <CustomButton
-                  color="primary"
-                  text={matches ? '' : 'Publicar'}
-                  icon="publish"
-                  variant="contained"
-                  size={matches ? 'small' : 'medium'}
-                  onClick={onPublish}
-                />
+                {!isPublished() && (
+                  <CustomButton
+                    color="primary"
+                    text={matches ? '' : 'Publicar'}
+                    icon="publish"
+                    variant="contained"
+                    size={matches ? 'small' : 'medium'}
+                    onClick={onPublish}
+                  />
+                )}
+                {isPublished() && (
+                  <CustomButton
+                    color="secondary"
+                    text={matches ? '' : 'Inativar'}
+                    icon="not_interested"
+                    variant="contained"
+                    size={matches ? 'small' : 'medium'}
+                    onClick={onInactivate}
+                  />
+                )}
               </Box>
               { !matches && (
                 <Box marginX={1} marginBottom={matches ? 1 : 0}>
@@ -116,7 +133,7 @@ function ArticleHeader(props) {
               <Box marginX={1}>
                 <CustomButton
                   icon="settings"
-                  color="default"
+                  color="primary"
                   size={matches ? 'small' : 'medium'}
                   onClick={onShowSettings}
                   marginBottom="0"
@@ -143,6 +160,7 @@ ArticleHeader.propTypes = {
   article: articleType.isRequired,
   isSaving: PropTypes.bool,
   onPublish: PropTypes.func.isRequired,
+  onInactivate: PropTypes.func.isRequired,
   onSaveChanges: PropTypes.func.isRequired,
   onShowSettings: PropTypes.func.isRequired,
   onTooglePreview: PropTypes.func.isRequired,
