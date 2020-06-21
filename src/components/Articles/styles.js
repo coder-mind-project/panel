@@ -5,11 +5,14 @@ import {
   Container,
 } from '@material-ui/core';
 
-import { COLOR_APP } from '@/config/dataProperties';
+import { COLOR_APP, COLOR_APP_ULTRA_LIGHT } from '@/config/dataProperties';
 
 export const TableWrapper = styled(Container)({
   '& .MuiCheckbox-colorSecondary.Mui-checked': {
     color: COLOR_APP,
+  },
+  '& .MuiIconButton-colorSecondary:hover': {
+    backgroundColor: COLOR_APP_ULTRA_LIGHT,
   },
 });
 
