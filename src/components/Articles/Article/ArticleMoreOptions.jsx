@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { articleType } from '@/types';
 
+import { Redirect } from 'react-router-dom';
+
 import {
   ExpansionPanel,
   ExpansionPanelDetails,
@@ -15,6 +17,7 @@ import {
   MenuItem,
   Box,
   Button,
+  Divider,
 } from '@material-ui/core';
 
 import { connect } from 'react-redux';
@@ -34,6 +37,10 @@ import {
 } from 'react-icons/fa';
 
 import { CustomTooltip } from '@/components/styles';
+
+import RemoveArticleDialog from '@/components/Articles/RemoveArticleDialog.jsx';
+import SectionDescription from './SectionDescription';
+
 import { CustomExpansionPanelSummary, BoxSocialMedia } from './styles';
 
 function ArticleMoreOptions(props) {
@@ -49,6 +56,8 @@ function ArticleMoreOptions(props) {
   const [mounted, setMounted] = useState(false);
   const [openTooltip, setOpenTooltip] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [removeDialogIsOpened, setRemoveDialogIsOpened] = useState(false);
+  const [redirect, setRedirect] = useState('');
 
   const [socialRepository, setSocialRepository] = useState('');
   const [socialRepositoryType, setSocialRepositoryType] = useState('github');
@@ -126,6 +135,19 @@ function ArticleMoreOptions(props) {
     }
   }
 
+  function closeRemoveDialog(evt) {
+    setRemoveDialogIsOpened(false);
+
+    const { reason } = evt;
+    if (reason && reason === 'removed') {
+      setRedirect('/articles');
+    }
+  }
+
+  function isDraft() {
+    return article.state === 'draft';
+  }
+
   useEffect(() => {
     let handler;
     if (isSaved) {
@@ -156,6 +178,7 @@ function ArticleMoreOptions(props) {
       >
         <Typography variant="h6" component="h2">Mais opções</Typography>
       </CustomExpansionPanelSummary>
+      {redirect && <Redirect to={redirect} />}
       <ExpansionPanelDetails>
         <Box width="100%">
           <BoxSocialMedia>
@@ -267,6 +290,30 @@ function ArticleMoreOptions(props) {
               </Button>
             )}
           </Box>
+          <Divider />
+          { isDraft() && (
+            <Box marginY={2}>
+              <RemoveArticleDialog
+                open={removeDialogIsOpened}
+                onClose={closeRemoveDialog}
+                article={article}
+              />
+              <SectionDescription
+                title="Excluir artigo"
+                description="Ao remover, não será possível recuperar o artigo novamente. Por segurança, somente artigos que nunca foram publicados podem ser excluídos."
+              />
+              <Box marginTop={2} marginX={2}>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  size="small"
+                  onClick={() => setRemoveDialogIsOpened(true)}
+                >
+                  Excluir artigo
+                </Button>
+              </Box>
+            </Box>
+          )}
         </Box>
       </ExpansionPanelDetails>
     </ExpansionPanel>
