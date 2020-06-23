@@ -50,6 +50,7 @@ function ArticleMoreOptions(props) {
     close,
     expanded,
     onSaveChanges,
+    onChangeState,
     callToast,
   } = props;
 
@@ -146,6 +147,14 @@ function ArticleMoreOptions(props) {
 
   function isDraft() {
     return article.state === 'draft';
+  }
+
+  function isInactivated() {
+    return article.state === 'inactivated';
+  }
+
+  function isBoosted() {
+    return article.state === 'boosted';
   }
 
   useEffect(() => {
@@ -314,6 +323,43 @@ function ArticleMoreOptions(props) {
               </Box>
             </Box>
           )}
+          { isBoosted() && (
+            <Box marginY={2}>
+              <SectionDescription
+                title="Retirar impulsionamento"
+                description="Ao ativar seu artigo voltará a ser somente publicado."
+              />
+              <Box marginTop={2} marginX={2} marginBottom={2}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  size="small"
+                  onClick={() => onChangeState('published')}
+                >
+                  Retirar
+                </Button>
+              </Box>
+              <Divider />
+            </Box>
+          )}
+          { !isDraft() && !isInactivated() && (
+            <Box marginY={2}>
+              <SectionDescription
+                title="Inativar artigo"
+                description="Ao inativar, não será possível visualizar o artigo em nosso blog. Fique tranquilo, é possível publicá-lo novamente."
+              />
+              <Box marginTop={2} marginX={2}>
+                <Button
+                  color="default"
+                  variant="contained"
+                  size="small"
+                  onClick={() => onChangeState('inactivated')}
+                >
+                  Inativar artigo
+                </Button>
+              </Box>
+            </Box>
+          )}
         </Box>
       </ExpansionPanelDetails>
     </ExpansionPanel>
@@ -325,6 +371,7 @@ ArticleMoreOptions.propTypes = {
   open: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   onSaveChanges: PropTypes.func.isRequired,
+  onChangeState: PropTypes.func.isRequired,
   callToast: PropTypes.func.isRequired,
   expanded: PropTypes.bool,
 };

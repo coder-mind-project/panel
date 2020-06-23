@@ -217,6 +217,7 @@ function Article(props) {
         reason={settingsReason}
         removeReason={removeReason}
         onSaveChanges={saveChangesFromChild}
+        onChangeState={changeState}
       />
       { !loading && (
         <Box>
@@ -225,7 +226,7 @@ function Article(props) {
             isSaving={isSaving}
             onSaveChanges={saveChangesFromChild}
             onPublish={() => changeState('published')}
-            onInactivate={() => changeState('inactivated')}
+            onBoost={() => changeState('boosted')}
             onTooglePreview={tooglePreview}
             onShowSettings={openSettings}
             isPreviewed={showPreview}

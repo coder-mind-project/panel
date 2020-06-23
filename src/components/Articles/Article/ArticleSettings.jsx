@@ -31,6 +31,7 @@ function ArticleSettings(props) {
     article,
     close,
     onSaveChanges,
+    onChangeState,
   } = props;
 
   const [currentReason, setCurrentReason] = useState(null);
@@ -107,6 +108,7 @@ function ArticleSettings(props) {
               open={addReason}
               close={deleteReason}
               onSaveChanges={onSaveChanges}
+              onChangeState={onChangeState}
               expanded={currentReason === 'moreOptions'}
             />
           </ScrollBars>
@@ -121,6 +123,7 @@ ArticleSettings.propTypes = {
   article: articleType.isRequired,
   close: PropTypes.func.isRequired,
   onSaveChanges: PropTypes.func.isRequired,
+  onChangeState: PropTypes.func.isRequired,
   reason: PropTypes.oneOf([
     'info',
     'images',

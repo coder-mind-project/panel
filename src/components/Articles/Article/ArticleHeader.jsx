@@ -24,7 +24,7 @@ function ArticleHeader(props) {
     article,
     isSaving,
     onPublish,
-    onInactivate,
+    onBoost,
     onShowSettings,
     onSaveChanges,
     onTooglePreview,
@@ -53,7 +53,11 @@ function ArticleHeader(props) {
   }
 
   function isPublished() {
-    return article.state === 'published' || article.state === 'boosted';
+    return article.state === 'published';
+  }
+
+  function isBoosted() {
+    return article.state === 'boosted';
   }
 
   useEffect(() => {
@@ -97,7 +101,7 @@ function ArticleHeader(props) {
           <Box display="flex" alignItems="center">
             <HudButtons smalldevices={matches.toString()}>
               <Box marginX={1} marginBottom={matches ? 1 : 0}>
-                {!isPublished() && (
+                {!isPublished() && !isBoosted() && (
                   <CustomButton
                     color="primary"
                     text={matches ? '' : 'Publicar'}
@@ -107,14 +111,14 @@ function ArticleHeader(props) {
                     onClick={onPublish}
                   />
                 )}
-                {isPublished() && (
+                {isPublished() && !isBoosted() && (
                   <CustomButton
-                    color="secondary"
-                    text={matches ? '' : 'Inativar'}
-                    icon="not_interested"
+                    color="primary"
+                    text={matches ? '' : 'Impulsionar'}
+                    icon="star_rate"
                     variant="contained"
                     size={matches ? 'small' : 'medium'}
-                    onClick={onInactivate}
+                    onClick={onBoost}
                   />
                 )}
               </Box>
@@ -160,7 +164,7 @@ ArticleHeader.propTypes = {
   article: articleType.isRequired,
   isSaving: PropTypes.bool,
   onPublish: PropTypes.func.isRequired,
-  onInactivate: PropTypes.func.isRequired,
+  onBoost: PropTypes.func.isRequired,
   onSaveChanges: PropTypes.func.isRequired,
   onShowSettings: PropTypes.func.isRequired,
   onTooglePreview: PropTypes.func.isRequired,
