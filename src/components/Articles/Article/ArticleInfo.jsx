@@ -107,6 +107,15 @@ function ArticleInfo(props) {
               {article && article.createdAt && displayFullDate(article.createdAt)}
             </Typography>
           </Box>
+          {article && article.publishedAt && (
+            <Box display="flex" alignItems="center" mb={1}>
+              <Typography variant="body2" component="span">
+                Primeira publicação:
+                {' '}
+                {displayFullDate(article.publishedAt)}
+              </Typography>
+            </Box>
+          )}
           <Box display="flex" alignItems="center" mb={1}>
             <Typography variant="body2" component="span">
               Formato do artigo:
