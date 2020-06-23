@@ -123,6 +123,14 @@ function Article(props) {
   }
 
   useEffect(() => {
+    function isDiffCustomUri(firstArticle, secondArticle) {
+      return firstArticle.customUri !== secondArticle.customUri;
+    }
+
+    function changeLocalUri(currentArticle) {
+      setRedirect(`/articles/${currentArticle.customUri}`);
+    }
+
     const source = axios.CancelToken.source();
 
     async function saveChanges() {
@@ -132,6 +140,10 @@ function Article(props) {
       try {
         await axios.put(url, articleChanged, { cancelToken: source.token }).then(() => {
           setShouldSaveChanges(false);
+          if (isDiffCustomUri(article, articleChanged)) {
+            changeLocalUri(articleChanged);
+          }
+
           setArticle({ ...article, ...articleChanged });
           setArticleChanged({});
         });
@@ -155,6 +167,7 @@ function Article(props) {
   }, [debounceArticleContent, enableChanges]);
 
   useEffect(() => {
+    let handler;
     const source = axios.CancelToken.source();
 
     async function getArticle() {
@@ -172,10 +185,12 @@ function Article(props) {
 
         setLoading(false);
       } catch (err) {
+        setReload(false);
+
         if (!axios.isCancel(err)) {
           const msg = defineErrorMsg(err);
           callToast(error(msg));
-          setTimeout(() => {
+          handler = setTimeout(() => {
             setRedirect('/articles');
           }, 1000);
         }
@@ -186,7 +201,10 @@ function Article(props) {
       getArticle();
     }
 
-    return () => source.cancel();
+    return () => {
+      clearTimeout(handler);
+      source.cancel();
+    };
   }, [reload, match, callToast]);
 
   return (
