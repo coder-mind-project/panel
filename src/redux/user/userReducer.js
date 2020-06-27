@@ -1,10 +1,12 @@
+/* eslint-disable no-param-reassign */
 const INITIAL_STATE = {};
 
 export default function (state = INITIAL_STATE, action) {
   if (action.user) {
-    // eslint-disable-next-line no-param-reassign
     state = action.user;
+  } else if (!action.user && action.user !== undefined) {
+    state = INITIAL_STATE;
   }
 
-  return { ...state };
+  return state;
 }
