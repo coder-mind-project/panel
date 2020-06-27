@@ -18,6 +18,8 @@ function PasswordField(props) {
     autoFocus,
     value,
     margin,
+    variant,
+    size,
   } = props;
 
   const [visible, setVisible] = useState(false);
@@ -32,6 +34,8 @@ function PasswordField(props) {
       onChange={onChange}
       fullWidth={fullWidth}
       autoFocus={autoFocus}
+      variant={variant}
+      size={size}
       value={value}
       type={visible ? 'text' : 'password'}
       margin={margin}
@@ -40,7 +44,7 @@ function PasswordField(props) {
         id: inputId,
         endAdornment: (
           <InputAdornment position="end">
-            <IconButton onClick={toogleVisibility}>
+            <IconButton onClick={toogleVisibility} size="small">
               <Icon>{!visible ? 'visibility_off' : 'visibility'}</Icon>
             </IconButton>
           </InputAdornment>
@@ -49,7 +53,6 @@ function PasswordField(props) {
     />
   );
 }
-
 
 PasswordField.propTypes = {
   label: PropTypes.string,
@@ -64,6 +67,15 @@ PasswordField.propTypes = {
     'none',
     'normal',
   ]),
+  size: PropTypes.oneOf([
+    'small',
+    'medium',
+  ]),
+  variant: PropTypes.oneOf([
+    'filled',
+    'outlined',
+    'standard',
+  ]),
 };
 
 PasswordField.defaultProps = {
@@ -75,6 +87,8 @@ PasswordField.defaultProps = {
   autoFocus: false,
   value: '',
   margin: 'none',
+  variant: 'standard',
+  size: 'medium',
 };
 
 export default PasswordField;
