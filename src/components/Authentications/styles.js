@@ -8,6 +8,7 @@ import {
   Paper,
   FormControl,
   Container,
+  InputLabel,
 } from '@material-ui/core';
 
 import { Alert } from '@material-ui/lab';
@@ -27,7 +28,7 @@ export const GridPresentation = styled(Grid)({
   color: '#fff',
   fontWeight: 700,
   backgroundColor: '#8a05be', /* fallback for old browsers */
-  background: 'linear-gradient(to top, #9733EE, #8a05be)', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: 'linear-gradient(+40deg, rgb(169, 78, 249), rgb(116, 29, 150))', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   padding: '0px 15px',
   '& h1': {
     textAlign: 'center',
@@ -78,40 +79,54 @@ export const RedeemAccountTextField = styled(TextField)({
 });
 
 export const LogoArea = styled(Box)({
-  height: '160px',
+  height: (props) => (props.error ? '26%' : '40%'),
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center',
+  alignItems: 'flex-end',
+  [devices.mobileLarge]: {
+    height: (props) => (props.error ? '10% !important' : '30% !important'),
+  },
+  '& .logo-img': {
+    width: '270px',
+    [devices.mobileLarge]: {
+      width: '195px',
+    },
+  },
 });
 
 export const FormArea = styled(Box)({
-  height: '80%',
+  height: '100%',
   width: '100%',
   display: 'flex',
-  justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
   '& form': {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    width: '90%',
+    width: '60%',
     padding: '25px',
   },
 });
 
-export const AuthTextField = styled(TextField)({
-  width: '60%',
-  margin: '0.8rem 0',
+export const AuthLabel = styled(InputLabel)({
+  width: '65%',
   [devices.tablet]: {
     width: '100%',
   },
 });
 
+export const AuthTextField = styled(TextField)({
+  width: '65%',
+  margin: '0.8rem 0 1.5rem 0',
+  [devices.tablet]: {
+    width: '100%',
+  },
+});
 
 export const CustomFormControl = styled(FormControl)({
-  width: '60%',
+  width: '65%',
   margin: '0.8rem 0',
   [devices.tablet]: {
     width: '100%',
@@ -126,8 +141,8 @@ export const SpecialButton = styled(Button)({
 });
 
 export const SubmitArea = styled(Grid)({
-  width: '60%',
-  margin: '0.8rem 0',
+  width: '65%',
+  margin: '2rem 0 0.5rem 0',
   [devices.tablet]: {
     width: '100%',
   },

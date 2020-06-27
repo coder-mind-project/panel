@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { appTheme } from '@/types';
+import { appTheme, articleType } from '@/types';
 
 import {
   Dialog,
   DialogTitle,
   DialogContent,
-  Box,
   DialogActions,
-  Button,
-  TextField,
-  Typography,
   LinearProgress,
+  Button,
 } from '@material-ui/core';
 
 import axios from 'axios';
@@ -23,46 +20,34 @@ import { callToast as ToastEmitter } from '../../redux/toast/toastActions';
 
 import { defineErrorMsg } from '../../config/backend';
 
-function CreateArticleDialog(props) {
+function RemoveArticleDialog(props) {
   const {
     open,
     onClose,
-    callToast,
     theme,
+    callToast,
+    article,
   } = props;
 
   const [loading, setLoading] = useState(false);
-  const [articleTitle, setArticleTitle] = useState('');
 
-  function clearFields() {
-    setArticleTitle('');
+  function close(evt) {
+    onClose(evt);
   }
 
-  function close(stack) {
-    if (loading) return;
-    clearFields();
-    onClose(stack);
-  }
+  function remove() {
+    const url = `/articles/${article._id}`;
 
-
-  async function createArticle() {
-    const url = '/articles';
     setLoading(true);
-    await axios.post(url, { title: articleTitle }).then((res) => {
-      const articleCreated = res.data;
-      callToast(success('Artigo criado com sucesso'));
-      clearFields();
-      close({ reason: 'articleCreated', customUri: articleCreated.customUri });
+
+    axios.delete(url).then(() => {
+      callToast(success('Artigo removido com sucesso'));
+      close({ reason: 'removed' });
     }).catch((err) => {
       const msg = defineErrorMsg(err);
       callToast(error(msg));
       setLoading(false);
     });
-  }
-
-  function handleChange(evt) {
-    const { value } = evt.target;
-    setArticleTitle(value);
   }
 
   return (
@@ -76,22 +61,13 @@ function CreateArticleDialog(props) {
     >
       { loading && <LinearProgress color="primary" />}
       <DialogTitle>
-        {loading ? 'Criando artigo' : 'Criar artigo'}
+        Remover artigo
       </DialogTitle>
       <DialogContent>
-        <Box width="100%">
-          <Box mb={2}>
-            <Typography variant="body2" component="p">
-              Para começar é necessário informar o titulo do artigo
-            </Typography>
-          </Box>
-          <TextField
-            fullWidth
-            label="Titulo do artigo"
-            value={articleTitle}
-            onChange={handleChange}
-          />
-        </Box>
+        Tem certeza que deseja remover o artigo
+        {' '}
+        {article.title}
+        ?
       </DialogContent>
       <DialogActions>
         <Button
@@ -106,7 +82,7 @@ function CreateArticleDialog(props) {
           color="primary"
           variant={theme === 'dark' ? 'contained' : 'text'}
           size="small"
-          onClick={createArticle}
+          onClick={remove}
           disabled={loading}
         >
           Confirmar
@@ -116,18 +92,19 @@ function CreateArticleDialog(props) {
   );
 }
 
-CreateArticleDialog.propTypes = {
+RemoveArticleDialog.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   callToast: PropTypes.func.isRequired,
   theme: appTheme.isRequired,
+  article: articleType.isRequired,
 };
 
-CreateArticleDialog.defaultProps = {
+RemoveArticleDialog.defaultProps = {
   open: false,
 };
 
 const mapStateToProps = (state) => ({ theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: ToastEmitter }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateArticleDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(RemoveArticleDialog);

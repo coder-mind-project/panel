@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { userType } from '@/types';
+import { useHistory } from 'react-router-dom';
 
 import { Container, Icon } from '@material-ui/core';
 
@@ -36,6 +37,8 @@ function Articles(props) {
   const [page, setPage] = useState(1);
   const [reload, setReload] = useState(true);
   const [createArticleDialog, setCreateArticleDialog] = useState(false);
+
+  const history = useHistory();
 
   function getArticleState(article) {
     let state;
@@ -133,8 +136,7 @@ function Articles(props) {
   function closeArticleDialog(stack) {
     setCreateArticleDialog(false);
     if (stack && stack.reason === 'articleCreated') {
-      setPage(1);
-      setReload(true);
+      history.push(`/articles/${stack.customUri}`);
     }
   }
 
@@ -190,8 +192,7 @@ function Articles(props) {
   }
 
   function openArticle(article) {
-    // eslint-disable-next-line no-console
-    console.log(article);
+    history.push(`/articles/${article.customUri}`);
   }
 
   useEffect(() => {

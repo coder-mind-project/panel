@@ -9,6 +9,7 @@ function InputFiles(props) {
     onChange,
     name,
     accept,
+    disabled,
   } = props;
 
   const input = useRef(null);
@@ -32,6 +33,7 @@ function InputFiles(props) {
         {children}
       </Box>
       <input
+        disabled={disabled}
         ref={input}
         type="file"
         name={name}
@@ -48,11 +50,13 @@ InputFiles.propTypes = {
   onChange: PropTypes.func.isRequired,
   name: PropTypes.string,
   accept: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 InputFiles.defaultProps = {
   name: '',
   accept: 'image/png, image/jpeg',
+  disabled: false,
 };
 
 export default InputFiles;
