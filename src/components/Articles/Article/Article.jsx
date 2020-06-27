@@ -124,7 +124,8 @@ function Article(props) {
 
   useEffect(() => {
     function isDiffCustomUri(firstArticle, secondArticle) {
-      return firstArticle.customUri !== secondArticle.customUri;
+      return firstArticle.customUri !== secondArticle.customUri
+        && firstArticle._id === secondArticle._id;
     }
 
     function changeLocalUri(currentArticle) {
@@ -147,6 +148,9 @@ function Article(props) {
           setArticle({ ...article, ...articleChanged });
           setArticleChanged({});
         });
+      } catch (err) {
+        const msg = defineErrorMsg(err);
+        callToast(error(msg));
       } finally {
         setIsSaving(false);
       }
@@ -157,7 +161,7 @@ function Article(props) {
     }
 
     return () => source.cancel();
-  }, [shouldSaveChanges, articleChanged, article]);
+  }, [shouldSaveChanges, articleChanged, article, callToast]);
 
   useEffect(() => {
     if (enableChanges) {

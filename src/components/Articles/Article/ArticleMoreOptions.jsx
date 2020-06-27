@@ -123,6 +123,7 @@ function ArticleMoreOptions(props) {
       validateChanges();
 
       const articleChanges = {
+        _id: article._id,
         socialRepository,
         socialRepositoryType,
         socialVideo,

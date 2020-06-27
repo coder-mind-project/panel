@@ -200,3 +200,22 @@ export const BoxSocialMedia = styled(Box)({
     width: '120px',
   },
 });
+
+export const ImageAreaContainer = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  margin: '10px',
+  width: '100%',
+});
+
+export const ImageArea = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  '& .remove-img': {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    padding: '5px 10px 0 0',
+  },
+});

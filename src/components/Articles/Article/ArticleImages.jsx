@@ -8,7 +8,6 @@ import {
   Icon,
   Typography,
   Box,
-  Button,
   Divider,
 } from '@material-ui/core';
 
@@ -18,18 +17,20 @@ import DefaultHeaderImg from '@/assets/img_not_found_1080.png';
 
 import axios from 'axios';
 import { defineErrorMsg } from '@/config/backend';
-import { success, error, info } from '@/config/toasts';
+import { success, error } from '@/config/toasts';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import InputFileButton from '@/components/InputFiles.jsx';
+import ArticleImage from './ArticleImage';
+
 import {
   CustomExpansionPanelSummary,
   ArticleLogoArea,
   ArticleSecondaryImageArea,
   ArticleHeaderImageArea,
 } from './styles';
+import RemoveArticleImgDialog from './RemoveArticleImgDialog';
 
 function ArticleImages(props) {
   const {
@@ -42,13 +43,15 @@ function ArticleImages(props) {
   } = props;
 
   const [mounted, setMounted] = useState(false);
+  const [isSavingLogo, setIsSavingLogo] = useState(false);
+  const [isSavingSecondary, setIsSavingSecondary] = useState(false);
+  const [isSavingHeader, setIsSavingHeader] = useState(false);
+  const [isOpenedRemoveDialog, setIsOpenedRemoveDialog] = useState(false);
 
   const [logoImg, setLogoImg] = useState(null);
-  const [isSavingLogo, setIsSavingLogo] = useState(false);
   const [secondaryImg, setSecondaryImg] = useState(null);
-  const [isSavingSecondary, setIsSavingSecondary] = useState(false);
   const [headerImg, setHeaderImg] = useState(null);
-  const [isSavingHeader, setIsSavingHeader] = useState(false);
+  const [removeImgType, setRemoveImgType] = useState(null);
 
   function toogleDetails() {
     if (!expanded) {
@@ -93,11 +96,10 @@ function ArticleImages(props) {
   }
 
   async function changeImage(image, reason) {
-    setSavingImg(reason);
-
     const img = image.target.files[0];
-    if (!img) return callToast(info('Selecione uma imagem'));
+    if (!img) return;
 
+    setSavingImg(reason);
     const id = article._id;
 
     const formData = new FormData();
@@ -127,7 +129,32 @@ function ArticleImages(props) {
     });
 
     setSavingImg(reason, false);
-    return null;
+  }
+
+  function removeImage(stack) {
+    setIsOpenedRemoveDialog(false);
+
+    const { reason } = stack;
+
+    if (reason === 'removed') {
+      if (removeImgType === 'logo') {
+        onSaveChanges({ logoImg: null });
+        setLogoImg(null);
+      }
+
+      if (removeImgType === 'secondary') {
+        setSecondaryImg(null);
+      }
+
+      if (removeImgType === 'header') {
+        setHeaderImg(null);
+      }
+    }
+  }
+
+  function openRemoveDialog(imgType) {
+    setIsOpenedRemoveDialog(true);
+    setRemoveImgType(imgType);
   }
 
   useEffect(() => {
@@ -153,6 +180,12 @@ function ArticleImages(props) {
         <Typography variant="h6" component="h2">Imagens</Typography>
       </CustomExpansionPanelSummary>
       <ExpansionPanelDetails>
+        <RemoveArticleImgDialog
+          open={isOpenedRemoveDialog}
+          onClose={removeImage}
+          imageType={removeImgType}
+          article={article}
+        />
         <Box width="100%">
           <ArticleLogoArea>
             <Box display="flex" justifyContent="space-between" flexWrap="wrap" mb={2}>
@@ -167,16 +200,16 @@ function ArticleImages(props) {
                   </Box>
                 </Box>
               </Box>
-              <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" marginX={2} marginY={1} width="100%">
-                <img src={logoUrl()} alt={article && article.title} className="article-logo-img" />
-                <Box display="flex" alignItems="center">
-                  <InputFileButton onChange={(image) => changeImage(image, 'logo')} name="logo" disabled={isSavingLogo}>
-                    <Button size="small" color="primary" variant="contained">
-                      {getButtonLabel(logoImg, isSavingLogo)}
-                    </Button>
-                  </InputFileButton>
-                </Box>
-              </Box>
+              <ArticleImage
+                imgSrc={logoUrl()}
+                imgAlt={article && article.title}
+                onRemove={() => openRemoveDialog('logo')}
+                onChange={(image) => changeImage(image, 'logo')}
+                showRemoveButton={Boolean(logoImg)}
+                buttonLabel={getButtonLabel(logoImg, isSavingLogo)}
+                buttonDisabled={isSavingLogo}
+                imageType="article-logo-img"
+              />
             </Box>
             <Divider />
           </ArticleLogoArea>
@@ -193,16 +226,16 @@ function ArticleImages(props) {
                   </Box>
                 </Box>
               </Box>
-              <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="center" marginX={2} marginY={1} width="100%">
-                <img src={secondaryImgUrl()} alt={article && article.title} className="article-secondary-img" />
-                <Box display="flex" alignItems="center">
-                  <InputFileButton onChange={(image) => changeImage(image, 'secondary')} name="secondary" disabled={isSavingSecondary}>
-                    <Button size="small" color="primary" variant="contained">
-                      {getButtonLabel(secondaryImg, isSavingSecondary)}
-                    </Button>
-                  </InputFileButton>
-                </Box>
-              </Box>
+              <ArticleImage
+                imgSrc={secondaryImgUrl()}
+                imgAlt={article && article.title}
+                onRemove={() => openRemoveDialog('secondary')}
+                onChange={(image) => changeImage(image, 'secondary')}
+                showRemoveButton={Boolean(secondaryImg)}
+                buttonLabel={getButtonLabel(secondaryImg, isSavingSecondary)}
+                buttonDisabled={isSavingSecondary}
+                imageType="article-secondary-img"
+              />
             </Box>
             <Divider />
           </ArticleSecondaryImageArea>
@@ -219,16 +252,16 @@ function ArticleImages(props) {
                   </Box>
                 </Box>
               </Box>
-              <Box display="flex" flexDirection="column" justifyContent="space-between" alignItems="center" marginX={2} marginY={1} width="100%">
-                <img src={headerImgUrl()} alt={article && article.title} className="article-header-img" />
-                <Box display="flex" alignItems="center">
-                  <InputFileButton onChange={(image) => changeImage(image, 'header')} name="header" disabled={isSavingHeader}>
-                    <Button size="small" color="primary" variant="contained">
-                      {getButtonLabel(headerImg, isSavingHeader)}
-                    </Button>
-                  </InputFileButton>
-                </Box>
-              </Box>
+              <ArticleImage
+                imgSrc={headerImgUrl()}
+                imgAlt={article && article.title}
+                onRemove={() => openRemoveDialog('header')}
+                onChange={(image) => changeImage(image, 'header')}
+                showRemoveButton={Boolean(headerImg)}
+                buttonLabel={getButtonLabel(headerImg, isSavingHeader)}
+                buttonDisabled={isSavingHeader}
+                imageType="article-header-img"
+              />
             </Box>
           </ArticleHeaderImageArea>
         </Box>
