@@ -13,7 +13,6 @@ import { Link } from 'react-router-dom';
 
 import { devices } from '@/config/devices';
 
-
 const drawerWidth = 80;
 
 export const MenuRoot = styled(Box)({
@@ -61,7 +60,6 @@ export const CustomLink = styled(Link)({
   color: 'inherit',
   textDecoration: 'none',
 });
-
 
 export const CustomListItem = styled(ListItem)({
   display: 'flex',

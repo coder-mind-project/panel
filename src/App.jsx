@@ -55,7 +55,6 @@ import MyAccount from './components/Users/MyAccount/MyAccount';
 import './index.css';
 import { AppContent, AppContainer } from './styles';
 
-
 function App(props) {
   const {
     setMenu,
@@ -207,7 +206,6 @@ App.defaultProps = {
   error: false,
 };
 
-
 const mapStateToProps = (state) => ({
   user: state.user,
   error: state.error,
@@ -222,6 +220,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   setMenu: callMenu,
   callToast: toastEmitter,
 }, dispatch);
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
