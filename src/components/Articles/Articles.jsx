@@ -140,11 +140,6 @@ function Articles(props) {
     }
   }
 
-  function showStats() {
-    // eslint-disable-next-line no-console
-    console.log('show stats');
-  }
-
   function changePage(futurePage) {
     setPage(futurePage + 1);
     setReload(true);
@@ -293,12 +288,6 @@ function Articles(props) {
               tooltip: 'Novo artigo',
               icon: 'add_circle',
               onClick: openCreateArticleDialog,
-              position: 'toolbar',
-            },
-            {
-              tooltip: 'Métricas',
-              icon: 'bar_chart',
-              onClick: showStats,
               position: 'toolbar',
             },
             {
