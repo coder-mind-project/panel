@@ -18,10 +18,11 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
   LinearProgress,
+  InputLabel,
+  Box,
 } from '@material-ui/core';
 
 import PasswordField from '@/components/PasswordField.jsx';
@@ -70,15 +71,14 @@ function DialogSetPassword(props) {
     >
       { saving && <LinearProgress color="primary" />}
       <DialogTitle>
-        Alterar senha
+        Informe a nova senha
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="change_password">
-          Informe a nova senha
-        </DialogContentText>
         <form onSubmit={changePassword}>
+          <Box mb={1}>
+            <InputLabel>Senha</InputLabel>
+          </Box>
           <PasswordField
-            label="Senha"
             inputId="new-password"
             inputAutoComplete="new-password"
             value={password}
