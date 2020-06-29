@@ -10,10 +10,16 @@ import {
   Container,
 } from '@material-ui/core';
 
+import { Link } from 'react-router-dom';
+
 import Avatar from 'react-avatar';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
 import { devices } from '@/config/devices';
+
+export const FakeLink = styled(Link)({
+  textDecoration: 'none',
+});
 
 export const CustomIcon = styled(Icon)({
   marginRight: '5px',

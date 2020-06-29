@@ -8,8 +8,10 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
-import { connect } from 'react-redux';
 import axios from 'axios';
+import { connect } from 'react-redux';
+
+import { scrollToTop } from '@/shared/index';
 
 import Header from '../../Header';
 
@@ -62,6 +64,11 @@ function MyAccount(props) {
 
     return () => source.cancel();
   }, [user, userState, error]);
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   return (
     <CustomContainer>
       <Header
