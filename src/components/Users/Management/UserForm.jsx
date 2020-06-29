@@ -39,7 +39,6 @@ import Header from '@/components/Header.jsx';
 import PasswordField from '@/components/PasswordField.jsx';
 import FloatingButton from '@/components/Buttons/FloatingButton.jsx';
 
-
 import UserFormSection from './UserFormSection';
 import UserFormHud from './UserFormHud';
 import DialogConfirmRemoveUser from './DialogConfirmRemoveUser';
@@ -335,7 +334,6 @@ function UserForm(props) {
               </MuiPickersUtilsProvider>
               <CustomTextField
                 label="Endereço"
-
                 value={userState.address || ''}
                 onChange={(evt) => handleChange(evt, 'address')}
               />
