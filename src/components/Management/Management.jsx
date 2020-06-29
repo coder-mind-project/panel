@@ -40,6 +40,10 @@ function Management(props) {
     if (!hideHelp) getManagementConfig();
   }, [hideHelp]);
 
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   return (
     <Container id="component">
       <FloatingButton icon="keyboard_arrow_up" action={goToTheTop} />
@@ -65,6 +69,5 @@ function Management(props) {
 }
 
 const mapStateToProps = (state) => ({ user: state.user });
-
 
 export default connect(mapStateToProps)(Management);

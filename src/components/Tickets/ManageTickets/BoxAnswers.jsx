@@ -8,7 +8,6 @@ import { bindActionCreators } from 'redux';
 
 import axios from 'axios';
 
-
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
 

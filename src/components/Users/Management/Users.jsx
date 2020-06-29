@@ -34,7 +34,6 @@ import {
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { info } from '@/config/toasts';
 
-
 import { scrollToTop } from '@/shared/index';
 
 import LoadingList from '@/components/LoadingList.jsx';
@@ -145,7 +144,6 @@ function Users(props) {
     }
     setConfirmRemoveUserDialog(false);
   }
-
 
   function changeOrder() {
     const newOrder = order === 'asc' ? 'desc' : 'asc';
@@ -268,18 +266,6 @@ function Users(props) {
                         </Box>
                       </Box>
                     </TableOrder>
-                    <TablePagination
-                      rowsPerPageOptions={OPTIONS_LIMIT}
-                      colSpan={4}
-                      count={count}
-                      rowsPerPage={limit}
-                      labelRowsPerPage={LIMIT_LABEL}
-                      labelDisplayedRows={DISPLAYED_ROWS}
-                      page={page - 1}
-                      onChangePage={changePage}
-
-                      onChangeRowsPerPage={defineLimit}
-                    />
                   </TableRow>
                   <TableRow>
                     <TableCell>
@@ -352,7 +338,6 @@ function Users(props) {
                         </CustomLink>
                         <CustomIconButton
                           icon="delete_forever"
-                          color="secondary"
                           tooltip={<Typography component="span" variant="body2">Remover</Typography>}
                           onClick={() => showConfirmRemoveUserDialog(elem)}
                         />

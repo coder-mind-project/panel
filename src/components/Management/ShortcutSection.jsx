@@ -14,7 +14,6 @@ import {
 import { CustomCardContent } from './styles';
 import ShortcutOption from './ShortcutOption';
 
-
 const ShortcutSection = (props) => {
   const { closeHideHelp } = { ...props };
 
@@ -61,6 +60,5 @@ const ShortcutSection = (props) => {
     </Grow>
   );
 };
-
 
 export default ShortcutSection;

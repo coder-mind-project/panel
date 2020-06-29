@@ -26,7 +26,6 @@ import Header from '@/components/Header.jsx';
 import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
 import LoadingList from '@/components/LoadingList.jsx';
 
-
 import {
   OPTIONS_LIMIT,
   DEFAULT_LIMIT,
@@ -122,7 +121,6 @@ function Categories(props) {
     setLimit(newLimit);
     setReload(true);
   }
-
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -284,7 +282,6 @@ function Categories(props) {
                     />
                     <CustomIconButton
                       icon="delete_forever"
-                      color="secondary"
                       tooltip={<Typography component="span" variant="body2">Remover</Typography>}
                       onClick={() => selectCategory(elem, 'remove')}
                     />

@@ -9,11 +9,9 @@ import {
   CardActions,
 } from '@material-ui/core';
 
-import { Link } from 'react-router-dom';
-
 import Button from '../Buttons/Button';
 
-import { CustomGrid, CustomCard } from './styles';
+import { CustomGrid, CustomCard, FakeLink } from './styles';
 
 function Settings() {
   return (
@@ -54,13 +52,13 @@ function Settings() {
             </CardContent>
             <CardActions>
               <Box width="100%" ml={2} mr={2}>
-                <Link to="/users" className="linkRouter">
+                <FakeLink to="/users">
                   <Button
                     color="primary"
                     icon="exit_to_app"
                     text="Acessar"
                   />
-                </Link>
+                </FakeLink>
               </Box>
             </CardActions>
           </CustomCard>
@@ -88,13 +86,13 @@ function Settings() {
             </CardContent>
             <CardActions>
               <Box width="100%" ml={2} mr={2}>
-                <Link to="/tickets" className="linkRouter">
+                <FakeLink to="/tickets">
                   <Button
                     color="primary"
                     icon="exit_to_app"
                     text="Acessar"
                   />
-                </Link>
+                </FakeLink>
               </Box>
             </CardActions>
           </CustomCard>
