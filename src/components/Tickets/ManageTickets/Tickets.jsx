@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { appTheme, userType } from '@/types';
 import {
   Container,
   Table,
@@ -48,11 +49,11 @@ import {
   TableIcon,
   HudButtons,
   HudLink,
+  TableWrapper,
 } from './styles';
 
-
 function Tickets(props) {
-  const { user } = { ...props };
+  const { user, theme } = props;
 
   const [tickets, setTickets] = useState([]);
   const [page, setPage] = useState(1);
@@ -71,7 +72,6 @@ function Tickets(props) {
   const [loading, setLoading] = useState(false);
   const [redirectTo, setRedirectTo] = useState('');
   const [reload, setReload] = useState(true);
-
 
   function prepareForSearchWithFilters(newFilters) {
     const filter = {
@@ -238,11 +238,20 @@ function Tickets(props) {
       {tickets.length > 0
         && (
         <Paper>
-          <Container className="wrapper">
+          <TableWrapper>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell />
+                  <TableCell>
+                    <Box display="flex" alignItems="center" justifyContent="center">
+                      <TableIcon fontSize="small" color="action">
+                        playlist_add_check
+                      </TableIcon>
+                      <Typography component="span" variant="body1" align="center">
+                        Status
+                      </Typography>
+                    </Box>
+                  </TableCell>
                   <TableCell>
                     <Box display="flex" alignItems="center" justifyContent="center">
                       <TableIcon fontSize="small" color="action">
@@ -304,7 +313,7 @@ function Tickets(props) {
                             && (
                               <CustomIconButton
                                 icon="report"
-                                color="secondary"
+                                color={theme === 'dark' ? 'default' : 'secondary'}
                                 tooltip={(<Typography component="span" variant="body2">Ticket não lido</Typography>)}
                               />
                             )
@@ -313,7 +322,7 @@ function Tickets(props) {
                           && (
                             <CustomIconButton
                               icon="check_circle_outline"
-                              color="primary"
+                              color={theme === 'dark' ? 'default' : 'primary'}
                               aria-label="Ticket lido"
                               tooltip={(<Typography component="span" variant="body2">Ticket lido</Typography>)}
                             />
@@ -330,8 +339,9 @@ function Tickets(props) {
                     <TableCell scope="_id">
                       <Tooltip title={(<span style={{ fontSize: '0.8rem' }}>Abrir ticket</span>)}>
                         <Button
-                          variant="text"
-                          color="primary"
+                          fullWidth
+                          variant="outlined"
+                          color={theme === 'dark' ? 'default' : 'primary'}
                           onClick={() => toogleTicketDialog(true, ticket)}
                         >
                           {ticket._id}
@@ -374,7 +384,7 @@ function Tickets(props) {
                 <TableRow>
                   <TablePagination
                     rowsPerPageOptions={OPTIONS_LIMIT}
-                    colSpan={3}
+                    colSpan={6}
                     count={count}
                     rowsPerPage={limit}
                     labelRowsPerPage={LIMIT_LABEL}
@@ -398,7 +408,7 @@ function Tickets(props) {
                 />
                 )
             }
-          </Container>
+          </TableWrapper>
         </Paper>
         )
     }
@@ -406,5 +416,10 @@ function Tickets(props) {
   );
 }
 
-const mapStateToProps = (state) => ({ user: state.user });
+Tickets.propTypes = {
+  theme: appTheme.isRequired,
+  user: userType.isRequired,
+};
+
+const mapStateToProps = (state) => ({ user: state.user, theme: state.theme });
 export default connect(mapStateToProps)(Tickets);

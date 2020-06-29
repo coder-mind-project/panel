@@ -9,6 +9,7 @@ import {
   Typography,
   Button,
   Menu,
+  Container,
 } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
@@ -54,7 +55,6 @@ export const CustomFormControl = styled(FormControl)({
   },
 });
 
-
 export const BoxAnswers = styled(Box)({
   padding: '1rem',
   overflowY: 'scroll',
@@ -63,7 +63,6 @@ export const BoxAnswers = styled(Box)({
   justifyContent: 'flex-start',
   height: '100%',
 });
-
 
 export const BoxFieldAnswer = styled(Box)({
   display: 'flex',
@@ -170,5 +169,15 @@ export const HudLink = styled(Link)({
   [devices.tablet]: {
     width: '100%',
     margin: 0,
+  },
+});
+
+export const TableWrapper = styled(Container)({
+  marginBottom: '20px',
+  overflowX: 'scroll',
+  minHeight: '80vh',
+  '& th': {
+    fontSize: '0.875rem !important',
+    fontWeight: '400 !important',
   },
 });
