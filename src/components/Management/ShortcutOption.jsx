@@ -3,7 +3,6 @@ import { Icon, Typography } from '@material-ui/core';
 
 import { CustomShortcutOption, CustomLink } from './styles';
 
-
 const ShortcutOption = (props) => {
   const {
     icon,

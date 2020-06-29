@@ -5,9 +5,8 @@ import {
   Typography, CardActions,
   Divider,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
-import { CustomGrid, CustomCard } from './styles';
+import { CustomGrid, CustomCard, FakeLink } from './styles';
 
 import Button from '../Buttons/Button';
 
@@ -57,13 +56,13 @@ const ThemesAndCategories = (props) => {
             </CardContent>
             <CardActions>
               <Box width="100%" ml={2} mr={2}>
-                <Link to="/themes" className="linkRouter">
+                <FakeLink to="/themes">
                   <Button
                     color="primary"
                     icon="exit_to_app"
                     text="Acessar"
                   />
-                </Link>
+                </FakeLink>
               </Box>
             </CardActions>
           </CustomCard>
@@ -95,13 +94,13 @@ const ThemesAndCategories = (props) => {
             </CardContent>
             <CardActions>
               <Box width="100%" ml={2} mr={2}>
-                <Link to="/categories" className="linkRouter">
+                <FakeLink to="/categories">
                   <Button
                     color="primary"
                     icon="exit_to_app"
                     text="Acessar"
                   />
-                </Link>
+                </FakeLink>
               </Box>
             </CardActions>
           </CustomCard>

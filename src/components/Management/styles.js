@@ -60,4 +60,8 @@ export const CustomLink = styled(Link)({
   },
 });
 
+export const FakeLink = styled(Link)({
+  textDecoration: 'none',
+});
+
 export default { CustomCard, CustomGrid };

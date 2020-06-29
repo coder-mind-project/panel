@@ -66,5 +66,4 @@ function Management(props) {
 
 const mapStateToProps = (state) => ({ user: state.user });
 
-
 export default connect(mapStateToProps)(Management);
