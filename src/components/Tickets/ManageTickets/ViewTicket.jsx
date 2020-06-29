@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { appTheme, ticketType } from '@/types';
+
 import {
   Box,
   Button,
@@ -30,7 +33,8 @@ function ViewTicket(props) {
     defineType,
     updateTicket,
     showAnswers,
-  } = { ...props };
+    theme,
+  } = props;
 
   const [showResponseField, setShowResponseField] = useState(false);
   const [readed, setReaded] = useState(false);
@@ -142,7 +146,7 @@ function ViewTicket(props) {
             {ticket._id}
           </Typography>
           <Box display="flex" alignItems="center" justifyContent="center">
-            <Button variant="text" color="primary" onClick={toogleResponse}>
+            <Button variant={theme === 'dark' ? 'contained' : 'text'} color="primary" size="small" onClick={toogleResponse}>
               Responder
             </Button>
           </Box>
@@ -155,6 +159,7 @@ function ViewTicket(props) {
               label="Ticket"
               value={ticket._id}
               disabled
+              theme={theme}
               inputProps={{
                 className: 'disabled-text-field',
               }}
@@ -166,6 +171,7 @@ function ViewTicket(props) {
               label="Tipo de ticket"
               value={defineType(ticket.content.type)}
               disabled
+              theme={theme}
               inputProps={{
                 className: 'disabled-text-field',
               }}
@@ -177,6 +183,7 @@ function ViewTicket(props) {
               label="E-mail de solicitação"
               value={ticket.content.email}
               disabled
+              theme={theme}
               inputProps={{
                 className: 'disabled-text-field',
               }}
@@ -191,6 +198,7 @@ function ViewTicket(props) {
                     label="Nome do usuário"
                     value={ticket.user.name}
                     disabled
+                    theme={theme}
                     inputProps={{
                       className: 'disabled-text-field',
                     }}
@@ -206,6 +214,7 @@ function ViewTicket(props) {
                     label="Código do usuário"
                     value={ticket.user._id}
                     disabled
+                    theme={theme}
                     inputProps={{
                       className: 'disabled-text-field',
                     }}
@@ -221,6 +230,7 @@ function ViewTicket(props) {
                     label="Código do administrador"
                     value={ticket.admin ? ticket.admin._id : 'Administrador não localizado'}
                     disabled
+                    theme={theme}
                     inputProps={{
                       className: 'disabled-text-field',
                     }}
@@ -236,6 +246,7 @@ function ViewTicket(props) {
                     label="Data de ocorrência"
                     value={ticket.content.dateOccurrence ? displayFullDate(ticket.content.dateOccurrence) : ''}
                     disabled
+                    theme={theme}
                     inputProps={{
                       className: 'disabled-text-field',
                     }}
@@ -253,6 +264,7 @@ function ViewTicket(props) {
               label="Data de envio"
               value={ticket.content.createdAt ? displayFullDate(ticket.content.createdAt) : ''}
               disabled
+              theme={theme}
               inputProps={{
                 className: 'disabled-text-field',
               }}
@@ -273,6 +285,7 @@ function ViewTicket(props) {
                       label="Software"
                       value={defineSoftware(ticket.content.software)}
                       disabled
+                      theme={theme}
                       inputProps={{
                         className: 'disabled-text-field',
                       }}
@@ -286,6 +299,7 @@ function ViewTicket(props) {
                     label="Dispositivo"
                     value={defineDevice(ticket.content.device)}
                     disabled
+                    theme={theme}
                     inputProps={{
                       className: 'disabled-text-field',
                     }}
@@ -299,6 +313,7 @@ function ViewTicket(props) {
                           label="Navegador"
                           value={defineBrowser(ticket.content.browser)}
                           disabled
+                          theme={theme}
                           inputProps={{
                             className: 'disabled-text-field',
                           }}
@@ -315,6 +330,7 @@ function ViewTicket(props) {
                           value={ticket.content.anotherBrowser}
                           fullWidth
                           disabled
+                          theme={theme}
                           inputProps={{
                             className: 'disabled-text-field',
                           }}
@@ -334,6 +350,7 @@ function ViewTicket(props) {
               multiline
               rows="8"
               disabled
+              theme={theme}
               inputProps={{
                 className: 'disabled-text-field',
               }}
@@ -347,8 +364,10 @@ function ViewTicket(props) {
       </DialogContent>
       <DialogActions>
         <Button
+          variant={theme === 'dark' ? 'contained' : 'text'}
           color="primary"
           onClick={close}
+          size="small"
         >
           Fechar
         </Button>
@@ -357,7 +376,20 @@ function ViewTicket(props) {
   );
 }
 
-const mapStateToProps = (state) => ({ user: state.user, toast: state.config });
+ViewTicket.propTypes = {
+  theme: appTheme.isRequired,
+  ticket: ticketType.isRequired,
+  onClose: PropTypes.func.isRequired,
+  defineType: PropTypes.func.isRequired,
+  updateTicket: PropTypes.func.isRequired,
+  showAnswers: PropTypes.bool,
+};
+
+ViewTicket.defaultProps = {
+  showAnswers: false,
+};
+
+const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewTicket);
