@@ -8,7 +8,7 @@ import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error as toastError } from '@/config/toasts';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import {
   Dialog,
@@ -33,7 +33,7 @@ function ConfirmRemoveUser(props) {
 
   async function remove() {
     const { _id } = user;
-    const url = `${backendUrl}/users/${_id}`;
+    const url = `/users/${_id}`;
     setRemoving(true);
     await axios.delete(url).then(() => {
       callToast(success('Usuário removido com sucesso'));

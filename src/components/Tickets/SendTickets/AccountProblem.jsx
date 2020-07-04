@@ -24,7 +24,7 @@ import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pi
 import MomentUtils from '@date-io/moment';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '../../../config/backend';
+import { defineErrorMsg } from '../../../config/backend';
 
 import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 import { error as toastError } from '../../../config/toasts';
@@ -73,7 +73,7 @@ function AccountProblem(props) {
     const data = ticket;
 
     data.emailUser = user.email;
-    const url = `${backendUrl}/tickets`;
+    const url = '/tickets';
 
     await axios.post(url, data).then(() => {
       setSuccess(true);

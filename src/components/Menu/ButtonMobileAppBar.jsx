@@ -14,6 +14,7 @@ function ButtonMobileAppBar(props) {
     label,
     color,
     onClick,
+    isActive,
   } = props;
 
   return (
@@ -22,8 +23,8 @@ function ButtonMobileAppBar(props) {
         <Icon fontSize="small" color={color}>
           {icon}
         </Icon>
-        <Typography component="span" variant="caption" color={color}>
-          {label}
+        <Typography component="span" variant="caption" color={color} noWrap>
+          {isActive ? <strong>{label}</strong> : label }
         </Typography>
       </Box>
     </AppBarIconButton>
@@ -39,10 +40,12 @@ ButtonMobileAppBar.propTypes = {
     'secondary',
   ]),
   onClick: PropTypes.func.isRequired,
+  isActive: PropTypes.bool,
 };
 
 ButtonMobileAppBar.defaultProps = {
   color: 'inherit',
+  isActive: false,
 };
 
 export default ButtonMobileAppBar;

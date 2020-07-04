@@ -20,7 +20,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 import { success, error } from '@/config/toasts';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 
@@ -48,7 +48,7 @@ function ChangeMyPassword(props) {
   }
 
   async function verifyPassword() {
-    const url = `${backendUrl}/auth/logged`;
+    const url = '/auth/logged';
     const payload = {
       _id: user._id,
       password,
@@ -72,7 +72,7 @@ function ChangeMyPassword(props) {
       secondField: confirmNewPass,
     };
 
-    const url = `${backendUrl}/users/${user._id}`;
+    const url = `/users/${user._id}`;
 
     setSaving(true);
 

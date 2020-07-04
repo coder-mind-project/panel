@@ -22,7 +22,7 @@ import { celphoneMask } from '@/config/masks';
 import CustomButton from '@/components/Buttons/Button.jsx';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { connect } from 'react-redux';
 import { setUser as storeUser } from '@/redux/user/userActions';
@@ -85,7 +85,7 @@ function GeneralInformation(props) {
   async function save() {
     setSaving(true);
     try {
-      const url = `${backendUrl}/users/${user._id}`;
+      const url = `/users/${user._id}`;
 
       const data = await formatData();
 
@@ -118,7 +118,6 @@ function GeneralInformation(props) {
 
     const formData = new FormData();
     formData.append('profilePhoto', img);
-    formData.append('idUser', id);
 
     // Overriding content-type https header for uploading images
     const config = {
@@ -127,18 +126,18 @@ function GeneralInformation(props) {
       },
     };
 
-    const url = `${backendUrl}/users/img/${id}`;
+    const url = `/users/img/${id}`;
 
     setSendingPhoto(true);
 
     await axios.patch(url, formData, config).then(async (res) => {
       callToast(success('Operação realizada com sucesso'));
 
-      setUserState({ ...userState, profilePhoto: res.data });
-
+      const { profileImageUrl } = res.data;
+      setUserState({ ...userState, profilePhoto: profileImageUrl });
       const updatedUser = {
         user: {
-          ...user, profilePhoto: res.data,
+          ...user, profilePhoto: profileImageUrl,
         },
       };
 
@@ -183,7 +182,7 @@ function GeneralInformation(props) {
     if (resendingEmail) return;
 
     const id = user._id;
-    const url = `${backendUrl}/users/emails/${id}`;
+    const url = `/users/emails/${id}`;
 
     setResendingEmail(true);
 
@@ -201,7 +200,7 @@ function GeneralInformation(props) {
     if (cancelingChangeEmail) return;
 
     const id = user._id;
-    const url = `${backendUrl}/users/emails/${id}`;
+    const url = `/users/emails/${id}`;
 
     setCancelingChangeEmail(true);
 
@@ -300,7 +299,7 @@ function GeneralInformation(props) {
                       size={150}
                       round
                       name={user.name}
-                      src={userState.profilePhoto ? `${backendUrl}/${userState.profilePhoto}` : null}
+                      src={userState.profilePhoto || null}
                       alt="Foto de perfil"
                       onClick={showConfirmRemoveImage}
                     />

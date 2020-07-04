@@ -12,16 +12,17 @@ import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error } from '@/config/toasts';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
   LinearProgress,
+  InputLabel,
+  Box,
 } from '@material-ui/core';
 
 import PasswordField from '@/components/PasswordField.jsx';
@@ -43,7 +44,7 @@ function DialogSetPassword(props) {
     if (evt) evt.preventDefault();
 
     setSaving(true);
-    const url = `${backendUrl}/users/configs/${user._id}`;
+    const url = `/users/configs/${user._id}`;
 
     await axios.post(url, { password }).then(() => {
       callToast(success('Senha alterada com sucesso!'));
@@ -70,15 +71,14 @@ function DialogSetPassword(props) {
     >
       { saving && <LinearProgress color="primary" />}
       <DialogTitle>
-        Alterar senha
+        Informe a nova senha
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="change_password">
-          Informe a nova senha
-        </DialogContentText>
         <form onSubmit={changePassword}>
+          <Box mb={1}>
+            <InputLabel>Senha</InputLabel>
+          </Box>
           <PasswordField
-            label="Senha"
             inputId="new-password"
             inputAutoComplete="new-password"
             value={password}

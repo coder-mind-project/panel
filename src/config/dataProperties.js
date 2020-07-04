@@ -31,6 +31,7 @@ export const ERROR_MSG_CUSTOM = 'Ops, parece que ocorreu um erro. Tente recarreg
 export const COLOR_APP = '#8a05be';
 export const COLOR_APP_HOVER = 'rgba(138, 5, 190, .8)';
 export const COLOR_APP_LIGHT = 'rgba(138, 5, 190,.2)';
+export const COLOR_APP_ULTRA_LIGHT = 'rgba(138, 5, 190, 0.04)';
 
 export const CAPTCHA_SITE_KEY = process.env.REACT_APP_SITE_KEY_CAPTCHA;
 /*
@@ -44,6 +45,7 @@ export const DISPLAYED_ROWS = (value) =>
 export const APP_VERSION = '1.1.0';
 export const APP_BUILD = 'Development';
 export const APP_DEPENDENCIES = 'https://google.com.br';
+export const APP_REPORT_US = 'https://github.com/coder-mind-project/coder-mind-panel/issues/new';
 
 export const WHITE_LIST_ROUTES = [
   '/auth',

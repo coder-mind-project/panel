@@ -8,8 +8,9 @@ import {
   MenuItem,
 } from '@material-ui/core';
 
-import { displayFullDate } from '@/config/masks';
+import { useHistory } from 'react-router-dom';
 
+import { displayFullDate } from '@/config/masks';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -29,6 +30,8 @@ function TicketAnswer(props) {
 
   const [anchorMenu, setAnchorMenu] = useState(null);
 
+  const history = useHistory();
+
   function handleClick(event) {
     const ref = event.currentTarget;
     setAnchorMenu(ref);
@@ -39,8 +42,11 @@ function TicketAnswer(props) {
   }
 
   function goToUserDetails() {
-    if (!sender || sender._id) callToast(info('Usuário não localizado'));
-    window.open(`/users/${sender._id}`, '_self');
+    if (!sender || !sender._id) {
+      callToast(info('Usuário não localizado'));
+    } else {
+      history.push(`/user/${sender._id}`);
+    }
   }
 
   return (

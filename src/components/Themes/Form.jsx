@@ -18,7 +18,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { backendUrl, defineErrorMsg } from '../../config/backend';
+import { defineErrorMsg } from '../../config/backend';
 
 import { callToast as toastEmitter } from '../../redux/toast/toastActions';
 import { success, error as toastError } from '../../config/toasts';
@@ -55,7 +55,7 @@ function ThemeForm(props) {
     if (loading) return;
 
     const method = theme._id ? 'put' : 'post';
-    const url = method === 'post' ? `${backendUrl}/themes` : `${backendUrl}/themes/${theme._id}`;
+    const url = method === 'post' ? '/themes' : `/themes/${theme._id}`;
     setLoading(true);
 
     await axios[method](url, theme).then(() => {

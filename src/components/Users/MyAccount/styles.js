@@ -7,12 +7,19 @@ import {
   Tooltip,
   FormGroup,
   withStyles,
+  Container,
 } from '@material-ui/core';
+
+import { Link } from 'react-router-dom';
 
 import Avatar from 'react-avatar';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
 import { devices } from '@/config/devices';
+
+export const FakeLink = styled(Link)({
+  textDecoration: 'none',
+});
 
 export const CustomIcon = styled(Icon)({
   marginRight: '5px',
@@ -68,4 +75,8 @@ export const CustomTooltip = withStyles((theme) => ({
 
 export const ImageButton = styled(Avatar)({
   cursor: (props) => (props.haveImg ? 'pointer' : 'auto'),
+});
+
+export const CustomContainer = styled(Container)({
+  minHeight: '650px',
 });

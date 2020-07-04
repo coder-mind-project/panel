@@ -1,6 +1,9 @@
 import axios from 'axios';
+import { backendUrl } from './backend';
+import { goToHome } from '../shared/index';
 
 const success = (resp) => resp;
+
 const error = (err) => {
   const user = localStorage.getItem('user');
 
@@ -9,12 +12,12 @@ const error = (err) => {
 
     if (code === 401) {
       localStorage.removeItem('user');
-      window.location = '/';
+      goToHome();
     }
 
     if (code === 406) {
       setTimeout(() => {
-        window.location = '/';
+        goToHome();
       }, 3000);
     }
   }
@@ -22,5 +25,21 @@ const error = (err) => {
   return Promise.reject(err);
 };
 
+export function setAuthToken(newToken) {
+  const storage = JSON.parse(localStorage.getItem('user'));
+
+  const currentToken = storage ? storage.token : null;
+  const token = newToken || currentToken;
+
+  if (token) {
+    axios.defaults.headers.common.Authorization = `bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common.Authorization;
+  }
+}
 
 axios.interceptors.response.use(success, error);
+axios.defaults.baseURL = backendUrl;
+axios.defaults.timeout = 10000;
+
+export default { setAuthToken };

@@ -12,7 +12,6 @@ import {
   Box,
   Typography,
   Icon,
-  useMediaQuery,
 } from '@material-ui/core';
 
 import HideOnScroll from '@/components/HideOnScroll.jsx';
@@ -23,8 +22,6 @@ import ThemeSwitcher from '@/components/Menu/ThemeSwitcher.jsx';
 
 import LogoBlack from '@/assets/coder-mind-painelv1-preto.png';
 import LogoWhite from '@/assets/coder-mind-painelv1-branco.png';
-
-import { backendUrl } from '@/config/backend';
 
 import {
   CustomAppBar,
@@ -44,7 +41,9 @@ function AppBar(props) {
 
   const [anchorMenu, setAnchorMenu] = useState(null);
 
-  const isLightTheme = useMediaQuery(`(prefers-color-scheme: ${theme})`);
+  function isDarkTheme() {
+    return theme === 'dark';
+  }
 
   function openMenu(event) {
     setAnchorMenu(event.currentTarget);
@@ -65,7 +64,7 @@ function AppBar(props) {
         <Toolbar>
           <CustomLink to="/">
             <img
-              src={isLightTheme ? LogoBlack : LogoWhite}
+              src={isDarkTheme() ? LogoWhite : LogoBlack}
               width="130"
               alt="Coder Mind"
             />
@@ -87,7 +86,7 @@ function AppBar(props) {
                     name={user.name}
                     size={35}
                     round="30px"
-                    src={`${backendUrl}/${user.profilePhoto}`}
+                    src={user.profilePhoto}
                   />
                 </AppBarItems>
               )
@@ -115,18 +114,6 @@ function AppBar(props) {
                   </Icon>
                   <Typography component="span" variant="body2">
                     Minha conta
-                  </Typography>
-                </Box>
-              </MenuItem>
-            </CustomLink>
-            <CustomLink to="/ticket" onClick={closeMenu}>
-              <MenuItem>
-                <Box display="flex" alignItems="center">
-                  <Icon color="action">
-                    feedback
-                  </Icon>
-                  <Typography component="span" variant="body2">
-                    Fale conosco
                   </Typography>
                 </Box>
               </MenuItem>
@@ -159,6 +146,18 @@ function AppBar(props) {
                   </CustomLink>
                 )
               }
+            <CustomLink to="/ticket" onClick={closeMenu}>
+              <MenuItem>
+                <Box display="flex" alignItems="center">
+                  <Icon color="action">
+                    feedback
+                  </Icon>
+                  <Typography component="span" variant="body2">
+                    Ajuda
+                  </Typography>
+                </Box>
+              </MenuItem>
+            </CustomLink>
             <MenuItem onClick={logout}>
               <Box display="flex" alignItems="center">
                 <Icon color="action">

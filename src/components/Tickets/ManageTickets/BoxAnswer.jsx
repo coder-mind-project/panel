@@ -4,11 +4,11 @@ import {
   Icon,
 } from '@material-ui/core';
 
+import { connect } from 'react-redux';
 import axios from 'axios';
-import { defineErrorMsg, backendUrl } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { CustomInputBase, BoxFieldAnswer } from './styles';
-
 
 function BoxAnswer(props) {
   const {
@@ -17,6 +17,7 @@ function BoxAnswer(props) {
     sendedAnswer,
     emitAnswers,
     emitError,
+    theme,
   } = { ...props };
 
   const [answer, setAnswer] = useState('');
@@ -44,7 +45,7 @@ function BoxAnswer(props) {
 
     sendedAnswer(tempAnswer);
 
-    const url = `${backendUrl}/tickets/${ticketId}`;
+    const url = `/tickets/${ticketId}`;
 
     const data = {
       response: answer,
@@ -64,8 +65,9 @@ function BoxAnswer(props) {
   }
 
   return (
-    <BoxFieldAnswer>
+    <BoxFieldAnswer theme={theme}>
       <CustomInputBase
+        theme={theme}
         placeholder="Resposta"
         multiline
         rowsMax="3"
@@ -82,4 +84,6 @@ function BoxAnswer(props) {
   );
 }
 
-export default BoxAnswer;
+const mapStateToProps = (state) => ({ theme: state.theme });
+
+export default connect(mapStateToProps)(BoxAnswer);

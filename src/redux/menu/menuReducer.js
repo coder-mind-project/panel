@@ -1,11 +1,10 @@
+/* eslint-disable no-param-reassign */
 const INITIAL_STATE = false;
 
 export default function (state = INITIAL_STATE, action) {
-  if (action.menu) {
-    // eslint-disable-next-line no-param-reassign
-    state = action.menu;
+  if (typeof action.menu === 'boolean') {
+    state = action.menu || false;
   }
-
 
   return state;
 }

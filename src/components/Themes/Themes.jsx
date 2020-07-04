@@ -13,21 +13,20 @@ import {
   Paper,
   Box,
   LinearProgress,
-  CircularProgress,
   Typography,
 } from '@material-ui/core';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { scrollToTop } from '@/config/ScrollToTop';
+import { scrollToTop } from '@/shared/index';
 
 import CustomButton from '@/components/Buttons/Button.jsx';
 import CustomIconButton from '@/components/Buttons/IconButton.jsx';
 import Header from '@/components/Header.jsx';
 import DataNotFound from '@/components/NotFound/DataNotFound.jsx';
+import LoadingList from '@/components/LoadingList.jsx';
 
-import { backendUrl } from '@/config/backend';
 import {
   OPTIONS_LIMIT,
   DEFAULT_LIMIT,
@@ -127,7 +126,6 @@ function Themes(props) {
     setReload(true);
   }
 
-
   useEffect(() => {
     const source = axios.CancelToken.source();
 
@@ -135,7 +133,7 @@ function Themes(props) {
       try {
         setLoading(true);
 
-        const url = `${backendUrl}/themes?page=${page}&query=${query}&limit=${limit}`;
+        const url = `/themes?page=${page}&query=${query}&limit=${limit}`;
 
         await axios(url, { cancelToken: source.token }).then((res) => {
           setReload(false);
@@ -210,17 +208,7 @@ function Themes(props) {
           />
         </Box>
       </Box>
-      {loading && themes.length === 0 && (
-        <Box
-          width="100%"
-          height="300px"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <CircularProgress color="primary" size={80} />
-        </Box>
-      )}
+      {loading && themes.length === 0 && <LoadingList />}
       {!loading && themes.length === 0 && (
         <DataNotFound msg="Nenhum tema encontrado" />
       )}
@@ -280,7 +268,6 @@ function Themes(props) {
                     />
                     <CustomIconButton
                       icon="delete_forever"
-                      color="secondary"
                       tooltip={<Typography component="span" variant="body2">Remover</Typography>}
                       onClick={selectTheme(elem, 'remove')}
                     />

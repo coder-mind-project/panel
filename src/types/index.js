@@ -22,9 +22,13 @@ export const userType = shape({
   birthDate: oneOfType([
     Date,
     string,
+    object,
   ]),
   address: string,
-  number,
+  number: oneOfType([
+    number,
+    string,
+  ]),
   password: string,
   deleted: bool,
   customUrl: string,
@@ -159,4 +163,18 @@ export const reactRouterParams = shape({
   url: string,
   isExact: bool,
   params: object, // Property types are changed according to the context
+});
+
+export const toastConfig = shape({
+  type: string,
+  msg: string,
+  display: bool,
+});
+
+export const asyncSelectValueType = shape({
+  label: string,
+  value: oneOfType([
+    string,
+    number,
+  ]),
 });

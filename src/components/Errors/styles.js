@@ -16,7 +16,8 @@ export const ErrorContainer = styled(Container)({
 
 export const ErrorPaper = styled(Paper)({
   display: 'flex',
-  flexWrap: 'nowrap',
+  justifyContent: 'center',
+  flexWrap: 'wrap',
 });
 
 export const ErrorBox = styled(Box)({

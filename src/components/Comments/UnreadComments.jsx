@@ -18,7 +18,7 @@ import {
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { backendUrl } from '@/config/backend';
+
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
@@ -56,7 +56,7 @@ function UnreadComments(props) {
     try {
       if (!count) return;
 
-      const url = `${backendUrl}/comments`;
+      const url = '/comments';
       axios.patch(url);
       setComments([]);
       setCount(0);
@@ -78,7 +78,7 @@ function UnreadComments(props) {
   useEffect(() => {
     async function getNotifications() {
       setLoading(true);
-      const url = `${backendUrl}/comments?type=not-readed&limit=10`;
+      const url = '/comments?type=not-readed&limit=10';
 
       await axios(url).then((res) => {
         const newComments = res.data.comments || [];

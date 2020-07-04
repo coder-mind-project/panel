@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { connect } from 'react-redux';
-import { backendUrl } from '@/config/backend';
+
 import axios from 'axios';
 
 import { RedeemAccountContainer } from './styles';
@@ -63,7 +63,7 @@ function FormRemoveAccount(props) {
 
       setLoading(true);
 
-      const url = `${backendUrl}/auth/rescue?id=${params.uid}`;
+      const url = `/auth/rescue?id=${params.uid}`;
 
       await axios.delete(url).then(() => {
         setSuccess(true);

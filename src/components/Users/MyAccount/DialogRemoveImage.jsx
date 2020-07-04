@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { userType } from '@/types';
+import { userType, appTheme } from '@/types';
 
 import {
   Dialog,
@@ -16,7 +16,7 @@ import axios from 'axios';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error } from '@/config/toasts';
@@ -27,13 +27,14 @@ function RemoveImage(props) {
     closeDialog,
     user,
     callToast,
+    theme,
   } = props;
 
   const [removing, setRemoving] = useState(false);
 
   async function remove() {
     const id = user._id;
-    const url = `${backendUrl}/users/img/${id}`;
+    const url = `/users/img/${id}`;
 
     setRemoving(true);
 
@@ -69,12 +70,15 @@ function RemoveImage(props) {
         <Button
           onClick={closeDialog}
           disabled={removing}
+          size="small"
         >
           Fechar
         </Button>
         <Button
           onClick={remove}
           color="primary"
+          size="small"
+          variant={theme === 'dark' ? 'contained' : 'text'}
           disabled={removing}
         >
           Confirmar
@@ -89,12 +93,13 @@ RemoveImage.propTypes = {
   closeDialog: PropTypes.func.isRequired,
   user: userType.isRequired,
   callToast: PropTypes.func.isRequired,
+  theme: appTheme.isRequired,
 };
 
 RemoveImage.defaultProps = {
   open: false,
 };
 
-const mapStateToProps = (state) => ({ toast: state.toast });
+const mapStateToProps = (state) => ({ toast: state.toast, theme: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(RemoveImage);

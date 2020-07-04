@@ -10,6 +10,7 @@ import {
   LinearProgress,
   Button,
 } from '@material-ui/core';
+
 import axios from 'axios';
 
 import { connect } from 'react-redux';
@@ -18,7 +19,7 @@ import { callToast as toastEmitter } from '../../redux/toast/toastActions';
 
 import { displayFullDate } from '../../config/masks';
 
-import { backendUrl, defineErrorMsg } from '../../config/backend';
+import { defineErrorMsg } from '../../config/backend';
 import { success, error as toastError } from '../../config/toasts';
 
 import { CustomGrid } from './styles';
@@ -26,38 +27,38 @@ import { CustomGrid } from './styles';
 function SchedulerDefinitions(props) {
   const { callToast } = { ...props };
 
-  const [sincronizing, setSincronizing] = useState(false);
-  const [lastSincronization, setLastSincronization] = useState('');
+  const [synchronizing, setSynchronizing] = useState(false);
+  const [lastSynchronization, setLastSynchronization] = useState('');
   const [error, setError] = useState(false);
 
   async function sincronize() {
-    if (sincronizing) return;
-    setSincronizing(true);
+    if (synchronizing) return;
+    setSynchronizing(true);
 
-    const url = `${backendUrl}/stats/sincronization`;
+    const url = '/stats/synchronization';
 
     await axios.post(url).then((res) => {
-      setLastSincronization(displayFullDate(res.data.generatedAt));
+      setLastSynchronization(displayFullDate(res.data.generatedAt));
       callToast(success('Sincronização realizada com sucesso'));
     }).catch((err) => {
       const msg = defineErrorMsg(err);
       callToast(toastError(msg));
     });
 
-    setSincronizing(false);
+    setSynchronizing(false);
   }
 
   useEffect(() => {
     const source = axios.CancelToken.source();
 
-    async function getLastSincronization() {
+    async function getLastSynchronization() {
       try {
-        const url = `${backendUrl}/stats/sincronization`;
+        const url = '/stats/synchronization';
 
         await axios(url, { cancelToken: source.token }).then((res) => {
           if (res.data && res.data.generatedAt) {
             const formatedDate = displayFullDate(res.data.generatedAt);
-            setLastSincronization(formatedDate);
+            setLastSynchronization(formatedDate);
           }
         });
       } catch (err) {
@@ -68,10 +69,10 @@ function SchedulerDefinitions(props) {
       }
     }
 
-    if (!lastSincronization && !error) getLastSincronization();
+    if (!lastSynchronization && !error) getLastSynchronization();
 
     return () => source.cancel();
-  }, [lastSincronization, error]);
+  }, [lastSynchronization, error]);
 
   return (
     <CustomGrid item xs={12}>
@@ -87,7 +88,7 @@ function SchedulerDefinitions(props) {
       </Typography>
       <Box mt={3} mb={3} display="flex" flexWrap="wrap" alignItems="center">
         <Card>
-          {sincronizing
+          {synchronizing
             && <LinearProgress color="primary" />
           }
           <CardContent>
@@ -104,10 +105,10 @@ function SchedulerDefinitions(props) {
               </Box>
             </Box>
             <Typography variant="body1" component="p">Clique no botão para sincronizar manualmente</Typography>
-            { lastSincronization && (
+            { lastSynchronization && (
               <Typography variant="body2" component="span">
                 Ultima Sincronização:&nbsp;
-                {lastSincronization}
+                {lastSynchronization}
               </Typography>
             )}
           </CardContent>

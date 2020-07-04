@@ -19,8 +19,7 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import Logo from '@/assets/coder-mind-painelv1-preto.png';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
-
+import { defineErrorMsg } from '@/config/backend';
 
 import { connect } from 'react-redux';
 
@@ -47,7 +46,7 @@ function FormRedeemAccount(props) {
     if (confirming) return;
     if (evt) evt.preventDefault();
 
-    const url = `${backendUrl}/auth/rescue?token=${token}&id=${user._id}`;
+    const url = `/auth/rescue?token=${token}&id=${user._id}`;
     const data = { firstField, secondField };
 
     setConfirming(true);
@@ -100,7 +99,7 @@ function FormRedeemAccount(props) {
         return;
       }
 
-      const url = `${backendUrl}/auth/rescue?token=${tokenResulted}`;
+      const url = `/auth/rescue?token=${tokenResulted}`;
 
       await axios.post(url).then(async (res) => {
         setUser(res.data);
@@ -118,17 +117,24 @@ function FormRedeemAccount(props) {
   }, [userLogged, loading, location, user, authorized, error, token, loaded]);
 
   return (
-    <Box height="100%" width="100%" overflow="hidden">
+    <Box>
       {confirming && <LinearProgress color="primary" />}
-      <RedeemAccountContainer justifycontent="flex-start">
+      <RedeemAccountContainer response={error} option={success ? 'menu' : ''}>
         { !loading && authorized && !success
           && (
           <form onSubmit={changePassword}>
             <LogoArea>
-              <img src={Logo} alt="Logo" width="200" />
+              <img src={Logo} alt="Logo" className="logo-img" />
             </LogoArea>
             <Grid item xs={12}>
-              <Box width="100%" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+              <Box
+                width="100%"
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                mb={2}
+              >
                 <Typography component="h1" variant="h6">Recuperação de senha</Typography>
                 <Typography component="p" variant="body2">
                   {`Olá ${user.name}, informe a nova senha`}
@@ -147,6 +153,7 @@ function FormRedeemAccount(props) {
                 inputAutoComplete="new-password"
                 value={firstField}
                 fullWidth
+                variant="outlined"
                 margin="dense"
                 onChange={(evt) => setFirstField(evt.target.value)}
               />
@@ -156,6 +163,7 @@ function FormRedeemAccount(props) {
                 inputAutoComplete="new-password"
                 value={secondField}
                 fullWidth
+                variant="outlined"
                 margin="dense"
                 onChange={(evt) => setSecondField(evt.target.value)}
               />
@@ -176,7 +184,6 @@ function FormRedeemAccount(props) {
           && (
             <Box width="100%" height="100%" display="flex" alignItems="center" justifyContent="center" mt={2} mb={5}>
               <CircularProgress size={80} color="primary" />
-              {loading.toString()}
             </Box>
           )
         }

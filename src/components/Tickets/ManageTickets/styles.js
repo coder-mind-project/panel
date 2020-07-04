@@ -9,6 +9,7 @@ import {
   Typography,
   Button,
   Menu,
+  Container,
 } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
@@ -37,7 +38,7 @@ export const CustomTextField = styled(TextField)({
     marginRight: 0,
   },
   '& .disabled-text-field': {
-    color: '#000',
+    color: (props) => (props.theme === 'dark' ? '#fff' : '#000'),
   },
 });
 
@@ -54,7 +55,6 @@ export const CustomFormControl = styled(FormControl)({
   },
 });
 
-
 export const BoxAnswers = styled(Box)({
   padding: '1rem',
   overflowY: 'scroll',
@@ -64,12 +64,11 @@ export const BoxAnswers = styled(Box)({
   height: '100%',
 });
 
-
 export const BoxFieldAnswer = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: 'rgb(235,235,235)',
+  backgroundColor: (props) => (props.theme === 'dark' ? 'rgba(40, 40, 40, 0.8)' : 'rgb(235,235,235)'),
   width: '100%',
   maxHeight: '4rem',
   padding: '1rem 0',
@@ -95,7 +94,7 @@ export const BoxAnswerButton = styled(Button)({
 });
 
 export const CustomInputBase = styled(InputBase)({
-  backgroundColor: '#FFF',
+  backgroundColor: (props) => (props.theme === 'dark' ? '#424242' : '#FFF'),
   borderRadius: '10rem',
   width: '80%',
   maxHeight: '4.5rem',
@@ -108,6 +107,7 @@ export const BoxMessageAdmin = styled(Box)({
   backgroundColor: (props) => (props.fromadmin ? 'rgba(138, 5, 190, 0.3)' : '#fff'),
   display: 'flex',
   flexWrap: 'wrap',
+  whiteSpace: 'pre-line',
   padding: '0.45rem',
   borderRadius: '0.50rem',
   marginBottom: '0.70rem',
@@ -170,5 +170,15 @@ export const HudLink = styled(Link)({
   [devices.tablet]: {
     width: '100%',
     margin: 0,
+  },
+});
+
+export const TableWrapper = styled(Container)({
+  marginBottom: '20px',
+  overflowX: 'scroll',
+  minHeight: '80vh',
+  '& th': {
+    fontSize: '0.875rem !important',
+    fontWeight: '400 !important',
   },
 });

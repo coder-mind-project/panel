@@ -64,15 +64,17 @@ function UserFormHud(props) {
           </IconButton>
         </Box>
       )}
-      <CustomButton
-        color="primary"
-        size="small"
-        iconSize="small"
-        icon="save"
-        onClick={save}
-        disabled={isSaving}
-      />
-      { user._id
+      { !matches && (
+      <Box>
+        <CustomButton
+          color="primary"
+          size="small"
+          iconSize="small"
+          icon="save"
+          onClick={save}
+          disabled={isSaving}
+        />
+        { user._id
         && (
           <CustomButton
             color="secondary"
@@ -83,8 +85,8 @@ function UserFormHud(props) {
             disabled={isSaving}
           />
         )
-      }
-      { user._id
+        }
+        { user._id
         && (
           <CustomButton
             color="default"
@@ -97,13 +99,13 @@ function UserFormHud(props) {
         )
       }
 
-      { !matches && (
         <IconButton
           onClick={showMenu}
           size="small"
         >
           <Icon>more_vert</Icon>
         </IconButton>
+      </Box>
       )}
       <Menu
         anchorEl={anchorMenu}

@@ -1,4 +1,4 @@
-const size = {
+export const sizes = {
   mobileSmall: '320px',
   mobileMedium: '375px',
   mobileLarge: '475px',
@@ -10,15 +10,15 @@ const size = {
 };
 
 export const devices = {
-  mobileSmall: `@media (max-width: ${size.mobileSmall})`,
-  mobileMedium: `@media (max-width: ${size.mobileMedium})`,
-  mobileLarge: `@media (max-width: ${size.mobileLarge})`,
-  mobileExtraLarge: `@media (max-width: ${size.mobileExtraLarge})`,
-  tablet: `@media (max-width: ${size.tablet})`,
-  laptop: `@media (max-width: ${size.laptop})`,
-  laptopLarge: `@media (max-width: ${size.laptopLarge})`,
-  desktop: `@media (max-width: ${size.desktop})`,
-  desktopLarge: `@media (max-width: ${size.desktop})`,
+  mobileSmall: `@media (max-width: ${sizes.mobileSmall})`,
+  mobileMedium: `@media (max-width: ${sizes.mobileMedium})`,
+  mobileLarge: `@media (max-width: ${sizes.mobileLarge})`,
+  mobileExtraLarge: `@media (max-width: ${sizes.mobileExtraLarge})`,
+  tablet: `@media (max-width: ${sizes.tablet})`,
+  laptop: `@media (max-width: ${sizes.laptop})`,
+  laptopLarge: `@media (max-width: ${sizes.laptopLarge})`,
+  desktop: `@media (max-width: ${sizes.desktop})`,
+  desktopLarge: `@media (max-width: ${sizes.desktop})`,
 };
 
-export default { devices };
+export default { devices, sizes };

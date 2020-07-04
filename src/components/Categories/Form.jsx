@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { categoryType, appTheme } from '@/types';
+import { categoryType } from '@/types';
 
 import {
   Icon,
@@ -14,22 +14,19 @@ import {
   LinearProgress,
 } from '@material-ui/core';
 
-import AsyncSelect from 'react-select/async';
+import CustomAsyncSelect from '@/components/AsyncSelect.jsx';
 
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { success, error as toastError } from '@/config/toasts';
 
 import {
   CustomTextField,
-  CustomFormGroup,
-  CustomInputLabel,
-  searchThemeStyle,
 } from './styles';
 
 function CategoryForm(props) {
@@ -38,7 +35,6 @@ function CategoryForm(props) {
     propCategory,
     open,
     onClose,
-    theme,
   } = props;
 
   const [category, setCategory] = useState({});
@@ -69,7 +65,7 @@ function CategoryForm(props) {
   async function loadThemes(query) {
     let themes = [];
     try {
-      const url = `${backendUrl}/themes?query=${query}`;
+      const url = `/themes?query=${query}`;
       const response = await axios(url);
 
       themes = response.data.themes.map((elem) => ({
@@ -105,7 +101,7 @@ function CategoryForm(props) {
     if (loading) return;
 
     const method = category._id ? 'put' : 'post';
-    const url = method === 'post' ? `${backendUrl}/categories` : `${backendUrl}/categories/${category._id}`;
+    const url = method === 'post' ? '/categories' : `/categories/${category._id}`;
     setLoading(true);
 
     const data = formatData(category);
@@ -129,7 +125,6 @@ function CategoryForm(props) {
         });
       } else {
         const currentTheme = propCategory.theme || {};
-
         // Set label and value properties to display in async-select component
         const currentCategory = {
           ...propCategory,
@@ -184,24 +179,14 @@ function CategoryForm(props) {
             value={category.alias}
             onChange={(event) => handleChange(event, 'alias')}
           />
-          <CustomFormGroup>
-            <CustomInputLabel theme={theme}>
-              Tema
-            </CustomInputLabel>
-            <AsyncSelect
-              styles={searchThemeStyle({ theme })}
-              cacheOptions
-              value={category.theme || null}
-              isClearable
-              loadOptions={getThemes}
+          <Box margin="1rem" width="100%">
+            <CustomAsyncSelect
+              label="Tema"
+              value={category.theme}
               onChange={(value) => handleChangeSelect(value, 'theme')}
-              noOptionsMessage={(event) => (event.inputValue.length >= 3
-                ? 'Nenhum resultado encontrado'
-                : 'Faça uma busca com pelo menos 3 caracteres')}
-              loadingMessage={() => 'Carregando...'}
-              placeholder=""
+              loadOptions={getThemes}
             />
-          </CustomFormGroup>
+          </Box>
           <CustomTextField
             label="Descrição"
             error={Boolean(error.description)}
@@ -234,7 +219,6 @@ CategoryForm.propTypes = {
   propCategory: categoryType.isRequired,
   open: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
-  theme: appTheme.isRequired,
 };
 
 CategoryForm.defaultProps = {
@@ -242,7 +226,7 @@ CategoryForm.defaultProps = {
 };
 
 
-const mapStateToProps = (state) => ({ toast: state.config, theme: state.theme });
+const mapStateToProps = (state) => ({ toast: state.config });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoryForm);

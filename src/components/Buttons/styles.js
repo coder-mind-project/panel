@@ -15,7 +15,7 @@ export const CustomFab = styled(Fab)({
 });
 
 export const CustomButton = styled(Button)({
-  marginBottom: '10px',
+  marginBottom: (props) => (props.mb ? `${props.mb}px` : '10px'),
   paddingLeft: '10px',
   paddingRight: '10px',
   '& .MuiCircularProgress-root': {

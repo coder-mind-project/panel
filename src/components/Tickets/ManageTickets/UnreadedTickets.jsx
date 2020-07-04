@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { backendUrl } from '@/config/backend';
 import { userType, appTheme } from '@/types';
 
 import {
@@ -46,7 +45,7 @@ function UnreadedTickets(props) {
   useEffect(() => {
     async function getNotifications() {
       setLoading(true);
-      const url = `${backendUrl}/tickets/notifications`;
+      const url = '/tickets/notifications';
 
       await axios(url).then((res) => {
         const newTickets = res.data.tickets || [];
@@ -69,7 +68,6 @@ function UnreadedTickets(props) {
       setLoaded(true);
     }
   }, [loading, tickets, count, loaded, user]);
-
 
   return (
     <Box mr={3}>
@@ -137,13 +135,17 @@ function UnreadedTickets(props) {
               alignItems="center"
               justifyContent="center"
             >
-              <Box mt={1} mb={1}>
-                <CustomLink to="/tickets">
-                  <Button onClick={closeMenu} color="primary" size="small" variant={theme === 'dark' ? 'contained' : 'text'}>
-                    Visualizar tickets
-                  </Button>
-                </CustomLink>
-              </Box>
+              { count > 0 && !loading
+                && (
+                  <Box mt={1} mb={1}>
+                    <CustomLink to="/tickets">
+                      <Button onClick={closeMenu} color="primary" size="small" variant={theme === 'dark' ? 'contained' : 'text'}>
+                        Visualizar tickets
+                      </Button>
+                    </CustomLink>
+                  </Box>
+                )
+              }
             </Box>
             <Box mb={1} mt={1}>
               <Divider />
@@ -152,7 +154,7 @@ function UnreadedTickets(props) {
               && (
               <Box
                 p={1}
-                mb={2}
+                mb={1}
                 display="flex"
                 flexDirection="column"
                 justifyContent="center"
@@ -161,6 +163,13 @@ function UnreadedTickets(props) {
                 <Typography component="h3" variant="body2" align="center">
                   Ops, parece que não há nenhum ticket não visualizado.
                 </Typography>
+                <Box mt={1}>
+                  <CustomLink to="/tickets">
+                    <Button onClick={closeMenu} color="primary" size="small" variant={theme === 'dark' ? 'contained' : 'text'}>
+                      Visualizar tickets
+                    </Button>
+                  </CustomLink>
+                </Box>
               </Box>
               )
             }

@@ -9,12 +9,14 @@ import {
   DialogActions,
   Container,
   Button,
+  InputLabel,
+  Box,
 } from '@material-ui/core';
 
 import PasswordField from '@/components/PasswordField.jsx';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -42,7 +44,7 @@ function ConfirmAdminPassword(props) {
 
     setValidating(true);
 
-    const url = `${backendUrl}/auth/logged`;
+    const url = '/auth/logged';
 
     const payload = {
       password,
@@ -71,8 +73,10 @@ function ConfirmAdminPassword(props) {
       <DialogContent>
         <Container>
           <form onSubmit={validatePassword}>
+            <Box mb={1}>
+              <InputLabel>Senha</InputLabel>
+            </Box>
             <PasswordField
-              label="Senha"
               inputProps={{ autoComplete: 'current-password' }}
               fullWidth
               value={password}

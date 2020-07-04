@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { userType } from '@/types';
 import {
-  Container,
   ExpansionPanel,
   ExpansionPanelDetails,
   Grid,
@@ -9,15 +8,19 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
-import { connect } from 'react-redux';
 import axios from 'axios';
-import { backendUrl } from '@/config/backend';
+import { connect } from 'react-redux';
+
+import { scrollToTop } from '@/shared/index';
+
 import Header from '../../Header';
 
 import GeneralInformation from './GeneralInformation';
 import ExtraInformation from './ExtraInformation';
 import Configurations from './Configurations';
 import CustomPanelSummary from './CustomPanelSummary';
+
+import { CustomContainer } from './styles';
 
 function MyAccount(props) {
   const {
@@ -41,7 +44,7 @@ function MyAccount(props) {
 
     async function getUser() {
       const id = user._id;
-      const url = `${backendUrl}/users/${id}`;
+      const url = `/users/${id}`;
       setLoading(true);
 
       try {
@@ -61,8 +64,13 @@ function MyAccount(props) {
 
     return () => source.cancel();
   }, [user, userState, error]);
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   return (
-    <Container>
+    <CustomContainer>
       <Header
         icon="account_box"
         title="Minha conta"
@@ -130,7 +138,7 @@ function MyAccount(props) {
           </Grid>
           )
       }
-    </Container>
+    </CustomContainer>
   );
 }
 

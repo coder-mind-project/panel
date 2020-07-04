@@ -23,7 +23,7 @@ import { success, error as toastError } from '@/config/toasts';
 import { devices } from '@/config/devices';
 
 import axios from 'axios';
-import { backendUrl, defineErrorMsg } from '@/config/backend';
+import { defineErrorMsg } from '@/config/backend';
 
 import { appTheme } from '@/types';
 import SettingsDialogComments from './SettingsDialogComments';
@@ -80,7 +80,7 @@ function CommentSettingsDialog(props) {
     const currentSettings = JSON.parse(localStorage.getItem('cm-comments-settings'));
     const updatedSettings = currentSettings ? { ...currentSettings, ...settings } : { ...settings };
 
-    const url = `${backendUrl}/comments/settings`;
+    const url = '/comments/settings';
 
     await axios.post(url, updatedSettings).then((response) => {
       const latestSettings = response.data;
@@ -103,7 +103,7 @@ function CommentSettingsDialog(props) {
     async function getSettings() {
       const currentSettings = JSON.parse(localStorage.getItem('cm-comments-settings'));
       try {
-        const url = `${backendUrl}/comments/settings`;
+        const url = '/comments/settings';
         const options = currentSettings ? {
           headers: {
             'CM-TTL-Comments': currentSettings.ttl, // Time to leave to implement using data stored locally

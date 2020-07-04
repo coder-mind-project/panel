@@ -21,6 +21,15 @@ export function standard(theme) {
         'sans-serif',
       ].join(','),
     },
+    overrides: {
+      MuiFormLabel: {
+        root: {
+          '&$focused': {
+            color: theme === 'dark' ? 'rgba(255,255,255, .7) !important' : 'auto',
+          },
+        },
+      },
+    },
   });
 }
 

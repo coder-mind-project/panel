@@ -25,6 +25,7 @@ import {
   CustomIcon,
   CustomDivider,
   IsolatedGrid,
+  FakeLink,
 } from './styles';
 
 function Configurations(props) {
@@ -65,6 +66,33 @@ function Configurations(props) {
 
   return (
     <Container>
+      { user.tagAdmin && (
+        <Box mb={2}>
+          <Grid>
+            <Box width="100%" mb={2}>
+              <Box display="flex" alignItems="center">
+                <CustomIcon color="action">
+                  admin_panel_settings
+                </CustomIcon>
+                <Typography component="h3" variant="h6">
+                  Configurações de administrador
+                </Typography>
+              </Box>
+              <Typography component="span" variant="body2">
+                Acesse as configurações de administrador do painel.
+              </Typography>
+            </Box>
+            <FakeLink to="/management">
+              <CustomButton
+                color="primary"
+                icon="exit_to_app"
+                iconSize="small"
+                text="Acessar"
+              />
+            </FakeLink>
+          </Grid>
+        </Box>
+      )}
       <Grid>
         <Box width="100%">
           <Box display="flex" alignItems="center">
@@ -176,7 +204,6 @@ Configurations.propTypes = {
   theme: appTheme.isRequired,
   setTheme: PropTypes.func.isRequired,
 };
-
 
 const mapStateToProps = (state) => ({ theme: state.theme, user: state.user });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ setTheme: toogleTheme }, dispatch);
