@@ -158,7 +158,7 @@ function ExtraInformation(props) {
         width="100%"
       >
         <CustomTextField
-          label="Instragram"
+          label="Instagram"
           margin="dense"
           error={false}
           helperText={(
