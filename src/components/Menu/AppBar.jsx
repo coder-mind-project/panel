@@ -12,7 +12,6 @@ import {
   Box,
   Typography,
   Icon,
-  useMediaQuery,
 } from '@material-ui/core';
 
 import HideOnScroll from '@/components/HideOnScroll.jsx';
@@ -42,7 +41,9 @@ function AppBar(props) {
 
   const [anchorMenu, setAnchorMenu] = useState(null);
 
-  const isLightTheme = useMediaQuery(`(prefers-color-scheme: ${theme})`);
+  function isDarkTheme() {
+    return theme === 'dark';
+  }
 
   function openMenu(event) {
     setAnchorMenu(event.currentTarget);
@@ -63,7 +64,7 @@ function AppBar(props) {
         <Toolbar>
           <CustomLink to="/">
             <img
-              src={isLightTheme ? LogoBlack : LogoWhite}
+              src={isDarkTheme() ? LogoWhite : LogoBlack}
               width="130"
               alt="Coder Mind"
             />
