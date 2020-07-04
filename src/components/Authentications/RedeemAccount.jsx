@@ -5,10 +5,6 @@ import {
   Box,
   Button,
   TextField,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
   FormControl,
   NativeSelect,
   Stepper,
@@ -23,27 +19,24 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import Logo from '@/assets/coder-mind-painelv1-preto.png';
 
 import Recaptcha from 'react-google-invisible-recaptcha';
 
-import axios from 'axios';
+import { defineErrorMsg } from '@/config/backend';
+import { CAPTCHA_SITE_KEY } from '@/config/dataProperties';
+import { error as toastError } from '@/config/toasts';
+import { cpfMask, celphoneMask } from '@/config/masks';
 
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { callToast as toastEmitter } from '../../redux/toast/toastActions';
-import { error as toastError } from '../../config/toasts';
+import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 
 import CustomButton from '../Buttons/Button';
-
-import { defineErrorMsg } from '../../config/backend';
-
-import { CAPTCHA_SITE_KEY } from '../../config/dataProperties';
-
-import { cpfMask, celphoneMask } from '../../config/masks';
+import HelperDialog from './HelperDialog';
 
 import {
   RedeemAccountContainer,
@@ -58,24 +51,25 @@ function RescueAccount(props) {
   } = props;
 
   const [option, setOption] = useState('menu');
+  const [currentStep, setCurrentStep] = useState(0);
+  const [showDialog, setShowDialog] = useState(false);
+  const [steps, setSteps] = useState([
+    { label: 'Informações pessoais', completed: false, index: 1 },
+    { label: 'Informações da conta', completed: false, index: 2 },
+    { label: 'Confirmação de dados', completed: false, index: 3 },
+  ]);
+  const [waiting, setWaiting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState('');
+  const matches = useMediaQuery('(max-width: 565px)');
+  const recaptchaRef = useRef(null);
+
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
   const [cellphone, setCellphone] = useState('');
   const [publicProfile, setPublicProfile] = useState('imNotSure');
   const [dateBegin, setDateBegin] = useState(null);
   const [msg, setMsg] = useState('');
-  const [currentStep, setCurrentStep] = useState(0);
-  const [dialog, setDialog] = useState(false);
-  const [steps, setSteps] = useState([
-    { label: 'Informações pessoais', completed: false, index: 1 },
-    { label: 'Informações da conta', completed: false, index: 2 },
-    { label: 'Confirmação de dados', completed: false, index: 3 },
-  ]);
   const [response, setResponse] = useState(null);
-  const [waiting, setWaiting] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState('');
-  const matches = useMediaQuery('(max-width: 565px)');
-  const recaptchaRef = useRef(null);
 
   function clearForms() {
     setCpf('');
@@ -216,9 +210,9 @@ function RescueAccount(props) {
   return (
     <Box width="100%" height="100%">
       { waiting && <LinearProgress color="primary" />}
-      <RedeemAccountContainer option={option}>
-        <Box mt={option === 'emailAndPassword' ? 8 : 0}>
-          <img src={Logo} alt="Logo" width="200" />
+      <RedeemAccountContainer option={option} response={response}>
+        <Box>
+          <img src={Logo} alt="Logo" width="250" />
         </Box>
         <Recaptcha
           sitekey={CAPTCHA_SITE_KEY}
@@ -232,14 +226,14 @@ function RescueAccount(props) {
         { option === 'menu' && !response
         && (
           <Box mt={3}>
-            <Typography component="h1" variant="h6" align="center">Recuperação de conta Coder Mind</Typography>
-            <Box p={2} display="flex" justifyContent="center" alignItems="center">
+            <Typography component="h1" variant="h6" align="center">Recuperação de conta</Typography>
+            <Box p={1} mb={4} display="flex" justifyContent="center" alignItems="center">
               <Typography component="h2" variant="body1" align="center">
                 Selecione a opção que mais adequa ao seu problema
               </Typography>
             </Box>
             <Box width="100%" mb={2}>
-              <Button color="primary" variant="contained" fullWidth onClick={() => toogleOption('emailAndPassword')}>Não sei meu e-mail</Button>
+              <Button color="primary" variant="contained" fullWidth onClick={() => toogleOption('emailAndPassword')}>Não sei meu e-mail e senha</Button>
             </Box>
             <Box width="100%" mb={2}>
               <Button color="primary" variant="contained" fullWidth onClick={() => toogleOption('onlyPassword')}>Não sei minha senha</Button>
@@ -288,7 +282,7 @@ function RescueAccount(props) {
           && (
             <Box marginTop={option === 'emailAndPassword' ? 5 : 0}>
               <Box display="flex" justifyContent="center" mb={2}>
-                <Typography component="h1" variant="h6" align="center">Esqueci meu e-mail</Typography>
+                <Typography component="h1" variant="h6" align="center">Esqueci meu e-mail e senha</Typography>
               </Box>
               <Typography component="p" variant="body1">
                 Para recuperar sua conta, vamos fazer algumas perguntas sobre seu acesso.
@@ -316,7 +310,7 @@ function RescueAccount(props) {
                   <Button
                     variant="text"
                     color="primary"
-                    onClick={() => setDialog(true)}
+                    onClick={() => setShowDialog(true)}
                   >
                     Não sei uma ou mais informações solicitadas
                   </Button>
@@ -361,42 +355,55 @@ function RescueAccount(props) {
               { currentStep === 0
                 && (
                 <RedeemAccountFormControl fullWidth>
-                  <RedeemAccountTextField
-                    label="E-mail de contato"
-                    value={email}
-                    fullWidth
-                    onChange={handleChange(setEmail)}
-                    helperText="Este e-mail será utilizado para nossa equipe entrar em contato em caso de necessidade de avaliação dos nossos administradores"
-                  />
-                  <RedeemAccountTextField
-                    label="Informe seu número de telefone"
-                    value={cellphone}
-                    fullWidth
-                    onChange={handleChangeMaskData('cellphone')}
-                    inputProps={{ maxLength: 15 }}
-                    helperText="Caso não seu número de telefone não esteja cadastrado, deixe o campo em branco"
-                  />
+                  <Box my={2}>
+                    <Typography component="p" variant="body2">
+                      E-mail de contato
+                    </Typography>
+                    <RedeemAccountTextField
+                      label=""
+                      value={email}
+                      fullWidth
+                      onChange={handleChange(setEmail)}
+                      helperText="Este e-mail será utilizado para nossa equipe entrar em contato em caso de necessidade de avaliação dos nossos administradores"
+                    />
+                  </Box>
+                  <Box my={2}>
+                    <Typography component="p" variant="body2">
+                      Informe seu número de telefone
+                    </Typography>
+                    <RedeemAccountTextField
+                      label=""
+                      value={cellphone}
+                      fullWidth
+                      onChange={handleChangeMaskData('cellphone')}
+                      inputProps={{ maxLength: 15 }}
+                      helperText="Caso não seu número de telefone não esteja cadastrado, deixe o campo em branco"
+                    />
+                  </Box>
                 </RedeemAccountFormControl>
                 )}
               { currentStep === 1
                 && (
                   <RedeemAccountFormControl fullWidth>
-                    <Box width="100%" mb={2}>
+                    <Box my={2}>
                       <FormControl fullWidth>
                         <Typography component="p" variant="body2">
                           Seu perfil tem acesso público no website para os leitores?
                         </Typography>
-                        <NativeSelect
-                          value={publicProfile}
-                          onChange={handleChange(setPublicProfile)}
-                          inputProps={{
-                            id: 'public-profile',
-                          }}
-                        >
-                          <option value="imNotSure">Não tenho certeza</option>
-                          <option value="yes">Sim</option>
-                          <option value="no">Não</option>
-                        </NativeSelect>
+                        <Box my={1}>
+                          <NativeSelect
+                            value={publicProfile}
+                            onChange={handleChange(setPublicProfile)}
+                            inputProps={{
+                              id: 'public-profile',
+                            }}
+                            style={{ width: '100%' }}
+                          >
+                            <option value="imNotSure">Não tenho certeza</option>
+                            <option value="yes">Sim</option>
+                            <option value="no">Não</option>
+                          </NativeSelect>
+                        </Box>
                       </FormControl>
                     </Box>
                     <Box width="100%" mb={2}>
@@ -404,22 +411,24 @@ function RescueAccount(props) {
                         <Typography component="p" variant="body2">
                           Quando você começou a usar nossa plataforma?
                         </Typography>
-                        <MuiPickersUtilsProvider utils={MomentUtils}>
-                          <KeyboardDatePicker
-                            clearable
-                            cancelLabel="Cancelar"
-                            clearLabel="Limpar"
-                            value={dateBegin}
-                            onChange={(date) => handleDate(setDateBegin, date)}
-                            mask="__/__/____"
-                            maxDate={new Date()}
-                            maxDateMessage="Data acima do permitido"
-                            format="DD/MM/YYYY"
-                            invalidDateMessage="Formato de data inválido"
-                            helperText="Informe uma data aproximada, caso não tenha certeza"
-                            fullWidth
-                          />
-                        </MuiPickersUtilsProvider>
+                        <Box my={1} width="100%">
+                          <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <KeyboardDatePicker
+                              clearable
+                              cancelLabel="Cancelar"
+                              clearLabel="Limpar"
+                              value={dateBegin}
+                              onChange={(date) => handleDate(setDateBegin, date)}
+                              mask="__/__/____"
+                              maxDate={new Date()}
+                              maxDateMessage="Data acima do permitido"
+                              format="DD/MM/YYYY"
+                              invalidDateMessage="Formato de data inválido"
+                              helperText="Informe uma data aproximada, caso não tenha certeza"
+                              fullWidth
+                            />
+                          </MuiPickersUtilsProvider>
+                        </Box>
                       </FormControl>
                     </Box>
                   </RedeemAccountFormControl>
@@ -443,6 +452,7 @@ function RescueAccount(props) {
                             <Typography component="p" variant="body2">
                               E-mail de contato:
                               <br />
+                              {'R: '}
                               {email || 'Não informado'}
                             </Typography>
                           </li>
@@ -450,6 +460,7 @@ function RescueAccount(props) {
                             <Typography component="p" variant="body2">
                               Telefone cadastrado:
                               <br />
+                              {'R: '}
                               {cellphone || 'Não informado'}
                             </Typography>
                           </li>
@@ -457,6 +468,7 @@ function RescueAccount(props) {
                             <Typography component="p" variant="body2">
                               Seu perfil tem acesso público no website para os leitores?
                               <br />
+                              {'R: '}
                               {displayPublicProfile()}
                             </Typography>
                           </li>
@@ -464,6 +476,7 @@ function RescueAccount(props) {
                             <Typography component="p" variant="body2">
                               Quando você começou a usar nossa plataforma?
                               <br />
+                              {'R: '}
                               {dateBegin ? dateBegin.format('DD/MM/YYYY') : 'Não informado'}
                             </Typography>
                           </li>
@@ -471,17 +484,19 @@ function RescueAccount(props) {
                       </Box>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                      <TextField
-                        label="Descreva seu problema (opcional)"
-                        value={msg}
-                        fullWidth
-                        onChange={handleChange(setMsg)}
-                        variant="outlined"
-                        color="primary"
-                        multiline
-                        rows={6}
-                        helperText="É importante descrever bem sua situação, isto ajudará na análise de nossos administradores para a recuperação de sua conta."
-                      />
+                      <Box mx={2}>
+                        <TextField
+                          label="Descreva seu problema (opcional)"
+                          value={msg}
+                          fullWidth
+                          onChange={handleChange(setMsg)}
+                          variant="outlined"
+                          color="primary"
+                          multiline
+                          rows={6}
+                          helperText="É importante descrever bem sua situação, isto ajudará na análise de nossos administradores para a recuperação de sua conta."
+                        />
+                      </Box>
                     </Grid>
                   </Box>
                 )}
@@ -503,28 +518,7 @@ function RescueAccount(props) {
               </Box>
             </Box>
           )}
-        <Dialog onClose={() => setDialog(false)} aria-labelledby="dialog-more-information" open={dialog}>
-          <DialogTitle id="customized-dialog-title" onClose={() => setDialog(false)}>
-            Mais informações
-          </DialogTitle>
-          <DialogContent dividers>
-            <Typography variant="body1" component="p">
-              Caso nao saiba uma ou mais informações não tem problema!
-            </Typography>
-            <Typography variant="body1" component="p">
-              Preencha o formulário com o máximo de informações possíveis, dependendo,
-              estas informações poderão ser analisadas por uma pessoa.
-            </Typography>
-            <Typography variant="body1" component="p">
-              Você receberá um feedback em até 24 horas.
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setDialog(false)} color="primary">
-              Entendi
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <HelperDialog open={showDialog} onClose={(() => setShowDialog(false))} />
       </RedeemAccountContainer>
     </Box>
   );
