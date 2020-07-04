@@ -69,12 +69,21 @@ function ExtraInformation(props) {
     setUserState({ ...userState, [attr]: checked });
   }
 
+  function formatUserToSave() {
+    const userToSave = userState;
+
+    delete userToSave.cellphone;
+
+    return userToSave;
+  }
+
   async function save() {
     setSaving(true);
 
     const url = `/users/${userState._id}`;
 
-    await axios.patch(url, userState).then((res) => {
+    const userToSave = formatUserToSave();
+    await axios.patch(url, userToSave).then((res) => {
       callToast(success('Informações salvas com sucesso'));
       setOpenTooltip(false);
 
@@ -158,7 +167,7 @@ function ExtraInformation(props) {
         width="100%"
       >
         <CustomTextField
-          label="Instragram"
+          label="Instagram"
           margin="dense"
           error={false}
           helperText={(
@@ -302,7 +311,6 @@ ExtraInformation.propTypes = {
 ExtraInformation.defaultProps = {
   isActive: false,
 };
-
 
 const mapStateToProps = (state) =>
   ({
