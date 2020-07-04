@@ -59,13 +59,14 @@ export const RedeemAccountContainer = styled(Container)({
   backgroundColor: '#FFFFFF',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: (props) => (props.justifycontent === 'flex-start' ? 'flex-start' : 'center'),
+  justifyContent: (props) => (props.option === 'menu' || props.response ? 'center' : 'flex-start'),
   flexDirection: 'column',
-  height: '100%',
+  minHeight: '100vh',
   width: '100%',
   maxWidth: '100%',
-  overflowY: 'scroll',
-  paddingBottom: 24,
+  padding: 24,
+  color: '#000',
+  margin: 0,
 });
 
 export const RedeemAccountFormControl = styled(FormControl)({
@@ -84,6 +85,7 @@ export const LogoArea = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'flex-end',
+  marginBottom: 15,
   [devices.mobileLarge]: {
     height: (props) => (props.error ? '10% !important' : '30% !important'),
   },
