@@ -134,7 +134,7 @@ function ExtraInformation(props) {
             </FormHelperText>
           </CustomFormGroup>
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={5} md={4}>
           <CustomTooltip
             placement="top-start"
             arrow

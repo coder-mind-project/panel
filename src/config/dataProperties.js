@@ -42,9 +42,9 @@ export const LIMIT_LABEL = 'Limite: ';
 export const DISPLAYED_ROWS = (value) =>
   `${value.from}-${value.to} de ${value.count}`;
 
-export const APP_VERSION = '1.1.0';
-export const APP_BUILD = 'Development';
-export const APP_DEPENDENCIES = 'https://google.com.br';
+export const APP_VERSION = '2.0.0';
+export const APP_BUILD = 'Alpha';
+export const APP_DEPENDENCIES = 'https://github.com/coder-mind-project/panel/blob/master/package.json';
 export const APP_REPORT_US = 'https://github.com/coder-mind-project/coder-mind-panel/issues/new';
 
 export const WHITE_LIST_ROUTES = [

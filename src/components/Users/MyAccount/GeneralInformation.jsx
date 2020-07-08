@@ -39,8 +39,8 @@ import {
   ImageButton,
   CustomTextField,
   CustomKeyboardDatePicker,
+  FullTextField,
 } from './styles';
-
 
 function GeneralInformation(props) {
   const {
@@ -322,7 +322,7 @@ function GeneralInformation(props) {
           </Box>
         </Grid>
         <Grid item xs={12} md={9}>
-          <Box width="100%" alignItems="center">
+          <FullTextField>
             <CustomTextField
               label="E-mail"
               value={userState.email || ''}
@@ -341,7 +341,7 @@ function GeneralInformation(props) {
               helperText={emailHelper ? 'Existe uma confirmação de e-mail pendente, caso não seja o e-mail desejado informe um novo e salve, depois basta olhar sua caixa de entrada' : ''}
               onChange={(evt) => handleChange(evt, 'email')}
             />
-          </Box>
+          </FullTextField>
           <CustomTextField
             label="Nome"
             inputProps={{ maxLength: 50 }}
@@ -377,7 +377,7 @@ function GeneralInformation(props) {
               clearable
               cancelLabel="Cancelar"
               clearLabel="Limpar"
-              value={userState.birthDate}
+              value={userState.birthDate || null}
               onChange={handleDate}
               mask="__/__/____"
               maxDate={new Date()}
@@ -422,7 +422,6 @@ GeneralInformation.propTypes = {
 
 const mapStateToProps = (state) =>
   ({
-    user: state.user,
     toast: state.config,
   });
 
