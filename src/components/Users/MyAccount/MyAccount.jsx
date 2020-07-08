@@ -35,7 +35,6 @@ function MyAccount(props) {
   function handleChange(panel) {
     return (event, isExpanded) => {
       setExpanded(isExpanded ? panel : false);
-      setUserState(user);
     };
   }
 
@@ -49,7 +48,7 @@ function MyAccount(props) {
 
       try {
         await axios(url, { cancelToken: source.token }).then((res) => {
-          setUserState({ user: res.data });
+          setUserState(res.data);
         });
 
         setLoading(false);
@@ -63,7 +62,7 @@ function MyAccount(props) {
     if (!userState && !error) getUser();
 
     return () => source.cancel();
-  }, [user, userState, error]);
+  }, [user._id, userState, error]);
 
   useEffect(() => {
     scrollToTop();
@@ -104,7 +103,7 @@ function MyAccount(props) {
                 expanded={Boolean(expanded === 'general_information')}
               />
               <ExpansionPanelDetails>
-                <GeneralInformation />
+                <GeneralInformation user={userState} />
               </ExpansionPanelDetails>
             </ExpansionPanel>
             <ExpansionPanel

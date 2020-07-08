@@ -176,7 +176,7 @@ function Users(props) {
   }, [reload, users, count, limit, error, page, query, order]);
 
   return (
-    <Container>
+    <Container className="page">
       <Header
         title="Usuários"
         description="Usuários do painel"

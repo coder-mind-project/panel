@@ -197,7 +197,7 @@ function UserForm(props) {
   }, [userState, match, reload, sendEmail, callToast]);
 
   return (
-    <Container id="component">
+    <Container className="page">
       <Header
         title="Usuário"
         description="Consulte, altere, crie e remova usuários do sistema"
