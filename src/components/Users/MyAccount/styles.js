@@ -8,6 +8,7 @@ import {
   FormGroup,
   withStyles,
   Container,
+  Box,
 } from '@material-ui/core';
 
 import { Link } from 'react-router-dom';
@@ -31,6 +32,10 @@ export const CustomDivider = styled(Divider)({
 
 export const IsolatedGrid = styled(Grid)({
   marginTop: '5rem',
+});
+
+export const FullTextField = styled(Box)({
+  width: '85%',
 });
 
 export const CustomTextField = styled(TextField)({
