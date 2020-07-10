@@ -55,7 +55,7 @@ export const CommentContainer = styled(Grid)({
   maxWidth: '350px',
 });
 
-export const ArticleSmallImgContainer = styled(Box)({
+export const ArticleLogoImgContainer = styled(Box)({
   marginRight: '8px',
   '& .article-small-img': {
     height: '48px',
