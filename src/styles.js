@@ -13,6 +13,7 @@ export const AppContent = styled(Box)({
 });
 
 export const AppContainer = styled(Grid)({
+  minHeight: '100vh',
   backgroundColor: (props) => (props.theme === 'dark' ? 'rgba(40, 40, 40, .8)' : 'rgba(245, 245, 245, .8)'),
   color: (props) => (props.theme === 'dark' ? 'white' : 'auto'),
 });
