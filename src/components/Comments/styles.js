@@ -43,10 +43,6 @@ export const CustomMenuItem = styled(MenuItem)({
   },
 });
 
-export const CustomIcon = styled(Icon)({
-  color: '#666',
-});
-
 export const CustomMenu = styled(Menu)({
   marginTop: '.5rem',
 });

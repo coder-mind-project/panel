@@ -9,6 +9,7 @@ import {
   Menu,
   MenuItem,
   useMediaQuery,
+  Icon,
 } from '@material-ui/core';
 
 import { devices } from '@/config/devices';
@@ -32,7 +33,6 @@ import {
   HudIconButton,
   HudSearchBar,
   HudSearchBarContainer,
-  CustomIcon,
 } from './styles';
 
 function HudCommentList(props) {
@@ -198,7 +198,7 @@ function HudCommentList(props) {
         { matches && (
           <Box>
             <HudIconButton onClick={(evt) => handleOpenMenu(evt, 'options')}>
-              <CustomIcon>more_vert</CustomIcon>
+              <Icon>more_vert</Icon>
             </HudIconButton>
             <Menu
               anchorEl={anchorOptions}
@@ -250,7 +250,7 @@ function HudCommentList(props) {
             )}
             >
               <HudIconButton onClick={(evt) => handleOpenMenu(evt, 'order')}>
-                <CustomIcon>sort_by_alpha</CustomIcon>
+                <Icon>sort_by_alpha</Icon>
               </HudIconButton>
             </Tooltip>
             <Menu
@@ -285,7 +285,7 @@ function HudCommentList(props) {
             )}
             >
               <HudIconButton onClick={reload}>
-                <CustomIcon>refresh</CustomIcon>
+                <Icon>refresh</Icon>
               </HudIconButton>
             </Tooltip>
             <Tooltip title={(
@@ -299,7 +299,7 @@ function HudCommentList(props) {
             >
               <Box>
                 <HudIconButton searchtype={type} onClick={confirmAllAsReaded} disabled={type === 'only-readed'}>
-                  <CustomIcon>done_all</CustomIcon>
+                  <Icon>done_all</Icon>
                 </HudIconButton>
               </Box>
             </Tooltip>
@@ -313,7 +313,7 @@ function HudCommentList(props) {
             )}
             >
               <HudIconButton onClick={displaySettings}>
-                <CustomIcon>settings</CustomIcon>
+                <Icon>settings</Icon>
               </HudIconButton>
             </Tooltip>
           </Box>
