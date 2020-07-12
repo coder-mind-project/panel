@@ -20,7 +20,6 @@ import { displayFullDate, displayDate } from '@/config/masks';
 
 import axios from 'axios';
 
-
 import WhatIsDisabledAnswersDialog from './WhatIsDisabledAnswersDialog';
 
 import {
@@ -217,7 +216,11 @@ function AnswerItem(props) {
 
 AnswerItem.propTypes = {
   answer: commentType.isRequired,
-  changeAnswerState: PropTypes.func.isRequired,
+  changeAnswerState: PropTypes.func,
+};
+
+AnswerItem.defaultProps = {
+  changeAnswerState: () => null,
 };
 
 export default AnswerItem;
