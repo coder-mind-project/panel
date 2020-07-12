@@ -499,7 +499,7 @@ function AnswersSection(props) {
             </Box>
           )
         }
-        { latestAnswer
+        { latestAnswer && count > limit
           && (
             <Box width="100%">
               <AnswerItem answer={latestAnswer} />
