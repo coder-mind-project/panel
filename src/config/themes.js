@@ -29,6 +29,11 @@ export function standard(theme) {
           },
         },
       },
+      MuiContainer: {
+        root: {
+          maxWidth: '100% !important',
+        },
+      },
     },
   });
 }
