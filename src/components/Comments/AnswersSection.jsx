@@ -21,7 +21,6 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
@@ -36,7 +35,6 @@ import InfiniteScroll from 'react-infinite-scroller';
 import CustomButton from '@/components/Buttons/Button.jsx';
 
 import AnswerItem from './AnswerItem';
-
 
 import {
   DialogSettingsTitle,
@@ -53,7 +51,6 @@ function AnswersSection(props) {
     callToast,
     readComment,
   } = props;
-
 
   /**
    * @description Controller states
@@ -78,7 +75,6 @@ function AnswersSection(props) {
   const [latestAnswer, setLatestAnswer] = useState(null);
   const [order, setOrder] = useState('desc');
   const [type, setType] = useState('');
-
 
   const matches = useMediaQuery(devices.mobileLarge);
 
