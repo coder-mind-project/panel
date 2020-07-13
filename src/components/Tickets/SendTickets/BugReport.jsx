@@ -19,7 +19,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
@@ -95,7 +94,6 @@ function BugReport(props) {
     return data;
   }
 
-
   async function sendTicket() {
     setIsSending(true);
     const data = formatData();
@@ -134,7 +132,7 @@ function BugReport(props) {
             </Box>
           </Box>
           <Box width="100%">
-            <Typography component="span" variant="body2">Este tipo de ticket deve ser enviado caso tenha encontrado algum comportamento da plataforma que julgue ser um bug/erros. </Typography>
+            <Typography component="span" variant="body2">Este tipo de ticket deve ser enviado caso tenha encontrado algum comportamento da plataforma que julgue ser um bug/erro. </Typography>
           </Box>
           <Box width="100%" marginTop="20px">
             <Divider />
@@ -142,10 +140,10 @@ function BugReport(props) {
         </Box>
         {!success
             && (
-            <Box padding="25px">
+            <Box padding="25px" paddingTop={0}>
               <Box display="flex" flexWrap="wrap" alignItems="flex-start">
                 <CustomFormControl>
-                  <InputLabel>Onde ocorreu o bug?</InputLabel>
+                  <InputLabel>Onde ocorreu o bug? *</InputLabel>
                   <Select
                     value={ticket.software}
                     onChange={(evt) => handleChangeTicket(evt, 'software')}
@@ -172,7 +170,7 @@ function BugReport(props) {
                   />
                 </MuiPickersUtilsProvider>
                 <CustomFormControl>
-                  <InputLabel>Qual dispositivo você estava utilizando?</InputLabel>
+                  <InputLabel>Qual dispositivo você estava utilizando? *</InputLabel>
                   <Select
                     value={ticket.device}
                     onChange={(evt) => handleChangeTicket(evt, 'device')}
@@ -185,7 +183,7 @@ function BugReport(props) {
                         && (
                           <CustomFormControl>
                             <InputLabel>
-                              Qual o navegador utilizado?
+                              Qual o navegador utilizado? *
                             </InputLabel>
                             <Select
                               value={ticket.browser}
@@ -205,7 +203,7 @@ function BugReport(props) {
                         && (
                         <Grid item xs={12} md={5}>
                           <CustomTextField
-                            label="Especifique o browser"
+                            label="Especifique o browser *"
                             value={ticket.anotherBrowser}
                             onChange={(evt) => handleChangeTicket(evt, 'anotherBrowser')}
                           />
@@ -213,17 +211,22 @@ function BugReport(props) {
                         )
                     }
               </Box>
-              <TextField
+              <Box margin="10px">
+                <TextField
 
-                fullWidth
-                multiline
-                rows="10"
-                label="Se possível detalhe o acontecimento"
-                value={ticket.msg}
-                onChange={(evt) => handleChangeTicket(evt, 'msg')}
-              />
-              <Box width="100%" marginTop="15px">
-                <CustomButton onClick={sendTicket} fullWidth color="primary" variant="contained" disabled={isSending} icon="save" loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
+                  fullWidth
+                  multiline
+                  rows="10"
+                  label="Se possível detalhe o acontecimento *"
+                  value={ticket.msg}
+                  onChange={(evt) => handleChangeTicket(evt, 'msg')}
+                />
+              </Box>
+              <Box padding={0.5}>
+                <Typography variant="body2" component="p">* Informações obrigatórias</Typography>
+              </Box>
+              <Box width="100%" marginTop={4}>
+                <CustomButton onClick={sendTicket} fullWidth color="primary" variant="contained" disabled={isSending} icon="save" disabledIcon loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
               </Box>
             </Box>
             )

@@ -16,11 +16,10 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { MuiPickersUtilsProvider, KeyboardDateTimePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 
 import axios from 'axios';
@@ -30,6 +29,8 @@ import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 import { error as toastError } from '../../../config/toasts';
 
 import CustomButton from '../../Buttons/Button';
+
+import { CustomTextField, CustomKeyboardDateTimePicker } from './styles';
 
 function AccountProblem(props) {
   const {
@@ -94,7 +95,7 @@ function AccountProblem(props) {
         <Box display="flex" flexDirection="column" justifyContent="center" margin="25px">
           <Box width="100%" display="flex" alignItems="center">
             <Box display="flex" alignItems="center" mr={1}>
-              <Icon>security</Icon>
+              <Icon color="action">security</Icon>
             </Box>
             <Box display="flex" alignItems="center">
               <Typography component="h4" variant="h6">Alteraram os dados da minha conta</Typography>
@@ -113,19 +114,16 @@ function AccountProblem(props) {
         </Box>
         {!success
             && (
-            <Box padding="25px">
-              <Box display="flex" flexWrap="wrap" alignItems="flex-start">
-                <Grid item xs={12} md={5} className="formInput">
-                  <TextField
+              <Box padding="25px" paddingTop={0}>
+                <Box display="flex" flexWrap="wrap" alignItems="flex-start">
+                  <CustomTextField
                     fullWidth
                     label="Código *"
                     value={ticket.code}
                     onChange={(evt) => handleChangeTicket(evt, 'code')}
                   />
-                </Grid>
-                <Grid item xs={12} md={5} className="formInput">
                   <MuiPickersUtilsProvider utils={MomentUtils}>
-                    <KeyboardDateTimePicker
+                    <CustomKeyboardDateTimePicker
                       label="Data de alteração *"
                       ampm={false}
                       clearable
@@ -143,21 +141,25 @@ function AccountProblem(props) {
                       fullWidth
                     />
                   </MuiPickersUtilsProvider>
-                </Grid>
+                </Box>
+                <Box margin="10px">
+                  <TextField
+                    className="formInput"
+                    fullWidth
+                    multiline
+                    rows="10"
+                    label="Descreva seu problema *"
+                    value={ticket.msg}
+                    onChange={(evt) => handleChangeTicket(evt, 'msg')}
+                  />
+                </Box>
+                <Box padding={0.5}>
+                  <Typography variant="body2" component="p">* Informações obrigatórias</Typography>
+                </Box>
+                <Box width="100%" marginTop={4}>
+                  <CustomButton onClick={() => sendTicket()} fullWidth color="primary" variant="contained" disabledIcon disabled={isSending} loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
+                </Box>
               </Box>
-              <TextField
-                className="formInput"
-                fullWidth
-                multiline
-                rows="10"
-                label="Descreva seu problema *"
-                value={ticket.msg}
-                onChange={(evt) => handleChangeTicket(evt, 'msg')}
-              />
-              <Box width="100%" marginTop="15px">
-                <CustomButton onClick={() => sendTicket()} fullWidth color="primary" variant="contained" disabled={isSending} icon="save" loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
-              </Box>
-            </Box>
             )
         }
         { success
