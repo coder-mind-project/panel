@@ -11,10 +11,9 @@ import {
 import { devices } from '@/config/devices';
 import { KeyboardDateTimePicker } from '@material-ui/pickers';
 
-
 export const CustomCard = styled(Card)({
   width: '30%',
-  minHeight: '250px',
+  minHeight: '300px',
   margin: '10px',
   display: 'flex',
   flexDirection: 'column',
@@ -24,6 +23,7 @@ export const CustomCard = styled(Card)({
     width: '40%',
   },
   [devices.tablet]: {
+    minHeight: '250px',
     width: '100%',
   },
 });
@@ -43,7 +43,7 @@ export const CustomCardActions = styled(CardActions)({
 export const CustomTextField = styled(TextField)({
   margin: '10px',
   width: '320px',
-  [devices.mobileLarge]: {
+  [devices.tablet]: {
     width: '100%',
   },
 });
@@ -51,7 +51,7 @@ export const CustomTextField = styled(TextField)({
 export const CustomFormControl = styled(FormControl)({
   margin: '10px',
   width: '320px',
-  [devices.mobileLarge]: {
+  [devices.tablet]: {
     width: '100%',
   },
 });
@@ -59,7 +59,7 @@ export const CustomFormControl = styled(FormControl)({
 export const CustomKeyboardDateTimePicker = styled(KeyboardDateTimePicker)({
   margin: '10px',
   width: '320px',
-  [devices.mobileLarge]: {
+  [devices.tablet]: {
     width: '100%',
   },
 });

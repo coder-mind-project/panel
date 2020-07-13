@@ -106,7 +106,7 @@ function ImprovementSuggestion(props) {
               Caso a melhoria envolva a correção de algum erro por favor envie um ticket de
               {' '}
               <Button
-                color="primary"
+                color={theme === 'dark' ? 'default' : 'primary'}
                 variant="text"
                 onClick={() => changeType('bug-report')}
                 size="small"
@@ -136,17 +136,22 @@ function ImprovementSuggestion(props) {
                   </FormControl>
                 </Grid>
               </Box>
-              <TextField
-                className="formInput"
-                fullWidth
-                multiline
-                rows="10"
-                label="O que gostaria que melhorasse? *"
-                value={ticket.msg}
-                onChange={(evt) => handleChangeTicket(evt, 'msg')}
-              />
-              <Box width="100%" marginTop="15px">
-                <CustomButton onClick={sendTicket} fullWidth color="primary" variant="contained" disabled={isSending} icon="save" loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
+              <Box marginTop="10px" marginBottom={1}>
+                <TextField
+                  className="formInput"
+                  fullWidth
+                  multiline
+                  rows="10"
+                  label="O que gostaria que melhorasse? *"
+                  value={ticket.msg}
+                  onChange={(evt) => handleChangeTicket(evt, 'msg')}
+                />
+              </Box>
+              <Box padding={0.5}>
+                <Typography variant="body2" component="p">* Informações obrigatórias</Typography>
+              </Box>
+              <Box width="100%" marginTop={4}>
+                <CustomButton onClick={sendTicket} fullWidth color="primary" variant="contained" disabled={isSending} disabledIcon loading={isSending} text={isSending ? 'Enviando ticket...' : 'Enviar'} />
               </Box>
             </Box>
             )
