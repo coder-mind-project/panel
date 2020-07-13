@@ -22,13 +22,11 @@ import Header from '@/components/Header.jsx';
 import { devices } from '@/config/devices';
 import { scrollToTop } from '@/shared/index';
 
-
 import WhatIsTicketDialog from './WhatIsTicketDialog';
 import AccountProblem from './AccountProblem';
 import BugReport from './BugReport';
 import ImprovementSuggestion from './ImprovementSuggestion';
 import AccountRecuperation from './AccountRecuperation';
-
 
 import { CustomCard, CustomCardActions, CustomPaper } from './styles';
 

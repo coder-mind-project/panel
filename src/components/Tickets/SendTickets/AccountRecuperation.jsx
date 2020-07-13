@@ -19,7 +19,6 @@ import axios from 'axios';
 import { error } from '../../../config/toasts';
 import { callToast as toastEmitter } from '../../../redux/toast/toastActions';
 
-
 import { defineErrorMsg } from '../../../config/backend';
 
 import { CODER_MIND_URL } from '../../../config/dataProperties';
@@ -27,7 +26,6 @@ import { CODER_MIND_URL } from '../../../config/dataProperties';
 import CustomButton from '../../Buttons/Button';
 
 import { CustomTextField, CustomBox, IconBox } from './styles';
-
 
 function AccountRecuperation(props) {
   const { params, callToast } = props;
