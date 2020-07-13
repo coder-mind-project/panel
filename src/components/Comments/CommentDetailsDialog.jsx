@@ -179,7 +179,7 @@ function CommentDetailsDialog(props) {
                   style={{ boxShadow: '0px 0px 2px 1px #ccc', objectFit: 'cover' }}
                   width="100%"
                   height="200px"
-                  src={comment.article ? `${comment.article.smallImg}` : ArticleLogoSample}
+                  src={comment.article ? `${comment.article.logoImg}` : ArticleLogoSample}
                   alt={comment.article ? comment.article.title : 'Artigo não definido'}
                 />
                 <Box
@@ -188,7 +188,7 @@ function CommentDetailsDialog(props) {
                   justifyContent="center"
                   mt={1}
                 >
-                  <CustomLink to={`/articles/${comment.article.customURL}`}>
+                  <CustomLink to={`/articles/${comment.article.customUri}`}>
                     <Button
                       color="primary"
                       variant={theme === 'dark' ? 'contained' : 'text'}
@@ -271,7 +271,7 @@ function CommentDetailsDialog(props) {
           {matches
           && (
             <Box mr={2}>
-              <CustomLink to={`/articles/${comment.article.customURL}`}>
+              <CustomLink to={`/articles/${comment.article.customUri}`}>
                 <Button
                   color="primary"
                   variant="contained"

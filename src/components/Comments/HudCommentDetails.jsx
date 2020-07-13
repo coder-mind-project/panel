@@ -74,7 +74,7 @@ function HudCommentDetails(props) {
         >
           <MenuItem onClick={() => performAction('answer')}>Responder</MenuItem>
           <MenuItem onClick={() => performAction('state')}>{comment.state === 'enabled' ? 'Desabilitar' : 'Habilitar'}</MenuItem>
-          <CustomLink to={`/articles/${comment.article.customURL}`}>
+          <CustomLink to={`/articles/${comment.article.customUri}`}>
             <MenuItem>Abrir artigo</MenuItem>
           </CustomLink>
         </Menu>

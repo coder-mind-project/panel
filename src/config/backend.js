@@ -12,7 +12,11 @@ const defineErrorMsg = (error) => {
     errorMsg = 'Ops, não conseguimos conectar ao servidor, tente novamente mais tarde!';
   }
   if (error.response && error.response.data) {
-    errorMsg = typeof error.response.data === 'string' ? error.response.data : error.response.data.msg;
+    if (typeof error.response.data === 'string') {
+      errorMsg = error.response.data;
+    } else {
+      errorMsg = error.response.data.message || error.response.data.msg;
+    }
   }
 
   return errorMsg;

@@ -15,9 +15,9 @@ import { bindActionCreators } from 'redux';
 import { callToast as toastEmitter } from '@/redux/toast/toastActions';
 import { error as toastError } from '@/config/toasts';
 
-import ArticleSmallImgSample from '@/assets/img_not_found_512x512.png';
+import ArticlelogoImgSample from '@/assets/img_not_found_512x512.png';
 import {
-  ArticleSmallImgContainer,
+  ArticleLogoImgContainer,
   CommentContainer,
   CustomMenuItem,
 } from './styles';
@@ -29,11 +29,6 @@ const UnreadComment = (props) => {
     callToast,
   } = props;
 
-  /**
-   * @function
-   * @description Flag the current comment (`notification`) as read -
-   * Used only in comment notification feature
-   */
   function markAsRead() {
     const { _id } = notification;
 
@@ -52,13 +47,13 @@ const UnreadComment = (props) => {
     <CommentContainer item xs={12}>
       <CustomMenuItem onClick={displayCommentDetails}>
         <Box display="flex" alignItems="center" width="100%">
-          <ArticleSmallImgContainer>
+          <ArticleLogoImgContainer>
             <img
               className="article-small-img"
-              src={notification.article.smallImg ? `${notification.article.smallImg}` : ArticleSmallImgSample}
+              src={notification.article.logoImg ? `${notification.article.logoImg}` : ArticlelogoImgSample}
               alt={notification.article.title}
             />
-          </ArticleSmallImgContainer>
+          </ArticleLogoImgContainer>
           <Box className="comment-info">
             <Typography component="p" variant="body2">
               {`${notification.userName.length > 30 ? `${notification.userName.slice(0, 29)}...` : notification.userName} fez um novo comentário no artigo ${notification.article.title}`}

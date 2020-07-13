@@ -143,7 +143,7 @@ function CommentCard(props) {
           component="img"
           alt={comment && comment.article ? comment.article.title : 'Artigo não definido'}
           height="110"
-          image={comment && comment.article ? `${comment.article.smallImg}` : ArticleLogoSample}
+          image={comment && comment.article ? `${comment.article.logoImg}` : ArticleLogoSample}
           title={comment && comment.article ? comment.article.title : 'Artigo não definido'}
           className="article-logo"
         />
