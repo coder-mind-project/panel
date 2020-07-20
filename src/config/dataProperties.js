@@ -42,8 +42,8 @@ export const LIMIT_LABEL = 'Limite: ';
 export const DISPLAYED_ROWS = (value) =>
   `${value.from}-${value.to} de ${value.count}`;
 
-export const APP_VERSION = '2.0.1';
-export const APP_BUILD = 'Alpha';
+export const APP_VERSION = '2.0.2';
+export const APP_BUILD = 'Stable';
 export const APP_DEPENDENCIES = 'https://github.com/coder-mind-project/panel/blob/master/package.json';
 export const APP_REPORT_US = 'https://github.com/coder-mind-project/coder-mind-panel/issues/new';
 
