@@ -89,6 +89,10 @@ function Articles(props) {
       {
         title: <ArticleHeaderTableCell icon="label" label="Status" />,
         field: 'state',
+        render: (rowData) => {
+          const { state, color, icon } = getArticleState(rowData);
+          return (<Chip className="cm-chip" text={state} icon={icon} color={color} size="small" sizeIcon="small" />);
+        },
       },
       {
         title: <ArticleHeaderTableCell icon="bookmark" label="Tema" />,
@@ -99,6 +103,7 @@ function Articles(props) {
         field: 'category.name',
       },
     ];
+
     const adminColumns = [
       {
         title: <ArticleHeaderTableCell icon="article" label="Artigo" />,
