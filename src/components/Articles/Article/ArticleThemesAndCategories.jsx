@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { appTheme, articleType } from '@/types';
 
 import {
-  ExpansionPanel,
+  Accordion,
   Box,
   Typography,
-  ExpansionPanelDetails,
+  AccordionDetails,
   Icon,
   Button,
 } from '@material-ui/core';
@@ -20,7 +20,7 @@ import { error } from '@/config/toasts';
 
 import CustomAsyncSelect from '@/components/AsyncSelect.jsx';
 
-import { CustomExpansionPanelSummary, CustomLink } from './styles';
+import { CustomAccordionSummary, CustomLink } from './styles';
 
 function ArticleThemesAndCategories(props) {
   const {
@@ -143,14 +143,14 @@ function ArticleThemesAndCategories(props) {
   }, [isSaved]);
 
   return (
-    <ExpansionPanel expanded={expanded}>
-      <CustomExpansionPanelSummary
+    <Accordion expanded={expanded}>
+      <CustomAccordionSummary
         onClick={toogleDetails}
         expandIcon={<Icon>expand_more</Icon>}
       >
         <Typography variant="h6" component="h2">Temas & Categorias</Typography>
-      </CustomExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      </CustomAccordionSummary>
+      <AccordionDetails>
         <Box width="100%">
           <Box mb={2}>
             <CustomAsyncSelect
@@ -205,8 +205,8 @@ function ArticleThemesAndCategories(props) {
             )}
           </Box>
         </Box>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 }
 
@@ -223,7 +223,6 @@ ArticleThemesAndCategories.propTypes = {
 ArticleThemesAndCategories.defaultProps = {
   expanded: false,
 };
-
 
 const mapStateToProps = (state) => ({ themeApp: state.theme });
 const mapDispatchToProps = (dispatch) => bindActionCreators({ callToast: toastEmitter }, dispatch);

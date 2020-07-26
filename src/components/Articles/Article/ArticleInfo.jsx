@@ -4,8 +4,8 @@ import { articleType } from '@/types';
 
 import { displayFullDate } from '@/config/masks';
 import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
+  Accordion,
+  AccordionDetails,
   Icon,
   Typography,
   Box,
@@ -13,7 +13,7 @@ import {
 
 import CustomChip from '@/components/Chip.jsx';
 
-import { CustomExpansionPanelSummary } from './styles';
+import { CustomAccordionSummary } from './styles';
 
 function ArticleInfo(props) {
   const {
@@ -70,14 +70,14 @@ function ArticleInfo(props) {
   }
 
   return (
-    <ExpansionPanel expanded={expanded}>
-      <CustomExpansionPanelSummary
+    <Accordion expanded={expanded}>
+      <CustomAccordionSummary
         onClick={toogleDetails}
         expandIcon={<Icon>expand_more</Icon>}
       >
         <Typography variant="h6" component="h2">Informações</Typography>
-      </CustomExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      </CustomAccordionSummary>
+      <AccordionDetails>
         <Box>
           <Box display="flex" alignItems="center" mb={1}>
             <Typography variant="body2" component="span">
@@ -124,8 +124,8 @@ function ArticleInfo(props) {
             </Typography>
           </Box>
         </Box>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 }
 

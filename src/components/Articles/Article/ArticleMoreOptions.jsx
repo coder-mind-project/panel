@@ -5,8 +5,8 @@ import { articleType } from '@/types';
 import { Redirect } from 'react-router-dom';
 
 import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
+  Accordion,
+  AccordionDetails,
   Icon,
   Typography,
   TextField,
@@ -41,7 +41,7 @@ import { CustomTooltip } from '@/components/styles';
 import RemoveArticleDialog from '@/components/Articles/RemoveArticleDialog.jsx';
 import SectionDescription from './SectionDescription';
 
-import { CustomExpansionPanelSummary, BoxSocialMedia } from './styles';
+import { CustomAccordionSummary, BoxSocialMedia } from './styles';
 
 function ArticleMoreOptions(props) {
   const {
@@ -181,15 +181,15 @@ function ArticleMoreOptions(props) {
   }, [article, socialRepository, socialRepositoryType, socialVideo, socialVideoType, mounted]);
 
   return (
-    <ExpansionPanel expanded={expanded}>
-      <CustomExpansionPanelSummary
+    <Accordion expanded={expanded}>
+      <CustomAccordionSummary
         onClick={toogleDetails}
         expandIcon={<Icon>expand_more</Icon>}
       >
         <Typography variant="h6" component="h2">Mais opções</Typography>
-      </CustomExpansionPanelSummary>
+      </CustomAccordionSummary>
       {redirect && <Redirect to={redirect} />}
-      <ExpansionPanelDetails>
+      <AccordionDetails>
         <Box width="100%">
           <BoxSocialMedia>
             <CustomTooltip
@@ -362,8 +362,8 @@ function ArticleMoreOptions(props) {
             </Box>
           )}
         </Box>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 }
 

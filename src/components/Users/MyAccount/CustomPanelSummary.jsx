@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  ExpansionPanelSummary,
+  AccordionSummary,
   Grid,
   Box,
   Icon,
@@ -24,7 +24,7 @@ function CustomPanelSummary(props) {
   } = props;
 
   return (
-    <ExpansionPanelSummary
+    <AccordionSummary
       expandIcon={(
         <Icon>
           {expandIcon}
@@ -51,7 +51,7 @@ function CustomPanelSummary(props) {
           )
         }
       </Grid>
-    </ExpansionPanelSummary>
+    </AccordionSummary>
   );
 }
 
