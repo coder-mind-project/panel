@@ -31,7 +31,7 @@ ___
   <tr>
     <td align="center">
       <a href="http://allanalves23.com">
-         <img 
+         <img
               src="https://avatars0.githubusercontent.com/u/27220715?v=4" width="100px;"
               alt=""
          />
@@ -54,7 +54,7 @@ ___
 <tr>
     <td align="center">
       <a href="https://github.com/JoakimTeixeira">
-         <img 
+         <img
               src="https://avatars0.githubusercontent.com/u/12193814?v=4" width="100px;"
               alt=""
          />
