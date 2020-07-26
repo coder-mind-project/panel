@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { userType } from '@/types';
 import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
+  Accordion,
+  AccordionDetails,
   Grid,
   Box,
   CircularProgress,
@@ -92,7 +92,7 @@ function MyAccount(props) {
       {userState && !loading
           && (
           <Grid item xs={12}>
-            <ExpansionPanel
+            <Accordion
               expanded={expanded === 'general_information'}
               onChange={handleChange('general_information')}
             >
@@ -102,11 +102,11 @@ function MyAccount(props) {
                 description="Dados gerais e essenciais para seu cadastro"
                 expanded={Boolean(expanded === 'general_information')}
               />
-              <ExpansionPanelDetails>
+              <AccordionDetails>
                 <GeneralInformation user={userState} />
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel
+              </AccordionDetails>
+            </Accordion>
+            <Accordion
               expanded={expanded === 'extra_information'}
               onChange={handleChange('extra_information')}
             >
@@ -116,11 +116,11 @@ function MyAccount(props) {
                 description="Informações complementares, estarão públicas para qualquer leitor"
                 expanded={Boolean(expanded === 'extra_information')}
               />
-              <ExpansionPanelDetails>
+              <AccordionDetails>
                 <ExtraInformation isActive={expanded === 'extra_information'} />
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
-            <ExpansionPanel
+              </AccordionDetails>
+            </Accordion>
+            <Accordion
               expanded={expanded === 'configurations'}
               onChange={handleChange('configurations')}
             >
@@ -130,10 +130,10 @@ function MyAccount(props) {
                 description="Opções avançadas sobre sua conta e preferências"
                 expanded={Boolean(expanded === 'configurations')}
               />
-              <ExpansionPanelDetails>
+              <AccordionDetails>
                 <Configurations />
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
+              </AccordionDetails>
+            </Accordion>
           </Grid>
           )
       }

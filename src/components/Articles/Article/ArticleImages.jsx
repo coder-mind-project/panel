@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { articleType } from '@/types';
 
 import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
+  Accordion,
+  AccordionDetails,
   Icon,
   Typography,
   Box,
@@ -25,7 +25,7 @@ import { bindActionCreators } from 'redux';
 import ArticleImage from './ArticleImage';
 
 import {
-  CustomExpansionPanelSummary,
+  CustomAccordionSummary,
   ArticleLogoArea,
   ArticleSecondaryImageArea,
   ArticleHeaderImageArea,
@@ -172,14 +172,14 @@ function ArticleImages(props) {
   ]);
 
   return (
-    <ExpansionPanel expanded={expanded}>
-      <CustomExpansionPanelSummary
+    <Accordion expanded={expanded}>
+      <CustomAccordionSummary
         onClick={toogleDetails}
         expandIcon={<Icon>expand_more</Icon>}
       >
         <Typography variant="h6" component="h2">Imagens</Typography>
-      </CustomExpansionPanelSummary>
-      <ExpansionPanelDetails>
+      </CustomAccordionSummary>
+      <AccordionDetails>
         <RemoveArticleImgDialog
           open={isOpenedRemoveDialog}
           onClose={removeImage}
@@ -265,8 +265,8 @@ function ArticleImages(props) {
             </Box>
           </ArticleHeaderImageArea>
         </Box>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionDetails>
+    </Accordion>
   );
 }
 
