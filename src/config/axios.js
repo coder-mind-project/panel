@@ -40,6 +40,6 @@ export function setAuthToken(newToken) {
 
 axios.interceptors.response.use(success, error);
 axios.defaults.baseURL = backendUrl;
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 20000;
 
 export default { setAuthToken };
