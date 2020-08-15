@@ -5,7 +5,7 @@ import {
   Icon,
   Box,
   Paper,
-  ExpansionPanelSummary,
+  AccordionSummary,
 } from '@material-ui/core';
 
 import { devices, sizes } from '@/config/devices';
@@ -152,8 +152,8 @@ export const ArticleSettingsContent = styled(Box)({
   overflowX: 'hidden',
 });
 
-export const CustomExpansionPanelSummary = styled(ExpansionPanelSummary)({
-  '& .MuiExpansionPanelSummary-content': {
+export const CustomAccordionSummary = styled(AccordionSummary)({
+  '& .MuiAccordionSummary-content': {
     margin: '20px 0',
   },
 });
