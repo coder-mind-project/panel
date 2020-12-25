@@ -55,6 +55,4 @@ export const WHITE_LIST_ROUTES = [
   '/remove-account',
 ];
 
-// test
-// test2
 export const CODER_MIND_URL = process.env.REACT_APP_CODER_MIND_URL;
