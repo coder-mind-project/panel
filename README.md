@@ -1,6 +1,8 @@
 ![Coder Mind Panel](https://i.imgur.com/Y84oYzJ.png)
 
 [![code-style-airbnb](https://badgen.net/badge/codestyle/airbnb/ff5a5f.svg?icon=airbnb&color=green)](https://github.com/airbnb/javascript)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/coder-mind-project/panel.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/coder-mind-project/panel/context:javascript)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/coder-mind-project/panel.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/coder-mind-project/panel/alerts/)
 [![Build status](https://dev.azure.com/codermindproject/Coder%20Mind/_apis/build/status/Production/Panel-production)](https://dev.azure.com/codermindproject/Coder%20Mind/_build/latest?definitionId=5)
 [![Release status](https://vsrm.dev.azure.com/codermindproject/_apis/public/Release/badge/2cbdac35-45f6-4fc4-a511-54ecd832b244/4/4)](http://master.codermind.com.br)
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-blue.svg?style=flat-square)](#contributors)
@@ -11,7 +13,7 @@
 
 Owner: Coder Mind
 
-E-mail: allan@codermind.com.br
+E-mail: contato@codermind.com.br
 ___
 
 ## Presentation
